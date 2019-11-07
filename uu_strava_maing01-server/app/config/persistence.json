@@ -6,6 +6,15 @@
       "schemaMap": {
         "stravaMain": {
           "realization": "dao/StravaMainMongo"
+        },
+        "athlete": {
+          "realization": "dao/AthleteMongo"
+        },
+        "activity": {
+          "realization": "dao/ActivityMongo"
+        },
+        "segment": {
+          "realization": "dao/SegmentMongo"
         }
       }
     }

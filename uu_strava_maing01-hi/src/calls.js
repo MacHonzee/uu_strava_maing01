@@ -12,8 +12,23 @@ let Calls = {
     return Plus4U5.Common.Calls.call(method, url, dtoIn, clientOptions);
   },
 
-  loadDemoContent(dtoIn) {
-    let commandUri = Calls.getCommandUri("loadDemoContent");
+  loadAwidConfig(dtoIn) {
+    let commandUri = Calls.getCommandUri("stravaMain/loadConfig");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
+  createAthlete(dtoIn) {
+    let commandUri = Calls.getCommandUri("athlete/create");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
+  loadAthleteMyself(dtoIn) {
+    let commandUri = Calls.getCommandUri("athlete/loadMyself");
+    return Calls.call("get", commandUri, dtoIn);
+  },
+
+  segmentList(dtoIn) {
+    let commandUri = Calls.getCommandUri("segment/list");
     return Calls.call("get", commandUri, dtoIn);
   },
 

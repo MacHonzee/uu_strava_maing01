@@ -12,10 +12,7 @@ import "./not-authenticated.less";
 
 const NotAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
-  mixins: [
-    UU5.Common.BaseMixin,
-    UU5.Common.RouteMixin
-  ],
+  mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -62,9 +59,7 @@ const NotAuthenticated = UU5.Common.VisualComponent.create({
           {this.getLsiComponent("serverSide")}
         </WelcomeRow>
         <WelcomeRow className={this.getClassName("login")} textPadding="14px" icon="mdi-account-key">
-          <UU5.Bricks.Span>
-            {this.getLsiComponent("login")}
-          </UU5.Bricks.Span>
+          <UU5.Bricks.Span>{this.getLsiComponent("login")}</UU5.Bricks.Span>
           <Plus4U5.App.LoginButton className={this.getClassName("loginButton")} colorSchema="primary" />
         </WelcomeRow>
       </UU5.Bricks.Section>

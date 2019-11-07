@@ -8,9 +8,7 @@ import "./bottom.less";
 
 export const Bottom = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
-  mixins: [
-    UU5.Common.BaseMixin
-  ],
+  mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -42,11 +40,7 @@ export const Bottom = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    return (
-      <UU5.Common.Div {...this.getMainPropsToPass()}>
-        Powered by Unicorn Application Framework
-      </UU5.Common.Div>
-    );
+    return <UU5.Common.Div {...this.getMainPropsToPass()}>Powered by Unicorn Application Framework</UU5.Common.Div>;
   }
   //@@viewOff:render
 });

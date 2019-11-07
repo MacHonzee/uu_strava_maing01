@@ -10,10 +10,9 @@ class StravaMainMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
-  async get(awid, id) {
+  async get(awid) {
     let filter = {
-      awid: awid,
-      id: id
+      awid: awid
     };
     return await super.findOne(filter);
   }

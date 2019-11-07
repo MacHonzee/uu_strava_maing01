@@ -14,6 +14,8 @@ const WARNINGS = {
 class StravaMainAbl {
   constructor() {
     this.validator = Validator.load();
+    this.configDao = DaoFactory.getDao("stravaMain");
+    this.athleteDao = DaoFactory.getDao("athlete");
   }
 
   async init(awid, dtoIn) {
@@ -28,7 +30,7 @@ class StravaMainAbl {
     );
 
     // HDS 2
-    const schemas = ["stravaMain"];
+    const schemas = ["stravaMain", "athlete", "activity", "segment"];
     let schemaCreateResults = schemas.map(async schema => {
       try {
         return await DaoFactory.getDao(schema).createSchema();
@@ -50,12 +52,24 @@ class StravaMainAbl {
       throw e;
     }
 
-    // HDS 4 - HDS N
-    // TODO Implement according to application needs...
+    // HDS 4
+    await this.configDao.create({ awid, ...dtoIn.configuration });
 
-    // HDS N+1
+    // HDS 5
     return {
       uuAppErrorMap: uuAppErrorMap
+    };
+  }
+
+  async loadConfig(awid, session) {
+    let config = await this.configDao.get(awid);
+
+    const AthleteAbl = require("./athlete-abl");
+    let token = await AthleteAbl.getValidToken(awid, session);
+
+    return {
+      clientId: config.clientId,
+      stravaTokenValid: !!token.token
     };
   }
 }

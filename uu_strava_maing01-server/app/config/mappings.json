@@ -10,6 +10,31 @@
         "realization": "index.html",
         "httpMethod": "GET",
         "type": "UVE"
+      },
+      "stravaMain/loadConfig": {
+        "realization": "api/controllers/StravaMainController.loadConfig",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "athlete/create": {
+        "realization": "api/controllers/AthleteController.create",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "athlete/exportActivities": {
+        "realization": "api/controllers/AthleteController.exportActivities",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "athlete/loadMyself": {
+        "realization": "api/controllers/AthleteController.loadMyself",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "segment/list": {
+        "realization": "api/controllers/SegmentController.list",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

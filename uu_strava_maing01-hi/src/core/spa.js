@@ -13,10 +13,7 @@ import "./spa.less";
 
 const Spa = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
-  mixins: [
-    UU5.Common.BaseMixin,
-    UU5.Common.IdentityMixin
-  ],
+  mixins: [UU5.Common.BaseMixin, UU5.Common.IdentityMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -41,7 +38,7 @@ const Spa = UU5.Common.VisualComponent.create({
   getInitialState() {
     return {
       error: null
-    }
+    };
   },
   //@@viewOff:reactLifeCycle
 

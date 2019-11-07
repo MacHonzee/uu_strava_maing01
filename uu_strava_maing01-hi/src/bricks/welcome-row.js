@@ -9,10 +9,7 @@ import "./welcome-row.less";
 
 const WelcomeRow = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
-  mixins: [
-    UU5.Common.BaseMixin,
-    UU5.Common.ElementaryMixin
-  ],
+  mixins: [UU5.Common.BaseMixin, UU5.Common.ElementaryMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -62,11 +59,7 @@ const WelcomeRow = UU5.Common.VisualComponent.create({
         <UU5.Bricks.Column className={this.getClassName("iconColumn")} colWidth="xs-12 s-2">
           <UU5.Bricks.Icon icon={this.props.icon} style={{ marginTop: margin, marginBottom: margin }} />
         </UU5.Bricks.Column>
-        <UU5.Bricks.Column
-          className={this.getClassName("text")}
-          colWidth="xs-12 s-10"
-          content={this.props.children}
-        />
+        <UU5.Bricks.Column className={this.getClassName("text")} colWidth="xs-12 s-10" content={this.props.children} />
       </UU5.Bricks.Row>
     );
   }

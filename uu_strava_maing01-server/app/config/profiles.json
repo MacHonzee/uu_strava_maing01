@@ -4,14 +4,18 @@
     "permissionMap": {
       "{asidOwner}": ["AsidOwner"]
     },
-    "useCaseMap": {
-    }
+    "useCaseMap": {}
   },
   "*": {
-    "profileList": ["Authorities", "Executives", "AwidOwner"],
+    "profileList": ["Authorities","Executives","AwidOwner"],
     "useCaseMap": {
       "init": ["AwidOwner"],
-      "defaultUve": ["Public"]
+      "defaultUve": ["Public"],
+      "stravaMain/loadConfig": ["Authorities"],
+      "athlete/create": ["Authorities","Executives"],
+      "athlete/exportActivities": ["Authorities","Executives"],
+      "athlete/loadMyself": ["Authorities","Executives"],
+      "segment/list": ["Authorities","Executives"]
     }
   }
 }

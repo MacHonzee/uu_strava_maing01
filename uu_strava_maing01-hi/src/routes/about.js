@@ -12,11 +12,7 @@ import "./about.less";
 
 export const About = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
-  mixins: [
-    UU5.Common.BaseMixin,
-    UU5.Common.LsiMixin,
-    UU5.Common.RouteMixin
-  ],
+  mixins: [UU5.Common.BaseMixin, UU5.Common.LsiMixin, UU5.Common.RouteMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -51,14 +47,17 @@ export const About = UU5.Common.VisualComponent.create({
 
   //@@viewOn:private
   _getAuthors(authors) {
-    return authors && authors.slice().map(author => {
-      author = UU5.Common.Tools.merge({}, author);
-      author.role =
-        author.role && typeof author.role === "object" ? <UU5.Bricks.Lsi lsi={author.role} /> : author.role;
-      // author.src =
-      //   author.src || Calls.getCommandUri("getAppAuthorPhoto", { uuIdentity: author.uuIdentity }).toString();
-      return author;
-    });
+    return (
+      authors &&
+      authors.slice().map(author => {
+        author = UU5.Common.Tools.merge({}, author);
+        author.role =
+          author.role && typeof author.role === "object" ? <UU5.Bricks.Lsi lsi={author.role} /> : author.role;
+        // author.src =
+        //   author.src || Calls.getCommandUri("getAppAuthorPhoto", { uuIdentity: author.uuIdentity }).toString();
+        return author;
+      })
+    );
   },
   //@@viewOff:private
 
@@ -86,10 +85,11 @@ export const About = UU5.Common.VisualComponent.create({
           technologies={this.getLsiItem(usedTechnologies.technologies)}
           content={this.getLsiItem(usedTechnologies.content)}
         />
-        {licence.termsOfUse &&
-        <UU5.Bricks.P className={this.getClassName("termsOfUse")}>
-          <UU5.Bricks.Link href={licence.termsOfUse} target="_blank" content={this.getLsiValue("termsOfUse")} />
-        </UU5.Bricks.P>}
+        {licence.termsOfUse && (
+          <UU5.Bricks.P className={this.getClassName("termsOfUse")}>
+            <UU5.Bricks.Link href={licence.termsOfUse} target="_blank" content={this.getLsiValue("termsOfUse")} />
+          </UU5.Bricks.P>
+        )}
         <UU5.Bricks.Div className={this.getClassName("logos")}>
           <UU5.Bricks.Image responsive={false} src="assets/plus4u.svg" />
           <UU5.Bricks.Image responsive={false} src="assets/unicorn.svg" />

@@ -10,10 +10,7 @@ import "./left-link.less";
 
 const LeftLink = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
-  mixins: [
-    UU5.Common.BaseMixin,
-    UU5.Common.ElementaryMixin
-  ],
+  mixins: [UU5.Common.BaseMixin, UU5.Common.ElementaryMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -35,7 +32,7 @@ const LeftLink = UU5.Common.VisualComponent.create({
   getDefaultProps() {
     return {
       route: null
-    }
+    };
   },
   //@@viewOff:getDefaultProps
 
@@ -69,7 +66,7 @@ const LeftLink = UU5.Common.VisualComponent.create({
         <UU5.Bricks.Link onClick={this._goRoute} onWheelClick={this._tabRoute} onCtrlClick={this._tabRoute}>
           {children}
         </UU5.Bricks.Link>
-      )
+      );
     }
 
     return children;
@@ -78,11 +75,7 @@ const LeftLink = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    return (
-      <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        {this._getChildren()}
-      </UU5.Bricks.Div>
-    );
+    return <UU5.Bricks.Div {...this.getMainPropsToPass()}>{this._getChildren()}</UU5.Bricks.Div>;
   }
   //@@viewOff:render
 });
