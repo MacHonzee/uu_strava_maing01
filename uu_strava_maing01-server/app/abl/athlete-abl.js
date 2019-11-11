@@ -9,6 +9,9 @@ const StravaApiHelper = require("../helpers/strava-api-helper");
 const WARNINGS = {
   createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`
+  },
+  exportActivitiesUnsupportedKeys: {
+    code: `${Errors.ExportActivities.UC_CODE}unsupportedKeys`
   }
 };
 
@@ -100,15 +103,33 @@ class AthleteAbl {
     };
   }
 
-  async exportActivities(awid, session) {
+  async exportActivities(awid, dtoIn, session) {
+    // HDS 1
+    let validationResult = this.validator.validate("exportActivitiesDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.exportActivitiesUnsupportedKeys.code,
+      Errors.ExportActivities.InvalidDtoIn
+    );
+
+    let preparedDtoIn = {};
+    if (dtoIn.after) {
+      preparedDtoIn.after = (new Date(dtoIn.after).getTime()) / 1000;
+    }
+
     let uuIdentity = session.getIdentity().getUuIdentity();
     let athleteToken = await this.getValidToken(awid, session);
+    let SegmentAbl = require("./segment-abl");
     let token = athleteToken.token;
     let pageIndex = 1;
+    let createdSegments = [];
     while (true) {
       let dtoIn = {
         page: pageIndex,
-        per_page: STRAVA_PAGE_SIZE
+        per_page: STRAVA_PAGE_SIZE,
+        ...preparedDtoIn
       };
       let myActivities = await StravaApiHelper.getLoggedInAthleteActivities(token, dtoIn);
 
@@ -122,21 +143,16 @@ class AthleteAbl {
         newUuObject.awid = awid;
         newUuObject.uuIdentity = uuIdentity;
         newUuObject.stravaId = activityDetail.id;
+        newUuObject.start_date = new Date(activityDetail.start_date);
         delete newUuObject.id;
         await this.activityDao.create(newUuObject);
 
         for (let segmentEffort of activityDetail.segment_efforts) {
+          if (segmentEffort.segment.hazardous) continue;
           let segmentId = segmentEffort.segment.id;
-          let existingSegmentObject = await this.segmentDao.getByStravaId(awid, segmentId);
-          if (existingSegmentObject) continue;
-
-          let segmentDetail = await StravaApiHelper.getSegmentById(token, segmentId);
-          let newSegment = { ...segmentDetail };
-          newSegment.awid = awid;
-          newSegment.uuIdentity = uuIdentity;
-          newSegment.stravaId = segmentDetail.id;
-          delete newSegment.id;
-          await this.segmentDao.create(newSegment);
+          let exportDtoIn = { stravaId: segmentId, force: false, token };
+          let newSegment = await SegmentAbl.refreshOne(awid, exportDtoIn, session);
+          if (newSegment) createdSegments.push(newSegment);
         }
       }
 
@@ -148,7 +164,8 @@ class AthleteAbl {
     }
 
     return {
-      uuAppErrorMap: {}
+      createdSegments,
+      uuAppErrorMap
     };
   }
 
@@ -158,6 +175,24 @@ class AthleteAbl {
     return {
       ...athlete,
       uuAppErrorMap: {}
+    };
+  }
+
+  async updateNewActivities(awid, session) {
+    // HDS 1
+    let uuIdentity = session.getIdentity().getUuIdentity();
+    let lastActivity = await this.activityDao.listLatestByUuIdentity(awid, uuIdentity);
+    if (!lastActivity) {
+      throw new Errors.UpdateNewActivities.NoLatestActivity({});
+    }
+
+    // HDS 2
+    let { createdSegments, uuAppErrorMap } = await this.exportActivities(awid, { after: lastActivity.start_date }, session);
+
+    // HDS 3
+    return {
+      createdSegments,
+      uuAppErrorMap
     };
   }
 }

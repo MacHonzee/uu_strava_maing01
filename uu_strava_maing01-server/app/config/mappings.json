@@ -35,6 +35,21 @@
         "realization": "api/controllers/SegmentController.list",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "segment/refreshOne": {
+        "realization": "api/controllers/SegmentController.refreshOne",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "segment/refreshAll": {
+        "realization": "api/controllers/SegmentController.refreshAll",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
+      "athlete/updateNewActivities": {
+        "realization": "api/controllers/AthleteController.updateNewActivities",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

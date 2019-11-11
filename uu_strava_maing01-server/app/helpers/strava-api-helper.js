@@ -42,6 +42,11 @@ const StravaApiHelper = {
   async getSegmentById(token, id) {
     let url = STRAVA_API.segment + "/" + id;
     return callApi(url, "get", null, getTokenHeaders(token));
+  },
+
+  async getSegmentLeaderboard(token, id, dtoIn) {
+    let url = STRAVA_API.segment + "/" + id + "/leaderboard";
+    return callApi(url, "get", dtoIn, getTokenHeaders(token));
   }
 };
 

@@ -15,7 +15,10 @@
       "athlete/create": ["Authorities","Executives"],
       "athlete/exportActivities": ["Authorities","Executives"],
       "athlete/loadMyself": ["Authorities","Executives"],
-      "segment/list": ["Authorities","Executives"]
+      "segment/list": ["Authorities","Executives"],
+      "segment/refreshOne": ["Authorities","Executives"],
+      "segment/refreshAll": ["Authorities","Executives"],
+      "athlete/updateNewActivities": ["Authorities","Executives"]
     }
   }
 }

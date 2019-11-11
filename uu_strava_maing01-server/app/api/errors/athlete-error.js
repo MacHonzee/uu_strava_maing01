@@ -16,15 +16,31 @@ const Create = {
 };
 
 const ExportActivities = {
-  UC_CODE: `${ATHLETE_ERROR_PREFIX}exportActivities/`
+  UC_CODE: `${ATHLETE_ERROR_PREFIX}exportActivities/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ExportActivities.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
 };
 
-const LoadMyself = {
-  UC_CODE: `${ATHLETE_ERROR_PREFIX}loadMyself/`
+const UpdateNewActivities = {
+  UC_CODE: `${ATHLETE_ERROR_PREFIX}updateNewActivities/`,
+
+  NoLatestActivity: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${UpdateNewActivities.UC_CODE}noLatestActivity`;
+      this.message = "There is no latest activity yet, export all first.";
+    }
+  }
 };
 
 module.exports = {
-  LoadMyself,
+  Create,
   ExportActivities,
-  Create
+  UpdateNewActivities
 };
