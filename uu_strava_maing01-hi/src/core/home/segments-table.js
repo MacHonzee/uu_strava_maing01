@@ -39,13 +39,39 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
+  _getSortItems() {
+    return [
+      {
+        key: "name",
+        name: { cs: "Název", en: "Name" }
+      },
+      {
+        key: "distance",
+        name: { cs: "Vzdálenost", en: "Distance" }
+      },
+      {
+        key: "total_elevation_gain",
+        name: { cs: "Převýšení", en: "Elevation gain" }
+      },
+      {
+        key: "climb_category",
+        name: { cs: "Kategorie výstupu", en: "Climb category" }
+      },
+      {
+        key: "rank",
+        name: { cs: "Rank", en: "Rank" },
+        sortFn: (a, b) => a.own_leaderboard.rank - b.own_leaderboard.rank
+      },
+    ]
+  },
+
   _getChild(data) {
     return (
       <UU5.Tiles.ListController data={data.itemList} selectable={false}>
         {/*<UU5.Tiles.ActionBar title="Seznam segmentů" actions={this._getActions()} />*/}
         {/*<UU5.Tiles.BulkActionBar actions={this._getBulkActions()} />*/}
         {/*<UU5.Tiles.FilterBar simpleFilterPanel filters={this._getFilters()} filterValues={this._getInitFilters()} />*/}
-        {/*<UU5.Tiles.InfoBar sortItems={this._getSortItems()} />*/}
+        <UU5.Tiles.InfoBar sortItems={this._getSortItems()} />
         <UU5.Tiles.List
           tile={<SegmentTile />}
           tileHeight={"auto"}

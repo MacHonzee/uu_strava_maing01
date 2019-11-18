@@ -38,27 +38,48 @@ const SegmentTile = UU5.Common.VisualComponent.create({
 
   //@@viewOn:private
   _getName() {
+    let icon;
+    switch (this.props.activity_type) {
+      case "Ride":
+        icon = "mdi-bike";
+        break;
+      case "Run":
+        icon = "mdi-run-fast";
+        break;
+      case "Hike":
+        icon = "mdi-walk";
+        break;
+      case "NordicSki":
+        icon = "mdi-pause";
+        break;
+      default:
+        icon = "mdi-account-question";
+    }
+
     return (
       <UU5.Bricks.Link href={`https://www.strava.com/segments/${this.props.stravaId}?filter=overall`} target={"_blank"}>
+        <UU5.Bricks.Icon icon={icon}/>
         {this.props.name}
       </UU5.Bricks.Link>
     );
   },
 
   _getDistance() {
+    // FIXME tohle je špatně, např na Furesøstien - mod Farum/Marinaen
     return (
       <UU5.Bricks.Span>
         <UU5.Bricks.Icon icon={"mdi-map-marker-distance"}/>
-        {this.props.distance}
+        <UU5.Bricks.Number value={Math.round(this.props.distance)}/> m
       </UU5.Bricks.Span>
     );
   },
 
   _getElevation() {
+    // FIXME tohle je špatně, např na Furesøstien - mod Farum/Marinaen
     return (
       <UU5.Bricks.Span>
         <UU5.Bricks.Icon icon={"mdi-elevation-rise"}/>
-        {this.props.total_elevation_gain}
+        <UU5.Bricks.Number value={Math.round(this.props.total_elevation_gain)}/> m
       </UU5.Bricks.Span>
     );
   },
@@ -70,39 +91,60 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   },
 
   _getOwnPrDate() {
+    let ownLeaderboard = this.props.own_leaderboard;
+    if (!ownLeaderboard) return "-";
     return (
-      <UU5.Bricks.DateTime value={this.props.own_leaderboard.start_date}/>
+      <UU5.Bricks.DateTime value={ownLeaderboard.start_date}/>
     );
   },
 
   _getOwnRank() {
+    // FIXME tohle je špatně, např na Furesøstien - mod Farum/Marinaen
+    let ownLeaderboard = this.props.own_leaderboard;
+    if (!ownLeaderboard) return "-";
     return (
-      <UU5.Bricks.Number value={this.props.own_leaderboard.rank}/>
+      <UU5.Bricks.Span>
+        <UU5.Bricks.Number value={ownLeaderboard.rank}/> / <UU5.Bricks.Number value={this.props.athlete_count}/>
+      </UU5.Bricks.Span>
     );
   },
 
   _getOwnElapsedTime() {
     return (
-      this.props.athlete_segment_stats.pr_elapsed_time
+      this._formatDuration(this.props.athlete_segment_stats.pr_elapsed_time)
     );
   },
 
   _getFirstRankDate() {
+    let firstLeaderboard = this.props.first_leaderboard;
+    if (!firstLeaderboard) return "-";
     return (
-      <UU5.Bricks.DateTime value={this.props.first_leaderboard.start_date}/>
+      <UU5.Bricks.DateTime value={firstLeaderboard.start_date}/>
     );
   },
 
   _getFirstRank() {
     return (
-      <UU5.Bricks.Number value={1}/>
+      <UU5.Bricks.Span>
+        <UU5.Bricks.Number value={1}/> / <UU5.Bricks.Number value={this.props.athlete_count}/>
+      </UU5.Bricks.Span>
     );
   },
 
   _getFirstElapsedTime() {
+    let firstLeaderboard = this.props.first_leaderboard;
+    if (!firstLeaderboard) return "-";
     return (
-      this.props.first_leaderboard.elapsed_time
+      this._formatDuration(firstLeaderboard.elapsed_time)
     );
+  },
+
+  _formatDuration(seconds) {
+    let hours = Math.round(seconds / 3600);
+    let secondsLeft = seconds % 3600;
+    let minutes = Math.round(secondsLeft / 60);
+    let lastSeconds = secondsLeft % 60;
+    return `${hours}:${minutes < 10 ? "0" + minutes : minutes}:${lastSeconds < 10 ? "0" + lastSeconds : lastSeconds}`
   },
   //@@viewOff:private
 
@@ -114,7 +156,6 @@ const SegmentTile = UU5.Common.VisualComponent.create({
         <UU5.Bricks.Column colWidth={"s-3 xs-12"}>
           <UU5.Bricks.Div className={rowClass}>{this._getName()}</UU5.Bricks.Div>
           <UU5.Bricks.Div className={rowClass}>{this.props.city}</UU5.Bricks.Div>
-          <UU5.Bricks.Div className={rowClass}>{this.props.activity_type}</UU5.Bricks.Div>
         </UU5.Bricks.Column>
 
         <UU5.Bricks.Column colWidth={"s-3 xs-12"}>
@@ -136,10 +177,6 @@ const SegmentTile = UU5.Common.VisualComponent.create({
         </UU5.Bricks.Column>
       </UU5.Bricks.Card>
     );
-
-    // TODO name (link s id), city, activity_type, distance, total_elevation, climb_category,
-    // athlete_segment_stats.pr_date, athlete_segment_stats.effort_count, own_leaderboard.rank,
-    // athlete_segment_stats.pr_elapsed_time, first_leaderboard.elapsed_time
   }
   //@@viewOff:render
 });
