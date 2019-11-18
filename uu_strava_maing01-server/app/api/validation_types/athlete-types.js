@@ -5,5 +5,6 @@ const athleteCreateDtoInType = shape({
 });
 
 const exportActivitiesDtoInType = shape({
+  force: boolean().isRequired(),
   after: datetime()
 });

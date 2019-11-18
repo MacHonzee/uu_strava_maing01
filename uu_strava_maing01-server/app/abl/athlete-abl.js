@@ -126,19 +126,19 @@ class AthleteAbl {
     let pageIndex = 1;
     let createdSegments = [];
     while (true) {
-      let dtoIn = {
+      let athldtoIn = {
         page: pageIndex,
         per_page: STRAVA_PAGE_SIZE,
         ...preparedDtoIn
       };
-      let myActivities = await StravaApiHelper.getLoggedInAthleteActivities(token, dtoIn);
+      let myActivities = await StravaApiHelper.getLoggedInAthleteActivities(token, athldtoIn);
 
       for (let activity of myActivities) {
         let existingActivityObject = await this.activityDao.getByStravaId(awid, activity.id);
         if (existingActivityObject) continue;
 
-        dtoIn = { include_all_efforts: true };
-        let activityDetail = await StravaApiHelper.getActivityById(token, activity.id, dtoIn);
+        let activityDtoIn = { include_all_efforts: true };
+        let activityDetail = await StravaApiHelper.getActivityById(token, activity.id, activityDtoIn);
         let newUuObject = { ...activityDetail };
         newUuObject.awid = awid;
         newUuObject.uuIdentity = uuIdentity;
@@ -150,7 +150,7 @@ class AthleteAbl {
         for (let segmentEffort of activityDetail.segment_efforts) {
           if (segmentEffort.segment.hazardous) continue;
           let segmentId = segmentEffort.segment.id;
-          let exportDtoIn = { stravaId: segmentId, force: false, token };
+          let exportDtoIn = { stravaId: segmentId, force: dtoIn.force, token };
           let newSegment = await SegmentAbl.refreshOne(awid, exportDtoIn, session);
           if (newSegment) createdSegments.push(newSegment);
         }
@@ -187,7 +187,7 @@ class AthleteAbl {
     }
 
     // HDS 2
-    let { createdSegments, uuAppErrorMap } = await this.exportActivities(awid, { after: lastActivity.start_date }, session);
+    let { createdSegments, uuAppErrorMap } = await this.exportActivities(awid, { after: lastActivity.start_date, force: true }, session);
 
     // HDS 3
     return {

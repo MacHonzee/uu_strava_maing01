@@ -1,10 +1,12 @@
 //@@viewOn:imports
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
+import "uu5tilesg01";
 
 import Config from "../config/config.js";
 import Calls from "calls";
 import "./segments-table.less";
+import SegmentTile from "./segment-tile";
 //@@viewOff:imports
 
 const SegmentsTable = UU5.Common.VisualComponent.create({
@@ -39,14 +41,19 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
   //@@viewOn:private
   _getChild(data) {
     return (
-      <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        Přehled segmentů
-        <br/>
-        <br/>
-        // TODO zobrazovat - name (jako link s id), city, pr_date, effort_count
-        {data.itemList.map((item, i) => <UU5.Bricks.Div key={item.id}>{i+1}. {item.name}</UU5.Bricks.Div>)}
-      </UU5.Bricks.Div>
-    )
+      <UU5.Tiles.ListController data={data.itemList} selectable={false}>
+        {/*<UU5.Tiles.ActionBar title="Seznam segmentů" actions={this._getActions()} />*/}
+        {/*<UU5.Tiles.BulkActionBar actions={this._getBulkActions()} />*/}
+        {/*<UU5.Tiles.FilterBar simpleFilterPanel filters={this._getFilters()} filterValues={this._getInitFilters()} />*/}
+        {/*<UU5.Tiles.InfoBar sortItems={this._getSortItems()} />*/}
+        <UU5.Tiles.List
+          tile={<SegmentTile />}
+          tileHeight={"auto"}
+          rowSpacing={8}
+          scrollElement={window}
+        />
+      </UU5.Tiles.ListController>
+    );
   },
   //@@viewOff:private
 

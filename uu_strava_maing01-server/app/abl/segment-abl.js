@@ -57,7 +57,8 @@ class SegmentAbl {
     let segmentLeaderboard = await StravaApiHelper.getSegmentLeaderboard(token, segmentId, { per_page: 1 });
     let abbrev = `${athlete.firstname} ${athlete.lastname.charAt(0)}.`;
     // beware, it might not return anything in case of private non-tracked activities
-    newSegment.leaderboard = segmentLeaderboard.entries.find(entry => entry.athlete_name === abbrev);
+    newSegment.first_leaderboard = segmentLeaderboard.entries.find(entry => entry.rank === 1);
+    newSegment.own_leaderboard = segmentLeaderboard.entries.find(entry => entry.athlete_name === abbrev);
 
     // HDS 7
     if (existingSegmentObject) {
@@ -85,6 +86,7 @@ class SegmentAbl {
 
     // HDS 2
     for (let segment of segments.itemList) {
+      if (segment.own_leaderboard) continue;
       let exportDtoIn = {
         athlete,
         token,
