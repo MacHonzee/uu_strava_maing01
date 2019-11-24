@@ -9,27 +9,44 @@ let Calls = {
   APP_BASE_URI: location.protocol + "//" + location.host + UU5.Environment.getAppBasePath(),
 
   call(method, url, dtoIn, clientOptions) {
-    return Plus4U5.Common.Calls.call(method, url, dtoIn, clientOptions);
+    return new Promise((resolve, reject) => {
+        Plus4U5.Common.Calls.call(
+          method,
+          url,
+          {
+            data: dtoIn,
+            done: resolve,
+            fail: reject
+          },
+          clientOptions
+        )
+      }
+    )
   },
 
-  loadAwidConfig(dtoIn) {
+  loadAwidConfig(dtoInData) {
     let commandUri = Calls.getCommandUri("stravaMain/loadConfig");
-    return Calls.call("get", commandUri, dtoIn);
+    return Calls.call("get", commandUri, dtoInData);
   },
 
-  createAthlete(dtoIn) {
+  createAthlete(dtoInData) {
     let commandUri = Calls.getCommandUri("athlete/create");
-    return Calls.call("get", commandUri, dtoIn);
+    return Calls.call("get", commandUri, dtoInData);
   },
 
-  loadAthleteMyself(dtoIn) {
+  loadAthleteMyself(dtoInData) {
     let commandUri = Calls.getCommandUri("athlete/loadMyself");
-    return Calls.call("get", commandUri, dtoIn);
+    return Calls.call("get", commandUri, dtoInData);
   },
 
-  segmentList(dtoIn) {
+  segmentList(dtoInData) {
     let commandUri = Calls.getCommandUri("segment/list");
-    return Calls.call("get", commandUri, dtoIn);
+    return Calls.call("get", commandUri, dtoInData);
+  },
+
+  segmentRefreshOne(_, dtoInData) {
+    let commandUri = Calls.getCommandUri("segment/refreshOne");
+    return Calls.call("post", commandUri, dtoInData);
   },
 
   /*

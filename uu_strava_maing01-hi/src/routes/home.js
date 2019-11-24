@@ -6,7 +6,7 @@ import Config from "./config/config.js";
 
 import "./home.less";
 import AthleteInfo from "../core/home/athlete-info";
-import SegmentsTable from "../core/home/segments-table";
+import SegmentsTableProvider from "../core/home/segments-table-provider";
 //@@viewOff:imports
 
 const Home = UU5.Common.VisualComponent.create({
@@ -50,7 +50,7 @@ const Home = UU5.Common.VisualComponent.create({
   render() {
     return <UU5.Bricks.Div {...this.getMainPropsToPass()}>
       <AthleteInfo />
-      <SegmentsTable/>
+      <SegmentsTableProvider/>
     </UU5.Bricks.Div>;
   }
   //@@viewOff:render

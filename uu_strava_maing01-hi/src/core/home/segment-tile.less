@@ -1,6 +1,7 @@
 @import "../config/config.less";
 
 .@{css}-segments-tile {
+  position: relative;
   width: 99%;
   float: left;
   padding: 8px;
@@ -12,6 +13,12 @@
       font-size: 18px;
       margin-right: 8px;
     }
+  }
+
+  &-action-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
   }
 }
 

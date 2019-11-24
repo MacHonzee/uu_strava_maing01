@@ -7,6 +7,7 @@ import Config from "../config/config.js";
 import Calls from "calls";
 import "./segments-table.less";
 import SegmentTile from "./segment-tile";
+import ItemsContext from "../../context/segments-list-context";
 //@@viewOff:imports
 
 const SegmentsTable = UU5.Common.VisualComponent.create({
@@ -67,7 +68,7 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
 
   _getChild(data) {
     return (
-      <UU5.Tiles.ListController data={data.itemList} selectable={false}>
+      <UU5.Tiles.ListController data={data} selectable={false}>
         {/*<UU5.Tiles.ActionBar title="Seznam segmentů" actions={this._getActions()} />*/}
         {/*<UU5.Tiles.BulkActionBar actions={this._getBulkActions()} />*/}
         {/*<UU5.Tiles.FilterBar simpleFilterPanel filters={this._getFilters()} filterValues={this._getInitFilters()} />*/}
@@ -86,18 +87,18 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return (
-      <UU5.Common.Loader onLoad={Calls.segmentList}>
-        {({isLoading, isError, data}) => {
-          if (isLoading) {
-            return <UU5.Bricks.Loading/>;
-          } else if (isError) {
-            return <UU5.Bricks.Error errorData={data}/>;
-          } else {
+      <ItemsContext.Consumer>
+        {({ errorState, errorData, data }) => {
+          if (errorState) {
+            return <UU5.Bricks.Error errorData={errorData}/>;
+          } else if (data) {
             let correctData = data && (data.data || data);
             return this._getChild(correctData);
+          } else {
+            return <UU5.Bricks.Loading />;
           }
         }}
-      </UU5.Common.Loader>
+      </ItemsContext.Consumer>
     );
   }
   //@@viewOff:render
