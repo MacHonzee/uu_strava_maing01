@@ -6,7 +6,7 @@ import "uu5tilesg01";
 import Config from "../config/config.js";
 import Calls from "calls";
 import SegmentsTable from "./segments-table";
-import ItemsContext from "../../context/segments-list-context";
+import SegmentListContext from "../../context/segment-list-context";
 //@@viewOff:imports
 
 const SegmentsTableProvider = UU5.Common.VisualComponent.create({
@@ -44,14 +44,14 @@ const SegmentsTableProvider = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return (
-      <ItemsContext.Provider
+      <SegmentListContext.Provider
         onLoad={Calls.segmentList}
         onUpdate={{
           refreshOne: Calls.segmentRefreshOne
         }}
       >
         <SegmentsTable/>
-      </ItemsContext.Provider>
+      </SegmentListContext.Provider>
     );
   }
   //@@viewOff:render

@@ -2,15 +2,14 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 
-import Calls from "calls";
 import Config from "../config/config.js";
 import "./segment-tile.less";
-import ItemsContext from "../../context/segments-list-context";
+import SegmentListContext from "../../context/segment-list-context";
 //@@viewOff:imports
 
 const SegmentTile = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
-  mixins: [UU5.Common.BaseMixin, UU5.Common.CallsMixin],
+  mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -20,9 +19,6 @@ const SegmentTile = UU5.Common.VisualComponent.create({
       main: Config.CSS + "segments-tile",
       row: Config.CSS + "segments-tile-row",
       actionButton: Config.CSS + "segments-tile-action-button",
-    },
-    calls: {
-      segmentRefreshOne: "segmentRefreshOne"
     },
     lsi: {
       unspecifiedClimb: {
@@ -43,10 +39,6 @@ const SegmentTile = UU5.Common.VisualComponent.create({
     return {
       callFeedback: "ready"
     }
-  },
-
-  componentWillMount() {
-    this.setCalls(Calls);
   },
   //@@viewOff:reactLifeCycle
 
@@ -224,7 +216,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   render() {
     let rowClass = this.getClassName("row");
     return (
-      <ItemsContext.Consumer>
+      <SegmentListContext.Consumer>
         {({viewState, handleUpdate}) => {
           return (
             <UU5.Bricks.Card {...this.getMainPropsToPass()} disabled={this._updatedItem && viewState === "update"}>
@@ -261,7 +253,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
             </UU5.Bricks.Card>
           )
         }}
-      </ItemsContext.Consumer>
+      </SegmentListContext.Consumer>
     );
   }
   //@@viewOff:render

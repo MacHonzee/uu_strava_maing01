@@ -7,7 +7,7 @@ import Config from "../config/config.js";
 import Calls from "calls";
 import "./segments-table.less";
 import SegmentTile from "./segment-tile";
-import ItemsContext from "../../context/segments-list-context";
+import SegmentListContext from "../../context/segment-list-context";
 //@@viewOff:imports
 
 const SegmentsTable = UU5.Common.VisualComponent.create({
@@ -87,7 +87,7 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return (
-      <ItemsContext.Consumer>
+      <SegmentListContext.Consumer>
         {({ errorState, errorData, data }) => {
           if (errorState) {
             return <UU5.Bricks.Error errorData={errorData}/>;
@@ -98,7 +98,7 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
             return <UU5.Bricks.Loading />;
           }
         }}
-      </ItemsContext.Consumer>
+      </SegmentListContext.Consumer>
     );
   }
   //@@viewOff:render
