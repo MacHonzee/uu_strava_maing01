@@ -51,13 +51,12 @@ const StravaToken = UU5.Common.VisualComponent.create({
   render() {
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <UU5.Common.Loader onLoad={Calls.createAthlete} data={this._getDtoIn()}>
-          {({ isLoading, isError, data }) => {
-            if (isLoading) {
-              return <UU5.Bricks.Loading />;
-            } else if (isError) {
+        <UU5.Common.DataManager onLoad={Calls.createAthlete} data={this._getDtoIn()}>
+          {({ errorState, errorData, data }) => {
+            if (errorState) {
+              console.error(errorState, errorData);
               return <UU5.Bricks.Error errorData={data} />;
-            } else {
+            } else if (data) {
               return (
                 <SpaContext.Consumer>
                   {({ updateConfig }) => {
@@ -66,9 +65,11 @@ const StravaToken = UU5.Common.VisualComponent.create({
                   }}
                 </SpaContext.Consumer>
               );
+            } else {
+              return <UU5.Bricks.Loading />;
             }
           }}
-        </UU5.Common.Loader>
+        </UU5.Common.DataManager>
       </UU5.Bricks.Div>
     );
   }
