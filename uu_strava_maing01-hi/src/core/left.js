@@ -15,9 +15,7 @@ export const Left = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "Left",
     classNames: {
-      main: "",
-      logo: () => Config.Css.css`border-bottom: 1px solid rgba(0, 0, 0, 0.12);`,
-      menu: () => Config.Css.css`border-bottom: 1px solid rgba(0, 0, 0, 0.12);`
+      main: ""
     },
     lsi: {
       segments: {

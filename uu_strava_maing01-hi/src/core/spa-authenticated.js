@@ -14,6 +14,7 @@ import About from "../routes/about.js";
 import Home from "../routes/home.js";
 import StravaToken from "../routes/strava-token.js";
 import StravaLogin from "../routes/strava-login";
+import Trailtour from "../routes/trailtour";
 
 import SpaContext from "../context/spa-context";
 //@@viewOff:imports
@@ -35,8 +36,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
             color: white;
           }
         }
-      `,
-      noStrava: Config.CSS + "spaauthenticated-no-strava"
+      `
     },
     lsi: {
       name: Lsi.appName
@@ -75,6 +75,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
       routes = {
         "": "home",
         home: { component: <Home /> },
+        trailtour2020: { component: <Trailtour year={2020} /> },
         about: { component: <About identity={this.props.identity} /> }
       };
     } else {
