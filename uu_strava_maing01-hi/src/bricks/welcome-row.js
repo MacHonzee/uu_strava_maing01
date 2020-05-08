@@ -3,8 +3,6 @@ import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 
 import Config from "./config/config.js";
-
-import "./welcome-row.less";
 //@@viewOff:imports
 
 const WelcomeRow = UU5.Common.VisualComponent.create({
@@ -16,9 +14,26 @@ const WelcomeRow = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "WelcomeRow",
     classNames: {
-      main: Config.CSS + "welcomerow",
-      text: Config.CSS + "welcomerow-text",
-      iconColumn: Config.CSS + "welcomerow-iconcolumn"
+      main: Config.Css.css`
+        padding: 24px 0;
+        max-width: 624px;
+        margin: 0 auto;
+      `,
+      text: Config.Css.css`
+        text-align: center;
+
+        ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `text-align: left;`)}
+      `,
+      iconColumn: Config.Css.css`
+        padding-right: 24px;
+        text-align: center;
+
+        .uu5-bricks-icon {
+          font-size: 48px;
+        }
+
+        ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `text-align: right;`)}
+      `
     }
   },
   //@@viewOff:statics

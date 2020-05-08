@@ -18,7 +18,7 @@ const SegmentsTableProvider = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "SegmentsTableProvider",
     classNames: {
-      main: Config.CSS + "segments-table-provider",
+      main: Config.CSS + "segments-table-provider"
     }
   },
   //@@viewOff:statics
@@ -50,7 +50,7 @@ const SegmentsTableProvider = UU5.Common.VisualComponent.create({
           refreshOne: Calls.segmentRefreshOne
         }}
       >
-        <SegmentsTable/>
+        <SegmentsTable />
       </SegmentListContext.Provider>
     );
   }

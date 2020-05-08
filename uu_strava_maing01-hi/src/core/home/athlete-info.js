@@ -4,7 +4,6 @@ import "uu5g04-bricks";
 
 import Config from "../config/config.js";
 import Calls from "calls";
-import "./athlete-info.less";
 //@@viewOff:imports
 
 const AthleteInfo = UU5.Common.VisualComponent.create({
@@ -16,9 +15,32 @@ const AthleteInfo = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "AthleteInfo",
     classNames: {
-      main: Config.CSS + "athlete-info",
-      leftCol: Config.CSS + "athlete-info-left-col",
-      rightCol: Config.CSS + "athlete-info-right-col"
+      main: Config.Css.css`
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      `,
+      leftCol: Config.Css.css`
+        display: flex;
+        align-items: center;
+
+        .uu5-bricks-image {
+          margin-right: 16px;
+        }
+
+        .uu5-bricks-link {
+          color: black;
+          font-size: 22px;
+          font-weight: 700;
+          margin-left: 8px;
+        }
+      `,
+      rightCol: Config.Css.css`
+        .uu5-bricks-button {
+          margin-right: 8px;
+        }
+      `
     },
     lsi: {
       exportAllButton: {
@@ -60,7 +82,7 @@ const AthleteInfo = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <UU5.Bricks.Div className={this.getClassName("leftCol")}>
-          <UU5.Bricks.Image src={data.profile} alt={"profile-logo"} borderRadius={"50%"} width={"80px"} elevation={3}/>
+          <UU5.Bricks.Image src={data.profile} alt={"profile-logo"} borderRadius={"50%"} width={"80px"} elevation={3} />
           <UU5.Bricks.Link href={"https://www.strava.com/athletes/" + data.stravaId} target={"_blank"}>
             {`${data.firstname} ${data.lastname}`}
           </UU5.Bricks.Link>
@@ -78,15 +100,15 @@ const AthleteInfo = UU5.Common.VisualComponent.create({
           />
         </UU5.Bricks.Div>
       </UU5.Bricks.Div>
-    )
+    );
   },
 
   _handleExportAll() {
-    alert("Zde pak bude nějaký modál s progress barem. Přes SSE to bude posílat změny, dokud to celé nedoběhne.")
+    alert("Zde pak bude nějaký modál s progress barem. Přes SSE to bude posílat změny, dokud to celé nedoběhne.");
   },
 
   _handleRefreshSegments() {
-    alert("Zde pak bude nějaký modál s progress barem. Přes SSE to bude posílat změny, dokud to celé nedoběhne.")
+    alert("Zde pak bude nějaký modál s progress barem. Přes SSE to bude posílat změny, dokud to celé nedoběhne.");
   },
   //@@viewOff:private
 
@@ -94,11 +116,11 @@ const AthleteInfo = UU5.Common.VisualComponent.create({
   render() {
     return (
       <UU5.Common.Loader onLoad={Calls.loadAthleteMyself}>
-        {({isLoading, isError, data}) => {
+        {({ isLoading, isError, data }) => {
           if (isLoading) {
-            return <UU5.Bricks.Loading/>;
+            return <UU5.Bricks.Loading />;
           } else if (isError) {
-            return <UU5.Bricks.Error errorData={data}/>;
+            return <UU5.Bricks.Error errorData={data} />;
           } else {
             let correctData = data && (data.data || data);
             return this._getChild(correctData);

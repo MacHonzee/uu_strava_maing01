@@ -2,7 +2,6 @@
 import * as UU5 from "uu5g04";
 import Config from "./config/config.js";
 import Calls from "calls";
-import "./strava-token.less";
 import SpaContext from "../context/spa-context";
 //@@viewOff:imports
 
@@ -15,7 +14,17 @@ const StravaToken = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "StravaToken",
     classNames: {
-      main: Config.CSS + "strava-token"
+      main: Config.Css.css`
+        width: 100%;
+        text-align: center;
+        padding: 80px 48px 48px 48px;
+
+        ${UU5.Utils.ScreenSize.getMaxMediaQueries("m", `padding: 48px 24px 24px 24px;`)}
+
+        .uu5-bricks-paragraph {
+          max-width: 480px;
+        }
+      `
     },
     lsi: {
       success: {

@@ -8,13 +8,13 @@ import Config from "./config/config.js";
 import Lsi from "../config/lsi.js";
 import Calls from "calls";
 
+import Left from "./left";
 import Bottom from "./bottom.js";
 import About from "../routes/about.js";
 import Home from "../routes/home.js";
 import StravaToken from "../routes/strava-token.js";
 import StravaLogin from "../routes/strava-login";
 
-import "./spa-authenticated.less";
 import SpaContext from "../context/spa-context";
 //@@viewOff:imports
 
@@ -27,7 +27,15 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "SpaAuthenticated",
     classNames: {
-      main: Config.CSS + "spaauthenticated",
+      main: Config.Css.css`
+        .plus4u5-app-top {
+          background-color: chocolate;
+
+          .uu5-bricks-link {
+            color: white;
+          }
+        }
+      `,
       noStrava: Config.CSS + "spaauthenticated-no-strava"
     },
     lsi: {
@@ -37,17 +45,9 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {
-    identity: UU5.PropTypes.shape()
-  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
-  getDefaultProps() {
-    return {
-      identity: null
-    };
-  },
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
@@ -95,8 +95,14 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
               content={<UU5.Bricks.Link href={"home"}>{this.getLsiComponent("name")}</UU5.Bricks.Link>}
             />
           }
+          left={config.stravaTokenValid && <Left />}
+          leftFixed
+          leftRelative="m l xl"
+          leftWidth="!xs-50 !s-40 !m-190px !l-190px !xl-190px"
+          isLeftOpen="m l xl"
+          showLeftToggleButton
           bottom={<Bottom />}
-          type={2}
+          type={3}
           displayedLanguages={["cs", "en"]}
           key={"" + config.stravaTokenValid}
         >

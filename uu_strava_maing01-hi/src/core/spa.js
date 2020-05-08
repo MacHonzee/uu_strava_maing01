@@ -7,8 +7,6 @@ import "uu_plus4u5g01-app";
 
 import Config from "./config/config.js";
 import SpaAuthenticated from "./spa-authenticated.js";
-
-import "./spa.less";
 //@@viewOff:imports
 
 const Spa = UU5.Common.VisualComponent.create({
@@ -20,7 +18,7 @@ const Spa = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "Spa",
     classNames: {
-      main: Config.CSS + "spa"
+      main: Config.Css.css``
     },
     getDerivedStateFromError(error) {
       return { error };

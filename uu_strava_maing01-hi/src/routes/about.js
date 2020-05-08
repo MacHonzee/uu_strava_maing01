@@ -6,8 +6,6 @@ import Plus4U5 from "uu_plus4u5g01";
 import Config from "./config/config.js";
 import Lsi from "../config/lsi.js";
 import AboutCfg from "../config/about.js";
-
-import "./about.less";
 //@@viewOff:imports
 
 export const About = UU5.Common.VisualComponent.create({
@@ -19,9 +17,35 @@ export const About = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "About",
     classNames: {
-      main: Config.CSS + "about",
-      logos: Config.CSS + "about-logos",
-      termsOfUse: Config.CSS + "about-terms"
+      main: Config.Css.css`
+        .plus4u5-app-about > .uu5-bricks-header,
+        .plus4u5-app-licence > .uu5-bricks-header,
+        .plus4u5-app-authors > .uu5-bricks-header,
+        .plus4u5-app-technologies > .uu5-bricks-header {
+          border-bottom: 0;
+        }
+
+        .plus4u5-app-authors > .uu5-bricks-header {
+          margin: 20px 0 10px 0;
+          text-align: center;
+        }
+
+        & > *:last-child {
+          padding-bottom: 56px;
+        }
+      `,
+      logos: Config.Css.css`
+        text-align:center;
+        margin-top: 56px;
+
+        .uu5-bricks-image {
+          height: 80px;
+        }
+      `,
+      termsOfUse: Config.Css.css`
+        text-align: center;
+        margin-top: 56px;
+      `
     },
     lsi: Lsi.about
   },

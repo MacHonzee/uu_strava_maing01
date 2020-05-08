@@ -6,8 +6,6 @@ import Plus4U5 from "uu_plus4u5g01";
 import Config from "./config/config.js";
 import Lsi from "../config/lsi.js";
 import WelcomeRow from "../bricks/welcome-row.js";
-
-import "./not-authenticated.less";
 //@@viewOff:imports
 
 const NotAuthenticated = UU5.Common.VisualComponent.create({
@@ -19,9 +17,41 @@ const NotAuthenticated = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "NotAuthenticated",
     classNames: {
-      main: Config.CSS + "notauthenticated",
-      login: Config.CSS + "notauthenticated-login",
-      loginButton: Config.CSS + "notauthenticated-loginbutton"
+      main: Config.Css.css`
+        & > .uu5-bricks-header {
+          text-align: center;
+          padding: 56px 0 48px;
+        }
+      `,
+      login: Config.Css.css`
+        background-color: rgba(0, 93, 167, 0.11);
+
+        ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `
+          display: flex;
+          align-items: center;
+        `)}
+      `,
+      loginButton: Config.Css.css`
+        width: 104px;
+        background-color: #005DA7 !important;
+        margin-top: 16px;
+
+        ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `
+          margin-top: 0;
+          margin-left: 16px;
+          margin-right: 24px;
+        `)}
+      `,
+      welcomeRow: Config.Css.css`
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        @media @minS {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      `
     },
     lsi: Lsi.notAuth
   },

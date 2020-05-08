@@ -10,18 +10,17 @@ let Calls = {
 
   call(method, url, dtoIn, clientOptions) {
     return new Promise((resolve, reject) => {
-        Plus4U5.Common.Calls.call(
-          method,
-          url,
-          {
-            data: dtoIn,
-            done: resolve,
-            fail: reject
-          },
-          clientOptions
-        )
-      }
-    )
+      Plus4U5.Common.Calls.call(
+        method,
+        url,
+        {
+          data: dtoIn,
+          done: resolve,
+          fail: reject
+        },
+        clientOptions
+      );
+    });
   },
 
   loadAwidConfig(dtoInData) {

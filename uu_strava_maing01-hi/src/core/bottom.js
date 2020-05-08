@@ -2,8 +2,6 @@
 import * as UU5 from "uu5g04";
 
 import Config from "./config/config.js";
-
-import "./bottom.less";
 //@viewOff:imports
 
 export const Bottom = UU5.Common.VisualComponent.create({
@@ -15,7 +13,12 @@ export const Bottom = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "Bottom",
     classNames: {
-      main: Config.CSS + "bottom"
+      main: Config.Css.css`
+        padding: 8px 0;
+        text-align: center;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        color: gray;
+      `
     }
   },
   //@@viewOff:statics

@@ -3,7 +3,6 @@ import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 
 import Config from "../config/config.js";
-import "./segment-tile.less";
 import SegmentListContext from "../../context/segment-list-context";
 //@@viewOff:imports
 
@@ -16,12 +15,29 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "SegmentsTile",
     classNames: {
-      main: Config.CSS + "segments-tile",
-      row: Config.CSS + "segments-tile-row",
-      actionButton: Config.CSS + "segments-tile-action-button",
+      main: Config.Css.css`
+        position: relative;
+        width: 99%;
+        float: left;
+        padding: 8px;
+      `,
+      row: Config.Css.css`
+        padding-bottom: 8px;
+
+        .uu5-bricks-icon {
+          font-size: 18px;
+          margin-right: 8px;
+        }
+      `,
+      actionButton: Config.Css.css`
+        position: absolute;
+        top: 8px;
+        right: 8px;
+      `
     },
     lsi: {
       unspecifiedClimb: {
+        cs: "Nespecifikováno",
         en: "Unspecified"
       }
     }
@@ -38,7 +54,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   getInitialState() {
     return {
       callFeedback: "ready"
-    }
+    };
   },
   //@@viewOff:reactLifeCycle
 
@@ -70,7 +86,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
 
     return (
       <UU5.Bricks.Link href={`https://www.strava.com/segments/${this.props.stravaId}?filter=overall`} target={"_blank"}>
-        <UU5.Bricks.Icon icon={icon}/>
+        <UU5.Bricks.Icon icon={icon} />
         {this.props.name}
       </UU5.Bricks.Link>
     );
@@ -79,8 +95,8 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   _getDistance() {
     return (
       <UU5.Bricks.Span>
-        <UU5.Bricks.Icon icon={"mdi-map-marker-distance"}/>
-        <UU5.Bricks.Number value={Math.round(this.props.distance)}/> m
+        <UU5.Bricks.Icon icon={"mdi-map-marker-distance"} />
+        <UU5.Bricks.Number value={Math.round(this.props.distance)} /> m
       </UU5.Bricks.Span>
     );
   },
@@ -88,19 +104,19 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   _getElevation() {
     return (
       <UU5.Bricks.Span>
-        <UU5.Bricks.Icon icon={"mdi-elevation-rise"}/>
-        <UU5.Bricks.Number value={Math.round(this.props.total_elevation_gain)}/> m
+        <UU5.Bricks.Icon icon={"mdi-elevation-rise"} />
+        <UU5.Bricks.Number value={Math.round(this.props.total_elevation_gain)} /> m
       </UU5.Bricks.Span>
     );
   },
 
   _getClimbCategory() {
     if (!this.props.climb_category) {
-      return this.getLsiComponent("unspecifiedClimb")
+      return this.getLsiComponent("unspecifiedClimb");
     }
     let content = [];
     for (let i = 0; i < this.props.climb_category; i++) {
-      content.push(<UU5.Bricks.Icon icon={"mdi-slope-uphill"} key={i}/>);
+      content.push(<UU5.Bricks.Icon icon={"mdi-slope-uphill"} key={i} />);
     }
     return content;
   },
@@ -108,9 +124,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   _getOwnPrDate() {
     let ownLeaderboard = this.props.own_leaderboard;
     if (!ownLeaderboard) return "-";
-    return (
-      <UU5.Bricks.DateTime value={ownLeaderboard.start_date}/>
-    );
+    return <UU5.Bricks.DateTime value={ownLeaderboard.start_date} />;
   },
 
   _getOwnRank() {
@@ -118,15 +132,13 @@ const SegmentTile = UU5.Common.VisualComponent.create({
     if (!ownLeaderboard) return "-";
     return (
       <UU5.Bricks.Span>
-        <UU5.Bricks.Number value={ownLeaderboard.rank}/> / <UU5.Bricks.Number value={this.props.athlete_count}/>
+        <UU5.Bricks.Number value={ownLeaderboard.rank} /> / <UU5.Bricks.Number value={this.props.athlete_count} />
       </UU5.Bricks.Span>
     );
   },
 
   _getOwnElapsedTime() {
-    return (
-      this._formatDuration(this.props.athlete_segment_stats.pr_elapsed_time)
-    );
+    return this._formatDuration(this.props.athlete_segment_stats.pr_elapsed_time);
   },
 
   _getOwnPace() {
@@ -136,15 +148,13 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   _getFirstRankDate() {
     let firstLeaderboard = this.props.first_leaderboard;
     if (!firstLeaderboard) return "-";
-    return (
-      <UU5.Bricks.DateTime value={firstLeaderboard.start_date}/>
-    );
+    return <UU5.Bricks.DateTime value={firstLeaderboard.start_date} />;
   },
 
   _getFirstRank() {
     return (
       <UU5.Bricks.Span>
-        <UU5.Bricks.Number value={1}/> / <UU5.Bricks.Number value={this.props.athlete_count}/>
+        <UU5.Bricks.Number value={1} /> / <UU5.Bricks.Number value={this.props.athlete_count} />
       </UU5.Bricks.Span>
     );
   },
@@ -152,9 +162,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   _getFirstElapsedTime() {
     let firstLeaderboard = this.props.first_leaderboard;
     if (!firstLeaderboard) return "-";
-    return (
-      this._formatDuration(firstLeaderboard.elapsed_time)
-    );
+    return this._formatDuration(firstLeaderboard.elapsed_time);
   },
 
   _getFirstPace() {
@@ -168,7 +176,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
     let secondsLeft = seconds % 3600;
     let minutes = Math.round(secondsLeft / 60);
     let lastSeconds = secondsLeft % 60;
-    return `${hours}:${minutes < 10 ? "0" + minutes : minutes}:${lastSeconds < 10 ? "0" + lastSeconds : lastSeconds}`
+    return `${hours}:${minutes < 10 ? "0" + minutes : minutes}:${lastSeconds < 10 ? "0" + lastSeconds : lastSeconds}`;
   },
 
   _getPace(seconds) {
@@ -181,7 +189,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
       case "Run":
       case "Hike":
       default: {
-        let pace = +((seconds / 60) / (this.props.distance / 1000)).toFixed(2);
+        let pace = +(seconds / 60 / (this.props.distance / 1000)).toFixed(2);
         let mins = Math.round(pace);
         let lastSeconds = Math.round((pace % 1) * 60);
         return `${mins < 10 ? "0" + mins : mins}:${lastSeconds < 10 ? "0" + lastSeconds : lastSeconds}/km`;
@@ -208,7 +216,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
       .catch(result => {
         this._updatedItem = false;
         return result;
-      })
+      });
   },
   //@@viewOff:private
 
@@ -217,7 +225,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
     let rowClass = this.getClassName("row");
     return (
       <SegmentListContext.Consumer>
-        {({viewState, handleUpdate}) => {
+        {({ viewState, handleUpdate }) => {
           return (
             <UU5.Bricks.Card {...this.getMainPropsToPass()} disabled={this._updatedItem && viewState === "update"}>
               <UU5.Bricks.Column colWidth={"s-3 xs-12"}>
@@ -247,11 +255,11 @@ const SegmentTile = UU5.Common.VisualComponent.create({
 
               <UU5.Bricks.Button
                 className={this.getClassName("actionButton")}
-                content={<UU5.Bricks.Icon icon={"mdi-reload"}/>}
+                content={<UU5.Bricks.Icon icon={"mdi-reload"} />}
                 onClick={() => this._handleSegmentRefreshOne(handleUpdate)}
               />
             </UU5.Bricks.Card>
-          )
+          );
         }}
       </SegmentListContext.Consumer>
     );

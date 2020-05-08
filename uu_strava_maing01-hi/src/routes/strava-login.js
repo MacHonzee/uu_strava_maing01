@@ -1,7 +1,6 @@
 //@@viewOn:imports
 import * as UU5 from "uu5g04";
 import Config from "./config/config.js";
-import "./strava-login.less";
 import AuthorizeStravaButton from "../bricks/authorize-strava-button";
 //@@viewOff:imports
 
@@ -14,7 +13,33 @@ const StravaLogin = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "StravaLogin",
     classNames: {
-      main: Config.CSS + "strava-login"
+      main: Config.Css.css`
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 48px 48px 48px;
+
+        ${UU5.Utils.ScreenSize.getMaxMediaQueries("m", `padding: 48px 24px 24px 24px;`)}
+
+        .uu5-bricks-image {
+          width: 50%;
+          max-width: 120px;
+          margin-bottom: 48px;
+        }
+
+        .uu5-bricks-paragraph {
+          max-width: 480px;
+        }
+
+        .uu5-bricks-button {
+          width: 100%;
+          max-width: 480px;
+          margin: 24px 0;
+          font-size: 18px;
+        }
+      `
     },
     lsi: {
       authorize: {

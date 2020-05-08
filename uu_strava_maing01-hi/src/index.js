@@ -3,8 +3,6 @@ import * as UU5 from "uu5g04";
 
 import Spa from "./core/spa.js";
 
-import "./index.less";
-
 // propagate app version into environment
 UU5.Environment["appVersion"] = process.env.VERSION;
 

@@ -4,8 +4,6 @@ import "uu5g04-bricks";
 import "uu5tilesg01";
 
 import Config from "../config/config.js";
-import Calls from "calls";
-import "./segments-table.less";
 import SegmentTile from "./segment-tile";
 import SegmentListContext from "../../context/segment-list-context";
 //@@viewOff:imports
@@ -19,7 +17,9 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "SegmentsTable",
     classNames: {
-      main: Config.CSS + "segments-table",
+      main: Config.Css.css`
+        padding: 16px;
+      `
     }
   },
   //@@viewOff:statics
@@ -62,8 +62,8 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
         key: "rank",
         name: { cs: "Rank", en: "Rank" },
         sortFn: (a, b) => a.own_leaderboard.rank - b.own_leaderboard.rank
-      },
-    ]
+      }
+    ];
   },
 
   _getChild(data) {
@@ -73,12 +73,7 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
         {/*<UU5.Tiles.BulkActionBar actions={this._getBulkActions()} />*/}
         {/*<UU5.Tiles.FilterBar simpleFilterPanel filters={this._getFilters()} filterValues={this._getInitFilters()} />*/}
         <UU5.Tiles.InfoBar sortItems={this._getSortItems()} />
-        <UU5.Tiles.List
-          tile={<SegmentTile />}
-          tileHeight={"auto"}
-          rowSpacing={8}
-          scrollElement={window}
-        />
+        <UU5.Tiles.List tile={<SegmentTile />} tileHeight={"auto"} rowSpacing={8} scrollElement={window} />
       </UU5.Tiles.ListController>
     );
   },
@@ -90,7 +85,7 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
       <SegmentListContext.Consumer>
         {({ errorState, errorData, data }) => {
           if (errorState) {
-            return <UU5.Bricks.Error errorData={errorData}/>;
+            return <UU5.Bricks.Error errorData={errorData} />;
           } else if (data) {
             let correctData = data && (data.data || data);
             return this._getChild(correctData);

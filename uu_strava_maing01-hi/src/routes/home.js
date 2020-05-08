@@ -4,7 +4,6 @@ import "uu5g04-bricks";
 
 import Config from "./config/config.js";
 
-import "./home.less";
 import AthleteInfo from "../core/home/athlete-info";
 import SegmentsTableProvider from "../core/home/segments-table-provider";
 //@@viewOff:imports
@@ -19,11 +18,6 @@ const Home = UU5.Common.VisualComponent.create({
     tagName: Config.TAG + "Home",
     classNames: {
       main: Config.CSS + "home"
-    },
-    lsi: {
-      dragons: {
-        en: "Here there will be data. Lots of data. Nice data."
-      }
     }
   },
   //@@viewOff:statics
@@ -48,10 +42,12 @@ const Home = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    return <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-      <AthleteInfo />
-      <SegmentsTableProvider/>
-    </UU5.Bricks.Div>;
+    return (
+      <UU5.Bricks.Div {...this.getMainPropsToPass()}>
+        <AthleteInfo/>
+        <SegmentsTableProvider/>
+      </UU5.Bricks.Div>
+    );
   }
   //@@viewOff:render
 });
