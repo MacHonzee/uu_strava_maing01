@@ -15,6 +15,9 @@
         },
         "segment": {
           "realization": "dao/SegmentMongo"
+        },
+        "athleteSegment": {
+          "realization": "dao/AthleteSegmentMongo"
         }
       }
     }

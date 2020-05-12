@@ -126,12 +126,12 @@ class AthleteAbl {
     let pageIndex = 1;
     let createdSegments = [];
     while (true) {
-      let athldtoIn = {
+      let athlDtoIn = {
         page: pageIndex,
         per_page: STRAVA_PAGE_SIZE,
         ...preparedDtoIn
       };
-      let myActivities = await StravaApiHelper.getLoggedInAthleteActivities(token, athldtoIn);
+      let myActivities = await StravaApiHelper.getLoggedInAthleteActivities(token, athlDtoIn);
 
       for (let activity of myActivities) {
         let existingActivityObject = await this.activityDao.getByStravaId(awid, activity.id);
@@ -145,6 +145,7 @@ class AthleteAbl {
         newUuObject.stravaId = activityDetail.id;
         newUuObject.start_date = new Date(activityDetail.start_date);
         delete newUuObject.id;
+        delete newUuObject.segment_efforts;
         await this.activityDao.create(newUuObject);
 
         for (let segmentEffort of activityDetail.segment_efforts) {
@@ -171,6 +172,7 @@ class AthleteAbl {
 
   async loadMyself(awid, session) {
     let athlete = await this.athleteDao.getByUuIdentity(awid, session.getIdentity().getUuIdentity());
+    delete athlete.token;
 
     return {
       ...athlete,
