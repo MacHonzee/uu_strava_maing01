@@ -1,13 +1,13 @@
 "use strict";
-const {UuObjectDao} = require("uu_appg01_server").ObjectStore;
+const { UuObjectDao } = require("uu_appg01_server").ObjectStore;
 
 const DEFAULT_PAGE_INDEX = 0;
 const DEFAULT_PAGE_SIZE = 1000;
 
 class AthleteSegmentMongo extends UuObjectDao {
   async createSchema() {
-    await super.createIndex({awid: 1, uuIdentity: 1, stravaId: 1}, {unique: true});
-    await super.createIndex({awid: 1, uuIdentity: 1, activityType: 1});
+    await super.createIndex({ awid: 1, uuIdentity: 1, stravaId: 1 }, { unique: true });
+    await super.createIndex({ awid: 1, uuIdentity: 1, activityType: 1 });
   }
 
   async create(uuObject) {
@@ -15,11 +15,11 @@ class AthleteSegmentMongo extends UuObjectDao {
   }
 
   async updateByStravaIdAndUuIdentity(awid, stravaId, uuIdentity, uuObject) {
-    return await super.findOneAndUpdate({awid, stravaId, uuIdentity}, uuObject, "NONE");
+    return await super.findOneAndUpdate({ awid, stravaId, uuIdentity }, uuObject, "NONE");
   }
 
   async getByStravaIdAndUuIdentity(awid, stravaId, uuIdentity) {
-    return await super.findOne({awid, stravaId, uuIdentity});
+    return await super.findOne({ awid, stravaId, uuIdentity });
   }
 
   async listOwnByCriteria(awid, criteria, uuIdentity, pageInfo) {
@@ -55,29 +55,19 @@ class AthleteSegmentMongo extends UuObjectDao {
       {
         // there will be always only one segment
         $unwind: {
-          $path: "$segment"
+          path: "$segment"
         }
       },
       {
         $set: {
-          "id": "$_id",
-          "segment.id": "$segment._id"
-        }
-      },
-      {
-        $unset: ["$_id", "$segment._id"]
-      },
-      {
-        $replaceRoot: {
-          newRoot: {
-            $mergeObjects: [
-              "$segment",
-              {
-                ownResult: "$$ROOT"
-              }
-            ]
+          id: "$_id",
+          segment: {
+            id: "$segment._id"
           }
         }
+      },
+      {
+        $unset: ["_id", "segment._id"]
       }
     ]);
 

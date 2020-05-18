@@ -52,7 +52,10 @@ const AuthorizeStravaButton = UU5.Common.VisualComponent.create({
       this._getCleanUri() +
       "/stravaToken" +
       "&approval_prompt=force" +
-      "&scope=read,activity:read,activity:read_all,profile:read_all,read_all";
+      "&scope=read,activity:read";
+
+    // including private activities
+    // "&scope=read,activity:read,activity:read_all,profile:read_all,read_all";
     location.replace(oAuthUri);
   },
 

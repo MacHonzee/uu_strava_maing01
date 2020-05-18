@@ -3,6 +3,7 @@ import * as UU5 from "uu5g04";
 import Config from "./config/config.js";
 import Calls from "calls";
 import SpaContext from "../context/spa-context";
+import LoadFeedback from "../bricks/load-feedback";
 //@@viewOff:imports
 
 const StravaToken = UU5.Common.VisualComponent.create({
@@ -28,7 +29,15 @@ const StravaToken = UU5.Common.VisualComponent.create({
     },
     lsi: {
       success: {
-        en: "Token was successfully retrieved from Strava. You will be redirected to home page in 5 seconds."
+        cs: "Aplikace úspěšně propojena se Stravou. Budete přesměrování na domácí stránku za 5 vteřin."
+      },
+      accessDenied: {
+        cs:
+          "<uu5string/>Přístup byl odepřen.<br/><br/>Pro pokračování je nutné přejít na domovskou stránku a povolit aplikaci přístup k datům ze Stravy."
+      },
+      invalidScope: {
+        cs:
+          "<uu5string/>Nebylo nastaveno dostatečné oprávnění.<br/><br/>Pro pokračování je nutné přejít na domovskou stránku a povolit aplikaci všechny požadované přístupy k datům ze Stravy, včetně údajům o aktivitách."
       }
     }
   },
@@ -54,33 +63,46 @@ const StravaToken = UU5.Common.VisualComponent.create({
     let params = this.props.params;
     return params && { code: params.code };
   },
+
+  _showAccessDenied() {
+    return <UU5.Common.Error>{this.getLsiComponent("accessDenied")}</UU5.Common.Error>;
+  },
+
+  _showNotEnoughScope() {
+    return <UU5.Common.Error>{this.getLsiComponent("invalidScope")}</UU5.Common.Error>;
+  },
+
+  _renderSuccess() {
+    return (
+      <UU5.Common.DataManager onLoad={Calls.createAthlete} data={this._getDtoIn()}>
+        {data => (
+          <LoadFeedback {...data}>
+            <SpaContext.Consumer>
+              {({ updateConfig }) => {
+                setTimeout(() => updateConfig({ stravaTokenValid: true }), 5000);
+                return <UU5.Bricks.Well colorSchema={"success"}>{this.getLsiComponent("success")}</UU5.Bricks.Well>;
+              }}
+            </SpaContext.Consumer>
+          </LoadFeedback>
+        )}
+      </UU5.Common.DataManager>
+    );
+  },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
-    return (
-      <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <UU5.Common.DataManager onLoad={Calls.createAthlete} data={this._getDtoIn()}>
-          {({ errorState, errorData, data }) => {
-            if (errorState) {
-              console.error(errorState, errorData);
-              return <UU5.Bricks.Error errorData={data} />;
-            } else if (data) {
-              return (
-                <SpaContext.Consumer>
-                  {({ updateConfig }) => {
-                    setTimeout(() => updateConfig({ stravaTokenValid: true }), 5000);
-                    return this.getLsiComponent("success");
-                  }}
-                </SpaContext.Consumer>
-              );
-            } else {
-              return <UU5.Bricks.Loading />;
-            }
-          }}
-        </UU5.Common.DataManager>
-      </UU5.Bricks.Div>
-    );
+    let params = this.props.params || {};
+    let child;
+    if (params.error) {
+      child = this._showAccessDenied();
+    } else if (params.scope === "read") {
+      child = this._showNotEnoughScope();
+    } else {
+      child = this._renderSuccess();
+    }
+
+    return <UU5.Bricks.Div {...this.getMainPropsToPass()}>{child}</UU5.Bricks.Div>;
   }
   //@@viewOff:render
 });

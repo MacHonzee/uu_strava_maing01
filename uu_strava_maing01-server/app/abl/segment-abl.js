@@ -1,8 +1,8 @@
 "use strict";
 const Path = require("path");
-const {Validator} = require("uu_appg01_server").Validation;
-const {DaoFactory} = require("uu_appg01_server").ObjectStore;
-const {ValidationHelper} = require("uu_appg01_server").AppServer;
+const { Validator } = require("uu_appg01_server").Validation;
+const { DaoFactory } = require("uu_appg01_server").ObjectStore;
+const { ValidationHelper } = require("uu_appg01_server").AppServer;
 const Errors = require("../api/errors/segment-error.js");
 const StravaApiHelper = require("../helpers/strava-api-helper");
 
@@ -38,7 +38,7 @@ class SegmentAbl {
     let segmentId = dtoIn.stravaId;
     let uuIdentity = session.getIdentity().getUuIdentity();
     let athlSegObj = await this.athlSegDao.getByStravaIdAndUuIdentity(awid, segmentId, uuIdentity);
-    if (athlSegObj && !dtoIn.force) return {uuAppErrorMap};
+    if (athlSegObj && !dtoIn.force) return { uuAppErrorMap };
 
     // HDS 3
     let token = dtoIn.token || (await require("./athlete-abl").getValidToken(awid, session)).token;
@@ -50,15 +50,15 @@ class SegmentAbl {
     let athlete = dtoIn.athlete || (await this.athleteDao.getByUuIdentity(awid, uuIdentity));
 
     // HDS 6
-    let segmentLeaderboard = await StravaApiHelper.getSegmentLeaderboard(token, segmentId, {per_page: 3});
+    let segmentLeaderboard = await StravaApiHelper.getSegmentLeaderboard(token, segmentId, { per_page: 3 });
 
     // HDS 7
     let segmentObj = await this.segmentDao.getByStravaId(awid, segmentId);
     let newSegment;
     if (segmentObj) {
-      newSegment = {...segmentObj};
+      newSegment = { ...segmentObj };
     } else {
-      newSegment = {...segmentDetail};
+      newSegment = { ...segmentDetail };
       newSegment.awid = awid;
       newSegment.stravaId = segmentDetail.id;
       delete newSegment.id;
@@ -127,7 +127,7 @@ class SegmentAbl {
       try {
         await this.refreshOne(awid, exportDtoIn, session);
       } catch (e) {
-        throw new Errors.RefreshAll.RefreshOneFailed({}, {stravaId: segment.stravaId}, e);
+        throw new Errors.RefreshAll.RefreshOneFailed({}, { stravaId: segment.stravaId }, e);
       }
     }
 

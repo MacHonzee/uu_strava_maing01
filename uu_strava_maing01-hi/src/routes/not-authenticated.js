@@ -26,21 +26,27 @@ const NotAuthenticated = UU5.Common.VisualComponent.create({
       login: Config.Css.css`
         background-color: rgba(0, 93, 167, 0.11);
 
-        ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `
+        ${UU5.Utils.ScreenSize.getMinMediaQueries(
+          "s",
+          `
           display: flex;
           align-items: center;
-        `)}
+        `
+        )}
       `,
       loginButton: Config.Css.css`
         width: 104px;
         background-color: #005DA7 !important;
         margin-top: 16px;
 
-        ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `
+        ${UU5.Utils.ScreenSize.getMinMediaQueries(
+          "s",
+          `
           margin-top: 0;
           margin-left: 16px;
           margin-right: 24px;
-        `)}
+        `
+        )}
       `,
       welcomeRow: Config.Css.css`
         display: flex;

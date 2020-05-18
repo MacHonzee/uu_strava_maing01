@@ -1,8 +1,8 @@
 "use strict";
 const Path = require("path");
-const {Validator} = require("uu_appg01_server").Validation;
-const {DaoFactory} = require("uu_appg01_server").ObjectStore;
-const {ValidationHelper} = require("uu_appg01_server").AppServer;
+const { Validator } = require("uu_appg01_server").Validation;
+const { DaoFactory } = require("uu_appg01_server").ObjectStore;
+const { ValidationHelper } = require("uu_appg01_server").AppServer;
 const Errors = require("../api/errors/athlete-error.js");
 const StravaApiHelper = require("../helpers/strava-api-helper");
 
@@ -37,7 +37,7 @@ class AthleteAbl {
       Errors.Create.InvalidDtoIn
     );
 
-    let {clientId, clientSecret} = await this.configDao.get(awid);
+    let { clientId, clientSecret } = await this.configDao.get(awid);
 
     let tokenDtoIn = {
       client_id: clientId,
@@ -48,7 +48,7 @@ class AthleteAbl {
     let token = await StravaApiHelper.getToken(tokenDtoIn);
 
     let loggedInAthlete = await StravaApiHelper.getLoggedInAthlete(token.access_token);
-    let athleteObject = {...loggedInAthlete};
+    let athleteObject = { ...loggedInAthlete };
     athleteObject.awid = awid;
     athleteObject.stravaId = loggedInAthlete.id;
     athleteObject.token = token;
@@ -83,7 +83,7 @@ class AthleteAbl {
         token = athlete.token.access_token;
       } else {
         // if the token is expired, we refresh the token
-        let {clientId, clientSecret} = await this.configDao.get(awid);
+        let { clientId, clientSecret } = await this.configDao.get(awid);
 
         let tokenDtoIn = {
           client_id: clientId,
@@ -92,7 +92,7 @@ class AthleteAbl {
           grant_type: "refresh_token"
         };
         let newToken = await StravaApiHelper.getToken(tokenDtoIn);
-        await this.athleteDao.update({awid, uuIdentity: athlete.uuIdentity, token: {...newToken.data}});
+        await this.athleteDao.update({ awid, uuIdentity: athlete.uuIdentity, token: { ...newToken.data } });
         token = newToken.data.access_token;
       }
     }
@@ -116,7 +116,7 @@ class AthleteAbl {
 
     let preparedDtoIn = {};
     if (dtoIn.after) {
-      preparedDtoIn.after = (new Date(dtoIn.after).getTime()) / 1000;
+      preparedDtoIn.after = new Date(dtoIn.after).getTime() / 1000;
     }
 
     let uuIdentity = session.getIdentity().getUuIdentity();
@@ -125,21 +125,22 @@ class AthleteAbl {
     let token = athleteToken.token;
     let pageIndex = 1;
     let createdSegments = [];
-    while (true) {
+    let myActivities;
+    do {
       let athlDtoIn = {
         page: pageIndex,
         per_page: STRAVA_PAGE_SIZE,
         ...preparedDtoIn
       };
-      let myActivities = await StravaApiHelper.getLoggedInAthleteActivities(token, athlDtoIn);
+      myActivities = await StravaApiHelper.getLoggedInAthleteActivities(token, athlDtoIn);
 
       for (let activity of myActivities) {
         let existingActivityObject = await this.activityDao.getByStravaId(awid, activity.id);
         if (existingActivityObject) continue;
 
-        let activityDtoIn = {include_all_efforts: true};
+        let activityDtoIn = { include_all_efforts: true };
         let activityDetail = await StravaApiHelper.getActivityById(token, activity.id, activityDtoIn);
-        let newUuObject = {...activityDetail};
+        let newUuObject = { ...activityDetail };
         newUuObject.awid = awid;
         newUuObject.uuIdentity = uuIdentity;
         newUuObject.stravaId = activityDetail.id;
@@ -151,18 +152,13 @@ class AthleteAbl {
         for (let segmentEffort of activityDetail.segment_efforts) {
           if (segmentEffort.segment.hazardous) continue;
           let segmentId = segmentEffort.segment.id;
-          let exportDtoIn = {stravaId: segmentId, force: dtoIn.force, token};
+          let exportDtoIn = { stravaId: segmentId, force: dtoIn.force, token };
           let newSegment = await SegmentAbl.refreshOne(awid, exportDtoIn, session);
           if (newSegment) createdSegments.push(newSegment);
         }
       }
-
-      if (myActivities.length === STRAVA_PAGE_SIZE) {
-        pageIndex++;
-      } else {
-        break;
-      }
-    }
+      pageIndex++;
+    } while (myActivities.length === STRAVA_PAGE_SIZE);
 
     return {
       createdSegments,
@@ -189,10 +185,14 @@ class AthleteAbl {
     }
 
     // HDS 2
-    let {createdSegments, uuAppErrorMap} = await this.exportActivities(awid, {
-      after: lastActivity.start_date,
-      force: true
-    }, session);
+    let { createdSegments, uuAppErrorMap } = await this.exportActivities(
+      awid,
+      {
+        after: lastActivity.start_date,
+        force: true
+      },
+      session
+    );
 
     // HDS 3
     return {

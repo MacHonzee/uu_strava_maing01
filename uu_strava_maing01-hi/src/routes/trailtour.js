@@ -17,8 +17,7 @@ export const Trailtour = UU5.Common.VisualComponent.create({
     },
     lsi: {
       header: {
-        cs: "Průběžné výsledky Trailtour %s",
-        en: "Overall results of Trailtour %s"
+        cs: "Průběžné výsledky Trailtour %s"
       }
     }
   },
@@ -50,10 +49,10 @@ export const Trailtour = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Container
         {...this.getMainPropsToPass()}
-        header={this.getLsiComponent("header", null, this.props.year)}
+        header={this.getLsiComponent("header", null, [this.props.year])}
         level={3}
       >
-        Zde budou individuální výsledky z  Trailtour {this.props.year}
+        Zde budou individuální výsledky z Trailtour {this.props.year}
       </UU5.Bricks.Container>
     );
   }

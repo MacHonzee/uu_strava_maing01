@@ -17,6 +17,7 @@ import StravaLogin from "../routes/strava-login";
 import Trailtour from "../routes/trailtour";
 
 import SpaContext from "../context/spa-context";
+import LoadFeedback from "../bricks/load-feedback";
 //@@viewOff:imports
 
 const SpaAuthenticated = UU5.Common.VisualComponent.create({
@@ -104,7 +105,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           showLeftToggleButton
           bottom={<Bottom />}
           type={3}
-          displayedLanguages={["cs", "en"]}
+          displayedLanguages={["cs"]}
           key={"" + config.stravaTokenValid}
         >
           <UU5.Common.Router
@@ -129,7 +130,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
             let config = data && (data.data || data);
             return this._getChild(config, handleReload);
           } else {
-            return <UU5.Bricks.Loading />;
+            return <Plus4U5.App.SpaLoading content={"uuStrava"} />;
           }
         }}
       </UU5.Common.DataManager>

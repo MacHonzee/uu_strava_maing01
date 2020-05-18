@@ -44,8 +44,8 @@ const Home = UU5.Common.VisualComponent.create({
   render() {
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <AthleteInfo/>
-        <SegmentsTableProvider/>
+        <AthleteInfo />
+        <SegmentsTableProvider />
       </UU5.Bricks.Div>
     );
   }
