@@ -81,6 +81,8 @@ class SegmentAbl {
       awid,
       uuIdentity,
       stravaId: segmentId,
+      segmentId: segmentObj.id,
+      activityType: segmentObj.activity_type,
       athleteSegmentStats: segmentDetail.athlete_segment_stats
     };
     let abbrev = `${athlete.firstname} ${athlete.lastname.charAt(0)}.`;
@@ -88,7 +90,7 @@ class SegmentAbl {
 
     // HDS 9
     if (athlSegObj) {
-      athlSegObj = await this.athlSegDao.updateByStravaIdAndUuIdentity(awid, segmentDetail.id, uuIdentity, newAthlSegObj);
+      athlSegObj = await this.athlSegDao.updateByStravaIdAndUuIdentity(awid, segmentId, uuIdentity, newAthlSegObj);
     } else {
       athlSegObj = await this.athlSegDao.create(newAthlSegObj);
     }
@@ -114,8 +116,7 @@ class SegmentAbl {
 
     // HDS 2
     for (let segment of segments.itemList) {
-      // FIXME probably will be of a different key
-      if (segment.ownLeaderboard) continue;
+      if (segment.ownResult) continue;
 
       let exportDtoIn = {
         athlete,
@@ -149,15 +150,15 @@ class SegmentAbl {
       Errors.List.InvalidDtoIn
     );
 
+    let uuIdentity = session.getIdentity().getUuIdentity();
     let criteria = {
-      uuIdentity: session.getIdentity().getUuIdentity(),
       ...dtoIn
     };
     delete criteria.pageInfo;
     let pageInfo = dtoIn.pageInfo || {};
     pageInfo.pageSize = pageInfo.pageSize || 2000;
     pageInfo.pageIndex = pageInfo.pageIndex || 0;
-    let items = await this.segmentDao.listByCriteria(awid, criteria, pageInfo);
+    let items = await this.athlSegDao.listOwnByCriteria(awid, criteria, uuIdentity, pageInfo);
 
     return {
       ...items,
