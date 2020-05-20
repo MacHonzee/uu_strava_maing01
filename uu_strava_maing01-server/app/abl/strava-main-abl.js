@@ -30,7 +30,7 @@ class StravaMainAbl {
     );
 
     // HDS 2
-    const schemas = ["stravaMain", "athlete", "activity", "segment", "athleteSegment"];
+    const schemas = ["stravaMain", "athlete", "activity", "segment", "athleteSegment", "trailtour", "trailtourResults"];
     let schemaCreateResults = schemas.map(async schema => {
       try {
         return await DaoFactory.getDao(schema).createSchema();

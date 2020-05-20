@@ -29,8 +29,31 @@ class TrailtourAbl {
       Errors.Setup.InvalidDtoIn
     );
 
+    let trailtourList = await TrailtourParser.parseBaseUri(dtoIn.baseUri);
 
+    // TODO dao create / update
 
+    let SegmentAbl = require("./segment-abl");
+    for (let trailtour of trailtourList) {
+      let tourData = await TrailtourParser.parseTourDetail(trailtour.link);
+      Object.assign(trailtour, tourData);
+
+      let refreshDtoIn = {
+        stravaId: tourData.stravaId,
+        force: true
+        // TODO no leaderboard optimization
+      };
+      let { segment } = await SegmentAbl.refreshOne(awid, refreshDtoIn, session);
+      tourData.segmentId = segment.id;
+
+      // TODO dao create / update
+      break;
+    }
+
+    return {
+      trailtourList,
+      uuAppErrorMap
+    };
   }
 }
 

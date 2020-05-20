@@ -21,6 +21,9 @@
         },
         "trailtour": {
           "realization": "dao/TrailtourMongo"
+        },
+        "trailtourResults": {
+          "realization": "dao/TrailtourResultsMongo"
         }
       }
     }

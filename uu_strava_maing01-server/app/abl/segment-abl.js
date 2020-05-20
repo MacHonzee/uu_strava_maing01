@@ -89,10 +89,12 @@ class SegmentAbl {
     newAthlSegObj.ownLeaderboard = segLeaderEntries.find(entry => entry.athlete_name === abbrev);
 
     // HDS 9
-    if (athlSegObj) {
-      athlSegObj = await this.athlSegDao.updateByStravaIdAndUuIdentity(awid, segmentId, uuIdentity, newAthlSegObj);
-    } else {
-      athlSegObj = await this.athlSegDao.create(newAthlSegObj);
+    if (newAthlSegObj.ownLeaderboard) {
+      if (athlSegObj) {
+        athlSegObj = await this.athlSegDao.updateByStravaIdAndUuIdentity(awid, segmentId, uuIdentity, newAthlSegObj);
+      } else {
+        athlSegObj = await this.athlSegDao.create(newAthlSegObj);
+      }
     }
 
     // HDS 9

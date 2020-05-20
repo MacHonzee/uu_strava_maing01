@@ -1,7 +1,7 @@
 "use strict";
 const { UuObjectDao } = require("uu_appg01_server").ObjectStore;
 
-class AthleteMongo extends UuObjectDao {
+class TrailtourMongo extends UuObjectDao {
   async createSchema() {
     await super.createIndex({ awid: 1, year: 1 }, { unique: true });
   }
@@ -19,4 +19,4 @@ class AthleteMongo extends UuObjectDao {
   }
 }
 
-module.exports = AthleteMongo;
+module.exports = TrailtourMongo;
