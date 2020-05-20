@@ -18,6 +18,9 @@
         },
         "athleteSegment": {
           "realization": "dao/AthleteSegmentMongo"
+        },
+        "trailtour": {
+          "realization": "dao/TrailtourMongo"
         }
       }
     }

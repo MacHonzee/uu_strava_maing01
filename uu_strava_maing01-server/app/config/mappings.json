@@ -50,6 +50,11 @@
         "realization": "api/controllers/AthleteController.updateNewActivities",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "trailtour/setup": {
+        "realization": "api/controllers/TrailtourController.setup",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }
