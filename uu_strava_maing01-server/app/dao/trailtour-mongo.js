@@ -10,8 +10,8 @@ class TrailtourMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
-  async update(uuObject) {
-    return await super.findOneAndUpdate({ awid: uuObject.awid, id: uuObject.id }, uuObject, "NONE");
+  async updateByYear(uuObject) {
+    return await super.findOneAndUpdate({ awid: uuObject.awid, year: uuObject.year }, uuObject, "NONE");
   }
 
   async getByYear(awid, year) {

@@ -73,6 +73,8 @@ class AthleteAbl {
   }
 
   async getValidToken(awid, session) {
+    // TODO this needs LruCache, no reason to always read it from Dao
+
     let uuIdentity = session.getIdentity().getUuIdentity();
     let athlete = await this.athleteDao.getByUuIdentity(awid, uuIdentity);
     let token;
@@ -92,12 +94,13 @@ class AthleteAbl {
           grant_type: "refresh_token"
         };
         let newToken = await StravaApiHelper.getToken(tokenDtoIn);
-        await this.athleteDao.update({ awid, uuIdentity: athlete.uuIdentity, token: { ...newToken.data } });
+        athlete = await this.athleteDao.update({ awid, uuIdentity: athlete.uuIdentity, token: { ...newToken.data } });
         token = newToken.data.access_token;
       }
     }
 
     return {
+      athlete,
       token,
       uuAppErrorMap: {}
     };
@@ -120,9 +123,8 @@ class AthleteAbl {
     }
 
     let uuIdentity = session.getIdentity().getUuIdentity();
-    let athleteToken = await this.getValidToken(awid, session);
+    let { token } = await this.getValidToken(awid, session);
     let SegmentAbl = require("./segment-abl");
-    let token = athleteToken.token;
     let pageIndex = 1;
     let createdSegments = [];
     let myActivities;
@@ -152,7 +154,7 @@ class AthleteAbl {
         for (let segmentEffort of activityDetail.segment_efforts) {
           if (segmentEffort.segment.hazardous) continue;
           let segmentId = segmentEffort.segment.id;
-          let exportDtoIn = { stravaId: segmentId, force: dtoIn.force, token };
+          let exportDtoIn = { stravaId: segmentId, force: dtoIn.force };
           let newSegment = await SegmentAbl.refreshOne(awid, exportDtoIn, session);
           if (newSegment) createdSegments.push(newSegment);
         }

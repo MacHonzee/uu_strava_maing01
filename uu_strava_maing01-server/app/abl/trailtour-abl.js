@@ -31,19 +31,31 @@ class TrailtourAbl {
 
     let trailtourList = await TrailtourParser.parseBaseUri(dtoIn.baseUri);
 
-    // TODO dao create / update
+    let trailtourObj = {
+      awid,
+      year: dtoIn.year,
+      baseUri: dtoIn.baseUri,
+      lastUpdate: new Date()
+    };
+    try {
+      trailtourObj = await this.trailtourDao.create(trailtourObj);
+    } catch (e) {
+      if (e) {
+        trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
+      } else {
+        throw e;
+      }
+    }
 
     let SegmentAbl = require("./segment-abl");
     for (let trailtour of trailtourList) {
       let tourData = await TrailtourParser.parseTourDetail(trailtour.link);
       Object.assign(trailtour, tourData);
 
-      let refreshDtoIn = {
-        stravaId: tourData.stravaId,
-        force: true
-        // TODO no leaderboard optimization
+      let createSegmentDtoIn = {
+        stravaId: tourData.stravaId
       };
-      let { segment } = await SegmentAbl.refreshOne(awid, refreshDtoIn, session);
+      let { segment } = await SegmentAbl.create(awid, createSegmentDtoIn, session);
       tourData.segmentId = segment.id;
 
       // TODO dao create / update
@@ -51,6 +63,7 @@ class TrailtourAbl {
     }
 
     return {
+      trailtourObj,
       trailtourList,
       uuAppErrorMap
     };

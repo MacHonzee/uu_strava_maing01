@@ -23,6 +23,60 @@ class SegmentAbl {
     this.athleteDao = DaoFactory.getDao("athlete");
   }
 
+  // this is just a model, it is not on a public API
+  async create(awid, dtoIn, session) {
+    // HDS 1
+    let validationResult = this.validator.validate("createDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.createUnsupportedKeys.code,
+      Errors.Create.InvalidDtoIn
+    );
+
+    // HDS 2
+    let segmentId = dtoIn.stravaId;
+    let segmentObj = await this.segmentDao.getByStravaId(awid, segmentId);
+
+    // A3
+    if (segmentObj && !dtoIn.force) return { segment: segmentObj, uuAppErrorMap };
+
+    // HDS 3
+    let AthleteAbl = require("./athlete-abl");
+    let { token, athlete } = await AthleteAbl.getValidToken(awid, session);
+
+    // HDS 4
+    let stravaSegment = await StravaApiHelper.getSegmentById(token, segmentId);
+
+    // HDS 5
+    let newSegment;
+    if (segmentObj) {
+      newSegment = { ...segmentObj };
+    } else {
+      newSegment = { ...stravaSegment };
+      newSegment.awid = awid;
+      newSegment.stravaId = stravaSegment.id;
+      delete newSegment.id;
+      delete newSegment.athlete_segment_stats;
+    }
+    newSegment.leaderboard = dtoIn.leaderboard;
+
+    // HDS 6
+    if (segmentObj) {
+      segmentObj = await this.segmentDao.updateByStravaId(awid, segmentId, newSegment);
+    } else {
+      segmentObj = await this.segmentDao.create(newSegment);
+    }
+
+    // HDS 7
+    return {
+      stravaSegment,
+      segment: segmentObj,
+      uuAppErrorMap
+    };
+  }
+
   async refreshOne(awid, dtoIn, session) {
     // HDS 1
     let validationResult = this.validator.validate("refreshOneDtoInType", dtoIn);
@@ -37,70 +91,50 @@ class SegmentAbl {
     // HDS 2
     let segmentId = dtoIn.stravaId;
     let uuIdentity = session.getIdentity().getUuIdentity();
-    let athlSegObj = await this.athlSegDao.getByStravaIdAndUuIdentity(awid, segmentId, uuIdentity);
-    if (athlSegObj && !dtoIn.force) return { uuAppErrorMap };
+    let athleteSegment = await this.athlSegDao.getByStravaIdAndUuIdentity(awid, segmentId, uuIdentity);
+    if (athleteSegment && !dtoIn.force) return { uuAppErrorMap };
 
     // HDS 3
-    let token = dtoIn.token || (await require("./athlete-abl").getValidToken(awid, session)).token;
+    let AthleteAbl = require("./athlete-abl");
+    let { token, athlete } = await AthleteAbl.getValidToken(awid, session);
 
     // HDS 4
-    let segmentDetail = await StravaApiHelper.getSegmentById(token, segmentId);
-
-    // HDS 5
-    let athlete = dtoIn.athlete || (await this.athleteDao.getByUuIdentity(awid, uuIdentity));
-
-    // HDS 6
     let segmentLeaderboard = await StravaApiHelper.getSegmentLeaderboard(token, segmentId, { per_page: 3 });
 
-    // HDS 7
-    let segmentObj = await this.segmentDao.getByStravaId(awid, segmentId);
-    let newSegment;
-    if (segmentObj) {
-      newSegment = { ...segmentObj };
-    } else {
-      newSegment = { ...segmentDetail };
-      newSegment.awid = awid;
-      newSegment.stravaId = segmentDetail.id;
-      delete newSegment.id;
-      delete newSegment.athlete_segment_stats;
-    }
+    // HDS 5
+    let segLeaderEntries = segmentLeaderboard.entries.filter(entry => entry.rank <= 3);
+    let createSegmentDtoIn = {
+      stravaId: segmentId,
+      force: true,
+      leaderboard: segLeaderEntries
+    };
+    let { stravaSegment, segment } = await this.create(awid, createSegmentDtoIn, session);
 
-    let segLeaderEntries = segmentLeaderboard.entries;
-    newSegment.firstLeaderboard = segLeaderEntries.find(entry => entry.rank === 1);
-    newSegment.secondLeaderboard = segLeaderEntries.find(entry => entry.rank === 2);
-    newSegment.thirdLeaderboard = segLeaderEntries.find(entry => entry.rank === 3);
-
-    if (segmentObj) {
-      segmentObj = await this.segmentDao.updateByStravaId(awid, segmentId, newSegment);
-    } else {
-      segmentObj = await this.segmentDao.create(newSegment);
-    }
-
-    // HDS 8
+    // HDS 6
     let newAthlSegObj = {
       awid,
       uuIdentity,
       stravaId: segmentId,
-      segmentId: segmentObj.id,
-      activityType: segmentObj.activity_type,
-      athleteSegmentStats: segmentDetail.athlete_segment_stats
+      segmentId: segment.id,
+      activityType: segment.activity_type,
+      athleteSegmentStats: stravaSegment.athlete_segment_stats
     };
     let abbrev = `${athlete.firstname} ${athlete.lastname.charAt(0)}.`;
     newAthlSegObj.ownLeaderboard = segLeaderEntries.find(entry => entry.athlete_name === abbrev);
 
-    // HDS 9
+    // HDS 7
     if (newAthlSegObj.ownLeaderboard) {
-      if (athlSegObj) {
-        athlSegObj = await this.athlSegDao.updateByStravaIdAndUuIdentity(awid, segmentId, uuIdentity, newAthlSegObj);
+      if (athleteSegment) {
+        athleteSegment = await this.athlSegDao.updateByStravaIdAndUuId(awid, segmentId, uuIdentity, newAthlSegObj);
       } else {
-        athlSegObj = await this.athlSegDao.create(newAthlSegObj);
+        athleteSegment = await this.athlSegDao.create(newAthlSegObj);
       }
     }
 
     // HDS 9
     return {
-      segment: segmentObj,
-      athleteSegment: athlSegObj,
+      segment,
+      athleteSegment,
       uuAppErrorMap
     };
   }
@@ -110,19 +144,10 @@ class SegmentAbl {
     let segments = await this.list(awid, {}, session);
 
     // HDS 2
-    let uuIdentity = session.getIdentity().getUuIdentity();
-    let athlete = await this.athleteDao.getByUuIdentity(awid, uuIdentity);
-
-    // HDS 3
-    let token = (await require("./athlete-abl").getValidToken(awid, session)).token;
-
-    // HDS 2
     for (let segment of segments.itemList) {
       if (segment.ownResult) continue;
 
       let exportDtoIn = {
-        athlete,
-        token,
         force: true,
         stravaId: segment.stravaId
       };

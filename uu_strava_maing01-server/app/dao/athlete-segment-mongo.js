@@ -14,7 +14,7 @@ class AthleteSegmentMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
-  async updateByStravaIdAndUuIdentity(awid, stravaId, uuIdentity, uuObject) {
+  async updateByStravaIdAndUuId(awid, stravaId, uuIdentity, uuObject) {
     return await super.findOneAndUpdate({ awid, stravaId, uuIdentity }, uuObject, "NONE");
   }
 

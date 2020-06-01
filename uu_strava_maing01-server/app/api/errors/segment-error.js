@@ -3,6 +3,18 @@
 const StravaMainUseCaseError = require("./strava-main-use-case-error.js");
 const SEGMENT_ERROR_PREFIX = `${StravaMainUseCaseError.ERROR_PREFIX}segment/`;
 
+const Create = {
+  UC_CODE: `${SEGMENT_ERROR_PREFIX}create/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
 const RefreshOne = {
   UC_CODE: `${SEGMENT_ERROR_PREFIX}refreshOne/`,
 
@@ -40,6 +52,7 @@ const List = {
 };
 
 module.exports = {
+  Create,
   RefreshOne,
   RefreshAll,
   List
