@@ -60,6 +60,21 @@
         "realization": "api/controllers/TrailtourController.update",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "trailtour/get": {
+        "realization": "api/controllers/TrailtourController.get",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "trailtour/getTourDetail": {
+        "realization": "api/controllers/TrailtourController.getTourDetail",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
+      "trailtour/getAthleteResults": {
+        "realization": "api/controllers/TrailtourController.getAthleteResults",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

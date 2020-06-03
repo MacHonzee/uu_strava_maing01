@@ -12,6 +12,15 @@ const WARNINGS = {
   },
   updateUnsupportedKeys: {
     code: `${Errors.Update.UC_CODE}unsupportedKeys`
+  },
+  getUnsupportedKeys: {
+    code: `${Errors.Get.UC_CODE}unsupportedKeys`
+  },
+  getTourDetailUnsupportedKeys: {
+    code: `${Errors.GetTourDetail.UC_CODE}unsupportedKeys`
+  },
+  getAthleteResultsUnsupportedKeys: {
+    code: `${Errors.GetAthleteResults.UC_CODE}unsupportedKeys`
   }
 };
 
@@ -20,6 +29,7 @@ class TrailtourAbl {
     this.validator = new Validator(Path.join(__dirname, "..", "api", "validation_types", "trailtour-types.js"));
     this.trailtourDao = DaoFactory.getDao("trailtour");
     this.trailtourResultsDao = DaoFactory.getDao("trailtourResults");
+    this.segmentDao = DaoFactory.getDao("segment");
   }
 
   async setup(awid, dtoIn, session) {
@@ -61,7 +71,7 @@ class TrailtourAbl {
     // HDS 5
     let SegmentAbl = require("./segment-abl");
     for (let trailtour of trailtourList) {
-      let tourData = await TrailtourParser.parseTourDetail(trailtour.link);
+      let tourData = await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
       Object.assign(trailtour, tourData);
 
       let createSegmentDtoIn = {
@@ -70,6 +80,7 @@ class TrailtourAbl {
       let { segment } = await SegmentAbl.create(awid, createSegmentDtoIn, session);
       trailtour.awid = awid;
       trailtour.segmentId = segment.id;
+      trailtour.trailtourId = trailtourObj.id;
 
       try {
         trailtour = await this.trailtourResultsDao.updateBySegmentId(trailtour);
@@ -118,9 +129,10 @@ class TrailtourAbl {
 
     // HDS 5
     for (let trailtour of trailtourList) {
-      let tourData = await TrailtourParser.parseTourDetail(trailtour.link);
+      let tourData = await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
       Object.assign(trailtour, tourData);
       trailtour.awid = awid;
+      trailtour.trailtourId = trailtourObj.id;
 
       trailtour = await this.trailtourResultsDao.updateByStravaId(trailtour);
     }
@@ -128,6 +140,89 @@ class TrailtourAbl {
     return {
       trailtourObj,
       trailtourList,
+      uuAppErrorMap
+    };
+  }
+
+  async get(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("trailtourGetDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.getUnsupportedKeys.code,
+      Errors.Get.InvalidDtoIn
+    );
+
+    // HDS 2
+    let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
+
+    // TODO we will probably need to aggregate some segments data
+
+    // HDS 3
+    return {
+      ...trailtour,
+      uuAppErrorMap
+    };
+  }
+
+  async getTourDetail(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("trailtourGetTourDetailDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.getTourDetailUnsupportedKeys.code,
+      Errors.GetTourDetail.InvalidDtoIn
+    );
+
+    // HDS 2
+    let tourDetail = await this.trailtourResultsDao.get(awid, dtoIn.id);
+
+    // HDS 3
+    let segment = await this.segmentDao.getByStravaId(awid, tourDetail.stravaId);
+
+    // HDS 4
+    return {
+      tourDetail,
+      segment,
+      uuAppErrorMap
+    };
+  }
+
+  async getAthleteResults(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("trailtourGetAthleteResultsDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.getAthleteResultsUnsupportedKeys.code,
+      Errors.GetAthleteResults.InvalidDtoIn
+    );
+
+    // HDS 2
+    let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
+
+    // HDS 3
+    ["womenResults", "menResults"].forEach(results => {
+      trailtour.totalResults[results + "Total"] = trailtour.totalResults[results].length;
+      trailtour.totalResults[results] = trailtour.totalResults[results].filter(
+        result => result.stravaId === dtoIn.athleteStravaId
+      );
+    });
+
+    // HDS 4
+    let athleteResults = await this.trailtourResultsDao.listAthleteResults(awid, trailtour.id, dtoIn.athleteStravaId);
+
+    // TODO we will probably need to aggregate some segments data
+
+    // HDS 5
+    return {
+      trailtour,
+      athleteResults,
       uuAppErrorMap
     };
   }

@@ -33,10 +33,48 @@ const Update = {
       this.message = "Trailtour object was not found.";
     }
   }
+};
 
+const Get = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}get/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Get.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
+const GetTourDetail = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}getTourDetail/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${GetTourDetail.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
+const GetAthleteResults = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}getAthleteResults/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${GetAthleteResults.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
 };
 
 module.exports = {
+  GetAthleteResults,
+  GetTourDetail,
+  Get,
   Setup,
   Update
 };

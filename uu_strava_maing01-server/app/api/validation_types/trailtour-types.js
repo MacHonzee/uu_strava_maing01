@@ -8,3 +8,16 @@ const trailtourSetupDtoInType = shape({
 const trailtourUpdateDtoInType = shape({
   year: number().isRequired(),
 });
+
+const trailtourGetDtoInType = shape({
+  year: number().isRequired(),
+});
+
+const trailtourGetTourDetailDtoInType = shape({
+  id: id().isRequired(),
+});
+
+const trailtourGetAthleteResultsDtoInType = shape({
+  year: number().isRequired(),
+  athleteStravaId: number().isRequired()
+});

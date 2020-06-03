@@ -20,7 +20,10 @@
       "segment/refreshOne": ["Authorities","Executives"],
       "segment/refreshAll": ["Authorities","Executives"],
       "trailtour/setup": ["Authorities","Executives"],
-      "trailtour/update": ["Authorities","Executives"]
+      "trailtour/update": ["Authorities","Executives"],
+      "trailtour/get": ["Authorities","Executives"],
+      "trailtour/getTourDetail": ["Authorities","Executives"],
+      "trailtour/getAthleteResults": ["Authorities","Executives"]
     }
   }
 }

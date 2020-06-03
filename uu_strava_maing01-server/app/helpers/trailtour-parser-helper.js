@@ -7,7 +7,6 @@ const BASE_SELECTORS = {
   tourItemHeader: ".prehled-etap-nadpis2",
   tourDetailName: ".text-center.etapa-h2",
   tourDetailGpx: ".text-center .btn-success",
-  tourDetailStravalink: "#vysledky + p.text-center a.btn-warning",
   womenResults: ".etapa-vysledky div.row:nth-child(2)",
   menResults: ".etapa-vysledky div.row:nth-child(3)",
   clubResults: ".etapa-vysledky div.row:nth-child(4)",
@@ -18,7 +17,17 @@ const BASE_SELECTORS = {
   totalClubResults: ".default-content table.table:nth-child(6)"
 };
 
-const TRAILTOUR_ORDER_TITLE = "TRAILTOUR CZ #";
+const YEARLY_SELECTORS = {
+  2019: {
+    tourDetailStravalink: ".etapa-vysledky .text-center a.btn-success"
+  },
+  2020: {
+    tourDetailStravalink: "#vysledky + p.text-center a.btn-warning"
+  }
+};
+
+const TRAILTOUR_ORDER_TITLE = "TRAILTOUR #";
+const TRAILTOUR_CZ_ORDER_TITLE = "TRAILTOUR CZ #";
 const STRAVA_SEGMENT_HREF = "https://www.strava.com/segments/";
 const STRAVA_ATHLETE_HREF = "https://www.strava.com/athletes/";
 const GENERATED_LABEL = "Generováno: ";
@@ -104,7 +113,10 @@ const TrailtourParser = {
         .text()
         .trim()
         .split("\n");
-      let order = titleSplits[0].trim().replace(TRAILTOUR_ORDER_TITLE, "");
+      let order = titleSplits[0]
+        .trim()
+        .replace(TRAILTOUR_CZ_ORDER_TITLE, "")
+        .replace(TRAILTOUR_ORDER_TITLE, "");
       order = parseInt(order);
       let author = titleSplits[1].trim();
 
@@ -116,7 +128,7 @@ const TrailtourParser = {
     });
   },
 
-  async parseTourDetail(link) {
+  async parseTourDetail(link, year) {
     const $ = await parsePage(link);
     let name = $(BASE_SELECTORS.tourDetailName)
       .text()
@@ -124,7 +136,7 @@ const TrailtourParser = {
       .replace(/\/\s+/, "/ ")
       .trim();
     let gpxLink = $(BASE_SELECTORS.tourDetailGpx)[0].attribs.href;
-    let stravaLink = $(BASE_SELECTORS.tourDetailStravalink)[0].attribs.href;
+    let stravaLink = $(YEARLY_SELECTORS[year.toString()].tourDetailStravalink)[0].attribs.href;
     let stravaId = parseInt(stravaLink.replace(STRAVA_SEGMENT_HREF, ""));
     let { allResults: womenResults } = parseResults($, BASE_SELECTORS.womenResults);
     let { allResults: menResults } = parseResults($, BASE_SELECTORS.menResults);
