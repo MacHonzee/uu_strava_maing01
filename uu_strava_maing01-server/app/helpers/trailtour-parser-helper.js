@@ -2,6 +2,27 @@
 const AppClient = require("uu_appg01_server").AppClient;
 const cheerio = require("cheerio");
 
+const BASE_SELECTORS = {
+  tourItem: ".etapa-item",
+  tourItemHeader: ".prehled-etap-nadpis2",
+  tourDetailName: ".text-center.etapa-h2",
+  tourDetailGpx: ".text-center .btn-success",
+  tourDetailStravalink: "#vysledky + p.text-center a.btn-warning",
+  womenResults: ".etapa-vysledky div.row:nth-child(2)",
+  menResults: ".etapa-vysledky div.row:nth-child(3)",
+  clubResults: ".etapa-vysledky div.row:nth-child(4)",
+  generatedResults: "p.text-center",
+  tableResults: "tbody",
+  totalWomenResults: ".default-content table.table:nth-child(2)",
+  totalMenResults: ".default-content table.table:nth-child(4)",
+  totalClubResults: ".default-content table.table:nth-child(6)"
+};
+
+const TRAILTOUR_ORDER_TITLE = "TRAILTOUR CZ #";
+const STRAVA_SEGMENT_HREF = "https://www.strava.com/segments/";
+const STRAVA_ATHLETE_HREF = "https://www.strava.com/athletes/";
+const GENERATED_LABEL = "Generováno: ";
+
 async function parsePage(pageUri) {
   let data = await AppClient.get(pageUri, {}, { transformResponse: false });
   let strData = await streamToString(data);
@@ -22,10 +43,13 @@ async function streamToString(stream) {
 
 function parseResults($, selector) {
   let results = $(selector);
-  let generated = $(BASE_SELECTORS.generatedResults, results)
-    .text()
-    .trim()
-    .replace(GENERATED_LABEL, "");
+  let generatedTag = $(BASE_SELECTORS.generatedResults, results);
+  let generated =
+    generatedTag &&
+    generatedTag
+      .text()
+      .trim()
+      .replace(GENERATED_LABEL, "");
   let tableRows = $(BASE_SELECTORS.tableResults, results).children();
 
   let allResults = [];
@@ -36,7 +60,7 @@ function parseResults($, selector) {
     let nameLink = nameTd.find("a")[0];
     let stravaId;
     if (nameLink) {
-      stravaId = nameLink.attribs.href.replace(STRAVA_ATHLETE_HREF, "");
+      stravaId = parseInt(nameLink.attribs.href.replace(STRAVA_ATHLETE_HREF, ""));
     }
 
     let seconds;
@@ -47,7 +71,6 @@ function parseResults($, selector) {
         .trim()
         .split(":");
 
-      // eslint-disable-next-line for-direction
       for (let pow = 0; pow <= 2; pow++) {
         seconds += Math.pow(60, pow) * parseFloat(timeSplits[2 - pow]);
       }
@@ -56,34 +79,19 @@ function parseResults($, selector) {
     let pointsTd = $(rowCells[rowCells.length - 1]);
     let points = parseFloat(pointsTd.text().trim());
 
-    allResults.push({
+    let resultItem = {
       order: i,
       name,
-      stravaId,
-      time: seconds,
       points
-    });
+    };
+    if (seconds) resultItem.time = seconds;
+    if (stravaId) resultItem.stravaId = stravaId;
+
+    allResults.push(resultItem);
   }
 
   return { generated, allResults };
 }
-
-const BASE_SELECTORS = {
-  tourItem: ".etapa-item",
-  tourItemHeader: ".prehled-etap-nadpis2",
-  tourDetailGpx: ".text-center .btn-success",
-  tourDetailStravalink: "#vysledky + p.text-center a.btn-warning",
-  womenResults: ".etapa-vysledky div.row:nth-child(2)",
-  menResults: ".etapa-vysledky div.row:nth-child(3)",
-  clubResults: ".etapa-vysledky div.row:nth-child(4)",
-  generatedResults: "p.text-center",
-  tableResults: "tbody"
-};
-
-const TRAILTOUR_ORDER_TITLE = "TRAILTOUR CZ #";
-const STRAVA_SEGMENT_HREF = "https://www.strava.com/segments/";
-const STRAVA_ATHLETE_HREF = "https://www.strava.com/athletes/";
-const GENERATED_LABEL = "Generováno : ";
 
 const TrailtourParser = {
   async parseBaseUri(baseUri) {
@@ -110,21 +118,36 @@ const TrailtourParser = {
 
   async parseTourDetail(link) {
     const $ = await parsePage(link);
+    let name = $(BASE_SELECTORS.tourDetailName)
+      .text()
+      .replace(/\n/g, "")
+      .replace(/\/\s+/, "/ ")
+      .trim();
     let gpxLink = $(BASE_SELECTORS.tourDetailGpx)[0].attribs.href;
     let stravaLink = $(BASE_SELECTORS.tourDetailStravalink)[0].attribs.href;
-    let stravaId = stravaLink.replace(STRAVA_SEGMENT_HREF, "");
+    let stravaId = parseInt(stravaLink.replace(STRAVA_SEGMENT_HREF, ""));
     let { allResults: womenResults } = parseResults($, BASE_SELECTORS.womenResults);
     let { allResults: menResults } = parseResults($, BASE_SELECTORS.menResults);
     let { allResults: clubResults, generated } = parseResults($, BASE_SELECTORS.clubResults);
 
     return {
+      name,
       gpxLink,
       stravaId,
+      resultsTimestamp: generated,
       womenResults,
       menResults,
-      clubResults,
-      resultsTimestamp: generated
+      clubResults
     };
+  },
+
+  async parseTotalResults(uri) {
+    const $ = await parsePage(uri);
+    let { allResults: womenResults } = parseResults($, BASE_SELECTORS.totalWomenResults);
+    let { allResults: menResults } = parseResults($, BASE_SELECTORS.totalMenResults);
+    let { allResults: clubResults } = parseResults($, BASE_SELECTORS.totalClubResults);
+
+    return { womenResults, menResults, clubResults };
   }
 };
 

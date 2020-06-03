@@ -3,6 +3,7 @@ const Path = require("path");
 const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const { LruCache } = require("uu_appg01_server").Utils;
 const Errors = require("../api/errors/athlete-error.js");
 const StravaApiHelper = require("../helpers/strava-api-helper");
 
@@ -23,7 +24,8 @@ class AthleteAbl {
     this.configDao = DaoFactory.getDao("stravaMain");
     this.athleteDao = DaoFactory.getDao("athlete");
     this.activityDao = DaoFactory.getDao("activity");
-    this.segmentDao = DaoFactory.getDao("segment");
+    // the cache age should be always lower than token expiration
+    this.athleteCache = new LruCache({ maxAge: 1000 * 60 * 30 });
   }
 
   async create(awid, dtoIn, session) {
@@ -73,17 +75,27 @@ class AthleteAbl {
   }
 
   async getValidToken(awid, session) {
-    // TODO this needs LruCache, no reason to always read it from Dao
-
+    // HDS 1
     let uuIdentity = session.getIdentity().getUuIdentity();
-    let athlete = await this.athleteDao.getByUuIdentity(awid, uuIdentity);
+
+    // HDS 2
+    let cacheKey = `${awid}_${uuIdentity}`;
+    let athlete = this.athleteCache.get(cacheKey);
+    if (!athlete) {
+      // A1
+      athlete = await this.athleteDao.getByUuIdentity(awid, uuIdentity);
+      this.athleteCache.set(cacheKey, athlete);
+    }
+
     let token;
     if (athlete) {
+      // HDS 3
       let now = new Date();
       let expiration = new Date(athlete.token.expires_at * 1000);
       if (now < expiration) {
         token = athlete.token.access_token;
       } else {
+        // HDS 4
         // if the token is expired, we refresh the token
         let { clientId, clientSecret } = await this.configDao.get(awid);
 
@@ -96,6 +108,7 @@ class AthleteAbl {
         let newToken = await StravaApiHelper.getToken(tokenDtoIn);
         athlete = await this.athleteDao.update({ awid, uuIdentity: athlete.uuIdentity, token: { ...newToken.data } });
         token = newToken.data.access_token;
+        this.athleteCache.set(cacheKey, athlete);
       }
     }
 

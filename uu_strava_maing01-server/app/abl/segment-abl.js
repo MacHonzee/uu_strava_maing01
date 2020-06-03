@@ -7,6 +7,9 @@ const Errors = require("../api/errors/segment-error.js");
 const StravaApiHelper = require("../helpers/strava-api-helper");
 
 const WARNINGS = {
+  createUnsupportedKeys: {
+    code: `${Errors.Create.UC_CODE}unsupportedKeys`
+  },
   refreshOneUnsupportedKeys: {
     code: `${Errors.RefreshOne.UC_CODE}unsupportedKeys`
   },
@@ -44,7 +47,7 @@ class SegmentAbl {
 
     // HDS 3
     let AthleteAbl = require("./athlete-abl");
-    let { token, athlete } = await AthleteAbl.getValidToken(awid, session);
+    let { token } = await AthleteAbl.getValidToken(awid, session);
 
     // HDS 4
     let stravaSegment = await StravaApiHelper.getSegmentById(token, segmentId);
@@ -60,7 +63,10 @@ class SegmentAbl {
       delete newSegment.id;
       delete newSegment.athlete_segment_stats;
     }
-    newSegment.leaderboard = dtoIn.leaderboard;
+
+    if (dtoIn.leaderboard) {
+      newSegment.leaderboard = dtoIn.leaderboard;
+    }
 
     // HDS 6
     if (segmentObj) {

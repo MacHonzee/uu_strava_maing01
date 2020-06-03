@@ -1,5 +1,6 @@
 /* eslint-disable */
 const trailtourSetupDtoInType = shape({
   year: number().isRequired(),
-  baseUri: uri().isRequired()
+  baseUri: uri().isRequired(),
+  totalResultsUri: uri().isRequired()
 });
