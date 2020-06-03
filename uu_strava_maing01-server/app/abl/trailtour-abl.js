@@ -207,9 +207,9 @@ class TrailtourAbl {
     let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
 
     // HDS 3
-    ["womenResults", "menResults"].forEach(results => {
+    ["womenResults", "menResults", "clubResults"].forEach(results => {
       trailtour.totalResults[results + "Total"] = trailtour.totalResults[results].length;
-      trailtour.totalResults[results] = trailtour.totalResults[results].filter(
+      trailtour.totalResults[results] = trailtour.totalResults[results].find(
         result => result.stravaId === dtoIn.athleteStravaId
       );
     });

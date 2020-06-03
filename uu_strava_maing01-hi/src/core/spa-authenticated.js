@@ -17,7 +17,8 @@ import StravaLogin from "../routes/strava-login";
 import Trailtour from "../routes/trailtour";
 
 import SpaContext from "../context/spa-context";
-import LoadFeedback from "../bricks/load-feedback";
+import TourDetail from "../routes/tour-detail";
+import AthleteTourDetail from "../routes/athlete-tour-detail";
 //@@viewOff:imports
 
 const SpaAuthenticated = UU5.Common.VisualComponent.create({
@@ -74,9 +75,12 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
     let routes = {};
     if (config.stravaTokenValid) {
       routes = {
-        "": "home",
+        "": "trailtour2020",
         home: { component: <Home /> },
         trailtour2020: { component: <Trailtour year={2020} /> },
+        trailtour2019: { component: <Trailtour year={2019} /> },
+        tourDetail: { component: <TourDetail /> },
+        athleteTourDetail: { component: <AthleteTourDetail /> },
         about: { component: <About identity={this.props.identity} /> }
       };
     } else {

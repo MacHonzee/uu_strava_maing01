@@ -23,8 +23,12 @@ export const Left = UU5.Common.VisualComponent.create({
         en: "Segments"
       },
       trailtour2020: {
-        cs: "Trailtour 2020",
-        en: "Trailtour 2020"
+        cs: "Trailtour 2020 CZ",
+        en: "Trailtour 2020 CZ"
+      },
+      trailtour2019: {
+        cs: "Trailtour 2019",
+        en: "Trailtour 2019"
       },
       about: {
         cs: "O aplikaci",
@@ -71,13 +75,17 @@ export const Left = UU5.Common.VisualComponent.create({
         <Plus4U5.App.MenuProvider activeItemId="home">
           <Plus4U5.App.MenuTree
             items={[
-              {
-                content: this.getLsiComponent("segments"),
-                href: "home"
-              },
+              // {
+              //   content: this.getLsiComponent("segments"),
+              //   href: "home"
+              // },
               {
                 content: this.getLsiComponent("trailtour2020"),
                 href: "trailtour2020"
+              },
+              {
+                content: this.getLsiComponent("trailtour2019"),
+                href: "trailtour2019"
               }
             ]}
           />

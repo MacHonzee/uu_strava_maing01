@@ -1,12 +1,11 @@
+import UU5 from "uu5g04";
 import Config from "../../config/config.js";
 
-const TAG = Config.TAG + "Bricks.";
+const TAG = Config.TAG + "Trailtour.";
 
 export default {
   ...Config,
 
-  STRAVA_ATHLETE_LINK: "https://www.strava.com/athletes/",
-  STRAVA_SEGMENT_LINK: "https://www.strava.com/segments/",
   TAG,
   Css: UU5.Common.Css.createCssModule(
     TAG.replace(/\.$/, "")

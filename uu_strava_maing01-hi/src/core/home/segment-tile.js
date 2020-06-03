@@ -4,6 +4,7 @@ import "uu5g04-bricks";
 
 import Config from "../config/config.js";
 import SegmentListContext from "../../context/segment-list-context";
+import BrickTools from "../../bricks/tools";
 //@@viewOff:imports
 
 const SegmentTile = UU5.Common.VisualComponent.create({
@@ -139,7 +140,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   },
 
   _getOwnElapsedTime() {
-    return this._formatDuration(this.props.athleteSegmentStats.pr_elapsed_time);
+    return BrickTools.formatDuration(this.props.athleteSegmentStats.pr_elapsed_time);
   },
 
   _getOwnPace() {
@@ -163,21 +164,13 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   _getFirstElapsedTime() {
     let firstLeaderboard = this.props.segment.firstLeaderboard;
     if (!firstLeaderboard) return "-";
-    return this._formatDuration(firstLeaderboard.elapsed_time);
+    return BrickTools.formatDuration(firstLeaderboard.elapsed_time);
   },
 
   _getFirstPace() {
     let firstLeaderboard = this.props.segment.firstLeaderboard;
     if (!firstLeaderboard) return "-";
     return this._getPace(firstLeaderboard.elapsed_time);
-  },
-
-  _formatDuration(seconds) {
-    let hours = Math.round(seconds / 3600);
-    let secondsLeft = seconds % 3600;
-    let minutes = Math.round(secondsLeft / 60);
-    let lastSeconds = secondsLeft % 60;
-    return `${hours}:${minutes < 10 ? "0" + minutes : minutes}:${lastSeconds < 10 ? "0" + lastSeconds : lastSeconds}`;
   },
 
   _getPace(seconds) {

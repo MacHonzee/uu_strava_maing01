@@ -1,37 +1,33 @@
 //@@viewOn:imports
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
-import * as FlexTiles from "uu5flextilesg01";
-UU5.FlexTiles = FlexTiles;
 import Config from "./config/config.js";
 import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";
-import OveralResults from "../trailtour/overal-results";
+import AthleteTourResults from "../trailtour/athlete-tour-results";
 //@@viewOff:imports
 
-export const Trailtour = UU5.Common.VisualComponent.create({
+export const AthleteTourDetail = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "Trailtour",
+    tagName: Config.TAG + "AthleteTourDetail",
     classNames: {
       main: (props, state) => Config.Css.css``
     },
     lsi: {
       header: {
-        cs: "Průběžné výsledky Trailtour %s"
+        cs: "Výsledky atleta",
+        en: "Athlete results"
       }
     }
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {
-    year: UU5.PropTypes.number
-  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
@@ -47,21 +43,29 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
+  _getSex(data) {
+    let totalResults = data.trailtour.totalResults;
+    return totalResults.womenResults ? "female" : "male";
+  },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
+    let params = this.props.params || {};
     return (
       <UU5.Bricks.Container
         {...this.getMainPropsToPass()}
-        header={this.getLsiComponent("header", null, [this.props.year])}
+        header={this.getLsiComponent("header")}
         level={3}
         key={this.props.year}
       >
-        <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
+        <UU5.Common.DataManager
+          onLoad={Calls.getAthleteTourResults}
+          data={{ year: params.year, athleteStravaId: params.stravaId }}
+        >
           {data => (
             <LoadFeedback {...data}>
-              {data.data && <OveralResults data={data.data} year={this.props.year} />}
+              {data.data && <AthleteTourResults data={data.data} sex={this._getSex(data.data)} />}
             </LoadFeedback>
           )}
         </UU5.Common.DataManager>
@@ -71,4 +75,4 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default Trailtour;
+export default AthleteTourDetail;

@@ -57,8 +57,7 @@ export const LoadFeedback = UU5.Common.VisualComponent.create({
     if (errorState) {
       console.error(errorState, errorData);
       return <TranslatedServerError errorData={errorData} lsi={errorLsi} />;
-    } else if (data && data.data) {
-      console.log(data);
+    } else if (data) {
       return this.props.children;
     } else {
       return <UU5.Bricks.Loading />;
