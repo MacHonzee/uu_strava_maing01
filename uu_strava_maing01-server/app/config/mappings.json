@@ -55,6 +55,11 @@
         "realization": "api/controllers/TrailtourController.setup",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "trailtour/update": {
+        "realization": "api/controllers/TrailtourController.update",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

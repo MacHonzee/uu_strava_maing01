@@ -15,6 +15,28 @@ const Setup = {
   }
 };
 
+const Update = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}update/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  TrailtourDoesNotExist: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}trailtourDoesNotExist`;
+      this.message = "Trailtour object was not found.";
+    }
+  }
+
+};
+
 module.exports = {
-  Setup
+  Setup,
+  Update
 };

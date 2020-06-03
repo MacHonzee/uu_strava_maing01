@@ -4,3 +4,7 @@ const trailtourSetupDtoInType = shape({
   baseUri: uri().isRequired(),
   totalResultsUri: uri().isRequired()
 });
+
+const trailtourUpdateDtoInType = shape({
+  year: number().isRequired(),
+});

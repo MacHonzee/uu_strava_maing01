@@ -9,6 +9,9 @@ const TrailtourParser = require("../helpers/trailtour-parser-helper");
 const WARNINGS = {
   setupUnsupportedKeys: {
     code: `${Errors.Setup.UC_CODE}unsupportedKeys`
+  },
+  updateUnsupportedKeys: {
+    code: `${Errors.Update.UC_CODE}unsupportedKeys`
   }
 };
 
@@ -80,8 +83,56 @@ class TrailtourAbl {
           throw e;
         }
       }
+    }
 
-      if (tourObj.stravaId === 23239869) break;
+    return {
+      trailtourObj,
+      trailtourList,
+      uuAppErrorMap
+    };
+  }
+
+  async update(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("trailtourUpdateDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.updateUnsupportedKeys.code,
+      Errors.Update.InvalidDtoIn
+    );
+
+    // HDS 2
+    let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
+    if (!trailtour) {
+      throw new Errors.Update.TrailtourDoesNotExist({ uuAppErrorMap }, { year: dtoIn.year });
+    }
+
+    // HDS 3
+    let trailtourList = await TrailtourParser.parseBaseUri(trailtour.baseUri);
+
+    // HDS 4
+    let totalResults = await TrailtourParser.parseTotalResults(trailtour.totalResultsUri);
+
+    let trailtourObj = {
+      awid,
+      year: dtoIn.year,
+      lastUpdate: new Date(),
+      totalResults
+    };
+    trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
+
+    // HDS 5
+    for (let trailtour of trailtourList) {
+      let tourData = await TrailtourParser.parseTourDetail(trailtour.link);
+      Object.assign(trailtour, tourData);
+
+      let tourObj = {
+        awid,
+        ...tourData
+      };
+      tourObj = await this.trailtourResultsDao.updateByStravaId(tourObj);
     }
 
     return {

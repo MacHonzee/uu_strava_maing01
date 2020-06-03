@@ -19,7 +19,8 @@
       "segment/list": ["Authorities","Executives"],
       "segment/refreshOne": ["Authorities","Executives"],
       "segment/refreshAll": ["Authorities","Executives"],
-      "trailtour/setup": ["Authorities","Executives"]
+      "trailtour/setup": ["Authorities","Executives"],
+      "trailtour/update": ["Authorities","Executives"]
     }
   }
 }
