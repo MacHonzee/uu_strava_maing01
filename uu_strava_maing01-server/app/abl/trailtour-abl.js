@@ -68,17 +68,14 @@ class TrailtourAbl {
         stravaId: tourData.stravaId
       };
       let { segment } = await SegmentAbl.create(awid, createSegmentDtoIn, session);
-      tourData.segmentId = segment.id;
+      trailtour.awid = awid;
+      trailtour.segmentId = segment.id;
 
-      let tourObj = {
-        awid,
-        ...tourData
-      };
       try {
-        tourObj = await this.trailtourResultsDao.updateBySegmentId(tourObj);
+        trailtour = await this.trailtourResultsDao.updateBySegmentId(trailtour);
       } catch (e) {
         if (e instanceof ObjectNotFound) {
-          tourObj = await this.trailtourResultsDao.create(tourObj);
+          trailtour = await this.trailtourResultsDao.create(trailtour);
         } else {
           throw e;
         }
@@ -104,35 +101,28 @@ class TrailtourAbl {
     );
 
     // HDS 2
-    let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
-    if (!trailtour) {
+    let trailtourObj = await this.trailtourDao.getByYear(awid, dtoIn.year);
+    if (!trailtourObj) {
       throw new Errors.Update.TrailtourDoesNotExist({ uuAppErrorMap }, { year: dtoIn.year });
     }
 
     // HDS 3
-    let trailtourList = await TrailtourParser.parseBaseUri(trailtour.baseUri);
+    let trailtourList = await TrailtourParser.parseBaseUri(trailtourObj.baseUri);
 
     // HDS 4
-    let totalResults = await TrailtourParser.parseTotalResults(trailtour.totalResultsUri);
+    let totalResults = await TrailtourParser.parseTotalResults(trailtourObj.totalResultsUri);
 
-    let trailtourObj = {
-      awid,
-      year: dtoIn.year,
-      lastUpdate: new Date(),
-      totalResults
-    };
+    trailtourObj.lastUpdate = new Date();
+    trailtourObj.totalResults = totalResults;
     trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
 
     // HDS 5
     for (let trailtour of trailtourList) {
       let tourData = await TrailtourParser.parseTourDetail(trailtour.link);
       Object.assign(trailtour, tourData);
+      trailtour.awid = awid;
 
-      let tourObj = {
-        awid,
-        ...tourData
-      };
-      tourObj = await this.trailtourResultsDao.updateByStravaId(tourObj);
+      trailtour = await this.trailtourResultsDao.updateByStravaId(trailtour);
     }
 
     return {
