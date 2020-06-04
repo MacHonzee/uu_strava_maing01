@@ -57,7 +57,7 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
         {...this.getMainPropsToPass()}
         header={this.getLsiComponent("header")}
         level={3}
-        key={this.props.year}
+        key={params.stravaId}
       >
         <UU5.Common.DataManager
           onLoad={Calls.getAthleteTourResults}

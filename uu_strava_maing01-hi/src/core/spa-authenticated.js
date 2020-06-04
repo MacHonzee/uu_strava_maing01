@@ -98,7 +98,12 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           {...this.getMainPropsToPass()}
           top={
             <Plus4U5.App.Top
-              content={<UU5.Bricks.Link href={"home"}>{this.getLsiComponent("name")}</UU5.Bricks.Link>}
+              content={
+                // TODO link by měl být dle přihlášeného uživatele ideálně
+                <UU5.Bricks.Link href={"athleteTourDetail?year=2020&stravaId=25797801"}>
+                  {this.getLsiComponent("name")}
+                </UU5.Bricks.Link>
+              }
             />
           }
           left={config.stravaTokenValid && <Left />}

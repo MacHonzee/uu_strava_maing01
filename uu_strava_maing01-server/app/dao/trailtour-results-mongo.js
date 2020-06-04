@@ -57,12 +57,24 @@ class TrailtourResultsMongo extends UuObjectDao {
         }
       },
       {
-        $set: {
-          id: "$_id"
+        $lookup: {
+          from: "segment",
+          localField: "segmentId",
+          foreignField: "_id",
+          as: "segment"
         }
       },
       {
-        $unset: "_id"
+        $unwind: "$segment"
+      },
+      {
+        $set: {
+          id: "$_id",
+          "segment.id": "$segment._id"
+        }
+      },
+      {
+        $unset: ["_id", "segment._id"]
       }
     ]);
   }

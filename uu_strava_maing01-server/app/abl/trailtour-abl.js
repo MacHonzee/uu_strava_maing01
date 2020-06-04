@@ -217,8 +217,6 @@ class TrailtourAbl {
     // HDS 4
     let athleteResults = await this.trailtourResultsDao.listAthleteResults(awid, trailtour.id, dtoIn.athleteStravaId);
 
-    // TODO we will probably need to aggregate some segments data
-
     // HDS 5
     return {
       trailtour,

@@ -48,6 +48,18 @@ const Lsi = {
   gpx: {
     cs: "GPX",
     en: "GPX"
+  },
+  distance: {
+    cs: "Délka",
+    en: "Distance"
+  },
+  elevation: {
+    cs: "Převýšení",
+    en: "Elevation"
+  },
+  pace: {
+    cs: "Tempo",
+    en: "Pace"
   }
 };
 
@@ -98,7 +110,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
 
           let result;
           if (key === "name" || key === "author") {
-            let result = multiplier * item1.name.localeCompare(item2.name);
+            let result = multiplier * item1[key].localeCompare(item2[key]);
             if (result !== 0) return result;
           }
 
@@ -181,8 +193,14 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   },
 
   _getOwnOrder(data) {
-    let { results } = this._getCorrectResults(data);
-    return results.order;
+    let { results, total } = this._getCorrectResults(data);
+    if (results.order) {
+      return (
+        <UU5.Common.Fragment>
+          <UU5.Bricks.Strong>{results.order}</UU5.Bricks.Strong>&nbsp;/&nbsp;{total}
+        </UU5.Common.Fragment>
+      );
+    }
   },
 
   _getPoints(data) {
@@ -195,11 +213,6 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
     return results.time && BrickTools.formatDuration(results.time);
   },
 
-  _getRunnerCount(data) {
-    let { total } = this._getCorrectResults(data);
-    return total;
-  },
-
   _getGpx(data) {
     return (
       // TODO nestahuje to
@@ -207,6 +220,35 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
         <UU5.Bricks.Lsi lsi={Lsi.gpx} />
       </UU5.Bricks.Link>
     );
+  },
+
+  _getDistance({ segment: { distance } }) {
+    return (
+      <UU5.Common.Fragment>
+        <UU5.Bricks.Number value={distance / 1000} maxDecimalLength={2} />
+        &nbsp;km
+      </UU5.Common.Fragment>
+    );
+  },
+
+  _getElevation({ segment: { total_elevation_gain } }) {
+    return (
+      <UU5.Common.Fragment>
+        <UU5.Bricks.Number value={total_elevation_gain} maxDecimalLength={0} />
+        &nbsp;m
+      </UU5.Common.Fragment>
+    );
+  },
+
+  _getPace(data) {
+    let { results } = this._getCorrectResults(data);
+    if (results.time) {
+      return (
+        <UU5.Common.Fragment>
+          &nbsp;min/km
+        </UU5.Common.Fragment>
+      )
+    }
   },
   //@@viewOff:private
 
@@ -259,6 +301,10 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
             {
               label: Lsi.ownOrder,
               sorterKey: "ownOrder"
+            },
+            {
+              label: Lsi.runnerCount,
+              sorterKey: "runnerCount"
             }
           ],
           cellComponent: this._getOwnOrder,
@@ -287,14 +333,36 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           width: "xs"
         },
         {
-          id: "runnerCount",
+          id: "distance",
           headers: [
             {
-              label: Lsi.runnerCount,
-              sorterKey: "runnerCount"
+              label: Lsi.distance,
+              sorterKey: "distance"
             }
           ],
-          cellComponent: this._getRunnerCount,
+          cellComponent: this._getDistance,
+          width: "xs"
+        },
+        {
+          id: "elevation",
+          headers: [
+            {
+              label: Lsi.elevation,
+              sorterKey: "total_elevation_gain"
+            }
+          ],
+          cellComponent: this._getElevation,
+          width: "xs"
+        },
+        {
+          id: "pace",
+          headers: [
+            {
+              label: Lsi.pace,
+              sorterKey: "pace"
+            }
+          ],
+          cellComponent: ({ segment: { distance } }) => "pace",
           width: "xs"
         },
         {
