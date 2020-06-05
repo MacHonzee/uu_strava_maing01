@@ -40,6 +40,9 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
+  propTypes: {
+    right: UU5.PropTypes.node
+  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
@@ -85,6 +88,7 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
         title={Lsi.sexFilter}
         layout="xs-horizontal s-vertical m-horizontal"
         left={this._getFilter}
+        right={this.props.right}
       />
     );
   }

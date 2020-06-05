@@ -5,6 +5,7 @@ import Config from "./config/config.js";
 import AthleteLink from "../bricks/athlete-link";
 import SexFilterBar from "./sex-filter-bar";
 import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
+import UpdateTrailtourButton from "./update-trailtour-button";
 //@@viewOff:imports
 
 const Lsi = {
@@ -12,6 +13,10 @@ const Lsi = {
   strava: {
     cs: "Strava",
     en: "Strava"
+  },
+  generatedStamp: {
+    cs: "Poslední update: ",
+    en: "Last update: "
   }
 };
 
@@ -34,7 +39,8 @@ export const OveralResults = UU5.Common.VisualComponent.create({
   //@@viewOn:propTypes
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
-    year: UU5.PropTypes.number.isRequired
+    year: UU5.PropTypes.number.isRequired,
+    handleReload: UU5.PropTypes.func
   },
   //@@viewOff:propTypes
 
@@ -105,6 +111,18 @@ export const OveralResults = UU5.Common.VisualComponent.create({
       </AthleteLink>
     );
   },
+
+  _getSexRight() {
+    return (
+      <UU5.Bricks.Div>
+        <UU5.Bricks.Span style={{ fontSize: "12px", fontStyle: "italic", marginRight: "8px" }}>
+          <UU5.Bricks.Lsi lsi={Lsi.generatedStamp} />
+          <UU5.Bricks.DateTime value={this.props.data.lastUpdate} secondsDisabled />
+        </UU5.Bricks.Span>
+        <UpdateTrailtourButton year={this.props.year} onUpdateDone={this.props.handleReload} />
+      </UU5.Bricks.Div>
+    );
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -166,7 +184,7 @@ export const OveralResults = UU5.Common.VisualComponent.create({
         <UU5.FlexTiles.ListController ucSettings={ucSettings} defaultView={defaultView}>
           <UU5.FlexTiles.List
             bars={[
-              <SexFilterBar key={"sexFilterBar"} />,
+              <SexFilterBar key={"sexFilterBar"} right={this._getSexRight()} />,
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
               <UU5.FlexTiles.InfoBar key={"infoBar"} />
             ]}

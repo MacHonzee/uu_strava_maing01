@@ -128,14 +128,15 @@ class TrailtourAbl {
     trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
 
     // HDS 5
-    for (let trailtour of trailtourList) {
+    let promises = trailtourList.map(async (trailtour, i) => {
       let tourData = await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
       Object.assign(trailtour, tourData);
       trailtour.awid = awid;
       trailtour.trailtourId = trailtourObj.id;
 
-      trailtour = await this.trailtourResultsDao.updateByStravaId(trailtour);
-    }
+      trailtourList[i] = await this.trailtourResultsDao.updateByStravaId(trailtour);
+    });
+    await Promise.all(promises);
 
     return {
       trailtourObj,

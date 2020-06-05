@@ -38,6 +38,11 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
+  getInitialState() {
+    return {
+      stamp: new Date()
+    };
+  },
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
@@ -47,6 +52,10 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
+  _handleReload() {
+    // easiest way to force complete reload including UU5.Bricks.Loading
+    this.setState({ stamp: new Date() });
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -56,12 +65,12 @@ export const Trailtour = UU5.Common.VisualComponent.create({
         {...this.getMainPropsToPass()}
         header={this.getLsiComponent("header", null, [this.props.year])}
         level={3}
-        key={this.props.year}
+        key={this.props.year + this.state.stamp.toISOString()}
       >
         <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
           {data => (
             <LoadFeedback {...data}>
-              {data.data && <OveralResults data={data.data} year={this.props.year} />}
+              {data.data && <OveralResults data={data.data} year={this.props.year} handleReload={this._handleReload} />}
             </LoadFeedback>
           )}
         </UU5.Common.DataManager>
