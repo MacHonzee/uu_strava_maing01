@@ -2,29 +2,23 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
-import AthleteLink from "../bricks/athlete-link";
 import SexFilterBar from "./sex-filter-bar";
-import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
+import TourDetailLsi from "../lsi/tour-detail-lsi";
+import BrickTools from "../bricks/tools";
+import SegmentPace from "../bricks/segment-pace";
+import AthleteLink from "../bricks/athlete-link";
 //@@viewOff:imports
-
-const Lsi = {
-  ...AthleteTourDetailLsi,
-  strava: {
-    cs: "Strava",
-    en: "Strava"
-  }
-};
 
 const PAGE_SIZE = 1000;
 
-export const OveralResults = UU5.Common.VisualComponent.create({
+export const TourDetailResultList = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "OveralResults",
+    tagName: Config.TAG + "TourDetailResultList",
     classNames: {
       main: (props, state) => Config.Css.css``
     }
@@ -33,8 +27,7 @@ export const OveralResults = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    data: UU5.PropTypes.object.isRequired,
-    year: UU5.PropTypes.number.isRequired
+    data: UU5.PropTypes.object.isRequired
   },
   //@@viewOff:propTypes
 
@@ -55,7 +48,7 @@ export const OveralResults = UU5.Common.VisualComponent.create({
     // this is unfortunately needed for the Flextiles to be working without server calls
     // handle sex filtering
     let targetData = dtoIn.filterMap.sex === "male" ? "menResults" : "womenResults";
-    let dataCopy = JSON.parse(JSON.stringify(this.props.data.totalResults[targetData]));
+    let dataCopy = JSON.parse(JSON.stringify(this.props.data.tourDetail[targetData]));
 
     // handle any sorting necessary
     if (dtoIn.sorterList && dtoIn.sorterList.length > 0) {
@@ -92,10 +85,8 @@ export const OveralResults = UU5.Common.VisualComponent.create({
     };
   },
 
-  _getAthleteLink({ name, stravaId }) {
-    return (
-      <UU5.Bricks.Link href={`athleteTourDetail?year=${this.props.year}&stravaId=${stravaId}`}>{name}</UU5.Bricks.Link>
-    );
+  _getName({ name, stravaId }) {
+    return <UU5.Bricks.Link href={`athleteTourDetail?year=${2020}&stravaId=${stravaId}`}>{name}</UU5.Bricks.Link>;
   },
 
   _getStravaLink({ stravaId }) {
@@ -115,7 +106,7 @@ export const OveralResults = UU5.Common.VisualComponent.create({
           id: "order",
           headers: [
             {
-              label: Lsi.order,
+              label: TourDetailLsi.order,
               sorterKey: "order"
             }
           ],
@@ -123,10 +114,10 @@ export const OveralResults = UU5.Common.VisualComponent.create({
           width: "xs"
         },
         {
-          id: "stravaLink",
+          id: "strava",
           headers: [
             {
-              label: Lsi.strava
+              label: TourDetailLsi.strava
             }
           ],
           cellComponent: this._getStravaLink,
@@ -136,27 +127,48 @@ export const OveralResults = UU5.Common.VisualComponent.create({
           id: "name",
           headers: [
             {
-              label: Lsi.name,
+              label: TourDetailLsi.name,
               sorterKey: "name"
             }
           ],
-          cellComponent: this._getAthleteLink,
+          cellComponent: this._getName,
           width: "xl"
         },
         {
           id: "points",
           headers: [
             {
-              label: Lsi.points,
+              label: TourDetailLsi.points,
               sorterKey: "points"
             }
           ],
           cellComponent: ({ points }) => <UU5.Bricks.Number value={points} />,
-          width: "m"
+          width: "s"
+        },
+        {
+          id: "time",
+          headers: [
+            {
+              label: TourDetailLsi.time,
+              sorterKey: "time"
+            }
+          ],
+          cellComponent: ({ time }) => BrickTools.formatDuration(time),
+          width: "s"
+        },
+        {
+          id: "pace",
+          headers: [
+            {
+              label: TourDetailLsi.pace,
+              sorterKey: "pace"
+            }
+          ],
+          cellComponent: ({ time }) => <SegmentPace time={time} distance={this.props.data.segment.distance} />,
+          width: "s"
         }
       ]
     };
-
     const defaultView = {
       filters: [{ key: "sex", value: "female" }]
     };
@@ -178,4 +190,4 @@ export const OveralResults = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default OveralResults;
+export default TourDetailResultList;

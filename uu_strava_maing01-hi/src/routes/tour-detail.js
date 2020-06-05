@@ -2,11 +2,14 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
+import Calls from "calls";
+import LoadFeedback from "../bricks/load-feedback";
+import TourDetailResults from "../trailtour/tour-detail-results";
 //@@viewOff:imports
 
 export const TourDetail = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
-  mixins: [UU5.Common.BaseMixin],
+  mixins: [UU5.Common.BaseMixin, UU5.Common.RouteMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -14,6 +17,12 @@ export const TourDetail = UU5.Common.VisualComponent.create({
     tagName: Config.TAG + "TourDetail",
     classNames: {
       main: (props, state) => Config.Css.css``
+    },
+    lsi: {
+      header: {
+        cs: "Detail etapy",
+        en: "Segment detail"
+      }
     }
   },
   //@@viewOff:statics
@@ -38,7 +47,19 @@ export const TourDetail = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    return <UU5.Bricks.Div {...this.getMainPropsToPass()}>Component {this.getTagName()}</UU5.Bricks.Div>;
+    let params = this.props.params || {};
+    return (
+      <UU5.Bricks.Container
+        {...this.getMainPropsToPass()}
+        header={this.getLsiComponent("header")}
+        level={3}
+        key={params.id}
+      >
+        <UU5.Common.DataManager onLoad={Calls.getTourDetail} data={{ id: params.id }}>
+          {data => <LoadFeedback {...data}>{data.data && <TourDetailResults data={data.data} />}</LoadFeedback>}
+        </UU5.Common.DataManager>
+      </UU5.Bricks.Container>
+    );
   }
   //@@viewOff:render
 });

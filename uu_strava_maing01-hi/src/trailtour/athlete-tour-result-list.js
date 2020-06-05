@@ -4,64 +4,13 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import SegmentLink from "../bricks/segment-link";
 import BrickTools from "../bricks/tools";
+import TourDetailLsi from "../lsi/tour-detail-lsi";
+import SegmentDistance from "../bricks/segment-distance";
+import SegmentElevation from "../bricks/segment-elevation";
+import SegmentPace from "../bricks/segment-pace";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
-
-const Lsi = {
-  order: {
-    cs: "#",
-    en: "#"
-  },
-  name: {
-    cs: "Etapa",
-    en: "Segment"
-  },
-  strava: {
-    cs: "Strava",
-    en: "Strava"
-  },
-  trailtour: {
-    cs: "Trailtour",
-    en: "Trailtour"
-  },
-  author: {
-    cs: "Autor",
-    en: "Author"
-  },
-  ownOrder: {
-    cs: "Pořadí",
-    en: "Order"
-  },
-  points: {
-    cs: "Body",
-    en: "Points"
-  },
-  time: {
-    cs: "Čas",
-    en: "Time"
-  },
-  runnerCount: {
-    cs: "Počet běžců",
-    en: "Runner count"
-  },
-  gpx: {
-    cs: "GPX",
-    en: "GPX"
-  },
-  distance: {
-    cs: "Délka",
-    en: "Distance"
-  },
-  elevation: {
-    cs: "Převýšení",
-    en: "Elevation"
-  },
-  pace: {
-    cs: "Tempo",
-    en: "Pace"
-  }
-};
 
 export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
@@ -178,7 +127,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Image src={"./assets/strava-logo.png"} responsive={false} alt={"strava-logo"} width={"24px"} />
         </SegmentLink>
         <UU5.Bricks.Link href={link} target={"_blank"}>
-          <UU5.Bricks.Image src={"./assets/inov8-logo.png"} responsive={false} alt={"strava-logo"} width={"24px"} />
+          <UU5.Bricks.Image src={"./assets/inov8-logo.png"} responsive={false} alt={"trailtour-logo"} width={"24px"} />
         </UU5.Bricks.Link>
       </UU5.Common.Fragment>
     );
@@ -210,45 +159,42 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
 
   _getTime(data) {
     let { results } = this._getCorrectResults(data);
-    return results.time && BrickTools.formatDuration(results.time);
+    if (results.time) {
+      return (
+        <UU5.Common.Fragment>
+          <UU5.Bricks.Div>{BrickTools.formatDuration(results.time)}</UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <SegmentPace time={results.time} distance={data.segment.distance} />
+          </UU5.Bricks.Div>
+        </UU5.Common.Fragment>
+      );
+    }
   },
 
   _getGpx(data) {
     return (
       // TODO nestahuje to
       <UU5.Bricks.Link href={data.gpxLink} download target={"_blank"}>
-        <UU5.Bricks.Lsi lsi={Lsi.gpx} />
+        <UU5.Bricks.Lsi lsi={TourDetailLsi.gpx} />
       </UU5.Bricks.Link>
     );
   },
 
   _getDistance({ segment: { distance } }) {
-    return (
-      <UU5.Common.Fragment>
-        <UU5.Bricks.Number value={distance / 1000} maxDecimalLength={2} />
-        &nbsp;km
-      </UU5.Common.Fragment>
-    );
+    return <SegmentDistance distance={distance} />;
   },
 
   _getElevation({ segment: { total_elevation_gain } }) {
-    return (
-      <UU5.Common.Fragment>
-        <UU5.Bricks.Number value={total_elevation_gain} maxDecimalLength={0} />
-        &nbsp;m
-      </UU5.Common.Fragment>
-    );
+    return <SegmentElevation elevation={total_elevation_gain} />;
   },
 
-  _getPace(data) {
-    let { results } = this._getCorrectResults(data);
-    if (results.time) {
-      return (
-        <UU5.Common.Fragment>
-          &nbsp;min/km
-        </UU5.Common.Fragment>
-      )
-    }
+  _getState({ segment }) {
+    return (
+      <UU5.Common.Fragment>
+        <UU5.Bricks.Div>{segment.state}</UU5.Bricks.Div>
+        <UU5.Bricks.Div>{segment.city}</UU5.Bricks.Div>
+      </UU5.Common.Fragment>
+    );
   },
   //@@viewOff:private
 
@@ -260,7 +206,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           id: "order",
           headers: [
             {
-              label: Lsi.order,
+              label: TourDetailLsi.order,
               sorterKey: "order"
             }
           ],
@@ -271,10 +217,10 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           id: "strava",
           headers: [
             {
-              label: Lsi.strava
+              label: TourDetailLsi.strava
             },
             {
-              label: Lsi.trailtour
+              label: TourDetailLsi.trailtour
             }
           ],
           cellComponent: this._getLinksCell,
@@ -284,26 +230,26 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           id: "name",
           headers: [
             {
-              label: Lsi.name,
+              label: TourDetailLsi.name,
               sorterKey: "name"
             },
             {
-              label: Lsi.author,
+              label: TourDetailLsi.author,
               sorterKey: "author"
             }
           ],
           cellComponent: this._getNameCell,
-          width: "xl"
+          width: "l"
         },
         {
           id: "ownOrder",
           headers: [
             {
-              label: Lsi.ownOrder,
+              label: TourDetailLsi.ownOrder,
               sorterKey: "ownOrder"
             },
             {
-              label: Lsi.runnerCount,
+              label: TourDetailLsi.runnerCount,
               sorterKey: "runnerCount"
             }
           ],
@@ -314,7 +260,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           id: "points",
           headers: [
             {
-              label: Lsi.points,
+              label: TourDetailLsi.points,
               sorterKey: "points"
             }
           ],
@@ -322,11 +268,15 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           width: "xs"
         },
         {
-          id: "time",
+          id: "pace",
           headers: [
             {
-              label: Lsi.time,
+              label: TourDetailLsi.time,
               sorterKey: "time"
+            },
+            {
+              label: TourDetailLsi.pace,
+              sorterKey: "pace"
             }
           ],
           cellComponent: this._getTime,
@@ -336,7 +286,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           id: "distance",
           headers: [
             {
-              label: Lsi.distance,
+              label: TourDetailLsi.distance,
               sorterKey: "distance"
             }
           ],
@@ -347,7 +297,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           id: "elevation",
           headers: [
             {
-              label: Lsi.elevation,
+              label: TourDetailLsi.elevation,
               sorterKey: "total_elevation_gain"
             }
           ],
@@ -355,25 +305,19 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           width: "xs"
         },
         {
-          id: "pace",
+          id: "location",
           headers: [
             {
-              label: Lsi.pace,
-              sorterKey: "pace"
-            }
-          ],
-          cellComponent: ({ segment: { distance } }) => "pace",
-          width: "xs"
-        },
-        {
-          id: "gpx",
-          headers: [
+              label: TourDetailLsi.state,
+              sorterKey: "state"
+            },
             {
-              label: Lsi.gpx
+              label: TourDetailLsi.city,
+              sorterKey: "city"
             }
           ],
-          cellComponent: this._getGpx,
-          width: "xs"
+          cellComponent: this._getState,
+          width: "m"
         }
       ]
     };

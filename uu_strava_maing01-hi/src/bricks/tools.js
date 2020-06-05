@@ -12,8 +12,8 @@ const BrickTools = {
   },
 
   getPace(seconds, distance) {
-    let pace = +(seconds / 60 / (this.props.segment.distance / 1000)).toFixed(2);
-    let mins = Math.round(pace);
+    let pace = +(seconds / 60 / (distance / 1000)).toFixed(2);
+    let mins = Math.floor(pace);
     let lastSeconds = Math.round((pace % 1) * 60);
     return `${_padNum(mins)}:${_padNum(lastSeconds)}/km`;
   }
