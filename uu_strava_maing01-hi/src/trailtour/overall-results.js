@@ -22,14 +22,14 @@ const Lsi = {
 
 const PAGE_SIZE = 1000;
 
-export const OveralResults = UU5.Common.VisualComponent.create({
+export const OverallResults = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "OveralResults",
+    tagName: Config.TAG + "OverallResults",
     classNames: {
       main: (props, state) => Config.Css.css``
     }
@@ -170,7 +170,29 @@ export const OveralResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ points }) => <UU5.Bricks.Number value={points} />,
-          width: "m"
+          width: "xs"
+        },
+        {
+          id: "totalCount",
+          headers: [
+            {
+              label: Lsi.runCount,
+              sorterKey: "totalCount"
+            }
+          ],
+          cellComponent: ({ totalCount }) => totalCount,
+          width: "xs"
+        },
+        {
+          id: "points",
+          headers: [
+            {
+              label: Lsi.avgPoints,
+              sorterKey: "avgPoints"
+            }
+          ],
+          cellComponent: ({ avgPoints }) => <UU5.Bricks.Number value={avgPoints} maxDecimalLength={2} />,
+          width: "xs"
         }
       ]
     };
@@ -196,4 +218,4 @@ export const OveralResults = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default OveralResults;
+export default OverallResults;

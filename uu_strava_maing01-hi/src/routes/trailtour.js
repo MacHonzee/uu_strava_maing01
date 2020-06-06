@@ -6,7 +6,7 @@ UU5.FlexTiles = FlexTiles;
 import Config from "./config/config.js";
 import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";
-import OveralResults from "../trailtour/overal-results";
+import OverallResults from "../trailtour/overall-results";
 //@@viewOff:imports
 
 export const Trailtour = UU5.Common.VisualComponent.create({
@@ -70,7 +70,7 @@ export const Trailtour = UU5.Common.VisualComponent.create({
         <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
           {data => (
             <LoadFeedback {...data}>
-              {data.data && <OveralResults data={data.data} year={this.props.year} handleReload={this._handleReload} />}
+              {data.data && <OverallResults data={data.data} year={this.props.year} handleReload={this._handleReload} />}
             </LoadFeedback>
           )}
         </UU5.Common.DataManager>

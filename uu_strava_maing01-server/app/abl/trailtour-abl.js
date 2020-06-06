@@ -69,6 +69,7 @@ class TrailtourAbl {
     }
 
     // HDS 5
+    let statistics = {};
     let SegmentAbl = require("./segment-abl");
     for (let trailtour of trailtourList) {
       let tourData = await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
@@ -91,7 +92,11 @@ class TrailtourAbl {
           throw e;
         }
       }
+
+      statistics = this._updateStatistics(statistics, trailtour);
     }
+
+    trailtourObj = await this._saveStatistics(statistics, trailtourObj);
 
     return {
       trailtourObj,
@@ -128,6 +133,7 @@ class TrailtourAbl {
     trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
 
     // HDS 5
+    let statistics = {};
     let promises = trailtourList.map(async (trailtour, i) => {
       let tourData = await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
       Object.assign(trailtour, tourData);
@@ -135,8 +141,11 @@ class TrailtourAbl {
       trailtour.trailtourId = trailtourObj.id;
 
       trailtourList[i] = await this.trailtourResultsDao.updateByStravaId(trailtour);
+      statistics = this._updateStatistics(statistics, trailtourList[i]);
     });
     await Promise.all(promises);
+
+    trailtourObj = await this._saveStatistics(statistics, trailtourObj);
 
     return {
       trailtourObj,
@@ -158,8 +167,6 @@ class TrailtourAbl {
 
     // HDS 2
     let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
-
-    // TODO we will probably need to aggregate some segments data
 
     // HDS 3
     return {
@@ -224,6 +231,30 @@ class TrailtourAbl {
       athleteResults,
       uuAppErrorMap
     };
+  }
+
+  _updateStatistics(statistics, trailtour) {
+    ["menResults", "womenResults"].forEach(resultKey => {
+      trailtour[resultKey].forEach(result => {
+        let stravaId = result.stravaId;
+        statistics[stravaId] = statistics[stravaId] || { count: 0 };
+        statistics[stravaId].count++;
+      });
+    });
+    return statistics;
+  }
+
+  async _saveStatistics(statistics, trailtourObj) {
+    ["menResults", "womenResults"].forEach(resultKey => {
+      trailtourObj.totalResults[resultKey].forEach(result => {
+        let stravaId = result.stravaId;
+        let stats = statistics[stravaId] || { count: 0 };
+        result.totalCount = stats.count;
+        result.avgPoints = stats.count > 0 ? result.points / result.totalCount : 0;
+      });
+    });
+
+    return await this.trailtourDao.updateByYear(trailtourObj);
   }
 }
 

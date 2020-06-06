@@ -14,6 +14,14 @@ const AthleteTourDetailLsi = {
   pace: {
     cs: "Tempo",
     en: "Pace"
+  },
+  runCount: {
+    cs: "Celkem etap",
+    en: "Segment total"
+  },
+  avgPoints: {
+    cs: "Průměrně bodů",
+    en: "Average points"
   }
 };
 
