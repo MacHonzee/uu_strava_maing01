@@ -81,7 +81,15 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
         </UU5.BlockLayout.Column>
         <UU5.BlockLayout.Column width={"30%"}>
           <UU5.BlockLayout.Text weight={"primary"}>
-            <AthleteLink content={results.name} stravaId={results.stravaId} />
+            <AthleteLink stravaId={results.stravaId}>
+              <img
+                src={"./assets/strava-logo.png"}
+                alt={"strava-logo"}
+                width={"16px"}
+                style={{ marginRight: "4px", position: "relative", top: "2px" }}
+              />
+              {results.name}
+            </AthleteLink>
           </UU5.BlockLayout.Text>
         </UU5.BlockLayout.Column>
         <UU5.BlockLayout.Column width={"150px"}>
