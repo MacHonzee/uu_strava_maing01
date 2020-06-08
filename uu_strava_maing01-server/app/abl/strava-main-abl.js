@@ -63,13 +63,14 @@ class StravaMainAbl {
 
   async loadConfig(awid, session) {
     let config = await this.configDao.get(awid);
+    delete config.clientSecret;
 
     const AthleteAbl = require("./athlete-abl");
-    let token = await AthleteAbl.getValidToken(awid, session);
+    let { athlete } = await AthleteAbl.loadMyself(awid, session);
 
     return {
-      clientId: config.clientId,
-      stravaTokenValid: !!token.token
+      config,
+      athlete
     };
   }
 }

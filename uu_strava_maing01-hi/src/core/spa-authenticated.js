@@ -73,7 +73,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOn:private
   _getChild(config, handleUpdateVisual) {
     let routes = {};
-    if (config.stravaTokenValid) {
+    if (config.athlete.token) {
       routes = {
         "": "trailtour2020",
         home: { component: <Home /> },
@@ -106,7 +106,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
               }
             />
           }
-          left={config.stravaTokenValid && <Left />}
+          left={config.athlete.token && <Left />}
           leftFixed
           leftRelative="m l xl"
           leftWidth="!xs-50 !s-40 !m-190px !l-190px !xl-190px"
@@ -115,10 +115,10 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           bottom={<Bottom />}
           type={3}
           displayedLanguages={["cs"]}
-          key={"" + config.stravaTokenValid}
+          key={"" + config.athlete.token}
         >
           <UU5.Common.Router
-            notFoundRoute={config.stravaTokenValid ? "home" : "stravaLogin"}
+            notFoundRoute={config.athlete.token ? "home" : "stravaLogin"}
             routes={routes}
             controlled={false}
           />
@@ -134,7 +134,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
       <UU5.Common.DataManager onLoad={Calls.loadAwidConfig} data={{}}>
         {({ errorState, errorData, data, handleReload }) => {
           if (errorState) {
-            return <UU5.Bricks.Error errorData={errorData} />;
+            return <Plus4U5.App.SpaError errorData={errorData} />;
           } else if (data) {
             let config = data && (data.data || data);
             return this._getChild(config, handleReload);

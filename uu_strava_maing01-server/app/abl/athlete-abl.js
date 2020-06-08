@@ -183,10 +183,10 @@ class AthleteAbl {
 
   async loadMyself(awid, session) {
     let athlete = await this.athleteDao.getByUuIdentity(awid, session.getIdentity().getUuIdentity());
-    delete athlete.token;
+    if (athlete) athlete.token = !!athlete.token;
 
     return {
-      ...athlete,
+      athlete,
       uuAppErrorMap: {}
     };
   }

@@ -52,9 +52,6 @@ export const About = UU5.Common.VisualComponent.create({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {
-    identity: UU5.PropTypes.shape()
-  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps

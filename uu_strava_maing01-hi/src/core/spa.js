@@ -5,6 +5,7 @@ import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-bricks";
 import "uu_plus4u5g01-app";
 
+import { Session } from "uu_appg01_oidc";
 import Config from "./config/config.js";
 import SpaAuthenticated from "./spa-authenticated.js";
 //@@viewOff:imports
@@ -54,13 +55,19 @@ const Spa = UU5.Common.VisualComponent.create({
     let child;
     if (this.state.error) {
       child = <Plus4U5.App.SpaError error={this.state.error} />;
-    } else if (this.isAuthenticated()) {
-      child = <SpaAuthenticated {...this.getMainPropsToPass()} identity={this.getIdentity()} />;
-    } else if (this.isNotAuthenticated()) {
-      // TODO Fill in the productInfo.baseUri properly (e.g. "https://uuos9.plus4u.net/uu-bookkitg01-main/00000-111111111111/").
-      child = <Plus4U5.App.SpaNotAuthenticated {...this.getMainPropsToPass()} productInfo={{ baseUri: "" }} />;
     } else {
-      child = <Plus4U5.App.SpaLoading {...this.getMainPropsToPass()} content="uuStrava" />;
+      child = (
+        <UU5.Common.Session session={Session.currentSession}>
+          <UU5.Common.Identity>
+            <UU5.Common.Identity.Item pending>
+              <Plus4U5.App.SpaLoading {...this.getMainPropsToPass()} content="uuStrava" />{" "}
+            </UU5.Common.Identity.Item>
+            <UU5.Common.Identity.Item authenticated notAuthenticated>
+              <SpaAuthenticated {...this.getMainPropsToPass()} />
+            </UU5.Common.Identity.Item>
+          </UU5.Common.Identity>
+        </UU5.Common.Session>
+      );
     }
 
     return child;
