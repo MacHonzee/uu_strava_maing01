@@ -7,23 +7,23 @@
     "useCaseMap": {}
   },
   "*": {
-    "profileList": ["Authorities","Executives","AwidOwner"],
+    "profileList": ["Authorities", "RegisteredUsers", "UnregisteredUsers", "AwidOwner"],
     "useCaseMap": {
       "init": ["AwidOwner"],
       "defaultUve": ["Public"],
-      "stravaMain/loadConfig": ["Authorities"],
-      "athlete/create": ["Authorities","Executives"],
-      "athlete/exportActivities": ["Authorities","Executives"],
-      "athlete/loadMyself": ["Authorities","Executives"],
-      "athlete/updateNewActivities": ["Authorities","Executives"],
-      "segment/list": ["Authorities","Executives"],
-      "segment/refreshOne": ["Authorities","Executives"],
-      "segment/refreshAll": ["Authorities","Executives"],
-      "trailtour/setup": ["Authorities","Executives"],
-      "trailtour/update": ["Authorities","Executives"],
-      "trailtour/get": ["Authorities","Executives"],
-      "trailtour/getTourDetail": ["Authorities","Executives"],
-      "trailtour/getAthleteResults": ["Authorities","Executives"]
+      "stravaMain/loadConfig": ["UnregisteredUsers"],
+      "athlete/create": ["RegisteredUsers"],
+      "athlete/exportActivities": ["RegisteredUsers"],
+      "athlete/loadMyself": ["RegisteredUsers"],
+      "athlete/updateNewActivities": ["RegisteredUsers"],
+      "segment/list": ["RegisteredUsers"],
+      "segment/refreshOne": ["RegisteredUsers"],
+      "segment/refreshAll": ["RegisteredUsers"],
+      "trailtour/setup": ["Authorities"],
+      "trailtour/update": ["RegisteredUsers"],
+      "trailtour/get": ["UnregisteredUsers"],
+      "trailtour/getTourDetail": ["UnregisteredUsers"],
+      "trailtour/getAthleteResults": ["UnregisteredUsers"]
     }
   }
 }
