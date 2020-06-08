@@ -2,7 +2,6 @@
 const TrailtourAbl = require("../../abl/trailtour-abl.js");
 
 class TrailtourController {
-
   getAthleteResults(ucEnv) {
     return TrailtourAbl.getAthleteResults(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
@@ -14,6 +13,7 @@ class TrailtourController {
   get(ucEnv) {
     return TrailtourAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
+
   setup(ucEnv) {
     return TrailtourAbl.setup(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession());
   }

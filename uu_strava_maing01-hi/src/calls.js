@@ -4,9 +4,21 @@
 import * as UU5 from "uu5g04";
 import Plus4U5 from "uu_plus4u5g01";
 
-let Calls = {
+const BACKEND_URI_MAP = {
   /** URL containing app base, e.g. "https://uuos9.plus4u.net/vnd-app/awid/". */
-  APP_BASE_URI: location.protocol + "//" + location.host + UU5.Environment.getAppBasePath(),
+  default: location.protocol + "//" + location.host + UU5.Environment.getAppBasePath(),
+
+  // TODO correct Url
+  dev1: "https://uuappg01-eu-w-1.plus4u.net/usy-seersc-maing01/e4694e4f14f84ef7994181b3015f934a/"
+};
+
+function getBackendUri() {
+  let mainEnv = (UU5 && UU5.Environment && UU5.Environment.defaultBackend) || "default";
+  return BACKEND_URI_MAP[mainEnv];
+}
+
+let Calls = {
+  APP_BASE_URI: getBackendUri(),
 
   call(method, url, dtoIn, clientOptions) {
     return new Promise((resolve, reject) => {
