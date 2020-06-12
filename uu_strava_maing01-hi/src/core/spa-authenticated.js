@@ -11,7 +11,6 @@ import Calls from "calls";
 import Left from "./left";
 import Bottom from "./bottom.js";
 import About from "../routes/about.js";
-import Home from "../routes/home.js";
 import StravaToken from "../routes/strava-token.js";
 import StravaLogin from "../routes/strava-login";
 import Trailtour from "../routes/trailtour";
@@ -71,42 +70,30 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
-  _getChild(config, handleUpdateVisual) {
-    let routes = {};
-    if (config.athlete.token) {
-      routes = {
-        "": "trailtour2020",
-        home: { component: <Home /> },
-        trailtour2020: { component: <Trailtour year={2020} /> },
-        trailtour2019: { component: <Trailtour year={2019} /> },
-        tourDetail: { component: <TourDetail /> },
-        athleteTourDetail: { component: <AthleteTourDetail /> },
-        about: { component: <About identity={this.props.identity} /> }
-      };
-    } else {
-      routes = {
-        "": "stravaLogin",
-        stravaLogin: { component: <StravaLogin /> },
-        stravaToken: { component: <StravaToken /> },
-        about: { component: <About identity={this.props.identity} /> }
-      };
+  _getChild(config) {
+    let routes = {
+      czTrailtour2020: { component: <Trailtour year={"2020_CZ"} /> },
+      trailtour2019: { component: <Trailtour year={"2019"} /> },
+      tourDetail: { component: <TourDetail /> },
+      athleteTourDetail: { component: <AthleteTourDetail /> },
+      about: { component: <About /> }
+    };
+
+    if (UU5.Environment.getSession().isAuthenticated() && !config.athlete) {
+      routes.stravaLogin = { component: <StravaLogin /> };
+      routes.stravaToken = { component: <StravaToken /> };
     }
 
     return (
-      <SpaContext.Provider value={{ ...config, updateConfig: handleUpdateVisual }}>
+      <SpaContext.Provider value={{ ...config }}>
         <Plus4U5.App.Page
           {...this.getMainPropsToPass()}
           top={
-            <Plus4U5.App.Top
-              content={
-                // TODO link by měl být dle přihlášeného uživatele ideálně
-                <UU5.Bricks.Link href={"athleteTourDetail?year=2020&stravaId=25797801"}>
-                  {this.getLsiComponent("name")}
-                </UU5.Bricks.Link>
-              }
-            />
+            <Plus4U5.App.Top>
+              <UU5.Bricks.Link href={Config.DEFAULT_ROUTE}>{this.getLsiComponent("name")}</UU5.Bricks.Link>
+            </Plus4U5.App.Top>
           }
-          left={config.athlete.token && <Left />}
+          left={<Left />}
           leftFixed
           leftRelative="m l xl"
           leftWidth="!xs-50 !s-40 !m-190px !l-190px !xl-190px"
@@ -115,10 +102,10 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           bottom={<Bottom />}
           type={3}
           displayedLanguages={["cs"]}
-          key={"" + config.athlete.token}
         >
           <UU5.Common.Router
-            notFoundRoute={config.athlete.token ? "home" : "stravaLogin"}
+            route={Config.DEFAULT_ROUTE}
+            notFoundRoute={Config.DEFAULT_ROUTE}
             routes={routes}
             controlled={false}
           />
@@ -132,12 +119,12 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   render() {
     return (
       <UU5.Common.DataManager onLoad={Calls.loadAwidConfig} data={{}}>
-        {({ errorState, errorData, data, handleReload }) => {
+        {({ errorState, errorData, data }) => {
           if (errorState) {
             return <Plus4U5.App.SpaError errorData={errorData} />;
           } else if (data) {
             let config = data && (data.data || data);
-            return this._getChild(config, handleReload);
+            return this._getChild(config);
           } else {
             return <Plus4U5.App.SpaLoading content={"uuStrava"} />;
           }

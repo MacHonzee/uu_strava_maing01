@@ -1,7 +1,7 @@
 const Lsi = {
   appName: {
-    cs: "Aplikace uuStrava",
-    en: "Application uuStrava"
+    cs: "uuStrava",
+    en: "uuStrava"
   },
 
   leftLinks: {
@@ -27,6 +27,10 @@ const Lsi = {
     termsOfUse: {
       cs: "Podmínky užívání",
       en: "Terms of use"
+    },
+    appVersion: {
+      cs: "Verze aplikace",
+      en: "Application version"
     }
   },
 

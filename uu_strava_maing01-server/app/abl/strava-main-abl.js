@@ -42,20 +42,31 @@ class StravaMainAbl {
     await Promise.all(schemaCreateResults);
 
     // HDS 3
-    try {
-      await SysProfileModel.setProfile(awid, { code: "Authorities", roleUri: dtoIn.authoritiesUri });
-    } catch (e) {
-      if (e instanceof ObjectStoreError) {
-        // A4
-        throw new Errors.Init.SysSetProfileFailed({ uuAppErrorMap }, { role: dtoIn.authoritiesUri }, e);
+    const profileMap = {
+      Authorities: dtoIn.authoritiesUri,
+      RegisteredUsers: "urn:uu:GGPLUS4U",
+      UnregisteredUsers: "urn:uu:GGALL"
+    };
+
+    for (let profileCode in profileMap) {
+      if (!profileMap.hasOwnProperty(profileCode)) continue;
+
+      let profile = profileMap[profileCode];
+      try {
+        await SysProfileModel.setProfile(awid, { code: profileCode, roleUri: profile });
+      } catch (e) {
+        if (e instanceof ObjectStoreError) {
+          // A4
+          throw new Errors.Init.SetProfileFailed({ uuAppErrorMap }, { code: profileCode, role: profile }, e);
+        }
+        throw e;
       }
-      throw e;
     }
 
     // HDS 4
     await this.configDao.create({ awid, ...dtoIn.configuration });
 
-    // HDS 5
+    // HDS 6
     return {
       uuAppErrorMap: uuAppErrorMap
     };

@@ -30,7 +30,7 @@ export const Trailtour = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    year: UU5.PropTypes.number
+    year: UU5.PropTypes.string
   },
   //@@viewOff:propTypes
 

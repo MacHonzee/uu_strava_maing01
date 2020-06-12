@@ -43,7 +43,7 @@ class TrailtourResultsMongo extends UuObjectDao {
     });
     let resultsTotal = key => ({ $cond: { if: { $isArray: "$" + key }, then: { $size: "$" + key }, else: 0 } });
 
-    return await super.aggregate([
+    let items = await super.aggregate([
       { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
       {
         $project: {
@@ -66,17 +66,27 @@ class TrailtourResultsMongo extends UuObjectDao {
       },
       {
         $unwind: "$segment"
-      },
-      {
-        $set: {
-          id: "$_id",
-          "segment.id": "$segment._id"
-        }
-      },
-      {
-        $unset: ["_id", "segment._id"]
       }
+      // TODO $set a $unset nefungují v Mongu v Cloudu (vyžaduje 4.2+)
+      // {
+      //   $set: {
+      //     id: "$_id",
+      //     "segment.id": "$segment._id"
+      //   }
+      // },
+      // {
+      //   $unset: ["_id", "segment._id"]
+      // }
     ]);
+
+    items.forEach((item, i, self) => {
+      self[i].id = item._id;
+      self[i].segment.id = item.segment._id;
+      delete item._id;
+      delete item.segment._id;
+    });
+
+    return items;
   }
 }
 

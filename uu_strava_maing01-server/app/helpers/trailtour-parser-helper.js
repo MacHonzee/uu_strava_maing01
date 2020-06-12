@@ -136,7 +136,8 @@ const TrailtourParser = {
       .replace(/\/\s+/, "/ ")
       .trim();
     let gpxLink = $(BASE_SELECTORS.tourDetailGpx)[0].attribs.href;
-    let stravaLink = $(YEARLY_SELECTORS[year.toString()].tourDetailStravalink)[0].attribs.href;
+    let yearlySelector = YEARLY_SELECTORS[year.toString()] || YEARLY_SELECTORS["2020"];
+    let stravaLink = $(yearlySelector.tourDetailStravalink)[0].attribs.href;
     let stravaId = parseInt(stravaLink.replace(STRAVA_SEGMENT_HREF, ""));
     let { allResults: womenResults } = parseResults($, BASE_SELECTORS.womenResults);
     let { allResults: menResults } = parseResults($, BASE_SELECTORS.menResults);

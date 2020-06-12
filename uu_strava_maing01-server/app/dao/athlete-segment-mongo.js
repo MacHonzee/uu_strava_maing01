@@ -58,6 +58,8 @@ class AthleteSegmentMongo extends UuObjectDao {
           path: "$segment"
         }
       },
+
+       // TODO $set a $unset nefungují v Mongu v Cloudu (4.2+)
       {
         $set: {
           id: "$_id",

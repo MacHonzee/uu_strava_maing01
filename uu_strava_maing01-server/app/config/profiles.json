@@ -11,6 +11,12 @@
     "useCaseMap": {
       "init": ["AwidOwner"],
       "defaultUve": ["Public"],
+      "sys/listProfiles": ["AwidOwner", "Authorities"],
+      "sys/setProfile": ["AwidOwner", "Authorities"],
+      "sys/createPermission": ["AwidOwner", "Authorities"],
+      "sys/deletePermission": ["AwidOwner", "Authorities"],
+      "sys/listPermissions": ["AwidOwner", "Authorities"],
+
       "stravaMain/loadConfig": ["UnregisteredUsers"],
       "athlete/create": ["RegisteredUsers"],
       "athlete/exportActivities": ["RegisteredUsers"],

@@ -60,7 +60,7 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    year: UU5.PropTypes.number.isRequired,
+    year: UU5.PropTypes.string.isRequired,
     onUpdateDone: UU5.PropTypes.func.isRequired
   },
   //@@viewOff:propTypes

@@ -1,16 +1,16 @@
 /* eslint-disable */
 const trailtourSetupDtoInType = shape({
-  year: number().isRequired(),
+  year: string().isRequired(),
   baseUri: uri().isRequired(),
   totalResultsUri: uri().isRequired()
 });
 
 const trailtourUpdateDtoInType = shape({
-  year: number().isRequired(),
+  year: string().isRequired(),
 });
 
 const trailtourGetDtoInType = shape({
-  year: number().isRequired(),
+  year: string().isRequired(),
 });
 
 const trailtourGetTourDetailDtoInType = shape({
@@ -18,6 +18,6 @@ const trailtourGetTourDetailDtoInType = shape({
 });
 
 const trailtourGetAthleteResultsDtoInType = shape({
-  year: number().isRequired(),
+  year: string().isRequired(),
   athleteStravaId: number().isRequired()
 });

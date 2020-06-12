@@ -93,6 +93,9 @@ export const About = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Section {...this.getMainPropsToPass()}>
         <Plus4U5.App.About header={this.getLsiValue("header")} content={this.getLsiItem(about)} />
+        <UU5.Bricks.Section header={this.getLsiComponent("appVersion")} level={4} style={{ textAlign: "center" }}>
+          {UU5.Environment.appVersion}
+        </UU5.Bricks.Section>
         <Plus4U5.App.Licence
           organisation={this.getLsiItem(licence.organisation)}
           authorities={this.getLsiItem(licence.authorities)}

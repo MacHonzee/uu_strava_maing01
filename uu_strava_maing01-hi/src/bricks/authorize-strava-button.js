@@ -22,7 +22,8 @@ const AuthorizeStravaButton = UU5.Common.VisualComponent.create({
       button: {
         en: "Authorize Strava"
       }
-    }
+    },
+    contextType: SpaContext
   },
   //@@viewOff:statics
 
@@ -42,7 +43,9 @@ const AuthorizeStravaButton = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
-  _onAuthorize(clientId) {
+  _onAuthorize() {
+    let clientId = this.context.config.clientId;
+
     let oAuthUri =
       "http://www.strava.com/oauth/authorize" +
       "?client_id=" +
@@ -68,15 +71,9 @@ const AuthorizeStravaButton = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return (
-      <SpaContext.Consumer>
-        {({ clientId }) => {
-          return (
-            <UU5.Bricks.Button onClick={() => this._onAuthorize(clientId)} {...this.props.buttonProps}>
-              {this.getLsiComponent("button")}
-            </UU5.Bricks.Button>
-          );
-        }}
-      </SpaContext.Consumer>
+      <UU5.Bricks.Button onClick={this._onAuthorize} {...this.props.buttonProps}>
+        {this.getLsiComponent("button")}
+      </UU5.Bricks.Button>
     );
   }
   //@@viewOff:render

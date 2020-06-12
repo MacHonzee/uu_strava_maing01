@@ -22,7 +22,7 @@ export const Left = UU5.Common.VisualComponent.create({
         cs: "Segmenty",
         en: "Segments"
       },
-      trailtour2020: {
+      czTrailtour2020: {
         cs: "Trailtour 2020 CZ",
         en: "Trailtour 2020 CZ"
       },
@@ -62,8 +62,10 @@ export const Left = UU5.Common.VisualComponent.create({
       <Plus4U5.App.Left
         {...this.getMainPropsToPass()}
         logoProps={{
-          backgroundImageSrc: "assets/strava-logo.png",
-          height: 140
+          backgroundColor: "brown",
+          backgroundColorTo: "chocolate",
+          title: "uuStrava",
+          companyLogo: "../assets/strava-logo.png"
         }}
         aboutItems={[
           {
@@ -71,17 +73,15 @@ export const Left = UU5.Common.VisualComponent.create({
             href: "about"
           }
         ]}
+        homeHref={Config.DEFAULT_ROUTE}
       >
-        <Plus4U5.App.MenuProvider activeItemId="home">
+        <Plus4U5.App.MenuProvider activeItemId={Config.DEFAULT_ROUTE}>
           <Plus4U5.App.MenuTree
+            borderBottom
             items={[
-              // {
-              //   content: this.getLsiComponent("segments"),
-              //   href: "home"
-              // },
               {
-                content: this.getLsiComponent("trailtour2020"),
-                href: "trailtour2020"
+                content: this.getLsiComponent(Config.DEFAULT_ROUTE),
+                href: Config.DEFAULT_ROUTE
               },
               {
                 content: this.getLsiComponent("trailtour2019"),

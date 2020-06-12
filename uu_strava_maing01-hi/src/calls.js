@@ -9,7 +9,7 @@ const BACKEND_URI_MAP = {
   default: location.protocol + "//" + location.host + UU5.Environment.getAppBasePath(),
 
   // TODO correct Url
-  dev1: "https://uuappg01-eu-w-1.plus4u.net/usy-seersc-maing01/e4694e4f14f84ef7994181b3015f934a/"
+  dev1: "https://uuappg01-eu-w-1.plus4u.net/uu-strava-maing01/9cb6f576dcb44633b5d7e5afd9384a49/"
 };
 
 function getBackendUri() {

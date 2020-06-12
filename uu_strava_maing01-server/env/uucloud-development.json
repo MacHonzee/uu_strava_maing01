@@ -3,13 +3,13 @@
   "schemaSpecificationUri": "https://uuos9.plus4u.net/uu-bookkitg01-main/78462435-289fcd2e11d34f3e9b2184bedb236ded/book/page?code=uuSubAppInstanceDescriptor",
   "uuSubApp": {
     "code": "UU.STRAVA.MAING01",
-    "version": "0.1.0",
+    "version": "0.1.0-beta",
     "name": "uuStravaMaing01",
     "description": "",
     "license": "License Commercial",
     "asidRequired": true,
     "awidCount": 1,
-    "resourcePoolUri": "----- VALUE REQUIRED -----",
+    "resourcePoolUri": "ues:DEV0184-BT:UU.STRAVA/POOL",
     "uuAppNodeSetMap": {
       "CMD": {
         "nodeSize": "G1_S",
@@ -17,19 +17,46 @@
           "min": 1,
           "max": 1
         },
-        "appPackUri": null,
-        "runtimeStack": "UU.OS9/UC_NODEJS_STACK-V1.1"
+        "appPackUri": "ues:DEV0184-BT:UU.STRAVA.MAING01/APPBOX-0.1.0-beta:UU.STRAVA.MAING01/CMD-PACK",
+        "runtimeStack": "UU.APPG01/APPSERVER_NODEJS_STACK-1.4"
       }
     },
     "uuAppObjectStoreMap": {
       "OSID_1": {
-        "technology": "MongoDB-3.4",
+        "technology": "MongoDB-4.0",
         "size": 0.25,
         "backup": false,
         "alias": "primary"
       }
     },
     "uuConfigMap": {
+      "uu_app_auditlog_record_count_limit": 100000,
+      "uu_app_auditlog_record_limit_check_after": 10000,
+      "uu_app_oidc_providers_oidcg02_enabled": true,
+      "uu_app_oidc_primary_provider": "oidcg02",
+      "uu_app_oidc_providers_oidcg01_enabled": true
+    }
+  },
+  "uuSubAppInstance": {
+    "asid": "8935ea906f1a43b390de3631f8231ea2",
+    "asidOwner": "25-7135-1",
+    "uuEeMap": {
+      "asidOwner": "25-7135-1"
+    },
+    "awidList": [
+      {
+        "awid": "9cb6f576dcb44633b5d7e5afd9384a49",
+        "awidOwner": "25-7136-1"
+      },
+      {
+        "awid": "9a8b285b0a17401b99fc3a18244a5819",
+        "awidOwner": "25-7137-1"
+      }
+    ],
+    "uuAppObjectStoreMap": {
+      "OSID_1": {
+        "osid": "6e2ec383d71641238078fc8f80d8d028"
+      }
     }
   }
 }

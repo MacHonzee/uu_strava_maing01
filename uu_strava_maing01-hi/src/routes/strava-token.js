@@ -2,7 +2,6 @@
 import * as UU5 from "uu5g04";
 import Config from "./config/config.js";
 import Calls from "calls";
-import SpaContext from "../context/spa-context";
 import LoadFeedback from "../bricks/load-feedback";
 //@@viewOff:imports
 
@@ -28,8 +27,9 @@ const StravaToken = UU5.Common.VisualComponent.create({
       `
     },
     lsi: {
+      // TODO angličtinu + textace + alternativní scénář
       success: {
-        cs: "Aplikace úspěšně propojena se Stravou. Budete přesměrování na domácí stránku za 5 vteřin."
+        cs: "Aplikace úspěšně propojena se Stravou."
       },
       accessDenied: {
         cs:
@@ -75,18 +75,13 @@ const StravaToken = UU5.Common.VisualComponent.create({
   _renderSuccess() {
     return (
       <UU5.Common.DataManager onLoad={Calls.createAthlete} data={this._getDtoIn()}>
-        {data => (
-          <LoadFeedback {...data}>
-            <SpaContext.Consumer>
-              {({ updateConfig }) => {
-                setTimeout(() => updateConfig({ stravaTokenValid: true }), 5000);
-                return <UU5.Bricks.Well colorSchema={"success"}>{this.getLsiComponent("success")}</UU5.Bricks.Well>;
-              }}
-            </SpaContext.Consumer>
-          </LoadFeedback>
-        )}
+        {data => <LoadFeedback {...data}>{this._getSuccessChildren()}</LoadFeedback>}
       </UU5.Common.DataManager>
     );
+  },
+
+  _getSuccessChildren() {
+    return <UU5.Bricks.Well colorSchema={"success"}>{this.getLsiComponent("success")}</UU5.Bricks.Well>;
   },
   //@@viewOff:private
 

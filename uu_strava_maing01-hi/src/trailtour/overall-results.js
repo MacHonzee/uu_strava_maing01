@@ -39,7 +39,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
   //@@viewOn:propTypes
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
-    year: UU5.PropTypes.number.isRequired,
+    year: UU5.PropTypes.string.isRequired,
     handleReload: UU5.PropTypes.func
   },
   //@@viewOff:propTypes
@@ -119,7 +119,9 @@ export const OverallResults = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Lsi lsi={Lsi.generatedStamp} />
           <UU5.Bricks.DateTime value={this.props.data.lastUpdate} secondsDisabled />
         </UU5.Bricks.Span>
-        <UpdateTrailtourButton year={this.props.year} onUpdateDone={this.props.handleReload} />
+        {UU5.Environment.getSession().isAuthenticated() && (
+          <UpdateTrailtourButton year={this.props.year} onUpdateDone={this.props.handleReload} />
+        )}
       </UU5.Bricks.Div>
     );
   },
@@ -159,7 +161,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: this._getAthleteLink,
-          width: "xl"
+          width: "l"
         },
         {
           id: "points",
@@ -184,7 +186,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
           width: "xs"
         },
         {
-          id: "points",
+          id: "avgPoints",
           headers: [
             {
               label: Lsi.avgPoints,
