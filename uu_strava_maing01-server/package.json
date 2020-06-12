@@ -5,8 +5,8 @@
   "license": "License Commercial",
   "spec": "nodejs-app; uu_appg01@1.4.1",
   "dependencies": {
-    "uu_appg01_server": "^4.6.2",
-    "cheerio": "^1.0.0-rc.3"
+    "cheerio": "^1.0.0-rc.3",
+    "uu_appg01_server": "^4.7.0"
   },
   "devDependencies": {
     "uu_appg01_devkit": "^1.7.0",

@@ -94,7 +94,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           left={<Left />}
           leftFixed
           leftRelative="m l xl"
-          leftWidth="!xs-50 !s-40 !m-190px !l-190px !xl-190px"
+          leftWidth="!xs-50 !s-40 !m-210px !l-210px !xl-210px"
           isLeftOpen="m l xl"
           showLeftToggleButton
           colorSchemaActive={"red"}

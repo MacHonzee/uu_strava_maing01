@@ -70,13 +70,11 @@ const Home = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Section header={this.getLsiComponent("backlogHeader")}>
         <UU5.Bricks.Ul>
-          {BacklogConfig.items.map((item, i) => {
-            return (
-              <UU5.Bricks.Li key={i}>
-                <UU5.Bricks.Lsi lsi={item} />
-              </UU5.Bricks.Li>
-            );
-          })}
+          {BacklogConfig.items.map((item, i) => (
+            <UU5.Bricks.Li key={i}>
+              <UU5.Bricks.Lsi lsi={item} />
+            </UU5.Bricks.Li>
+          ))}
         </UU5.Bricks.Ul>
       </UU5.Bricks.Section>
     );

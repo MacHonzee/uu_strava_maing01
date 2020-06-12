@@ -7,6 +7,9 @@ const BacklogConfig = {
       cs: "Mapa (Google mapa + Mapy.cz) etap na seznamu etap a na detailu běžce"
     },
     {
+      cs: "Snazší vyhledávání běžců ve výsledcích"
+    },
+    {
       cs: "Slovenská Trailtoura 2020"
     },
     {
