@@ -86,7 +86,8 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
   },
 
   _getName({ name, stravaId }) {
-    return <UU5.Bricks.Link href={`athleteTourDetail?year=${2020}&stravaId=${stravaId}`}>{name}</UU5.Bricks.Link>;
+    let year = this.props.data.trailtour.year;
+    return <UU5.Bricks.Link href={`athleteTourDetail?year=${year}&stravaId=${stravaId}`}>{name}</UU5.Bricks.Link>;
   },
 
   _getStravaLink({ stravaId }) {

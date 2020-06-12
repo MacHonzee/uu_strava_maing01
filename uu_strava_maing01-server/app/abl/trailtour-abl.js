@@ -193,9 +193,13 @@ class TrailtourAbl {
     let segment = await this.segmentDao.getByStravaId(awid, tourDetail.stravaId);
 
     // HDS 4
+    let trailtour = await this.trailtourDao.get(awid, tourDetail.trailtourId);
+
+    // HDS 4
     return {
       tourDetail,
       segment,
+      trailtour,
       uuAppErrorMap
     };
   }
