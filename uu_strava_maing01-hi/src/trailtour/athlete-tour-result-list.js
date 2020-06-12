@@ -123,8 +123,13 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   _getLinksCell({ stravaId, link }) {
     return (
       <UU5.Common.Fragment>
-        <SegmentLink stravaId={stravaId} style={{ marginRight: "8px" }}>
-          <UU5.Bricks.Image src={"./assets/strava-logo.png"} responsive={false} alt={"strava-logo"} width={"24px"} />
+        <SegmentLink stravaId={stravaId} style={{ marginRight: "4px" }}>
+          <UU5.Bricks.Image
+            src={"./assets/strava_symbol_orange.png"}
+            responsive={false}
+            alt={"strava_symbol_orange"}
+            width={"32px"}
+          />
         </SegmentLink>
         <UU5.Bricks.Link href={link} target={"_blank"}>
           <UU5.Bricks.Image src={"./assets/inov8-logo.png"} responsive={false} alt={"trailtour-logo"} width={"24px"} />

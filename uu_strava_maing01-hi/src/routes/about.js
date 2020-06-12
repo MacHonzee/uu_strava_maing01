@@ -5,6 +5,7 @@ import Plus4U5 from "uu_plus4u5g01";
 
 import Config from "./config/config.js";
 import Lsi from "../config/lsi.js";
+import AboutLsi from "../lsi/about-lsi";
 import AboutCfg from "../config/about.js";
 //@@viewOff:imports
 
@@ -34,6 +35,11 @@ export const About = UU5.Common.VisualComponent.create({
           padding-bottom: 56px;
         }
       `,
+      aboutText: Config.Css.css`
+        text-align: center;
+        font-size: 14px;
+        color: #393939;
+    `,
       logos: Config.Css.css`
         text-align:center;
         margin-top: 56px;
@@ -84,22 +90,29 @@ export const About = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    const about = AboutCfg.about || {};
-    const licence = AboutCfg.licence || {};
     const leadingAuthors = this._getAuthors(AboutCfg.leadingAuthors);
     const otherAuthors = this._getAuthors(AboutCfg.otherAuthors);
     const usedTechnologies = AboutCfg.usedTechnologies || {};
 
     return (
       <UU5.Bricks.Section {...this.getMainPropsToPass()}>
-        <Plus4U5.App.About header={this.getLsiValue("header")} content={this.getLsiItem(about)} />
-        <UU5.Bricks.Section header={this.getLsiComponent("appVersion")} level={4} style={{ textAlign: "center" }}>
+        <Plus4U5.App.About
+          header={<UU5.Bricks.Lsi lsi={AboutLsi.header} />}
+          content={<UU5.Bricks.Lsi lsi={AboutLsi.welcomeText} />}
+        />
+        <UU5.Bricks.P className={this.getClassName("aboutText")}>
+          <UU5.Bricks.Lsi lsi={AboutLsi.registrationText} />
+        </UU5.Bricks.P>
+        <UU5.Bricks.P className={this.getClassName("aboutText")}>
+          <UU5.Bricks.Lsi lsi={AboutLsi.contactText} />
+        </UU5.Bricks.P>
+        <UU5.Bricks.Section
+          header={<UU5.Bricks.Lsi lsi={AboutLsi.appVersion} />}
+          level={4}
+          style={{ textAlign: "center" }}
+        >
           {UU5.Environment.appVersion}
         </UU5.Bricks.Section>
-        <Plus4U5.App.Licence
-          organisation={this.getLsiItem(licence.organisation)}
-          authorities={this.getLsiItem(licence.authorities)}
-        />
         <Plus4U5.App.Authors
           header={this.getLsiValue("creatorsHeader")}
           leadingAuthors={leadingAuthors}
@@ -109,11 +122,6 @@ export const About = UU5.Common.VisualComponent.create({
           technologies={this.getLsiItem(usedTechnologies.technologies)}
           content={this.getLsiItem(usedTechnologies.content)}
         />
-        {licence.termsOfUse && (
-          <UU5.Bricks.P className={this.getClassName("termsOfUse")}>
-            <UU5.Bricks.Link href={licence.termsOfUse} target="_blank" content={this.getLsiValue("termsOfUse")} />
-          </UU5.Bricks.P>
-        )}
         <UU5.Bricks.Div className={this.getClassName("logos")}>
           <UU5.Bricks.Image responsive={false} src="assets/plus4u.svg" />
           <UU5.Bricks.Image responsive={false} src="assets/unicorn.svg" />

@@ -3,14 +3,16 @@
 const createDtoInType = shape({
   stravaId: number().isRequired(),
   force: boolean(),
-  leaderboard: array(shape({
-    athlete_name: string().isRequired(),
-    elapsed_time: number().isRequired(),
-    moving_time: number().isRequired(),
-    start_date: datetime().isRequired(),
-    start_date_local: datetime().isRequired(),
-    rank: number().isRequired()
-  }))
+  leaderboard: array(
+    shape({
+      athlete_name: string().isRequired(),
+      elapsed_time: number().isRequired(),
+      moving_time: number().isRequired(),
+      start_date: datetime().isRequired(),
+      start_date_local: datetime().isRequired(),
+      rank: number().isRequired()
+    })
+  )
 });
 
 const refreshOneDtoInType = shape({

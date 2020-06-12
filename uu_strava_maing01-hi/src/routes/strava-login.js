@@ -85,7 +85,7 @@ const StravaLogin = UU5.Common.VisualComponent.create({
 
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <UU5.Bricks.Image src={"assets/strava-logo.png"} />
+        <UU5.Bricks.Image src={"assets/strava_symbol_orange.png"} />
         <UU5.Bricks.Paragraph content={this.getLsiComponent("authorize")} />
         <AuthorizeStravaButton buttonProps={buttonProps} />
       </UU5.Bricks.Div>

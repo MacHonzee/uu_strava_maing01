@@ -18,6 +18,7 @@ import Trailtour from "../routes/trailtour";
 import SpaContext from "../context/spa-context";
 import TourDetail from "../routes/tour-detail";
 import AthleteTourDetail from "../routes/athlete-tour-detail";
+import Home from "../routes/home";
 //@@viewOff:imports
 
 const SpaAuthenticated = UU5.Common.VisualComponent.create({
@@ -60,10 +61,6 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
-  updateConfig(config, setStateCallback) {
-    this.setState({ config }, setStateCallback);
-    return this;
-  },
   //@@viewOff:interface
 
   //@@viewOn:overriding
@@ -72,6 +69,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOn:private
   _getChild(config) {
     let routes = {
+      home: { component: <Home /> },
       czTrailtour2020: { component: <Trailtour year={"2020_CZ"} /> },
       trailtour2019: { component: <Trailtour year={"2019"} /> },
       tourDetail: { component: <TourDetail /> },
@@ -99,9 +97,10 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           leftWidth="!xs-50 !s-40 !m-190px !l-190px !xl-190px"
           isLeftOpen="m l xl"
           showLeftToggleButton
+          colorSchemaActive={"red"}
           bottom={<Bottom />}
           type={3}
-          displayedLanguages={["cs"]}
+          displayedLanguages={["cs", "en"]}
         >
           <UU5.Common.Router
             route={Config.DEFAULT_ROUTE}
@@ -126,7 +125,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
             let config = data && (data.data || data);
             return this._getChild(config);
           } else {
-            return <Plus4U5.App.SpaLoading content={"uuStrava"} />;
+            return <Plus4U5.App.SpaLoading content={"Trailtour Analytics"} />;
           }
         }}
       </UU5.Common.DataManager>

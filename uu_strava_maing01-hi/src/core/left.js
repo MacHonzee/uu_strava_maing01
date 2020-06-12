@@ -3,6 +3,7 @@ import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
+import Lsi from "../config/lsi";
 
 import Config from "./config/config.js";
 //@viewOff:imports
@@ -15,7 +16,15 @@ export const Left = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "Left",
     classNames: {
-      main: ""
+      main: Config.Css.css`
+        .plus4u5-app-menu-tree .plus4u5-app-tree-menu-item {
+          .color-schema-blue-rich.uu5-bricks-link,
+          .color-schema-blue-rich.uu5-bricks-link:link,
+          .color-schema-blue-rich.uu5-bricks-link:visited {
+            background-color: chocolate;
+          }
+        }
+      `
     },
     lsi: {
       segments: {
@@ -62,10 +71,9 @@ export const Left = UU5.Common.VisualComponent.create({
       <Plus4U5.App.Left
         {...this.getMainPropsToPass()}
         logoProps={{
-          backgroundColor: "brown",
+          backgroundColor: "chocolate",
           backgroundColorTo: "chocolate",
-          title: "uuStrava",
-          companyLogo: "../assets/strava-logo.png"
+          title: <UU5.Bricks.Lsi lsi={Lsi.appName} />
         }}
         aboutItems={[
           {
@@ -80,8 +88,8 @@ export const Left = UU5.Common.VisualComponent.create({
             borderBottom
             items={[
               {
-                content: this.getLsiComponent(Config.DEFAULT_ROUTE),
-                href: Config.DEFAULT_ROUTE
+                content: this.getLsiComponent("czTrailtour2020"),
+                href: "czTrailtour2020"
               },
               {
                 content: this.getLsiComponent("trailtour2019"),

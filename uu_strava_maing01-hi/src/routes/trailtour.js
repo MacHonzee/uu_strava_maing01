@@ -70,7 +70,9 @@ export const Trailtour = UU5.Common.VisualComponent.create({
         <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
           {data => (
             <LoadFeedback {...data}>
-              {data.data && <OverallResults data={data.data} year={this.props.year} handleReload={this._handleReload} />}
+              {data.data && (
+                <OverallResults data={data.data} year={this.props.year} handleReload={this._handleReload} />
+              )}
             </LoadFeedback>
           )}
         </UU5.Common.DataManager>

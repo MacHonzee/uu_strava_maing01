@@ -92,7 +92,12 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
   _getStravaLink({ stravaId }) {
     return (
       <AthleteLink stravaId={stravaId}>
-        <UU5.Bricks.Image src={"./assets/strava-logo.png"} responsive={false} alt={"strava-logo"} width={"24px"} />
+        <UU5.Bricks.Image
+          src={"./assets/strava_symbol_orange.png"}
+          responsive={false}
+          alt={"strava_symbol_orange"}
+          width={"32px"}
+        />
       </AthleteLink>
     );
   },

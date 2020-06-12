@@ -77,7 +77,12 @@ export const TourDetailCard = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Div>
             <SegmentLink stravaId={this.props.data.tourDetail.stravaId}>
               {/* UU5.Bricks.Image has box nesting level, bullshit, does not fit here */}
-              <img src={"./assets/strava-logo.png"} alt={"strava-logo"} width={"24px"} style={{ marginRight: "8px" }} />
+              <img
+                src={"./assets/strava_symbol_orange.png"}
+                alt={"strava_symbol_orange"}
+                width={"32px"}
+                style={{ marginRight: "4px" }}
+              />
             </SegmentLink>
             <UU5.Bricks.Link href={this.props.data.tourDetail.link} target={"_blank"}>
               <img

@@ -59,7 +59,7 @@ class AthleteSegmentMongo extends UuObjectDao {
         }
       },
 
-       // TODO $set a $unset nefungují v Mongu v Cloudu (4.2+)
+      // TODO $set a $unset nefungují v Mongu v Cloudu (4.2+)
       {
         $set: {
           id: "$_id",

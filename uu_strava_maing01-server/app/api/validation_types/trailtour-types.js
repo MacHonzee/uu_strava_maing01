@@ -6,15 +6,15 @@ const trailtourSetupDtoInType = shape({
 });
 
 const trailtourUpdateDtoInType = shape({
-  year: string().isRequired(),
+  year: string().isRequired()
 });
 
 const trailtourGetDtoInType = shape({
-  year: string().isRequired(),
+  year: string().isRequired()
 });
 
 const trailtourGetTourDetailDtoInType = shape({
-  id: id().isRequired(),
+  id: id().isRequired()
 });
 
 const trailtourGetAthleteResultsDtoInType = shape({

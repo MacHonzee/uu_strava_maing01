@@ -60,7 +60,7 @@ const Spa = UU5.Common.VisualComponent.create({
         <UU5.Common.Session session={Session.currentSession}>
           <UU5.Common.Identity>
             <UU5.Common.Identity.Item pending>
-              <Plus4U5.App.SpaLoading {...this.getMainPropsToPass()} content="uuStrava" />{" "}
+              <Plus4U5.App.SpaLoading {...this.getMainPropsToPass()} content="Trailtour Analytics" />{" "}
             </UU5.Common.Identity.Item>
             <UU5.Common.Identity.Item authenticated notAuthenticated>
               <SpaAuthenticated {...this.getMainPropsToPass()} />
