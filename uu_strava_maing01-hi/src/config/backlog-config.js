@@ -10,6 +10,15 @@ const BacklogConfig = {
       cs: "Snazší vyhledávání běžců ve výsledcích"
     },
     {
+      cs: "Hover na řádky v tabulce"
+    },
+    {
+      cs: "Opravit zobrazení tlačítka na refresh trailtoury po loginu"
+    },
+    {
+      cs: "Při zobrazení detailu přepínat document.title"
+    },
+    {
       cs: "Slovenská Trailtoura 2020"
     },
     {
