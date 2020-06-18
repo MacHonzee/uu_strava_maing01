@@ -19,6 +19,7 @@ import SpaContext from "../context/spa-context";
 import TourDetail from "../routes/tour-detail";
 import AthleteTourDetail from "../routes/athlete-tour-detail";
 import Home from "../routes/home";
+import TourSegments from "../routes/tour-segments";
 //@@viewOff:imports
 
 const SpaAuthenticated = UU5.Common.VisualComponent.create({
@@ -37,6 +38,10 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           .uu5-bricks-link {
             color: white;
           }
+        }
+
+        .uu5-flextiles-list .uu5-flextiles-tile:hover {
+          background-color: #e6e6e6;
         }
       `
     },
@@ -71,7 +76,9 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
     let routes = {
       home: { component: <Home /> },
       czTrailtour2020: { component: <Trailtour year={"2020_CZ"} /> },
+      czTrailtour2020segments: { component: <TourSegments year={"2020_CZ"} /> },
       trailtour2019: { component: <Trailtour year={"2019"} /> },
+      trailtour2019segments: { component: <TourSegments year={"2019"} /> },
       tourDetail: { component: <TourDetail /> },
       athleteTourDetail: { component: <AthleteTourDetail /> },
       about: { component: <About /> }

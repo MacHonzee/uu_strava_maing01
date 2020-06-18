@@ -3,7 +3,6 @@ import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
 import LoadFeedback from "../bricks/load-feedback";
-import OverallResults from "../trailtour/overall-results";
 import Calls from "calls";
 //@@viewOff:imports
 
@@ -20,7 +19,7 @@ export const TourSegments = UU5.Common.VisualComponent.create({
     },
     lsi: {
       header: {
-        cs: "Průběžné výsledky Trailtour %s"
+        cs: "Seznam etap Trailtour %s"
       }
     }
   },
@@ -59,9 +58,7 @@ export const TourSegments = UU5.Common.VisualComponent.create({
         <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
           {data => (
             <LoadFeedback {...data}>
-              {data.data && (
-                <UU5.Bricks.Pre>{JSON.stringify(data.data, null, 2)}</UU5.Bricks.Pre>
-              )}
+              {data.data && "// TODO in construction"}
             </LoadFeedback>
           )}
         </UU5.Common.DataManager>

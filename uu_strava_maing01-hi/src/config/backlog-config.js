@@ -10,12 +10,6 @@ const BacklogConfig = {
       cs: "Snazší vyhledávání běžců ve výsledcích"
     },
     {
-      cs: "Hover na řádky v tabulce"
-    },
-    {
-      cs: "Opravit zobrazení tlačítka na refresh trailtoury po loginu"
-    },
-    {
       cs: "Při zobrazení detailu přepínat document.title"
     },
     {
@@ -37,7 +31,7 @@ const BacklogConfig = {
       cs: "Výsledky klubů"
     },
     {
-      cs: "Nastavení uživatele pro přihlášené (preferovaná mapa, preferovaná Trailtoura, spárování se Stravou)"
+      cs: "Nastavení uživatele pro přihlášené (preferovaná mapa, Trailtoura, pohlaví, spárování se Stravou)"
     }
   ]
 };
