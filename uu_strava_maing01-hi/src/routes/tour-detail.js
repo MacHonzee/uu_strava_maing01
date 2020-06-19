@@ -5,6 +5,7 @@ import Config from "./config/config.js";
 import Calls from "calls";
 import LoadFeedback from "../bricks/load-feedback";
 import TourDetailResults from "../trailtour/tour-detail-results";
+import BrickTools from "../bricks/tools";
 //@@viewOff:imports
 
 export const TourDetail = UU5.Common.VisualComponent.create({
@@ -43,6 +44,18 @@ export const TourDetail = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
+  _addPaceToResults(results, segment) {
+    let distance = segment.distance;
+    ["womenResults", "menResults"].forEach(resultKey => {
+      if (!results[resultKey]) return;
+
+      results[resultKey].forEach(athlResult => {
+        let seconds = athlResult.time;
+        athlResult.pace = BrickTools.countPace(seconds, distance);
+      });
+    });
+    return results;
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -56,7 +69,13 @@ export const TourDetail = UU5.Common.VisualComponent.create({
         key={params.id}
       >
         <UU5.Common.DataManager onLoad={Calls.getTourDetail} data={{ id: params.id }}>
-          {data => <LoadFeedback {...data}>{data.data && <TourDetailResults data={data.data} />}</LoadFeedback>}
+          {data => (
+            <LoadFeedback {...data}>
+              {data.data && this._addPaceToResults(data.data.tourDetail, data.data.segment) && (
+                <TourDetailResults data={data.data} />
+              )}
+            </LoadFeedback>
+          )}
         </UU5.Common.DataManager>
       </UU5.Bricks.Container>
     );

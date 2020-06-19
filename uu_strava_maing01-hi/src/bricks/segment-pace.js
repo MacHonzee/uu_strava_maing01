@@ -21,8 +21,7 @@ export const SegmentPace = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    time: UU5.PropTypes.number.isRequired,
-    distance: UU5.PropTypes.number.isRequired
+    pace: UU5.PropTypes.number.isRequired
   },
   //@@viewOff:propTypes
 
@@ -43,8 +42,7 @@ export const SegmentPace = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    let { time, distance } = this.props;
-    return <UU5.Bricks.Span {...this.getMainPropsToPass()}>{BrickTools.getPace(time, distance)}</UU5.Bricks.Span>;
+    return <UU5.Bricks.Span {...this.getMainPropsToPass()}>{BrickTools.formatPace(this.props.pace)}</UU5.Bricks.Span>;
   }
   //@@viewOff:render
 });

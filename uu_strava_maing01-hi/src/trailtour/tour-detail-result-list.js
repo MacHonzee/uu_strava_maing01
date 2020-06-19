@@ -170,7 +170,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
               sorterKey: "pace"
             }
           ],
-          cellComponent: ({ time }) => <SegmentPace time={time} distance={this.props.data.segment.distance} />,
+          cellComponent: ({ pace }) => <SegmentPace pace={pace} />,
           width: "s"
         }
       ]

@@ -169,7 +169,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
         <UU5.Common.Fragment>
           <UU5.Bricks.Div>{BrickTools.formatDuration(results.time)}</UU5.Bricks.Div>
           <UU5.Bricks.Div>
-            <SegmentPace time={results.time} distance={data.segment.distance} />
+            <SegmentPace pace={results.pace} />
           </UU5.Bricks.Div>
         </UU5.Common.Fragment>
       );
