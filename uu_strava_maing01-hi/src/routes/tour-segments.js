@@ -6,6 +6,7 @@ import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";
 import OverallSegments from "../trailtour/overall-segments";
 import UpdateTrailtourButton from "../trailtour/update-trailtour-button";
+import TrailtourMap from "../bricks/trailtour-map";
 //@@viewOff:imports
 
 export const TourSegments = UU5.Common.VisualComponent.create({
@@ -105,7 +106,10 @@ export const TourSegments = UU5.Common.VisualComponent.create({
             >
               <LoadFeedback {...data}>
                 {data.data && (
-                  <OverallSegments data={data.data} year={this.props.year} handleReload={this._handleReload} />
+                  <UU5.Bricks.Div>
+                    <TrailtourMap trailtour={data.data.trailtour} segments={data.data.tourSegments} />
+                    <OverallSegments data={data.data} year={this.props.year} handleReload={this._handleReload} />
+                  </UU5.Bricks.Div>
                 )}
               </LoadFeedback>
             </UU5.Bricks.Container>

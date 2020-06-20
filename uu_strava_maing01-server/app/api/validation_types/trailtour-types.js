@@ -6,7 +6,11 @@ const ALL_TRAILTOURS = ["2020_CZ", "2020_SK", "2019"]
 const trailtourSetupDtoInType = shape({
   year: oneOf(CURRENT_TRAILTOURS).isRequired(),
   baseUri: uri().isRequired(),
-  totalResultsUri: uri().isRequired()
+  totalResultsUri: uri().isRequired(),
+  mapConfig: shape({
+    zoom: number().isRequired(),
+    center: array(number(), 2, 2).isRequired()
+  }).isRequired()
 });
 
 const trailtourUpdateDtoInType = shape({

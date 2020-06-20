@@ -58,6 +58,7 @@ class TrailtourAbl {
       year: dtoIn.year,
       baseUri: dtoIn.baseUri,
       totalResultsUri: dtoIn.totalResultsUri,
+      mapConfig: dtoIn.mapConfig,
       lastUpdate: new Date(),
       totalResults
     };

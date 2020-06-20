@@ -15,7 +15,6 @@ class StravaMainAbl {
   constructor() {
     this.validator = Validator.load();
     this.configDao = DaoFactory.getDao("stravaMain");
-    this.athleteDao = DaoFactory.getDao("athlete");
   }
 
   async init(awid, dtoIn) {
