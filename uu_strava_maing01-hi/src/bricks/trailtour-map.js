@@ -3,7 +3,6 @@ import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
 import SpaContext from "../context/spa-context";
-import BrickTools from "./tools";
 import SegmentDistance from "./segment-distance";
 import TourDetailLsi from "../lsi/tour-detail-lsi";
 import SegmentElevation from "./segment-elevation";

@@ -17,6 +17,7 @@
       "sys/deletePermission": ["AwidOwner","Authorities"],
       "sys/listPermissions": ["AwidOwner","Authorities"],
       "stravaMain/loadConfig": ["UnregisteredUsers"],
+      "stravaMain/updateConfig": ["AwidOwner","Authorities"],
       "athlete/create": ["RegisteredUsers"],
       "athlete/exportActivities": ["RegisteredUsers"],
       "athlete/loadMyself": ["RegisteredUsers"],

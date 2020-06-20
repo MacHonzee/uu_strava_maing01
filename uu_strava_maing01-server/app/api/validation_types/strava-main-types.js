@@ -8,3 +8,9 @@ const initDtoInType = shape({
     googleApiKey: string().isRequired()
   }).isRequired()
 });
+
+const updateConfigDtoInType = shape({
+  clientId: string(),
+  clientSecret: string(),
+  googleApiKey: string()
+});

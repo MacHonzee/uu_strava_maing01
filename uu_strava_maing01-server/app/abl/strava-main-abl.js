@@ -8,6 +8,9 @@ const Errors = require("../api/errors/strava-main-error.js");
 const WARNINGS = {
   initUnsupportedKeys: {
     code: `${Errors.Init.UC_CODE}unsupportedKeys`
+  },
+  updateConfigUnsupportedKeys: {
+    code: `${Errors.UpdateConfig.UC_CODE}unsupportedKeys`
   }
 };
 
@@ -81,6 +84,27 @@ class StravaMainAbl {
     return {
       config,
       athlete
+    };
+  }
+
+  async updateConfig(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("updateConfigDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.updateConfigUnsupportedKeys.code,
+      Errors.UpdateConfig.InvalidDtoIn
+    );
+
+    // HDS 2
+    let config = await this.configDao.update({ awid, ...dtoIn });
+
+    // HDS 3
+    return {
+      ...config,
+      uuAppErrorMap
     };
   }
 }

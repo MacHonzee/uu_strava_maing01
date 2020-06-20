@@ -16,6 +16,11 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
+      "stravaMain/updateConfig": {
+        "realization": "api/controllers/StravaMainController.updateConfig",
+        "httpMethod": "POST",
+        "type": "CMD"
+      },
       "athlete/create": {
         "realization": "api/controllers/AthleteController.create",
         "httpMethod": "GET",
