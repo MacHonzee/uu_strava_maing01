@@ -4,6 +4,8 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";
+import OverallSegments from "../trailtour/overall-segments";
+import UpdateTrailtourButton from "../trailtour/update-trailtour-button";
 //@@viewOff:imports
 
 export const TourSegments = UU5.Common.VisualComponent.create({
@@ -15,11 +17,21 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "TourSegments",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css`
+        > .uu5-bricks-header > .uu5-common-div {
+          display: flex;
+          justify-content: space-between;
+        }
+      `
     },
     lsi: {
       header: {
-        cs: "Seznam etap Trailtour %s"
+        cs: "Etapy Trailtour %s",
+        en: "Trailtour %s segments"
+      },
+      generatedStamp: {
+        cs: "Poslední update: ",
+        en: "Last update: "
       }
     }
   },
@@ -35,6 +47,11 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
+  getInitialState() {
+    return {
+      stamp: new Date()
+    };
+  },
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
@@ -44,25 +61,57 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
+  _handleReload() {
+    // easiest way to force complete reload including UU5.Bricks.Loading
+    this.setState({ stamp: new Date() });
+  },
+
+  _getHeader(data) {
+    return (
+      <UU5.Bricks.Div>
+        <UU5.Bricks.Div>{this.getLsiComponent("header", null, [this.props.year])}</UU5.Bricks.Div>
+        {this._getUpdateButton(data)}
+      </UU5.Bricks.Div>
+    );
+  },
+
+  _getUpdateButton(data) {
+    return (
+      // TODO refactor to component
+      <UU5.Bricks.Div>
+        <UU5.Bricks.Span style={{ fontSize: "12px", fontStyle: "italic", marginRight: "8px" }}>
+          {this.getLsiComponent("generatedStamp")}
+          {data.data && <UU5.Bricks.DateTime value={data.data.trailtour.lastUpdate} secondsDisabled />}
+        </UU5.Bricks.Span>
+        <UU5.Bricks.Authenticated authenticated>
+          <UpdateTrailtourButton year={this.props.year} onUpdateDone={this._handleReload} />
+        </UU5.Bricks.Authenticated>
+      </UU5.Bricks.Div>
+    );
+  },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
     return (
-      <UU5.Bricks.Container
-        {...this.getMainPropsToPass()}
-        header={this.getLsiComponent("header", null, [this.props.year])}
-        level={3}
-        key={this.props.year}
-      >
-        <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
-          {data => (
-            <LoadFeedback {...data}>
-              {data.data && "// TODO in construction"}
-            </LoadFeedback>
-          )}
-        </UU5.Common.DataManager>
-      </UU5.Bricks.Container>
+      <UU5.Common.DataManager onLoad={Calls.getTourSegments} data={{ year: this.props.year }}>
+        {data => {
+          return (
+            <UU5.Bricks.Container
+              {...this.getMainPropsToPass()}
+              header={this._getHeader(data)}
+              level={3}
+              key={this.props.year + this.state.stamp.toISOString()}
+            >
+              <LoadFeedback {...data}>
+                {data.data && (
+                  <OverallSegments data={data.data} year={this.props.year} handleReload={this._handleReload} />
+                )}
+              </LoadFeedback>
+            </UU5.Bricks.Container>
+          );
+        }}
+      </UU5.Common.DataManager>
     );
   }
   //@@viewOff:render

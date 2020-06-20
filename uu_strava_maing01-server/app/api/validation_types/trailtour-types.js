@@ -1,16 +1,24 @@
 /* eslint-disable */
+
+const CURRENT_TRAILTOURS = ["2020_CZ", "2020_SK"];
+const ALL_TRAILTOURS = ["2020_CZ", "2020_SK", "2019"]
+
 const trailtourSetupDtoInType = shape({
-  year: string().isRequired(),
+  year: oneOf(CURRENT_TRAILTOURS).isRequired(),
   baseUri: uri().isRequired(),
   totalResultsUri: uri().isRequired()
 });
 
 const trailtourUpdateDtoInType = shape({
-  year: string().isRequired()
+  year: oneOf(CURRENT_TRAILTOURS).isRequired(),
 });
 
 const trailtourGetDtoInType = shape({
-  year: string().isRequired()
+  year: oneOf(ALL_TRAILTOURS).isRequired(),
+});
+
+const trailtourGetSegmentsDtoInType = shape({
+  year: oneOf(ALL_TRAILTOURS).isRequired(),
 });
 
 const trailtourGetTourDetailDtoInType = shape({
@@ -18,6 +26,6 @@ const trailtourGetTourDetailDtoInType = shape({
 });
 
 const trailtourGetAthleteResultsDtoInType = shape({
-  year: string().isRequired(),
+  year: oneOf(ALL_TRAILTOURS).isRequired(),
   athleteStravaId: number().isRequired()
 });

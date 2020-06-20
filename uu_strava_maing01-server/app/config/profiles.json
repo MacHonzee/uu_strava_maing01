@@ -7,16 +7,15 @@
     "useCaseMap": {}
   },
   "*": {
-    "profileList": ["Authorities", "RegisteredUsers", "UnregisteredUsers", "AwidOwner"],
+    "profileList": ["Authorities","RegisteredUsers","UnregisteredUsers","AwidOwner"],
     "useCaseMap": {
       "init": ["AwidOwner"],
       "defaultUve": ["Public"],
-      "sys/listProfiles": ["AwidOwner", "Authorities"],
-      "sys/setProfile": ["AwidOwner", "Authorities"],
-      "sys/createPermission": ["AwidOwner", "Authorities"],
-      "sys/deletePermission": ["AwidOwner", "Authorities"],
-      "sys/listPermissions": ["AwidOwner", "Authorities"],
-
+      "sys/listProfiles": ["AwidOwner","Authorities"],
+      "sys/setProfile": ["AwidOwner","Authorities"],
+      "sys/createPermission": ["AwidOwner","Authorities"],
+      "sys/deletePermission": ["AwidOwner","Authorities"],
+      "sys/listPermissions": ["AwidOwner","Authorities"],
       "stravaMain/loadConfig": ["UnregisteredUsers"],
       "athlete/create": ["RegisteredUsers"],
       "athlete/exportActivities": ["RegisteredUsers"],
@@ -29,7 +28,8 @@
       "trailtour/update": ["RegisteredUsers"],
       "trailtour/get": ["UnregisteredUsers"],
       "trailtour/getTourDetail": ["UnregisteredUsers"],
-      "trailtour/getAthleteResults": ["UnregisteredUsers"]
+      "trailtour/getAthleteResults": ["UnregisteredUsers"],
+      "trailtour/getSegments": ["UnregisteredUsers"]
     }
   }
 }

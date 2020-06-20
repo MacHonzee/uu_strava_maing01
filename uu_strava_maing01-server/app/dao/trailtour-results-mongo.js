@@ -14,6 +14,30 @@ const PROJECTION_ATTRS = {
   order: 1
 };
 
+const SEGMENT_LOOKUP_STAGES = [
+  {
+    $lookup: {
+      from: "segment",
+      localField: "segmentId",
+      foreignField: "_id",
+      as: "segment"
+    }
+  },
+  {
+    $unwind: "$segment"
+  }
+];
+
+function fixAggregateIds(items) {
+  items.forEach((item, i, self) => {
+    self[i].id = item._id;
+    self[i].segment.id = item.segment._id;
+    delete item._id;
+    delete item.segment._id;
+  });
+  return items;
+}
+
 class TrailtourResultsMongo extends UuObjectDao {
   async createSchema() {
     await super.createIndex({ awid: 1, segmentId: 1 }, { unique: true });
@@ -56,18 +80,8 @@ class TrailtourResultsMongo extends UuObjectDao {
           ...PROJECTION_ATTRS
         }
       },
-      {
-        $lookup: {
-          from: "segment",
-          localField: "segmentId",
-          foreignField: "_id",
-          as: "segment"
-        }
-      },
-      {
-        $unwind: "$segment"
-      }
-      // TODO $set a $unset nefungují v Mongu v Cloudu (vyžaduje 4.2+)
+      ...SEGMENT_LOOKUP_STAGES
+      // TODO $set a $unset does not work in Mongo in Cloudu (requires 4.2+)
       // {
       //   $set: {
       //     id: "$_id",
@@ -79,12 +93,28 @@ class TrailtourResultsMongo extends UuObjectDao {
       // }
     ]);
 
-    items.forEach((item, i, self) => {
-      self[i].id = item._id;
-      self[i].segment.id = item.segment._id;
-      delete item._id;
-      delete item.segment._id;
-    });
+    items = fixAggregateIds(items);
+
+    return items;
+  }
+
+  async listSegments(awid, trailtourId) {
+    let items = await super.aggregate([
+      { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
+      ...SEGMENT_LOOKUP_STAGES
+      // TODO $set a $unset does not work in Mongo in Cloudu (requires 4.2+)
+      // {
+      //   $set: {
+      //     id: "$_id",
+      //     "segment.id": "$segment._id"
+      //   }
+      // },
+      // {
+      //   $unset: ["_id", "segment._id"]
+      // }
+    ]);
+
+    items = fixAggregateIds(items);
 
     return items;
   }

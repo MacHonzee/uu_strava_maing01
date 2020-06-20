@@ -71,7 +71,20 @@ const GetAthleteResults = {
   }
 };
 
+const GetSegments = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}getSegments/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${GetSegments.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
 module.exports = {
+  GetSegments,
   GetAthleteResults,
   GetTourDetail,
   Get,

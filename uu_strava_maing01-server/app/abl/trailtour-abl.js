@@ -21,6 +21,9 @@ const WARNINGS = {
   },
   getAthleteResultsUnsupportedKeys: {
     code: `${Errors.GetAthleteResults.UC_CODE}unsupportedKeys`
+  },
+  getSegmentsUnsupportedKeys: {
+    code: `${Errors.GetSegments.UC_CODE}unsupportedKeys`
   }
 };
 
@@ -233,6 +236,32 @@ class TrailtourAbl {
     return {
       trailtour,
       athleteResults,
+      uuAppErrorMap
+    };
+  }
+
+  async getSegments(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("trailtourGetSegmentsDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.getSegmentsUnsupportedKeys.code,
+      Errors.GetSegments.InvalidDtoIn
+    );
+
+    // HDS 2
+    let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
+    delete trailtour.totalResults;
+
+    // HDS 3
+    let tourSegments = await this.trailtourResultsDao.listSegments(awid, trailtour.id);
+
+    // HDS 4
+    return {
+      trailtour,
+      tourSegments,
       uuAppErrorMap
     };
   }

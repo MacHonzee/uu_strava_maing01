@@ -2,24 +2,23 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
-import SegmentLink from "../bricks/segment-link";
-import BrickTools from "../bricks/tools";
+import UpdateTrailtourButton from "./update-trailtour-button";
 import TourDetailLsi from "../lsi/tour-detail-lsi";
 import SegmentDistance from "../bricks/segment-distance";
 import SegmentElevation from "../bricks/segment-elevation";
-import SegmentPace from "../bricks/segment-pace";
+import SegmentLink from "../bricks/segment-link";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
 
-export const AthleteTourResultList = UU5.Common.VisualComponent.create({
+export const OverallSegments = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "AthleteTourResultList",
+    tagName: Config.TAG + "OverallSegments",
     classNames: {
       main: (props, state) => Config.Css.css``
     }
@@ -29,7 +28,8 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   //@@viewOn:propTypes
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
-    sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired
+    year: UU5.PropTypes.string.isRequired,
+    handleReload: UU5.PropTypes.func
   },
   //@@viewOff:propTypes
 
@@ -47,10 +47,10 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
 
   //@@viewOn:private
   async _handleLoad(dtoIn) {
-    // this is unfortunately needed for the Flextiles to be working without server calls
-    let dataCopy = JSON.parse(JSON.stringify(this.props.data));
+    let dataCopy = [...this.props.data.tourSegments];
 
     // handle any sorting necessary
+    // TODO refactor to some sorting tools
     if (dtoIn.sorterList && dtoIn.sorterList.length > 0) {
       dataCopy.sort((item1, item2) => {
         for (let i = 0; i < dtoIn.sorterList.length; i++) {
@@ -58,33 +58,9 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           let multiplier = descending ? -1 : 1;
 
           let result;
-          if (key === "name" || key === "author") {
-            let result = multiplier * item1[key].localeCompare(item2[key]);
+          if (key === "name") {
+            let result = multiplier * item1.name.localeCompare(item2.name);
             if (result !== 0) return result;
-          }
-
-          if (key === "ownOrder" || key === "points" || key === "time") {
-            if (key === "ownOrder") key = "order";
-            let resultKey = this.props.sex === "male" ? "menResults" : "womenResults";
-            let defaultResult = {
-              order: 0,
-              points: 0,
-              time: 0
-            };
-            let item1Result = item1[resultKey][0] || defaultResult;
-            let item2Result = item2[resultKey][0] || defaultResult;
-            if (item1Result[key] > item2Result[key]) {
-              result = multiplier;
-            } else if (item1Result[key] < item2Result[key]) {
-              result = -1 * multiplier;
-            } else {
-              result = 0;
-            }
-            if (result !== 0) return result;
-          }
-
-          if (key === "runnerCount") {
-            key = this.props.sex === "male" ? "menResultsTotal" : "womenResultsTotal";
           }
 
           if (item1[key] > item2[key]) {
@@ -109,6 +85,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
     };
   },
 
+  // FIXME lots of copy paste for columns between the routes
   _getNameCell({ name, author, id }) {
     return (
       <UU5.Common.Fragment>
@@ -136,44 +113,6 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
         </UU5.Bricks.Link>
       </UU5.Common.Fragment>
     );
-  },
-
-  _getCorrectResults(data) {
-    if (data.womenResults[0]) {
-      return { results: data.womenResults[0] || {}, sex: "female", total: data.womenResultsTotal };
-    } else {
-      return { results: data.menResults[0] || {}, sex: "male", total: data.menResultsTotal };
-    }
-  },
-
-  _getOwnOrder(data) {
-    let { results, total } = this._getCorrectResults(data);
-    if (results.order) {
-      return (
-        <UU5.Common.Fragment>
-          <UU5.Bricks.Strong>{results.order}</UU5.Bricks.Strong>&nbsp;/&nbsp;{total}
-        </UU5.Common.Fragment>
-      );
-    }
-  },
-
-  _getPoints(data) {
-    let { results } = this._getCorrectResults(data);
-    return results.points && <UU5.Bricks.Number value={results.points} />;
-  },
-
-  _getTime(data) {
-    let { results } = this._getCorrectResults(data);
-    if (results.time) {
-      return (
-        <UU5.Common.Fragment>
-          <UU5.Bricks.Div>{BrickTools.formatDuration(results.time)}</UU5.Bricks.Div>
-          <UU5.Bricks.Div>
-            <SegmentPace pace={results.pace} />
-          </UU5.Bricks.Div>
-        </UU5.Common.Fragment>
-      );
-    }
   },
 
   _getDistance({ segment: { distance } }) {
@@ -238,47 +177,6 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           width: "l"
         },
         {
-          id: "ownOrder",
-          headers: [
-            {
-              label: TourDetailLsi.ownOrder,
-              sorterKey: "ownOrder"
-            },
-            {
-              label: TourDetailLsi.runnerCount,
-              sorterKey: "runnerCount"
-            }
-          ],
-          cellComponent: this._getOwnOrder,
-          width: "xs"
-        },
-        {
-          id: "points",
-          headers: [
-            {
-              label: TourDetailLsi.points,
-              sorterKey: "points"
-            }
-          ],
-          cellComponent: this._getPoints,
-          width: "xs"
-        },
-        {
-          id: "pace",
-          headers: [
-            {
-              label: TourDetailLsi.time,
-              sorterKey: "time"
-            },
-            {
-              label: TourDetailLsi.pace,
-              sorterKey: "pace"
-            }
-          ],
-          cellComponent: this._getTime,
-          width: "xs"
-        },
-        {
           id: "distance",
           headers: [
             {
@@ -322,7 +220,10 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
       <UU5.FlexTiles.DataManager {...this.getMainPropsToPass()} onLoad={this._handleLoad} pageSize={PAGE_SIZE}>
         <UU5.FlexTiles.ListController ucSettings={ucSettings}>
           <UU5.FlexTiles.List
-            bars={[<UU5.FlexTiles.SorterBar key={"sorterBar"} />, <UU5.FlexTiles.InfoBar key={"infoBar"} />]}
+            bars={[
+              <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+            ]}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>
@@ -331,4 +232,4 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default AthleteTourResultList;
+export default OverallSegments;

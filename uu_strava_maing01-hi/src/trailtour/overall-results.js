@@ -119,6 +119,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
 
   _getSexRight() {
     return (
+      // TODO refactor to component
       <UU5.Bricks.Div>
         <UU5.Bricks.Span style={{ fontSize: "12px", fontStyle: "italic", marginRight: "8px" }}>
           <UU5.Bricks.Lsi lsi={Lsi.generatedStamp} />

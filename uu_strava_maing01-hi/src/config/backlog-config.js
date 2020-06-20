@@ -1,9 +1,6 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Seznam etap Trailtoury bez účastníků, pro snazší vyhledávání"
-    },
-    {
       cs: "Mapa (Google mapa + Mapy.cz) etap na seznamu etap a na detailu běžce"
     },
     {
@@ -11,6 +8,9 @@ const BacklogConfig = {
     },
     {
       cs: "Při zobrazení detailu přepínat document.title"
+    },
+    {
+      cs: "Opravit stahování GPX souboru"
     },
     {
       cs: "Slovenská Trailtoura 2020"

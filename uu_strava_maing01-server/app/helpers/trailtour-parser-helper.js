@@ -10,11 +10,11 @@ const BASE_SELECTORS = {
   womenResults: ".etapa-vysledky div.row:nth-child(2)",
   menResults: ".etapa-vysledky div.row:nth-child(3)",
   clubResults: ".etapa-vysledky div.row:nth-child(4)",
-  generatedResults: "p.text-center",
+  generatedResults: ".default-content p:nth-child(2)",
   tableResults: "tbody",
-  totalWomenResults: ".default-content table.table:nth-child(2)",
-  totalMenResults: ".default-content table.table:nth-child(4)",
-  totalClubResults: ".default-content table.table:nth-child(6)"
+  totalWomenResults: ".default-content table.table:nth-child(3)",
+  totalMenResults: ".default-content table.table:nth-child(7)",
+  totalClubResults: ".default-content table.table:nth-child(11)"
 };
 
 const YEARLY_SELECTORS = {
@@ -51,7 +51,9 @@ async function streamToString(stream) {
 }
 
 function parseResults($, selector) {
+  // TODO this now works only for 2020 year
   let results = $(selector);
+  // FIXME not found nows
   let generatedTag = $(BASE_SELECTORS.generatedResults, results);
   let generated =
     generatedTag &&
@@ -63,8 +65,8 @@ function parseResults($, selector) {
 
   let allResults = [];
   for (let i = 1; i < tableRows.length; i++) {
-    let rowCells = tableRows[i].childNodes;
-    let nameTd = $(rowCells[0]);
+    let rowCells = tableRows[i].childNodes.filter(node => node.type === "tag");
+    let nameTd = $(rowCells[1]);
     let name = nameTd.text().trim();
     let nameLink = nameTd.find("a")[0];
     let stravaId;
@@ -72,10 +74,19 @@ function parseResults($, selector) {
       stravaId = parseInt(nameLink.attribs.href.replace(STRAVA_ATHLETE_HREF, ""));
     }
 
+    let club;
+    if (rowCells.length === 4 || rowCells.length === 5) {
+      club = $(rowCells[2])
+        .text()
+        .trim();
+
+      if (club === "---") club = undefined;
+    }
+
     let seconds;
-    if (rowCells.length === 3) {
+    if (rowCells.length === 5) {
       seconds = 0;
-      let timeSplits = $(rowCells[1])
+      let timeSplits = $(rowCells[3])
         .text()
         .trim()
         .split(":");
@@ -95,6 +106,7 @@ function parseResults($, selector) {
     };
     if (seconds) resultItem.time = seconds;
     if (stravaId) resultItem.stravaId = stravaId;
+    if (club) resultItem.club = club;
 
     allResults.push(resultItem);
   }

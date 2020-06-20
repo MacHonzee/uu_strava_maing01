@@ -65,6 +65,11 @@ let Calls = {
     return Calls.call("get", commandUri, dtoInData);
   },
 
+  getTourSegments(dtoInData) {
+    let commandUri = Calls.getCommandUri("trailtour/getSegments");
+    return Calls.call("get", commandUri, dtoInData);
+  },
+
   getTourDetail(dtoInData) {
     let commandUri = Calls.getCommandUri("trailtour/getTourDetail");
     return Calls.call("get", commandUri, dtoInData);
