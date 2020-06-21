@@ -31,6 +31,9 @@ const BacklogConfig = {
       cs: "Porovnávání výsledků více běžců na jedné stránce"
     },
     {
+      cs: "Lazyload na mapy"
+    },
+    {
       cs: "Výsledky klubů"
     },
     {

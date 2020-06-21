@@ -2,6 +2,7 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
+import polyline from "@mapbox/polyline";
 import SpaContext from "../context/spa-context";
 import SegmentDistance from "./segment-distance";
 import TourDetailLsi from "../lsi/tour-detail-lsi";
@@ -49,7 +50,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
           .uu5-common-div {
             display: inline-block;
             width: 50%;
-            padding: 0 8px;
+            padding: 0 0 0 8px;
           }
 
           .uu5-common-div:last-child {
@@ -124,7 +125,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _getMarkers() {
-    return this.props.segments.map(result => {
+    let markers = this.props.segments.map(result => {
       let segment = result.segment;
       let icon = MARKERS.blue;
       if (this.props.showOwnResults && (result.menResults[0] || result.womenResults[0])) {
@@ -140,6 +141,17 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
         onClick: this._handleMarkerClick
       };
     });
+
+    if (this.props.showTourDetail) {
+      let segment = this.props.segments[0].segment;
+      let secondMarker = { ...markers[0] };
+      secondMarker.latitude = segment.end_latitude;
+      secondMarker.longitude = segment.end_longitude;
+      secondMarker.icon = MARKERS.green;
+      markers.push(secondMarker);
+    }
+
+    return markers;
   },
 
   _handleMarkerClick(_, marker, event) {
@@ -158,10 +170,11 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _getPopoverContent(segment) {
+    let extraStyle = { paddingLeft: "16px" };
     return (
       <UU5.Bricks.Div className={this.getClassName("popover")}>
         <UU5.Bricks.Div>
-          <UU5.Bricks.Div>
+          <UU5.Bricks.Div style={extraStyle}>
             <UU5.Bricks.Lsi lsi={TourDetailLsi.distance} />
           </UU5.Bricks.Div>
           <UU5.Bricks.Div>
@@ -169,7 +182,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
           </UU5.Bricks.Div>
         </UU5.Bricks.Div>
         <UU5.Bricks.Div>
-          <UU5.Bricks.Div>
+          <UU5.Bricks.Div style={extraStyle}>
             <UU5.Bricks.Lsi lsi={TourDetailLsi.elevation} />
           </UU5.Bricks.Div>
           <UU5.Bricks.Div>
@@ -196,7 +209,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
             <UU5.Bricks.Lsi lsi={TourDetailLsi.ownOrder} />
           </UU5.Bricks.Div>
           <UU5.Bricks.Div>
-            {result.order} / {totalResult}
+            {result.order}&nbsp;/&nbsp;{totalResult}
           </UU5.Bricks.Div>
         </UU5.Bricks.Div>
         <UU5.Bricks.Div>
@@ -225,12 +238,22 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
 
   _handleMapRef(map) {
     if (this.props.showTourDetail) {
-      // TODO draw polyline from segment
-      let google = window.google;
-      console.log(google);
-      console.log(map);
+      let google = window.google; // loaded from UU5.Bricks.GoogleMap
+      let segment = this.props.segments[0].segment;
+      let decodedCoords = this._polyline.decode(segment.map.polyline);
+      let path = decodedCoords.map(coords => ({ lat: coords[0], lng: coords[1] }));
+      let polyline = new google.maps.Polyline({
+        path,
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2
+      });
+      polyline.setMap(map);
     }
   },
+
+  // can someone explain why closure does not work properly here?
+  _polyline: polyline,
   //@@viewOff:private
 
   //@@viewOn:render
