@@ -107,7 +107,7 @@ export const TourSegments = UU5.Common.VisualComponent.create({
               <LoadFeedback {...data}>
                 {data.data && (
                   <UU5.Bricks.Div>
-                    <TrailtourMap trailtour={data.data.trailtour} segments={data.data.tourSegments} />
+                    <TrailtourMap mapConfig={data.data.trailtour.mapConfig} segments={data.data.tourSegments} />
                     <OverallSegments data={data.data} year={this.props.year} handleReload={this._handleReload} />
                   </UU5.Bricks.Div>
                 )}

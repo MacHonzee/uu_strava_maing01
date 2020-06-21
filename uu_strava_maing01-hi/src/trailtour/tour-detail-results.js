@@ -4,6 +4,7 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import TourDetailCard from "./tour-detail-card";
 import TourDetailResultList from "./tour-detail-result-list";
+import TrailtourMap from "../bricks/trailtour-map";
 //@@viewOff:imports
 
 export const TourDetailResults = UU5.Common.VisualComponent.create({
@@ -39,6 +40,15 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
+  _getMap() {
+    let { segment, tourDetail } = this.props.data;
+    let mapConfig = {
+      zoom: 12,
+      center: segment.start_latlng
+    };
+    let mapSegment = { ...tourDetail, segment };
+    return <TrailtourMap style={{ paddingTop: "8px" }} mapConfig={mapConfig} segments={[mapSegment]} showTourDetail />;
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -46,6 +56,7 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <TourDetailCard data={this.props.data} />
+        {this._getMap()}
         <TourDetailResultList data={this.props.data} />
       </UU5.Bricks.Div>
     );

@@ -1,7 +1,10 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Mapa (Google mapa + Mapy.cz) etap na seznamu etap a na detailu běžce"
+      cs: "Kreslení polyline na google mapy"
+    },
+    {
+      cs: "Varianta mapy na Mapy.cz"
     },
     {
       cs: "Snazší vyhledávání běžců ve výsledcích"

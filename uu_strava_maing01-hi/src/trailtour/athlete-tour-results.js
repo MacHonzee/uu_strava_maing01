@@ -4,6 +4,7 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import AthleteTourCard from "./athlete-tour-card";
 import AthleteTourResultList from "./athlete-tour-result-list";
+import TrailtourMap from "../bricks/trailtour-map";
 //@@viewOff:imports
 
 export const AthleteTourResults = UU5.Common.VisualComponent.create({
@@ -47,6 +48,12 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <AthleteTourCard data={this.props.data.trailtour} athleteResults={this.props.data.athleteResults} />
+        <TrailtourMap
+          style={{ paddingTop: "8px" }}
+          mapConfig={this.props.data.trailtour.mapConfig}
+          segments={this.props.data.athleteResults}
+          showOwnResults
+        />
         <AthleteTourResultList data={this.props.data.athleteResults} sex={this.props.sex} />
       </UU5.Bricks.Div>
     );

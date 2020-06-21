@@ -6,6 +6,8 @@ import SpaContext from "../context/spa-context";
 import SegmentDistance from "./segment-distance";
 import TourDetailLsi from "../lsi/tour-detail-lsi";
 import SegmentElevation from "./segment-elevation";
+import BrickTools from "./tools";
+import SegmentPace from "./segment-pace";
 //@@viewOff:imports
 
 const MARKERS = {
@@ -62,8 +64,10 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    trailtour: UU5.PropTypes.object.isRequired,
-    segments: UU5.PropTypes.array.isRequired
+    mapConfig: UU5.PropTypes.object.isRequired,
+    segments: UU5.PropTypes.array.isRequired,
+    showOwnResults: UU5.PropTypes.bool,
+    showTourDetail: UU5.PropTypes.bool
   },
   //@@viewOff:propTypes
 
@@ -93,7 +97,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _getChild(context) {
-    let { trailtour } = this.props;
+    let mapConfig = this.props.mapConfig;
     return (
       <UU5.Bricks.ScreenSize>
         {({ screenSize }) => {
@@ -101,12 +105,13 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
             <UU5.Bricks.GoogleMap
               {...this.getMainPropsToPass()}
               width={this._getMapWidth(screenSize)}
-              latitude={trailtour.mapConfig.center[0]}
-              longitude={trailtour.mapConfig.center[1]}
+              latitude={mapConfig.center[0]}
+              longitude={mapConfig.center[1]}
               googleApiKey={context.config.googleApiKey}
-              zoom={trailtour.mapConfig.zoom}
+              zoom={mapConfig.zoom}
               disableDefaultUI
               markers={this._getMarkers()}
+              mapRef={this._handleMapRef}
             />
           );
         }}
@@ -121,12 +126,17 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   _getMarkers() {
     return this.props.segments.map(result => {
       let segment = result.segment;
+      let icon = MARKERS.blue;
+      if (this.props.showOwnResults && (result.menResults[0] || result.womenResults[0])) {
+        icon = MARKERS.green;
+      }
+
       return {
         id: result.stravaId,
         latitude: segment.start_latitude,
         longitude: segment.start_longitude,
         title: this._getMarkerTitle(result),
-        icon: MARKERS.blue,
+        icon,
         onClick: this._handleMarkerClick
       };
     });
@@ -142,6 +152,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
         </UU5.Bricks.Link>
       ),
       content: this._getPopoverContent(foundSegment),
+      footer: this._getPopoverFooter(foundSegment),
       aroundElement: event.tb.target
     });
   },
@@ -167,6 +178,58 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
         </UU5.Bricks.Div>
       </UU5.Bricks.Div>
     );
+  },
+
+  _getPopoverFooter(segment) {
+    let sex;
+    if (segment.menResults[0]) sex = "men";
+    if (segment.womenResults[0]) sex = "women";
+    if (!this.props.showOwnResults || !sex) return;
+    let result = segment[sex + "Results"][0];
+    let totalResult = segment[sex + "ResultsTotal"];
+
+    // TODO dodělat pořádně, ještě celkový počet lidí do pořadí
+    return (
+      <UU5.Bricks.Div className={this.getClassName("popover")}>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.ownOrder} />
+          </UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            {result.order} / {totalResult}
+          </UU5.Bricks.Div>
+        </UU5.Bricks.Div>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.points} />
+          </UU5.Bricks.Div>
+          <UU5.Bricks.Div>{result.points}</UU5.Bricks.Div>
+        </UU5.Bricks.Div>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.time} />
+          </UU5.Bricks.Div>
+          <UU5.Bricks.Div>{BrickTools.formatDuration(result.time)}</UU5.Bricks.Div>
+        </UU5.Bricks.Div>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.pace} />
+          </UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <SegmentPace pace={result.pace} />
+          </UU5.Bricks.Div>
+        </UU5.Bricks.Div>
+      </UU5.Bricks.Div>
+    );
+  },
+
+  _handleMapRef(map) {
+    if (this.props.showTourDetail) {
+      // TODO draw polyline from segment
+      let google = window.google;
+      console.log(google);
+      console.log(map);
+    }
   },
   //@@viewOff:private
 
