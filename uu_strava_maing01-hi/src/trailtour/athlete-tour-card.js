@@ -71,95 +71,163 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
     }
   },
 
+  _getAthleteLabel() {
+    return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("name")}</UU5.BlockLayout.Text>;
+  },
+
+  _getAthleteLink(results) {
+    return (
+      <UU5.BlockLayout.Text weight={"primary"}>
+        <AthleteLink stravaId={results.stravaId}>
+          <img
+            src={"./assets/strava_symbol_orange.png"}
+            alt={"strava_symbol_orange"}
+            width={"24px"}
+            style={{ position: "relative", top: "2px" }}
+          />
+          {results.name}
+        </AthleteLink>
+      </UU5.BlockLayout.Text>
+    );
+  },
+
+  _getOrderLabel() {
+    return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("order")}</UU5.BlockLayout.Text>;
+  },
+
+  _getOrder(results, total) {
+    return (
+      <UU5.BlockLayout.Text weight={"primary"}>
+        {results.order}&nbsp;/&nbsp;{total}
+      </UU5.BlockLayout.Text>
+    );
+  },
+
   _getNameRow(results, sex, total) {
     return (
       <UU5.BlockLayout.Row>
-        <UU5.BlockLayout.Column width={"150px"}>
-          <UU5.BlockLayout.Text icon={"mdi-gender-" + sex} weight={"secondary"}>
-            {this.getLsiComponent("name")}
-          </UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column width={"30%"}>
-          <UU5.BlockLayout.Text weight={"primary"}>
-            <AthleteLink stravaId={results.stravaId}>
-              <img
-                src={"./assets/strava_symbol_orange.png"}
-                alt={"strava_symbol_orange"}
-                width={"24px"}
-                style={{ marginRight: "4px", position: "relative", top: "2px" }}
-              />
-              {results.name}
-            </AthleteLink>
-          </UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column width={"150px"}>
-          <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("order")}</UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column>
-          <UU5.BlockLayout.Text weight={"primary"}>
-            {results.order}&nbsp;/&nbsp;{total}
-          </UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getAthleteLabel(sex)}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"30%"}>{this._getAthleteLink(results)}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getOrderLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>{this._getOrder(results, total)}</UU5.BlockLayout.Column>
       </UU5.BlockLayout.Row>
+    );
+  },
+
+  _getPointsLabel() {
+    return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("points")}</UU5.BlockLayout.Text>;
+  },
+
+  _getPoints(results) {
+    return (
+      <UU5.BlockLayout.Text weight={"primary"}>
+        <UU5.Bricks.Number value={results.points} />
+      </UU5.BlockLayout.Text>
+    );
+  },
+
+  _getAvgPointsLabel() {
+    return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("avgPoints")}</UU5.BlockLayout.Text>;
+  },
+
+  _getAvgPoints(results, finishedSegments) {
+    return (
+      <UU5.BlockLayout.Text weight={"primary"}>
+        <UU5.Bricks.Number value={results.points / finishedSegments} maxDecimalLength={2} />
+      </UU5.BlockLayout.Text>
     );
   },
 
   _getPointsRow(results, finishedSegments) {
     return (
       <UU5.BlockLayout.Row>
-        <UU5.BlockLayout.Column width={"150px"}>
-          <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("points")}</UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column width={"30%"}>
-          <UU5.BlockLayout.Text weight={"primary"}>
-            <UU5.Bricks.Number value={results.points} />
-          </UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column width={"150px"}>
-          <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("avgPoints")}</UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column>
-          <UU5.BlockLayout.Text weight={"primary"}>
-            <UU5.Bricks.Number value={results.points / finishedSegments} maxDecimalLength={2} />
-          </UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getPointsLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"30%"}>{this._getPoints(results)}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getAvgPointsLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>{this._getAvgPoints(results, finishedSegments)}</UU5.BlockLayout.Column>
       </UU5.BlockLayout.Row>
     );
   },
 
-  _getSegmentsRow(sex) {
+  _getSegmentsLabel() {
+    return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("segments")}</UU5.BlockLayout.Text>;
+  },
+
+  _getSegmentsCount(finishedSegments) {
+    return <UU5.BlockLayout.Text weight={"primary"}>{finishedSegments}</UU5.BlockLayout.Text>;
+  },
+
+  _getSegmentsRow(finishedSegments) {
+    return (
+      <UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getSegmentsLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>{this._getSegmentsCount(finishedSegments)}</UU5.BlockLayout.Column>
+      </UU5.BlockLayout.Row>
+    );
+  },
+
+  _getFinishedSegments(sex) {
     let finishedSegments = 0;
     let resultKey = sex === "male" ? "menResults" : "womenResults";
     this.props.athleteResults.forEach(segment => {
       if (segment[resultKey][0]) finishedSegments++;
     });
+    return finishedSegments;
+  },
 
-    let segmentRow = (
-      <UU5.BlockLayout.Row>
-        <UU5.BlockLayout.Column width={"150px"}>
-          <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("segments")}</UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column>
-          <UU5.BlockLayout.Text weight={"primary"}>{finishedSegments}</UU5.BlockLayout.Text>
-        </UU5.BlockLayout.Column>
-      </UU5.BlockLayout.Row>
+  _getLargeContent(results, sex, total, finishedSegments) {
+    return (
+      <UU5.BlockLayout.Block>
+        {this._getNameRow(results, sex, total)}
+        {this._getPointsRow(results, finishedSegments)}
+        {this._getSegmentsRow(finishedSegments)}
+      </UU5.BlockLayout.Block>
     );
+  },
 
-    return { finishedSegments, segmentRow };
+  _getSmallContent(results, sex, total, finishedSegments) {
+    let leftColWidth = "130px";
+    return (
+      <UU5.BlockLayout.Block>
+        <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getAthleteLabel(sex)}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getAthleteLink(results)}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getOrderLabel()}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getOrder(results, total)}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getPointsLabel()}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getPoints(results)}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getAvgPointsLabel()}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getAvgPoints(results, finishedSegments)}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getSegmentsLabel()}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getSegmentsCount(finishedSegments)}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+      </UU5.BlockLayout.Block>
+    );
   },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
     let { results, sex, total } = this._getCorrectResults();
-    let { finishedSegments, segmentRow } = this._getSegmentsRow(sex);
+    let finishedSegments = this._getFinishedSegments(sex);
     return (
       <UU5.BlockLayout.Tile {...this.getMainPropsToPass()}>
-        <UU5.BlockLayout.Block>
-          {this._getNameRow(results, sex, total)}
-          {this._getPointsRow(results, finishedSegments)}
-          {segmentRow}
-        </UU5.BlockLayout.Block>
+        <UU5.Bricks.ScreenSize>
+          <UU5.Bricks.ScreenSize.Item screenSize={["xs", "s"]}>
+            {this._getSmallContent(results, sex, total, finishedSegments)}
+          </UU5.Bricks.ScreenSize.Item>
+          <UU5.Bricks.ScreenSize.Item screenSize={["m", "l", "xl"]}>
+            {this._getLargeContent(results, sex, total, finishedSegments)}
+          </UU5.Bricks.ScreenSize.Item>
+        </UU5.Bricks.ScreenSize>
       </UU5.BlockLayout.Tile>
     );
   }
