@@ -22,6 +22,10 @@ const AthleteTourDetailLsi = {
   avgPoints: {
     cs: "Průměrně bodů",
     en: "Average points"
+  },
+  club: {
+    cs: "Klub",
+    en: "Club"
   }
 };
 

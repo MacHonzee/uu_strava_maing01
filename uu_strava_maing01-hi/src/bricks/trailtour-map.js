@@ -58,8 +58,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
           }
         }
       `
-    },
-    contextType: SpaContext.Context
+    }
   },
   //@@viewOff:statics
 

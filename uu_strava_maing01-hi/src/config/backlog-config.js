@@ -1,7 +1,7 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Kreslení polyline na google mapy"
+      cs: "Mobilní zobrazení"
     },
     {
       cs: "Varianta mapy na Mapy.cz"
@@ -19,13 +19,13 @@ const BacklogConfig = {
       cs: "Slovenská Trailtoura 2020"
     },
     {
-      cs: "Mobilní zobrazení, mobilní appka"
-    },
-    {
       cs: "Automatický refresh výsledků"
     },
     {
       cs: "Favicona, meta data, podpora pro vyhledávače, noscript varování, cookies bar"
+    },
+    {
+      cs: "Appka do Google a iPhone storu"
     },
     {
       cs: "Porovnávání výsledků více běžců na jedné stránce"

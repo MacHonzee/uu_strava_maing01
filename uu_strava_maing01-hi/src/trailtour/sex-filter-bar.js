@@ -34,6 +34,18 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
          .uu5-common-div.uu5-bricks-resize {
           display: inline;
         }
+
+        ${props.right &&
+          UU5.Utils.ScreenSize.getMaxMediaQueries(
+            "xs",
+            `.uu5-bricks-panel-header-content > .uu5-common-div {
+              flex-direction: column;
+
+              > .uu5-common-div {
+                margin: 8px 0px;
+              }
+            }`
+          )}
       `
     }
   },

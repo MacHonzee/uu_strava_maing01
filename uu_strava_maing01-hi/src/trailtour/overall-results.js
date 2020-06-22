@@ -131,6 +131,41 @@ export const OverallResults = UU5.Common.VisualComponent.create({
       </UU5.Bricks.Div>
     );
   },
+
+  _getSmallTile({ data, visibleColumns }) {
+    let { order } = data;
+
+    let rows = [];
+    rows.push(
+      <div style={{ position: "relative" }}>
+        {order}. {this._getAthleteLink(data)}
+      </div>
+    );
+
+    const skippedColumns = ["order", "name"];
+    visibleColumns.forEach(column => {
+      if (skippedColumns.includes(column.id)) return;
+      let cellComponent = column.cellComponent(data);
+      if (!cellComponent) return;
+
+      if (column.id === "stravaLink") {
+        rows.push(<div style={{ position: "absolute", top: "4px", right: "4px" }}>{cellComponent}</div>);
+        return;
+      }
+
+      rows.push(
+        <div>
+          <strong>
+            <UU5.Bricks.Lsi lsi={column.headers[0].label} />
+            :&nbsp;
+          </strong>
+          {cellComponent}
+        </div>
+      );
+    });
+
+    return <div>{rows}</div>;
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -170,6 +205,17 @@ export const OverallResults = UU5.Common.VisualComponent.create({
           width: "l"
         },
         {
+          id: "club",
+          headers: [
+            {
+              label: Lsi.club,
+              sorterKey: "club"
+            }
+          ],
+          cellComponent: ({ club }) => club,
+          width: "m"
+        },
+        {
           id: "points",
           headers: [
             {
@@ -178,7 +224,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ points }) => <UU5.Bricks.Number value={points} />,
-          width: "xs"
+          width: "s"
         },
         {
           id: "totalCount",
@@ -189,7 +235,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ totalCount }) => totalCount,
-          width: "xs"
+          width: "s"
         },
         {
           id: "avgPoints",
@@ -200,7 +246,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ avgPoints }) => <UU5.Bricks.Number value={avgPoints} maxDecimalLength={2} />,
-          width: "xs"
+          width: "s"
         }
       ]
     };
@@ -218,6 +264,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
               <UU5.FlexTiles.InfoBar key={"infoBar"} />
             ]}
+            tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>
