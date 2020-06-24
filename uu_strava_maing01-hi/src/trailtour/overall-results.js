@@ -181,7 +181,8 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ order }) => order,
-          width: "xs"
+          width: "xs",
+          visibility: "always"
         },
         {
           id: "stravaLink",
@@ -202,7 +203,8 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: this._getAthleteLink,
-          width: "l"
+          width: "l",
+          visibility: "always"
         },
         {
           id: "club",

@@ -37,6 +37,10 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
       avgPoints: {
         cs: "Průměrně bodů",
         en: "Average points"
+      },
+      club: {
+        cs: "Klub",
+        en: "Club"
       }
     }
   },
@@ -157,11 +161,13 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
     return <UU5.BlockLayout.Text weight={"primary"}>{finishedSegments}</UU5.BlockLayout.Text>;
   },
 
-  _getSegmentsRow(finishedSegments) {
+  _getSegmentsRow(results, finishedSegments) {
     return (
       <UU5.BlockLayout.Row>
         <UU5.BlockLayout.Column width={"150px"}>{this._getSegmentsLabel()}</UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column>{this._getSegmentsCount(finishedSegments)}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"30%"}>{this._getSegmentsCount(finishedSegments)}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getClubLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>{this._getClub(results)}</UU5.BlockLayout.Column>
       </UU5.BlockLayout.Row>
     );
   },
@@ -175,12 +181,20 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
     return finishedSegments;
   },
 
+  _getClubLabel() {
+    return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("club")}</UU5.BlockLayout.Text>;
+  },
+
+  _getClub(results) {
+    return <UU5.BlockLayout.Text weight={"primary"}>{results.club}</UU5.BlockLayout.Text>;
+  },
+
   _getLargeContent(results, sex, total, finishedSegments) {
     return (
       <UU5.BlockLayout.Block>
         {this._getNameRow(results, sex, total)}
         {this._getPointsRow(results, finishedSegments)}
-        {this._getSegmentsRow(finishedSegments)}
+        {this._getSegmentsRow(results, finishedSegments)}
       </UU5.BlockLayout.Block>
     );
   },
@@ -208,6 +222,10 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
         <UU5.BlockLayout.Row>
           <UU5.BlockLayout.Column width={leftColWidth}>{this._getSegmentsLabel()}</UU5.BlockLayout.Column>
           <UU5.BlockLayout.Column>{this._getSegmentsCount(finishedSegments)}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getClubLabel()}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getClub(results)}</UU5.BlockLayout.Column>
         </UU5.BlockLayout.Row>
       </UU5.BlockLayout.Block>
     );
