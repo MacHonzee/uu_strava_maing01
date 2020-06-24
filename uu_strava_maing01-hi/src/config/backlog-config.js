@@ -1,6 +1,9 @@
 const BacklogConfig = {
   items: [
     {
+      cs: "Zamknout update trailtoury 2019"
+    },
+    {
       cs: "Varianta mapy na Mapy.cz"
     },
     {

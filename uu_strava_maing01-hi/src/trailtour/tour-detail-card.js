@@ -7,6 +7,7 @@ import TourDetailLsi from "../lsi/tour-detail-lsi";
 import SegmentLink from "../bricks/segment-link";
 import SegmentDistance from "../bricks/segment-distance";
 import SegmentElevation from "../bricks/segment-elevation";
+import GpxDownload from "../bricks/gpx-download";
 //@@viewOff:imports
 
 export const TourDetailCard = UU5.Common.VisualComponent.create({
@@ -91,11 +92,7 @@ export const TourDetailCard = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Link href={this.props.data.tourDetail.link} target={"_blank"}>
             <img src={"./assets/inov8-logo.png"} alt={"trailtour-logo"} width={"18px"} style={{ marginRight: "8px" }} />
           </UU5.Bricks.Link>
-          <UU5.Bricks.Link href={this.props.data.tourDetail.gpxLink} download target={"_blank"}>
-            <UU5.Bricks.Strong>
-              <UU5.Bricks.Lsi lsi={TourDetailLsi.gpx} />
-            </UU5.Bricks.Strong>
-          </UU5.Bricks.Link>
+          <GpxDownload gpx={this.props.data.tourDetail.gpxLink} />
         </UU5.Bricks.Div>
       </UU5.BlockLayout.Column>
     );
