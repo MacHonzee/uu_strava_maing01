@@ -200,7 +200,7 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
   },
 
   _getSmallContent(results, sex, total, finishedSegments) {
-    let leftColWidth = "130px";
+    const leftColWidth = "130px";
     return (
       <UU5.BlockLayout.Block>
         <UU5.BlockLayout.Row>

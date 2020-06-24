@@ -7,6 +7,7 @@ import TourDetailLsi from "../lsi/tour-detail-lsi";
 import BrickTools from "../bricks/tools";
 import SegmentPace from "../bricks/segment-pace";
 import AthleteLink from "../bricks/athlete-link";
+import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -102,6 +103,41 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
       </AthleteLink>
     );
   },
+
+  _getSmallTile({ data, visibleColumns }) {
+    let { order } = data;
+
+    let rows = [];
+    rows.push(
+      <div style={{ position: "relative" }}>
+        #{order} {this._getName(data)}
+      </div>
+    );
+
+    const skippedColumns = ["order", "name"];
+    visibleColumns.forEach(column => {
+      if (skippedColumns.includes(column.id)) return;
+      let cellComponent = column.cellComponent(data);
+      if (!cellComponent) return;
+
+      if (column.id === "strava") {
+        rows.push(<div style={{ position: "absolute", top: "4px", right: "4px" }}>{cellComponent}</div>);
+        return;
+      }
+
+      rows.push(
+        <div>
+          <strong>
+            <UU5.Bricks.Lsi lsi={column.headers[0].label} />
+            :&nbsp;
+          </strong>
+          {cellComponent}
+        </div>
+      );
+    });
+
+    return <div>{rows}</div>;
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -117,7 +153,8 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ order }) => order,
-          width: "xs"
+          width: "xs",
+          visibility: "always"
         },
         {
           id: "strava",
@@ -133,12 +170,24 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
           id: "name",
           headers: [
             {
-              label: TourDetailLsi.name,
+              label: AthleteTourDetailLsi.name,
               sorterKey: "name"
             }
           ],
           cellComponent: this._getName,
-          width: "xl"
+          width: "l",
+          visibility: "always"
+        },
+        {
+          id: "club",
+          headers: [
+            {
+              label: AthleteTourDetailLsi.club,
+              sorterKey: "club"
+            }
+          ],
+          cellComponent: ({ club }) => club,
+          width: "m"
         },
         {
           id: "points",
@@ -149,7 +198,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ points }) => <UU5.Bricks.Number value={points} />,
-          width: "s"
+          width: "xs"
         },
         {
           id: "time",
@@ -160,7 +209,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ time }) => BrickTools.formatDuration(time),
-          width: "s"
+          width: "xs"
         },
         {
           id: "pace",
@@ -171,7 +220,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ pace }) => <SegmentPace pace={pace} />,
-          width: "s"
+          width: "xs"
         }
       ]
     };
@@ -188,6 +237,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
               <UU5.FlexTiles.InfoBar key={"infoBar"} />
             ]}
+            tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>

@@ -1,9 +1,6 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Mobilní zobrazení"
-    },
-    {
       cs: "Varianta mapy na Mapy.cz"
     },
     {

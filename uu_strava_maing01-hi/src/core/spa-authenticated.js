@@ -43,6 +43,23 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
         .uu5-flextiles-list .uu5-flextiles-tile:hover {
           background-color: #e6e6e6;
         }
+
+        // to have sticky header in Flextiles
+        .uu5-bricks-page-overflow {
+          overflow: visible;
+        }
+
+        // TODO this will stop working after they fix the "undefined" name in css class
+        .uu5-flextiles-list .undefinedscrollable-list {
+          overflow: visible;
+
+          > div:first-child {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 10;
+          }
+        }
       `
     },
     lsi: {
