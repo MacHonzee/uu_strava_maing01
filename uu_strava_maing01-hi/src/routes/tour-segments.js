@@ -22,6 +22,8 @@ export const TourSegments = UU5.Common.VisualComponent.create({
         > .uu5-bricks-header > .uu5-common-div {
           display: flex;
           justify-content: space-between;
+
+          ${UU5.Utils.ScreenSize.getMaxMediaQueries("s", `flex-direction: column;`)}
         }
       `
     },
