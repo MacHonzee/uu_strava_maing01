@@ -101,15 +101,14 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return (
-      <UU5.Common.DataManager onLoad={Calls.getTourSegments} data={{ year: this.props.year }}>
+      <UU5.Common.DataManager
+        onLoad={Calls.getTourSegments}
+        data={{ year: this.props.year }}
+        key={this.props.year + this.state.stamp.toISOString()}
+      >
         {data => {
           return (
-            <UU5.Bricks.Container
-              {...this.getMainPropsToPass()}
-              header={this._getHeader(data)}
-              level={3}
-              key={this.props.year + this.state.stamp.toISOString()}
-            >
+            <UU5.Bricks.Container {...this.getMainPropsToPass()} header={this._getHeader(data)} level={3}>
               <LoadFeedback {...data}>
                 {data.data && (
                   <UU5.Bricks.Div>

@@ -1,9 +1,6 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Slovenská Trailtoura 2020"
-    },
-    {
       cs: "Při zobrazení detailu přepínat document.title"
     },
     {

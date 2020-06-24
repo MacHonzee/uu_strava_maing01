@@ -93,7 +93,9 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
     let routes = {
       home: { component: <Home /> },
       czTrailtour2020: { component: <Trailtour year={"2020_CZ"} /> },
+      skTrailtour2020: { component: <Trailtour year={"2020_SK"} /> },
       czTrailtour2020segments: { component: <TourSegments year={"2020_CZ"} /> },
+      skTrailtour2020segments: { component: <TourSegments year={"2020_SK"} /> },
       trailtour2019: { component: <Trailtour year={"2019"} /> },
       trailtour2019segments: { component: <TourSegments year={"2019"} /> },
       tourDetail: { component: <TourDetail /> },
