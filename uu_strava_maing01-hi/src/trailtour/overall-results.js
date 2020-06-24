@@ -125,9 +125,11 @@ export const OverallResults = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Lsi lsi={Lsi.generatedStamp} />
           <UU5.Bricks.DateTime value={this.props.data.lastUpdate} secondsDisabled />
         </UU5.Bricks.Span>
-        <UU5.Bricks.Authenticated authenticated>
-          <UpdateTrailtourButton year={this.props.year} onUpdateDone={this.props.handleReload} />
-        </UU5.Bricks.Authenticated>
+        {this.props.data.state === "active" && (
+          <UU5.Bricks.Authenticated authenticated>
+            <UpdateTrailtourButton year={this.props.year} onUpdateDone={this.props.handleReload} />
+          </UU5.Bricks.Authenticated>
+        )}
       </UU5.Bricks.Div>
     );
   },

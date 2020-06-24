@@ -10,6 +10,10 @@ class TrailtourController {
     return TrailtourAbl.update(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
 
+  updateConfig(ucEnv) {
+    return TrailtourAbl.updateConfig(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+  }
+
   get(ucEnv) {
     return TrailtourAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }

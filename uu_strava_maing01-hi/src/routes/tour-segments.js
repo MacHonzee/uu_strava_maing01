@@ -79,18 +79,22 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   },
 
   _getUpdateButton(data) {
-    return (
+    if (data.data) {
       // TODO refactor to component
-      <UU5.Bricks.Div>
-        <UU5.Bricks.Span style={{ fontSize: "12px", fontStyle: "italic", marginRight: "8px" }}>
-          {this.getLsiComponent("generatedStamp")}
-          {data.data && <UU5.Bricks.DateTime value={data.data.trailtour.lastUpdate} secondsDisabled />}
-        </UU5.Bricks.Span>
-        <UU5.Bricks.Authenticated authenticated>
-          <UpdateTrailtourButton year={this.props.year} onUpdateDone={this._handleReload} />
-        </UU5.Bricks.Authenticated>
-      </UU5.Bricks.Div>
-    );
+      return (
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Span style={{ fontSize: "12px", fontStyle: "italic", marginRight: "8px" }}>
+            {this.getLsiComponent("generatedStamp")}
+            <UU5.Bricks.DateTime value={data.data.trailtour.lastUpdate} secondsDisabled />
+          </UU5.Bricks.Span>
+          {data.data.trailtour.state === "active" && (
+            <UU5.Bricks.Authenticated authenticated>
+              <UpdateTrailtourButton year={this.props.year} onUpdateDone={this._handleReload} />
+            </UU5.Bricks.Authenticated>
+          )}
+        </UU5.Bricks.Div>
+      );
+    }
   },
   //@@viewOff:private
 

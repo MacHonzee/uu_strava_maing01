@@ -32,6 +32,26 @@ const Update = {
       this.code = `${Update.UC_CODE}trailtourDoesNotExist`;
       this.message = "Trailtour object was not found.";
     }
+  },
+
+  TrailtourIsNotActive: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}trailtourIsNotActive`;
+      this.message = "Trailtour is not active anymore.";
+    }
+  }
+};
+
+const UpdateConfig = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}updateConfig/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${UpdateConfig.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
   }
 };
 
@@ -89,5 +109,6 @@ module.exports = {
   GetTourDetail,
   Get,
   Setup,
-  Update
+  Update,
+  UpdateConfig
 };

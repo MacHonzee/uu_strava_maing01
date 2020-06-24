@@ -13,6 +13,9 @@ const WARNINGS = {
   updateUnsupportedKeys: {
     code: `${Errors.Update.UC_CODE}unsupportedKeys`
   },
+  updateConfigUnsupportedKeys: {
+    code: `${Errors.UpdateConfig.UC_CODE}unsupportedKeys`
+  },
   getUnsupportedKeys: {
     code: `${Errors.Get.UC_CODE}unsupportedKeys`
   },
@@ -60,6 +63,7 @@ class TrailtourAbl {
       totalResultsUri: dtoIn.totalResultsUri,
       mapConfig: dtoIn.mapConfig,
       lastUpdate: new Date(),
+      state: "active",
       totalResults
     };
     try {
@@ -125,6 +129,9 @@ class TrailtourAbl {
     if (!trailtourObj) {
       throw new Errors.Update.TrailtourDoesNotExist({ uuAppErrorMap }, { year: dtoIn.year });
     }
+    if (trailtourObj.state !== "active") {
+      throw new Errors.Update.TrailtourIsNotActive({ uuAppErrorMap }, { year: dtoIn.year, state: trailtourObj.state });
+    }
 
     // HDS 3
     let trailtourList = await TrailtourParser.parseBaseUri(trailtourObj.baseUri);
@@ -154,6 +161,31 @@ class TrailtourAbl {
     return {
       trailtourObj,
       trailtourList,
+      uuAppErrorMap
+    };
+  }
+
+  async updateConfig(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("trailtourUpdateConfigDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.updateConfigUnsupportedKeys.code,
+      Errors.UpdateConfig.InvalidDtoIn
+    );
+
+    // HDS 2
+    let trailtourObj = {
+      awid,
+      ...dtoIn
+    };
+    trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
+
+    // HDS 3
+    return {
+      trailtourObj,
       uuAppErrorMap
     };
   }

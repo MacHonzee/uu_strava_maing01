@@ -1,22 +1,19 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Zamknout update trailtoury 2019"
-    },
-    {
-      cs: "Varianta mapy na Mapy.cz"
-    },
-    {
-      cs: "Snazší vyhledávání běžců ve výsledcích"
+      cs: "Slovenská Trailtoura 2020"
     },
     {
       cs: "Při zobrazení detailu přepínat document.title"
     },
     {
-      cs: "Opravit stahování GPX souboru"
+      cs: "Snazší vyhledávání běžců a etap ve výsledcích"
     },
     {
-      cs: "Slovenská Trailtoura 2020"
+      cs: "Varianta mapy na Mapy.cz"
+    },
+    {
+      cs: "Opravit stahování GPX souboru"
     },
     {
       cs: "Automatický refresh výsledků"

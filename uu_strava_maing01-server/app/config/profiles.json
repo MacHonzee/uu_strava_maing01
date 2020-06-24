@@ -27,6 +27,7 @@
       "segment/refreshAll": ["RegisteredUsers"],
       "trailtour/setup": ["Authorities"],
       "trailtour/update": ["RegisteredUsers"],
+      "trailtour/updateConfig": ["Authorities"],
       "trailtour/get": ["UnregisteredUsers"],
       "trailtour/getTourDetail": ["UnregisteredUsers"],
       "trailtour/getAthleteResults": ["UnregisteredUsers"],
