@@ -63,6 +63,11 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
     });
     return results;
   },
+
+  _saveTitle(data) {
+    BrickTools.setDocumentTitle(data, "athleteTourDetail");
+    return true;
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -81,7 +86,7 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
         >
           {data => (
             <LoadFeedback {...data}>
-              {data.data && this._addPaceToResults(data.data.athleteResults) && (
+              {data.data && this._addPaceToResults(data.data.athleteResults) && this._saveTitle(data.data) && (
                 <AthleteTourResults data={data.data} sex={this._getSex(data.data)} />
               )}
             </LoadFeedback>

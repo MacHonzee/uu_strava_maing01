@@ -7,6 +7,7 @@ import Calls from "calls";
 import OverallSegments from "../trailtour/overall-segments";
 import UpdateTrailtourButton from "../trailtour/update-trailtour-button";
 import TrailtourMap from "../bricks/trailtour-map";
+import BrickTools from "../bricks/tools";
 //@@viewOff:imports
 
 export const TourSegments = UU5.Common.VisualComponent.create({
@@ -54,6 +55,10 @@ export const TourSegments = UU5.Common.VisualComponent.create({
     return {
       stamp: new Date()
     };
+  },
+
+  componentDidMount() {
+    BrickTools.setDocumentTitle({ year: this.props.year }, "overallSegments");
   },
   //@@viewOff:reactLifeCycle
 

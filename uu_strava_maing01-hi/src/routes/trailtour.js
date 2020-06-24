@@ -7,6 +7,7 @@ import Config from "./config/config.js";
 import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";
 import OverallResults from "../trailtour/overall-results";
+import BrickTools from "../bricks/tools";
 //@@viewOff:imports
 
 export const Trailtour = UU5.Common.VisualComponent.create({
@@ -42,6 +43,10 @@ export const Trailtour = UU5.Common.VisualComponent.create({
     return {
       stamp: new Date()
     };
+  },
+
+  componentDidMount() {
+    BrickTools.setDocumentTitle({ year: this.props.year }, "overallResults");
   },
   //@@viewOff:reactLifeCycle
 

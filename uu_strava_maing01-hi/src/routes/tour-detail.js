@@ -56,6 +56,11 @@ export const TourDetail = UU5.Common.VisualComponent.create({
     });
     return results;
   },
+
+  _saveTitle(data) {
+    BrickTools.setDocumentTitle(data, "tourDetail");
+    return true;
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -71,9 +76,9 @@ export const TourDetail = UU5.Common.VisualComponent.create({
         <UU5.Common.DataManager onLoad={Calls.getTourDetail} data={{ id: params.id }}>
           {data => (
             <LoadFeedback {...data}>
-              {data.data && this._addPaceToResults(data.data.tourDetail, data.data.segment) && (
-                <TourDetailResults data={data.data} />
-              )}
+              {data.data &&
+                this._addPaceToResults(data.data.tourDetail, data.data.segment) &&
+                this._saveTitle(data.data) && <TourDetailResults data={data.data} />}
             </LoadFeedback>
           )}
         </UU5.Common.DataManager>

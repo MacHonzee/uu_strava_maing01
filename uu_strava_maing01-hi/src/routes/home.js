@@ -6,6 +6,7 @@ import AboutLsi from "../lsi/about-lsi";
 
 import Config from "./config/config.js";
 import BacklogConfig from "../config/backlog-config";
+import BrickTools from "../bricks/tools";
 //@@viewOff:imports
 
 const Home = UU5.Common.VisualComponent.create({
@@ -47,6 +48,9 @@ const Home = UU5.Common.VisualComponent.create({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
+  componentDidMount() {
+    BrickTools.setDocumentTitle({}, "home");
+  },
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface

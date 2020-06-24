@@ -2,6 +2,17 @@ function _padNum(num) {
   return num < 10 ? "0" + num : num;
 }
 
+const DOCUMENT_TITLES = {
+  home: () => `Trailtour Analytics`,
+  overallResults: ({ year }) => `Výsledky Trailtour ${year}`,
+  overallSegments: ({ year }) => `Etapy Trailtour ${year}`,
+  tourDetail: ({ tourDetail: { name } }) => `Trailtour - ${name}`,
+  athleteTourDetail: ({ trailtour }) => {
+    let results = trailtour.totalResults.menResults || trailtour.totalResults.womenResults;
+    return `Trailtour výsledky - ${results.name}`;
+  }
+};
+
 const BrickTools = {
   formatDuration(seconds) {
     let hours = Math.floor(seconds / 3600);
@@ -19,6 +30,10 @@ const BrickTools = {
     let mins = Math.floor(pace);
     let lastSeconds = Math.round((pace % 1) * 60);
     return `${_padNum(mins)}:${_padNum(lastSeconds)}/km`;
+  },
+
+  setDocumentTitle(data, type) {
+    document.title = DOCUMENT_TITLES[type](data);
   }
 };
 
