@@ -49,7 +49,7 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <AthleteTourCard data={this.props.data.trailtour} athleteResults={this.props.data.athleteResults} />
         <TrailtourMap
-          style={{ paddingTop: "8px" }}
+          style={{ marginTop: "8px" }}
           mapConfig={this.props.data.trailtour.mapConfig}
           segments={this.props.data.athleteResults}
           showOwnResults

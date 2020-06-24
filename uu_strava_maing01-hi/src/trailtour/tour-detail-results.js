@@ -47,7 +47,7 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
       center: segment.start_latlng
     };
     let mapSegment = { ...tourDetail, segment };
-    return <TrailtourMap style={{ paddingTop: "8px" }} mapConfig={mapConfig} segments={[mapSegment]} showTourDetail />;
+    return <TrailtourMap style={{ marginTop: "8px" }} mapConfig={mapConfig} segments={[mapSegment]} showTourDetail />;
   },
   //@@viewOff:private
 
