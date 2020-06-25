@@ -4,11 +4,6 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import polyline from "@mapbox/polyline";
 import SpaContext from "../context/spa-context";
-import TourDetailLsi from "../lsi/tour-detail-lsi";
-import SegmentDistance from "../bricks/segment-distance";
-import SegmentPace from "../bricks/segment-pace";
-import SegmentElevation from "../bricks/segment-elevation";
-import BrickTools from "./tools";
 //@@viewOff:imports
 
 const MARKERS = {
@@ -34,30 +29,7 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "GoogleTrailtourMap",
     classNames: {
-      main: (props, state) => Config.Css.css`
-        > div {
-          margin: auto;
-        }
-      `,
-      popover: Config.Css.css`
-        width: 100%;
-        padding: 4px 0;
-
-        > .uu5-common-div {
-          width: 100%;
-          text-align: left;
-
-          .uu5-common-div {
-            display: inline-block;
-            width: 50%;
-            padding: 0 0 0 8px;
-          }
-
-          .uu5-common-div:last-child {
-            font-weight: bold;
-          }
-        }
-      `
+      main: (props, state) => Config.Css.css``
     }
   },
   //@@viewOff:statics
@@ -67,7 +39,8 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
     mapConfig: UU5.PropTypes.object.isRequired,
     segments: UU5.PropTypes.array.isRequired,
     showOwnResults: UU5.PropTypes.bool,
-    showTourDetail: UU5.PropTypes.bool
+    showTourDetail: UU5.PropTypes.bool,
+    openPopover: UU5.PropTypes.func
   },
   //@@viewOff:propTypes
 
@@ -84,38 +57,20 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
-  _getMapWidth(screenSize) {
-    switch (screenSize) {
-      case "xs":
-      case "s":
-      case "m":
-        return "100%";
-      case "l":
-      case "xl":
-        return "75%";
-    }
-  },
-
   _getChild(context) {
     let mapConfig = this.props.mapConfig;
     return (
-      <UU5.Bricks.ScreenSize>
-        {({ screenSize }) => {
-          return (
-            <UU5.Bricks.GoogleMap
-              {...this.getMainPropsToPass()}
-              width={this._getMapWidth(screenSize)}
-              latitude={mapConfig.center[0]}
-              longitude={mapConfig.center[1]}
-              googleApiKey={context.config.googleApiKey}
-              zoom={mapConfig.zoom}
-              disableDefaultUI
-              markers={this._getMarkers()}
-              mapRef={this._handleMapRef}
-            />
-          );
-        }}
-      </UU5.Bricks.ScreenSize>
+      <UU5.Bricks.GoogleMap
+        {...this.getMainPropsToPass()}
+        width={"100%"}
+        latitude={mapConfig.center[0]}
+        longitude={mapConfig.center[1]}
+        googleApiKey={context.config.googleApiKey}
+        zoom={mapConfig.zoom}
+        disableDefaultUI
+        markers={this._getMarkers()}
+        mapRef={this._handleMapRef}
+      />
     );
   },
 
@@ -155,84 +110,7 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
 
   _handleMarkerClick(_, marker, event) {
     let foundSegment = this.props.segments.find(segment => this._getMarkerTitle(segment) === marker.title);
-    let popover = UU5.Environment.getPage().getPopover();
-    popover.open({
-      header: (
-        <UU5.Bricks.Link href={"tourDetail?id=" + foundSegment.id}>
-          <strong>{this._getMarkerTitle(foundSegment)}</strong>
-        </UU5.Bricks.Link>
-      ),
-      content: this._getPopoverContent(foundSegment),
-      footer: this._getPopoverFooter(foundSegment),
-      aroundElement: event.tb.target
-    });
-  },
-
-  _getPopoverContent(segment) {
-    let extraStyle = { paddingLeft: "16px" };
-    return (
-      <UU5.Bricks.Div className={this.getClassName("popover")}>
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Div style={extraStyle}>
-            <UU5.Bricks.Lsi lsi={TourDetailLsi.distance} />
-          </UU5.Bricks.Div>
-          <UU5.Bricks.Div>
-            <SegmentDistance distance={segment.segment.distance} />
-          </UU5.Bricks.Div>
-        </UU5.Bricks.Div>
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Div style={extraStyle}>
-            <UU5.Bricks.Lsi lsi={TourDetailLsi.elevation} />
-          </UU5.Bricks.Div>
-          <UU5.Bricks.Div>
-            <SegmentElevation elevation={segment.segment.total_elevation_gain} />
-          </UU5.Bricks.Div>
-        </UU5.Bricks.Div>
-      </UU5.Bricks.Div>
-    );
-  },
-
-  _getPopoverFooter(segment) {
-    let sex;
-    if (segment.menResults[0]) sex = "men";
-    if (segment.womenResults[0]) sex = "women";
-    if (!this.props.showOwnResults || !sex) return;
-    let result = segment[sex + "Results"][0];
-    let totalResult = segment[sex + "ResultsTotal"];
-
-    // TODO dodělat pořádně, ještě celkový počet lidí do pořadí
-    return (
-      <UU5.Bricks.Div className={this.getClassName("popover")}>
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Div>
-            <UU5.Bricks.Lsi lsi={TourDetailLsi.ownOrder} />
-          </UU5.Bricks.Div>
-          <UU5.Bricks.Div>
-            {result.order}&nbsp;/&nbsp;{totalResult}
-          </UU5.Bricks.Div>
-        </UU5.Bricks.Div>
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Div>
-            <UU5.Bricks.Lsi lsi={TourDetailLsi.points} />
-          </UU5.Bricks.Div>
-          <UU5.Bricks.Div>{result.points}</UU5.Bricks.Div>
-        </UU5.Bricks.Div>
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Div>
-            <UU5.Bricks.Lsi lsi={TourDetailLsi.time} />
-          </UU5.Bricks.Div>
-          <UU5.Bricks.Div>{BrickTools.formatDuration(result.time)}</UU5.Bricks.Div>
-        </UU5.Bricks.Div>
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Div>
-            <UU5.Bricks.Lsi lsi={TourDetailLsi.pace} />
-          </UU5.Bricks.Div>
-          <UU5.Bricks.Div>
-            <SegmentPace pace={result.pace} />
-          </UU5.Bricks.Div>
-        </UU5.Bricks.Div>
-      </UU5.Bricks.Div>
-    );
+    this.props.openPopover(foundSegment, event.tb.target);
   },
 
   _handleMapRef(map) {

@@ -1,9 +1,6 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Mapy.cz jako varianta zobrazení mapy místo Google mapy"
-    },
-    {
       cs: "Snazší vyhledávání běžců a etap ve výsledcích"
     },
     {

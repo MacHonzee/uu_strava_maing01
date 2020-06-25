@@ -23,7 +23,11 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "MapyCzTrailtourMap",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css`
+        .smap img[title] {
+          cursor: pointer;
+        }
+      `
     }
   },
   //@@viewOff:statics
@@ -33,7 +37,8 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     mapConfig: UU5.PropTypes.object.isRequired,
     segments: UU5.PropTypes.array.isRequired,
     showOwnResults: UU5.PropTypes.bool,
-    showTourDetail: UU5.PropTypes.bool
+    showTourDetail: UU5.PropTypes.bool,
+    openPopover: UU5.PropTypes.func
   },
   //@@viewOff:propTypes
 
@@ -138,7 +143,6 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     this.props.segments.forEach(result => {
       let segment = result.segment;
 
-      // TODO it is kind of moving when showing tour detail
       let center = SMap.Coords.fromWGS84(segment.start_longitude, segment.start_latitude);
       let icon = MARKERS.red;
       if (this.props.showOwnResults && (result.menResults[0] || result.womenResults[0])) {
@@ -162,9 +166,15 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
       let options = {
         url: SMap.CONFIG.img + icon
       };
-      let marker = new SMap.Marker(center, this.props.segments[0].stravaId, options);
+      let marker = new SMap.Marker(center, this.props.segments[0].stravaId + "_end", options);
       layer.addMarker(marker);
     }
+
+    map.getSignals().addListener(this, "marker-click", e => {
+      let markerId = e.target.getId();
+      let foundSegment = this.props.segments.find(segment => segment.stravaId === markerId);
+      this.props.openPopover(foundSegment, e.data.event.target);
+    });
   },
 
   _polyline: polyline,
