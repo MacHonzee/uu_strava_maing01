@@ -40,7 +40,8 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
         z-index: 10;
         top: 8px;
         left: 8px;
-      `,
+        width: 200px;
+   `,
       popover: Config.Css.css`
         width: 100%;
         padding: 4px 0;

@@ -29,9 +29,13 @@ const Home = UU5.Common.VisualComponent.create({
         cs: "Vítejte v aplikaci " + Lsi.appName.cs,
         en: "Welcome to application " + Lsi.appName.en
       },
-      resultsLink: {
+      resultsLinkCZ: {
         cs: "Výsledky CZ 2020",
         en: "Results CZ 2020"
+      },
+      resultsLinkSK: {
+        cs: "Výsledky SK 2020",
+        en: "Results SK 2020"
       },
       backlogHeader: {
         cs: "Rozpracované funkčnosti",
@@ -63,8 +67,11 @@ const Home = UU5.Common.VisualComponent.create({
   _getResultsLink() {
     return (
       <UU5.Bricks.Well bgStyle={"transparent"}>
-        <UU5.Bricks.TouchIcon colorSchema={"orange-rich"} icon={"mdi-eye"} href={"czTrailtour2020"}>
-          {this.getLsiComponent("resultsLink")}
+        <UU5.Bricks.TouchIcon colorSchema={"orange"} icon={"mdi-flag-checkered"} href={"czTrailtour2020"}>
+          {this.getLsiComponent("resultsLinkCZ")}
+        </UU5.Bricks.TouchIcon>
+        <UU5.Bricks.TouchIcon colorSchema={"yellow-rich"} icon={"mdi-flag-checkered"} href={"skTrailtour2020"}>
+          {this.getLsiComponent("resultsLinkSK")}
         </UU5.Bricks.TouchIcon>
       </UU5.Bricks.Well>
     );

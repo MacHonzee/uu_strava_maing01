@@ -14,7 +14,8 @@ const BASE_SELECTORS = {
   tableResults: "tbody",
   totalWomenResults: ".default-content table.table:nth-child(3)",
   totalMenResults: ".default-content table.table:nth-child(7)",
-  totalClubResults: ".default-content table.table:nth-child(11)"
+  totalClubResults: ".default-content table.table:nth-child(11)",
+  mapyCzLink: 'JAK.mel\\("a", {href:"(.*)", target'
 };
 
 const YEARLY_SELECTORS = {
@@ -34,7 +35,7 @@ const GENERATED_LABEL = "Generováno: ";
 async function parsePage(pageUri) {
   let data = await AppClient.get(pageUri, {}, { transformResponse: false });
   let strData = await streamToString(data);
-  return cheerio.load(strData);
+  return { $: cheerio.load(strData), stringData: strData };
 }
 
 async function streamToString(stream) {
@@ -115,7 +116,7 @@ function parseResults($, selector) {
 
 const TrailtourParser = {
   async parseBaseUri(baseUri) {
-    const $ = await parsePage(baseUri);
+    const { $ } = await parsePage(baseUri);
     let items = $(BASE_SELECTORS.tourItem);
     return Array.from(items).map(item => {
       let a = $("a", item);
@@ -137,7 +138,7 @@ const TrailtourParser = {
   },
 
   async parseTourDetail(link, year) {
-    const $ = await parsePage(link);
+    const { $, stringData } = await parsePage(link);
     let name = $(BASE_SELECTORS.tourDetailName)
       .text()
       .replace(/\n/g, "")
@@ -147,6 +148,8 @@ const TrailtourParser = {
     let yearlySelector = YEARLY_SELECTORS[year.toString()] || YEARLY_SELECTORS["2020"];
     let stravaLink = $(yearlySelector.tourDetailStravalink)[0].attribs.href;
     let stravaId = parseInt(stravaLink.replace(STRAVA_SEGMENT_HREF, ""));
+    let foundMapyCzLink = stringData.match(BASE_SELECTORS.mapyCzLink);
+    let mapyCzLink = foundMapyCzLink ? foundMapyCzLink[1] : undefined;
     let { allResults: womenResults } = parseResults($, BASE_SELECTORS.womenResults);
     let { allResults: menResults } = parseResults($, BASE_SELECTORS.menResults);
     let { allResults: clubResults, generated } = parseResults($, BASE_SELECTORS.clubResults);
@@ -156,6 +159,7 @@ const TrailtourParser = {
       gpxLink,
       stravaId,
       resultsTimestamp: generated,
+      mapyCzLink,
       womenResults,
       menResults,
       clubResults
@@ -163,7 +167,7 @@ const TrailtourParser = {
   },
 
   async parseTotalResults(uri) {
-    const $ = await parsePage(uri);
+    const { $ } = await parsePage(uri);
     let { allResults: womenResults } = parseResults($, BASE_SELECTORS.totalWomenResults);
     let { allResults: menResults } = parseResults($, BASE_SELECTORS.totalMenResults);
     let { allResults: clubResults } = parseResults($, BASE_SELECTORS.totalClubResults);

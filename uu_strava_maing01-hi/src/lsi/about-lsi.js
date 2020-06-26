@@ -28,14 +28,14 @@ const AboutLsi = {
       "<uu5string/>Aplikace je postavena nad <UU5.Bricks.Link href='https://unicorn.com/cs/'>" +
       "UAF</UU5.Bricks.Link> frameworkem a službou <UU5.Bricks.Link href='https://www.plus4u.net/'>" +
       "Plus4U</UU5.Bricks.Link>. Bezplatnou registrací do této služby získáte nejen přístupům k " +
-      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>produktům Plus4U</UU5.Bricks.Link>, ale také" +
+      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>produktům Plus4U</UU5.Bricks.Link>, ale také " +
       "možnost tlačítkem synchronizovat výsledky Trailtour s oficiálními stránkami. Další funkčnosti pro " +
       "přihlášené budou implementovány v budoucnu, například podrobnější osobní statistiky o segmentech Stravy.",
     en:
       "<uu5string/>Application is built upon <UU5.Bricks.Link href='https://unicorn.com/cs/'>" +
       "UAF</UU5.Bricks.Link> frameworke a service <UU5.Bricks.Link href='https://www.plus4u.net/'>" +
       "Plus4U</UU5.Bricks.Link>. By free registration to this service you will get access not only to " +
-      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>Plus4U products</UU5.Bricks.Link>, but also to" +
+      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>Plus4U products</UU5.Bricks.Link>, but also to " +
       "possibility of synchronizing Trailtour results with official pages. Other functionalities for " +
       "registered users will be implemented in the future, ie. detailed personal statistics about Strava segments."
   },

@@ -28,7 +28,20 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
         .smap img[title] {
           cursor: pointer;
         }
+      `,
+      detailButton: Config.Css.css`
+        position: absolute;
+        left: 8px;
+        bottom: 54px;
+        z-index: 10;
+        width: 200px;
       `
+    },
+    lsi: {
+      mapyCzDetail: {
+        cs: "Zobrazit na Mapy.cz",
+        en: "Show detail at Mapy.cz"
+      }
     }
   },
   //@@viewOff:statics
@@ -205,6 +218,23 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     let computedZoom = map.computeCenterZoom(path);
     map.setCenterZoom(computedZoom[0], computedZoom[1]);
   },
+
+  _getMapyCzDetailButton() {
+    let mapyCzLink = this.props.segments[0].mapyCzLink;
+    if (mapyCzLink) {
+      return (
+        <UU5.Bricks.Button
+          className={this.getClassName("detailButton")}
+          colorSchema={"red-rich"}
+          bgStyle={"filled"}
+          href={mapyCzLink}
+          target={"_blank"}
+        >
+          {this.getLsiComponent("mapyCzDetail")}
+        </UU5.Bricks.Button>
+      );
+    }
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -216,6 +246,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
           <></>
         </LoadFeedback>
         <div id={MAPY_CZ_ROOT} style={{ height: "400px" }} />
+        {this.props.showTourDetail && this._getMapyCzDetailButton()}
       </UU5.Bricks.Div>
     );
   }
