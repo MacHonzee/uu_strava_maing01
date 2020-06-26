@@ -17,7 +17,8 @@ const MARKERS = {
     "assets/icons/poi/tactile/pinlet_shadow_v3-2-medium.png," +
     "assets/icons/poi/tactile/pinlet_outline_v3-2-medium.png," +
     "assets/icons/poi/tactile/pinlet_v3-2-medium.png," +
-    "assets/icons/poi/quantum/pinlet/dot_pinlet-2-medium.png&highlight=ff000000,ffffff,4db546,ffffff"
+    "assets/icons/poi/quantum/pinlet/dot_pinlet-2-medium.png&highlight=ff000000,ffffff,4db546,ffffff",
+  finish: "./assets/finish-flag.svg"
 };
 
 export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
@@ -96,15 +97,6 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
       };
     });
 
-    if (this.props.showTourDetail) {
-      let segment = this.props.segments[0].segment;
-      let secondMarker = { ...markers[0] };
-      secondMarker.latitude = segment.end_latitude;
-      secondMarker.longitude = segment.end_longitude;
-      secondMarker.icon = MARKERS.green;
-      markers.push(secondMarker);
-    }
-
     return markers;
   },
 
@@ -119,13 +111,24 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
       let segment = this.props.segments[0].segment;
       let decodedCoords = this._polyline.decode(segment.map.polyline);
       let path = decodedCoords.map(coords => ({ lat: coords[0], lng: coords[1] }));
-      let polyline = new google.maps.Polyline({
+      new google.maps.Polyline({
+        map,
         path,
         strokeColor: "#FF0000",
         strokeOpacity: 0.8,
         strokeWeight: 2
       });
-      polyline.setMap(map);
+
+      new google.maps.Marker({
+        position: { lat: segment.end_latitude, lng: segment.end_longitude },
+        map: map,
+        title: this._getMarkerTitle(segment),
+        icon: {
+          url: MARKERS.finish,
+          scaledSize: new google.maps.Size(32, 32),
+          anchor: new google.maps.Point(0, 32)
+        }
+      });
     }
   },
 

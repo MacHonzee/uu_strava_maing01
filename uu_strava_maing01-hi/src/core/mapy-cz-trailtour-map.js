@@ -11,7 +11,8 @@ const MAPY_CZ_ROOT = "mapyCzTrailtourMapRoot";
 
 const MARKERS = {
   red: "/marker/drop-red.png",
-  blue: "/marker/drop-blue.png"
+  blue: "/marker/drop-blue.png",
+  finish: "./assets/finish-flag.svg"
 };
 
 export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
@@ -48,7 +49,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      errorState: false,
+      errorState: undefined,
       errorData: {},
       data: window.SMap
     };
@@ -81,7 +82,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _onLoaderFinished() {
-    this.setState({ data: true }, this._buildMap);
+    this.setState({ data: window.SMap }, this._buildMap);
   },
 
   _buildMap() {
@@ -135,7 +136,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _addMarkers(map) {
-    const { SMap } = window;
+    const { SMap, JAK } = window;
     let layer = new SMap.Layer.Marker();
     map.addLayer(layer);
     layer.enable();
@@ -161,12 +162,16 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
 
     if (this.props.showTourDetail) {
       let segment = this.props.segments[0].segment;
-      let icon = MARKERS.blue;
       let center = SMap.Coords.fromWGS84(segment.end_longitude, segment.end_latitude);
+      let flagImg = JAK.mel("img", { src: MARKERS.finish }, { width: "32px", height: "32px" });
       let options = {
-        url: SMap.CONFIG.img + icon
+        url: flagImg,
+        anchor: { top: 32, right: 32 }
       };
       let marker = new SMap.Marker(center, this.props.segments[0].stravaId + "_end", options);
+      // marker.decorate(SMap.Marker.Feature.RelativeAnchor, {
+      //   anchor: { left: 0.5, top: 0.5 }
+      // });
       layer.addMarker(marker);
     }
 
