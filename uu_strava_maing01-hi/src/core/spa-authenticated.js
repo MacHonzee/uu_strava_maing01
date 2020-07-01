@@ -7,6 +7,7 @@ import "uu_plus4u5g01-app";
 import Config from "./config/config.js";
 import Lsi from "../config/lsi.js";
 import Calls from "calls";
+import "../calls-overrides";
 
 import Left from "./left";
 import Bottom from "./bottom.js";

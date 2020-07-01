@@ -14,3 +14,8 @@ const updateConfigDtoInType = shape({
   clientSecret: string(),
   googleApiKey: string()
 });
+
+const redirectToPlus4uNetApiDtoInType = shape({
+  originalUri: uri().isRequired(),
+  originalData: any()
+});

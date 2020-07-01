@@ -16,6 +16,7 @@
       "sys/createPermission": ["AwidOwner","Authorities"],
       "sys/deletePermission": ["AwidOwner","Authorities"],
       "sys/listPermissions": ["AwidOwner","Authorities"],
+      "sys/redirectToPlus4uNetApi": ["Public"],
       "stravaMain/loadConfig": ["UnregisteredUsers"],
       "stravaMain/updateConfig": ["AwidOwner","Authorities"],
       "athlete/create": ["RegisteredUsers"],

@@ -42,7 +42,20 @@ const UpdateConfig = {
   }
 };
 
+const RedirectToPlus4uNetApi = {
+  UC_CODE: `${StravaMainUseCaseError.ERROR_PREFIX}redirectToPlus4uNetApi/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${RedirectToPlus4uNetApi.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
 module.exports = {
   UpdateConfig,
-  Init
+  Init,
+  RedirectToPlus4uNetApi
 };

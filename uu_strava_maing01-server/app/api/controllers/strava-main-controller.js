@@ -2,7 +2,6 @@
 const StravaMainAbl = require("../../abl/strava-main-abl.js");
 
 class StravaMainController {
-
   updateConfig(ucEnv) {
     return StravaMainAbl.updateConfig(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
@@ -12,6 +11,10 @@ class StravaMainController {
 
   loadConfig(ucEnv) {
     return StravaMainAbl.loadConfig(ucEnv.getUri().getAwid(), ucEnv.getSession());
+  }
+
+  redirectToPlus4uNetApi(ucEnv) {
+    return StravaMainAbl.redirectToPlus4uNetApi(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession());
   }
 }
 

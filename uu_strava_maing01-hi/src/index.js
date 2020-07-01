@@ -6,6 +6,9 @@ import Spa from "./core/spa.js";
 // propagate app version into environment
 UU5.Environment["appVersion"] = process.env.VERSION;
 
+// disable statistics logging, too many errors in console
+UU5.Environment.disableStatistics();
+
 // consider app as progressive web app, but not on iOS (OIDC login doesn't work there)
 if (!navigator.userAgent.match(/iPhone|iPad|iPod/)) {
   let link = document.createElement("link");

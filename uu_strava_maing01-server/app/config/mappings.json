@@ -1,6 +1,11 @@
 {
   "{vendor}-{uuApp}-{uuSubApp}": {
     "useCaseMap": {
+      "sys/redirectToPlus4uNetApi": {
+        "realization": "api/controllers/StravaMainController.redirectToPlus4uNetApi",
+        "httpMethod": "GET",
+        "type": "CMD"
+      },
       "init": {
         "realization": "api/controllers/StravaMainController.init",
         "httpMethod": "POST",
