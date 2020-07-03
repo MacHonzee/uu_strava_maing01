@@ -5,7 +5,8 @@ import Calls from "calls";
 const OVERRIDDEN_URLS = [
   "https://api.plus4u.net/ues/wcp/ues/core/security/session/UESSession/getPersonalRole",
   "https://api.plus4u.net/ues/wcp/ues/digitalworkspace/digitalworkspace/UESDigitalWorkspace/getActiveRecordList",
-  "https://api.plus4u.net/ues/wcp/ues/core/property/UESProperty/getValue"
+  "https://api.plus4u.net/ues/wcp/ues/core/property/UESProperty/getValue",
+  "https://cmd.plus4u.net/PLUS4U-BT/uu-plus4uppl/PersonalCard/getAttributes/exec"
 ];
 
 let oldGet = Client.get;
