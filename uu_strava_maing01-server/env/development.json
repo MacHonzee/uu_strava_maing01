@@ -12,5 +12,6 @@
   "uu_app_auditlog_record_limit_check_after": 10000,
   "uu_app_oidc_providers_oidcg02_enabled": true,
   "uu_app_oidc_primary_provider": "oidcg02",
-  "uu_app_oidc_providers_oidcg01_enabled": true
+  "uu_app_oidc_providers_oidcg01_enabled": true,
+  "defaultUriOverride": "/uu-strava-maing01/11111111111111111111111111111112"
 }
