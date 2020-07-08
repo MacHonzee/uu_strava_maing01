@@ -15,8 +15,6 @@ const TrailtourTools = {
   handleSorting(sourceData, sorterList, athleteSex) {
     if (!sorterList || sorterList.length === 0) return sourceData;
 
-    console.log(sorterList[0].key);
-
     sourceData.sort((item1, item2) => {
       for (let i = 0; i < sorterList.length; i++) {
         // prepare key and multiplier

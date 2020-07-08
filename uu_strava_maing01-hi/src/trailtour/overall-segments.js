@@ -49,10 +49,8 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
   //@@viewOn:private
   async _handleLoad(dtoIn) {
     let dataCopy = JSON.parse(JSON.stringify(this.props.data.tourSegments));
-    console.log(dataCopy);
 
     dataCopy = TrailtourTools.handleSorting(dataCopy, dtoIn.sorterList);
-    console.log(dataCopy);
 
     return {
       itemList: dataCopy,
