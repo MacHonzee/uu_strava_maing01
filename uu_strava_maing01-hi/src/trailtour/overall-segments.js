@@ -7,6 +7,7 @@ import TourDetailLsi from "../lsi/tour-detail-lsi";
 import SegmentDistance from "../bricks/segment-distance";
 import SegmentElevation from "../bricks/segment-elevation";
 import SegmentLink from "../bricks/segment-link";
+import TrailtourTools from "./tools";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -47,33 +48,11 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
 
   //@@viewOn:private
   async _handleLoad(dtoIn) {
-    let dataCopy = [...this.props.data.tourSegments];
+    let dataCopy = JSON.parse(JSON.stringify(this.props.data.tourSegments));
+    console.log(dataCopy);
 
-    // handle any sorting necessary
-    // TODO refactor to some sorting tools
-    if (dtoIn.sorterList && dtoIn.sorterList.length > 0) {
-      dataCopy.sort((item1, item2) => {
-        for (let i = 0; i < dtoIn.sorterList.length; i++) {
-          let { key, descending } = dtoIn.sorterList[i];
-          let multiplier = descending ? -1 : 1;
-
-          let result;
-          if (key === "name") {
-            let result = multiplier * item1.name.localeCompare(item2.name);
-            if (result !== 0) return result;
-          }
-
-          if (item1[key] > item2[key]) {
-            result = multiplier;
-          } else if (item1[key] < item2[key]) {
-            result = -1 * multiplier;
-          } else {
-            result = 0;
-          }
-          if (result !== 0) return result;
-        }
-      });
-    }
+    dataCopy = TrailtourTools.handleSorting(dataCopy, dtoIn.sorterList);
+    console.log(dataCopy);
 
     return {
       itemList: dataCopy,

@@ -73,7 +73,7 @@ async function main() {
   copyFile("./.gcloudignore", Path.join(targetGcloudFld, ".gcloudignore"));
 
   // HDS 8 call "gcloud app deploy --quiet --stop-previous-version"
-  console.log("TODO call gcloud app deploy --stop-previous-version");
+  console.log("TODO call gcloud app deploy --quiet --stop-previous-version");
 }
 
 main();

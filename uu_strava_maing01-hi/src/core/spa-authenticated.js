@@ -47,7 +47,11 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
       `
     },
     lsi: {
-      name: Lsi.appName
+      name: Lsi.appName,
+      home: {
+        cs: "Domů",
+        en: "Home"
+      }
     }
   },
   //@@viewOff:statics
@@ -98,7 +102,10 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
           {...this.getMainPropsToPass()}
           top={
             <Plus4U5.App.Top>
-              <UU5.Bricks.Link href={Config.DEFAULT_ROUTE}>{this.getLsiComponent("name")}</UU5.Bricks.Link>
+              <UU5.Bricks.Link onClick={this._goBack} style={{ marginRight: "16px" }}>
+                <UU5.Bricks.Icon icon={"mdi-arrow-left"} clickable />
+              </UU5.Bricks.Link>
+              <UU5.Bricks.Link href={Config.DEFAULT_ROUTE}>{this.getLsiComponent("home")}</UU5.Bricks.Link>
             </Plus4U5.App.Top>
           }
           left={<Left />}
@@ -121,6 +128,10 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
         </Plus4U5.App.Page>
       </SpaContext.Provider>
     );
+  },
+
+  _goBack() {
+    window.history.back();
   },
   //@@viewOff:private
 

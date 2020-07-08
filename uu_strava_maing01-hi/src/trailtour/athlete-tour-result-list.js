@@ -8,6 +8,7 @@ import TourDetailLsi from "../lsi/tour-detail-lsi";
 import SegmentDistance from "../bricks/segment-distance";
 import SegmentElevation from "../bricks/segment-elevation";
 import SegmentPace from "../bricks/segment-pace";
+import TrailtourTools from "./tools";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -50,54 +51,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
     // this is unfortunately needed for the Flextiles to be working without server calls
     let dataCopy = JSON.parse(JSON.stringify(this.props.data));
 
-    // handle any sorting necessary
-    if (dtoIn.sorterList && dtoIn.sorterList.length > 0) {
-      dataCopy.sort((item1, item2) => {
-        for (let i = 0; i < dtoIn.sorterList.length; i++) {
-          let { key, descending } = dtoIn.sorterList[i];
-          let multiplier = descending ? -1 : 1;
-
-          let result;
-          if (key === "name" || key === "author") {
-            let result = multiplier * item1[key].localeCompare(item2[key]);
-            if (result !== 0) return result;
-          }
-
-          if (key === "ownOrder" || key === "points" || key === "time") {
-            if (key === "ownOrder") key = "order";
-            let resultKey = this.props.sex === "male" ? "menResults" : "womenResults";
-            let defaultResult = {
-              order: 0,
-              points: 0,
-              time: 0
-            };
-            let item1Result = item1[resultKey][0] || defaultResult;
-            let item2Result = item2[resultKey][0] || defaultResult;
-            if (item1Result[key] > item2Result[key]) {
-              result = multiplier;
-            } else if (item1Result[key] < item2Result[key]) {
-              result = -1 * multiplier;
-            } else {
-              result = 0;
-            }
-            if (result !== 0) return result;
-          }
-
-          if (key === "runnerCount") {
-            key = this.props.sex === "male" ? "menResultsTotal" : "womenResultsTotal";
-          }
-
-          if (item1[key] > item2[key]) {
-            result = multiplier;
-          } else if (item1[key] < item2[key]) {
-            result = -1 * multiplier;
-          } else {
-            result = 0;
-          }
-          if (result !== 0) return result;
-        }
-      });
-    }
+    dataCopy = TrailtourTools.handleSorting(dataCopy, dtoIn.sorterList, this.props.sex);
 
     return {
       itemList: dataCopy,

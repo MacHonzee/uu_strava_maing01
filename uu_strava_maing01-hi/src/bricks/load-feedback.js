@@ -24,7 +24,7 @@ export const LoadFeedback = UU5.Common.VisualComponent.create({
   propTypes: {
     errorState: UU5.PropTypes.string,
     errorData: UU5.PropTypes.object,
-    data: UU5.PropTypes.oneOfType([UU5.PropTypes.object, UU5.PropTypes.array])
+    data: UU5.PropTypes.any
   },
   //@@viewOff:propTypes
 
