@@ -8,6 +8,7 @@ import BrickTools from "../bricks/tools";
 import SegmentPace from "../bricks/segment-pace";
 import AthleteLink from "../bricks/athlete-link";
 import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
+import TrailtourTools from "./tools";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -51,30 +52,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
     let targetData = dtoIn.filterMap.sex === "male" ? "menResults" : "womenResults";
     let dataCopy = JSON.parse(JSON.stringify(this.props.data.tourDetail[targetData]));
 
-    // handle any sorting necessary
-    if (dtoIn.sorterList && dtoIn.sorterList.length > 0) {
-      dataCopy.sort((item1, item2) => {
-        for (let i = 0; i < dtoIn.sorterList.length; i++) {
-          let { key, descending } = dtoIn.sorterList[i];
-          let multiplier = descending ? -1 : 1;
-
-          let result;
-          if (key === "name") {
-            let result = multiplier * item1.name.localeCompare(item2.name);
-            if (result !== 0) return result;
-          }
-
-          if (item1[key] > item2[key]) {
-            result = multiplier;
-          } else if (item1[key] < item2[key]) {
-            result = -1 * multiplier;
-          } else {
-            result = 0;
-          }
-          if (result !== 0) return result;
-        }
-      });
-    }
+    dataCopy = TrailtourTools.handleSorting(dataCopy, dtoIn.sorterList);
 
     return {
       itemList: dataCopy,

@@ -1,6 +1,6 @@
 {
   "name": "uu_strava_maing01-server",
-  "version": "0.4.3-beta",
+  "version": "0.5.0-beta",
   "description": "",
   "license": "License Commercial",
   "spec": "nodejs-app; uu_appg01@1.4.1",

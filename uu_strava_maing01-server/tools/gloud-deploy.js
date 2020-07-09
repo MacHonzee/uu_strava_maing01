@@ -6,6 +6,7 @@ const Path = require("path");
 const unzipper = require("unzipper");
 const { SecretManagerServiceClient } = require("@google-cloud/secret-manager");
 const client = new SecretManagerServiceClient();
+const { execSync } = require("child_process");
 
 const GCLOUD_FLD = "./target-gcloud";
 const OSID_SECRET_PATH = "projects/1085775118786/secrets/osid_%s/versions/latest";
@@ -72,8 +73,8 @@ async function main() {
   copyFile("./app.yaml", Path.join(targetGcloudFld, "app.yaml"));
   copyFile("./.gcloudignore", Path.join(targetGcloudFld, ".gcloudignore"));
 
-  // HDS 8 call "gcloud app deploy --quiet --stop-previous-version"
-  console.log("TODO call gcloud app deploy --quiet --stop-previous-version");
+  // HDS 8 call google deploy Api
+  execSync("gcloud app deploy --quiet --stop-previous-version", { cwd: targetGcloudFld, stdio: "inherit" });
 }
 
 main();
