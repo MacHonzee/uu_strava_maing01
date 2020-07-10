@@ -8,6 +8,7 @@ import OverallSegments from "../trailtour/overall-segments";
 import UpdateTrailtourButton from "../trailtour/update-trailtour-button";
 import TrailtourMap from "../bricks/trailtour-map";
 import BrickTools from "../bricks/tools";
+import UpdateResultsButton from "../trailtour/update-results-button";
 //@@viewOff:imports
 
 export const TourSegments = UU5.Common.VisualComponent.create({
@@ -32,10 +33,6 @@ export const TourSegments = UU5.Common.VisualComponent.create({
       header: {
         cs: "Etapy Trailtour %s",
         en: "Trailtour %s segments"
-      },
-      generatedStamp: {
-        cs: "Poslední update: ",
-        en: "Last update: "
       }
     }
   },
@@ -85,19 +82,8 @@ export const TourSegments = UU5.Common.VisualComponent.create({
 
   _getUpdateButton(data) {
     if (data.data) {
-      // TODO refactor to component
       return (
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Span style={{ fontSize: "12px", fontStyle: "italic", marginRight: "8px" }}>
-            {this.getLsiComponent("generatedStamp")}
-            <UU5.Bricks.DateTime value={data.data.trailtour.lastUpdate} secondsDisabled />
-          </UU5.Bricks.Span>
-          {data.data.trailtour.state === "active" && (
-            <UU5.Bricks.Authenticated authenticated>
-              <UpdateTrailtourButton year={this.props.year} onUpdateDone={this._handleReload} />
-            </UU5.Bricks.Authenticated>
-          )}
-        </UU5.Bricks.Div>
+        <UpdateResultsButton data={data.data.trailtour} year={this.props.year} handleReload={this._handleReload} />
       );
     }
   },
@@ -116,10 +102,10 @@ export const TourSegments = UU5.Common.VisualComponent.create({
             <UU5.Bricks.Container {...this.getMainPropsToPass()} header={this._getHeader(data)} level={3}>
               <LoadFeedback {...data}>
                 {data.data && (
-                  <UU5.Bricks.Div>
+                  <div>
                     <TrailtourMap mapConfig={data.data.trailtour.mapConfig} segments={data.data.tourSegments} />
                     <OverallSegments data={data.data} year={this.props.year} handleReload={this._handleReload} />
-                  </UU5.Bricks.Div>
+                  </div>
                 )}
               </LoadFeedback>
             </UU5.Bricks.Container>

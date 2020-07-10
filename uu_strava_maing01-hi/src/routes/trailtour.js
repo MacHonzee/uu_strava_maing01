@@ -8,6 +8,8 @@ import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";
 import OverallResults from "../trailtour/overall-results";
 import BrickTools from "../bricks/tools";
+import UpdateTrailtourButton from "../trailtour/update-trailtour-button";
+import UpdateResultsButton from "../trailtour/update-results-button";
 //@@viewOff:imports
 
 export const Trailtour = UU5.Common.VisualComponent.create({
@@ -19,11 +21,22 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "Trailtour",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css`
+        > .uu5-bricks-header > .uu5-common-div {
+          display: flex;
+          justify-content: space-between;
+
+          ${UU5.Utils.ScreenSize.getMaxMediaQueries("s", `flex-direction: column;`)}
+        }
+      `
     },
     lsi: {
       header: {
         cs: "Průběžné výsledky Trailtour %s"
+      },
+      generatedStamp: {
+        cs: "Poslední update: ",
+        en: "Last update: "
       }
     }
   },
@@ -61,28 +74,64 @@ export const Trailtour = UU5.Common.VisualComponent.create({
     // easiest way to force complete reload including UU5.Bricks.Loading
     this.setState({ stamp: new Date() });
   },
+
+  _getHeader(data) {
+    return (
+      <UU5.Bricks.Div>
+        <UU5.Bricks.Div>{this.getLsiComponent("header", null, [this.props.year])}</UU5.Bricks.Div>
+        {this._getUpdateButton(data)}
+      </UU5.Bricks.Div>
+    );
+  },
+
+  _getUpdateButton(data) {
+    if (data.data) {
+      return <UpdateResultsButton data={data.data} year={this.props.year} handleReload={this._handleReload} />;
+    }
+  },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
     return (
-      <UU5.Bricks.Container
-        {...this.getMainPropsToPass()}
-        header={this.getLsiComponent("header", null, [this.props.year])}
-        level={3}
-        key={this.props.year + this.state.stamp.toISOString()}
-      >
-        <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
-          {data => (
+      <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
+        {data => (
+          <UU5.Bricks.Container
+            {...this.getMainPropsToPass()}
+            header={this._getHeader(data)}
+            level={3}
+            key={this.props.year + this.state.stamp.toISOString()}
+          >
             <LoadFeedback {...data}>
               {data.data && (
                 <OverallResults data={data.data} year={this.props.year} handleReload={this._handleReload} />
               )}
             </LoadFeedback>
-          )}
-        </UU5.Common.DataManager>
-      </UU5.Bricks.Container>
+          </UU5.Bricks.Container>
+        )}
+      </UU5.Common.DataManager>
     );
+
+    // return (
+    //   <UU5.Bricks.Container
+    //     {...this.getMainPropsToPass()}
+    //     header={this.getLsiComponent("header", null, [this.props.year])}
+    //     level={3}
+    //     key={this.props.year + this.state.stamp.toISOString()}
+    //   >
+    //     <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
+    //       {data => (
+    //         <LoadFeedback {...data}>
+    //           {data.data && (
+    //             <div>
+    //               <OverallResults data={data.data} year={this.props.year} handleReload={this._handleReload} />
+    //             </div>
+    //           )}
+    //         </LoadFeedback>
+    //       )}
+    //     </UU5.Common.DataManager>
+    //   </UU5.Bricks.Container>
+    // );
   }
   //@@viewOff:render
 });

@@ -95,23 +95,6 @@ export const OverallResults = UU5.Common.VisualComponent.create({
     );
   },
 
-  _getSexRight() {
-    return (
-      // TODO refactor to component
-      <UU5.Bricks.Div>
-        <UU5.Bricks.Span style={{ fontSize: "12px", fontStyle: "italic", marginRight: "8px" }}>
-          <UU5.Bricks.Lsi lsi={Lsi.generatedStamp} />
-          <UU5.Bricks.DateTime value={this.props.data.lastUpdate} secondsDisabled />
-        </UU5.Bricks.Span>
-        {this.props.data.state === "active" && (
-          <UU5.Bricks.Authenticated authenticated>
-            <UpdateTrailtourButton year={this.props.year} onUpdateDone={this.props.handleReload} />
-          </UU5.Bricks.Authenticated>
-        )}
-      </UU5.Bricks.Div>
-    );
-  },
-
   _getSmallTile({ data, visibleColumns }) {
     let { order } = data;
 
@@ -242,7 +225,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
         <UU5.FlexTiles.ListController ucSettings={ucSettings} defaultView={defaultView}>
           <UU5.FlexTiles.List
             bars={[
-              <SexFilterBar key={"sexFilterBar"} right={this._getSexRight()} />,
+              <SexFilterBar key={"sexFilterBar"} />,
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
               <UU5.FlexTiles.InfoBar key={"infoBar"} />
             ]}

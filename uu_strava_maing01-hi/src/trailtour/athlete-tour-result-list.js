@@ -29,7 +29,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    data: UU5.PropTypes.object.isRequired,
+    data: UU5.PropTypes.array.isRequired,
     sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired
   },
   //@@viewOff:propTypes
