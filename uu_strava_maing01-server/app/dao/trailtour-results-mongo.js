@@ -28,16 +28,6 @@ const SEGMENT_LOOKUP_STAGES = [
   }
 ];
 
-function fixAggregateIds(items) {
-  items.forEach((item, i, self) => {
-    self[i].id = item._id;
-    self[i].segment.id = item.segment._id;
-    delete item._id;
-    delete item.segment._id;
-  });
-  return items;
-}
-
 class TrailtourResultsMongo extends UuObjectDao {
   async createSchema() {
     await super.createIndex({ awid: 1, segmentId: 1 }, { unique: true });
@@ -63,11 +53,26 @@ class TrailtourResultsMongo extends UuObjectDao {
 
   async listAthleteResults(awid, trailtourId, athleteStravaId) {
     let elemMatch = key => ({
-      $filter: { input: "$" + key, as: key, cond: { $eq: ["$$" + key + ".stravaId", athleteStravaId] } }
+      $slice: [
+        {
+          $filter: {
+            input: "$" + key,
+            as: key,
+            cond: { $eq: ["$$" + key + ".stravaId", athleteStravaId] }
+          }
+        },
+        1
+      ]
     });
-    let resultsTotal = key => ({ $cond: { if: { $isArray: "$" + key }, then: { $size: "$" + key }, else: 0 } });
+    let resultsTotal = key => ({
+      $cond: {
+        if: { $isArray: "$" + key },
+        then: { $size: "$" + key },
+        else: 0
+      }
+    });
 
-    let items = await super.aggregate([
+    return await super.aggregate([
       { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
       {
         $project: {
@@ -80,43 +85,41 @@ class TrailtourResultsMongo extends UuObjectDao {
           ...PROJECTION_ATTRS
         }
       },
-      ...SEGMENT_LOOKUP_STAGES
-      // TODO $set a $unset does not work in Mongo in Cloudu (requires 4.2+)
-      // {
-      //   $set: {
-      //     id: "$_id",
-      //     "segment.id": "$segment._id"
-      //   }
-      // },
-      // {
-      //   $unset: ["_id", "segment._id"]
-      // }
+      ...SEGMENT_LOOKUP_STAGES,
+      // $set and $unset does not work in Mongo 4.0 (requires 4.2+)
+      {
+        $addFields: {
+          id: "$_id",
+          "segment.id": "$segment._id"
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          "segment._id": 0
+        }
+      }
     ]);
-
-    items = fixAggregateIds(items);
-
-    return items;
   }
 
   async listSegments(awid, trailtourId) {
-    let items = await super.aggregate([
+    return await super.aggregate([
       { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
-      ...SEGMENT_LOOKUP_STAGES
-      // TODO $set a $unset does not work in Mongo in Cloudu (requires 4.2+)
-      // {
-      //   $set: {
-      //     id: "$_id",
-      //     "segment.id": "$segment._id"
-      //   }
-      // },
-      // {
-      //   $unset: ["_id", "segment._id"]
-      // }
+      ...SEGMENT_LOOKUP_STAGES,
+      // $set and $unset does not work in Mongo 4.0 (requires 4.2+)
+      {
+        $addFields: {
+          id: "$_id",
+          "segment.id": "$segment._id"
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          "segment._id": 0
+        }
+      }
     ]);
-
-    items = fixAggregateIds(items);
-
-    return items;
   }
 }
 

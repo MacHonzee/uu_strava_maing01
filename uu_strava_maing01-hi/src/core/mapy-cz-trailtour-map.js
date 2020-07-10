@@ -82,6 +82,13 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
+  getMapCenterAndZoom() {
+    let center = this._map.getCenter();
+    return {
+      center: [center.y, center.x],
+      zoom: this._map.getZoom()
+    };
+  },
   //@@viewOff:interface
 
   //@@viewOn:overriding
@@ -102,13 +109,9 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     const { SMap, JAK } = window;
     let { center, zoom } = this.props.mapConfig;
 
-    // TODO this might not be necessary if there is some API to compute optimal map view
-    if (this.props.showTourDetail) {
-      zoom = zoom + 2;
-    }
-
     let mapCenter = SMap.Coords.fromWGS84(center[1], center[0]);
     let map = new SMap(JAK.gel(MAPY_CZ_ROOT), mapCenter, zoom);
+    this._map = map;
     map
       .addDefaultLayer(SMap.DEF_TURIST)
       .enable()
@@ -134,6 +137,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     map.addControl(selection);
     let zn = new SMap.Control.ZoomNotification();
     map.addControl(zn);
+
     // TODO Lsi titles
     let zoom = new SMap.Control.Zoom(null, { titles: ["Přiblížit", "Oddálit"], showZoomMenu: false });
     map.addControl(zoom, { right: "2px", top: "10x" });
@@ -168,7 +172,6 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
         url: SMap.CONFIG.img + icon
       };
 
-      // TODO handle on click
       let marker = new SMap.Marker(center, result.stravaId, options);
       layer.addMarker(marker);
     });

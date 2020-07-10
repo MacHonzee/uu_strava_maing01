@@ -62,7 +62,7 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
     };
   },
 
-  // FIXME lots of copy paste for columns between the routes
+  // FIXME lots of copy paste for columns between the routes, prepare some column service or helper
   _getNameCell({ name, author, id }) {
     return (
       <UU5.Common.Fragment>

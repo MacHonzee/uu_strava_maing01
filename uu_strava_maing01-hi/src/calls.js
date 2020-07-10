@@ -7,9 +7,7 @@ import Plus4U5 from "uu_plus4u5g01";
 const BACKEND_URI_MAP = {
   /** URL containing app base, e.g. "https://uuos9.plus4u.net/vnd-app/awid/". */
   default: location.protocol + "//" + location.host + UU5.Environment.getAppBasePath(),
-
-  // TODO correct Url
-  dev1: "https://uuappg01-eu-w-1.plus4u.net/uu-strava-maing01/9cb6f576dcb44633b5d7e5afd9384a49/"
+  dev1: "https://uustravamaing01.ew.r.appspot.com/uu-strava-maing01/9cb6f576dcb44633b5d7e5afd9384a49/"
 };
 
 function getBackendUri() {

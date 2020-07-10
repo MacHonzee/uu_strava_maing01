@@ -22,6 +22,8 @@ const Lsi = {
   }
 };
 
+const BREAK_POINT_FOR_MAP = 768;
+
 export const TrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
@@ -79,8 +81,12 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
 
   //@@viewOn:reactLifeCycle
   getInitialState() {
+    this._mapRef = UU5.Common.Reference.create();
+
+    let width = window.innerWidth;
     return {
-      map: "mapyCz" // oneOf(["google", "mapyCz"])
+      map: width < BREAK_POINT_FOR_MAP ? "google" : "mapyCz", // oneOf(["google", "mapyCz"])
+      mapConfig: this.props.mapConfig
     };
   },
   //@@viewOff:reactLifeCycle
@@ -95,7 +101,8 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   _getGoogleMap() {
     return (
       <GoogleTrailtourMap
-        mapConfig={this.props.mapConfig}
+        ref_={this._mapRef}
+        mapConfig={this.state.mapConfig}
         segments={this.props.segments}
         showOwnResults={this.props.showOwnResults}
         showTourDetail={this.props.showTourDetail}
@@ -111,7 +118,8 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   _getMapyCz() {
     return (
       <MapyCzTrailtourMap
-        mapConfig={this.props.mapConfig}
+        ref_={this._mapRef}
+        mapConfig={this.state.mapConfig}
         segments={this.props.segments}
         showOwnResults={this.props.showOwnResults}
         showTourDetail={this.props.showTourDetail}
@@ -121,13 +129,14 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _handleMapChange() {
+    let currentMapConfig = this._mapRef.current.getMapCenterAndZoom();
     this.setState(prevState => ({
-      map: prevState.map === "google" ? "mapyCz" : "google"
+      map: prevState.map === "google" ? "mapyCz" : "google",
+      mapConfig: currentMapConfig
     }));
   },
 
   _getMapChangeButton() {
-    // TODO some styling
     return (
       <UU5.Bricks.Button
         className={this.getClassName("mapChangeButton")}
@@ -143,7 +152,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
     let popover = UU5.Environment.getPage().getPopover();
     popover.open({
       header: (
-        <UU5.Bricks.Link href={"tourDetail?id=" + foundSegment.id}>
+        <UU5.Bricks.Link href={"tourDetail?id=" + foundSegment.id} onClick={this._closePopover}>
           <strong>{this._getMarkerTitle(foundSegment)}</strong>
         </UU5.Bricks.Link>
       ),
@@ -151,6 +160,12 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
       footer: this._getPopoverFooter(foundSegment),
       aroundElement: eventTarget
     });
+  },
+
+  _closePopover() {
+    UU5.Environment.getPage()
+      .getPopover()
+      .close();
   },
 
   _getPopoverContent(segment) {

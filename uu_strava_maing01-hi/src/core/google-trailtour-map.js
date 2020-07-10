@@ -52,6 +52,13 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
+  getMapCenterAndZoom() {
+    let center = this._map.getCenter();
+    return {
+      center: [center.lat(), center.lng()],
+      zoom: this._map.getZoom()
+    };
+  },
   //@@viewOff:interface
 
   //@@viewOn:overriding
@@ -80,7 +87,7 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _getMarkers() {
-    let markers = this.props.segments.map(result => {
+    return this.props.segments.map(result => {
       let segment = result.segment;
       let icon = MARKERS.blue;
       if (this.props.showOwnResults && (result.menResults[0] || result.womenResults[0])) {
@@ -96,8 +103,6 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
         onClick: this._handleMarkerClick
       };
     });
-
-    return markers;
   },
 
   _handleMarkerClick(_, marker, event) {
@@ -106,6 +111,7 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _handleMapRef(map) {
+    this._map = map;
     if (this.props.showTourDetail) {
       let google = window.google; // loaded from UU5.Bricks.GoogleMap
       let segment = this.props.segments[0].segment;

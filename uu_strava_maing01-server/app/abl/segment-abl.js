@@ -171,8 +171,6 @@ class SegmentAbl {
   }
 
   async list(awid, dtoIn, session) {
-    // FIXME needs lookup to get own leaderboard
-
     // HDS 1
     let validationResult = this.validator.validate("segmentListDtoInType", dtoIn);
     // A1, A2
