@@ -94,14 +94,13 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return (
-      <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
+      <UU5.Common.DataManager
+        onLoad={Calls.getTrailtour}
+        data={{ year: this.props.year }}
+        key={this.props.year + this.state.stamp.toISOString()}
+      >
         {data => (
-          <UU5.Bricks.Container
-            {...this.getMainPropsToPass()}
-            header={this._getHeader(data)}
-            level={3}
-            key={this.props.year + this.state.stamp.toISOString()}
-          >
+          <UU5.Bricks.Container {...this.getMainPropsToPass()} header={this._getHeader(data)} level={3}>
             <LoadFeedback {...data}>
               {data.data && (
                 <OverallResults data={data.data} year={this.props.year} handleReload={this._handleReload} />
@@ -111,27 +110,6 @@ export const Trailtour = UU5.Common.VisualComponent.create({
         )}
       </UU5.Common.DataManager>
     );
-
-    // return (
-    //   <UU5.Bricks.Container
-    //     {...this.getMainPropsToPass()}
-    //     header={this.getLsiComponent("header", null, [this.props.year])}
-    //     level={3}
-    //     key={this.props.year + this.state.stamp.toISOString()}
-    //   >
-    //     <UU5.Common.DataManager onLoad={Calls.getTrailtour} data={{ year: this.props.year }}>
-    //       {data => (
-    //         <LoadFeedback {...data}>
-    //           {data.data && (
-    //             <div>
-    //               <OverallResults data={data.data} year={this.props.year} handleReload={this._handleReload} />
-    //             </div>
-    //           )}
-    //         </LoadFeedback>
-    //       )}
-    //     </UU5.Common.DataManager>
-    //   </UU5.Bricks.Container>
-    // );
   }
   //@@viewOff:render
 });

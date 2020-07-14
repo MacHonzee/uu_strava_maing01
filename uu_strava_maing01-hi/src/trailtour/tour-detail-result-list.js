@@ -9,6 +9,7 @@ import SegmentPace from "../bricks/segment-pace";
 import AthleteLink from "../bricks/athlete-link";
 import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
 import TrailtourTools from "./tools";
+import NameFilter from "./name-filter";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -51,6 +52,8 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
     // handle sex filtering
     let targetData = dtoIn.filterMap.sex === "male" ? "menResults" : "womenResults";
     let dataCopy = JSON.parse(JSON.stringify(this.props.data.tourDetail[targetData]));
+
+    dataCopy = TrailtourTools.handleFiltering(dataCopy, dtoIn.filterMap);
 
     dataCopy = TrailtourTools.handleSorting(dataCopy, dtoIn.sorterList);
 
@@ -211,7 +214,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
         <UU5.FlexTiles.ListController ucSettings={ucSettings} defaultView={defaultView}>
           <UU5.FlexTiles.List
             bars={[
-              <SexFilterBar key={"sexFilterBar"} />,
+              <SexFilterBar key={"sexFilterBar"} right={<NameFilter />} />,
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
               <UU5.FlexTiles.InfoBar key={"infoBar"} />
             ]}

@@ -9,6 +9,7 @@ import SegmentDistance from "../bricks/segment-distance";
 import SegmentElevation from "../bricks/segment-elevation";
 import SegmentPace from "../bricks/segment-pace";
 import TrailtourTools from "./tools";
+import NameFilterBar from "./name-filter-bar";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -50,6 +51,8 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   async _handleLoad(dtoIn) {
     // this is unfortunately needed for the Flextiles to be working without server calls
     let dataCopy = JSON.parse(JSON.stringify(this.props.data));
+
+    dataCopy = TrailtourTools.handleFiltering(dataCopy, dtoIn.filterMap);
 
     dataCopy = TrailtourTools.handleSorting(dataCopy, dtoIn.sorterList, this.props.sex);
 
@@ -367,7 +370,11 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
       <UU5.FlexTiles.DataManager {...this.getMainPropsToPass()} onLoad={this._handleLoad} pageSize={PAGE_SIZE}>
         <UU5.FlexTiles.ListController ucSettings={ucSettings}>
           <UU5.FlexTiles.List
-            bars={[<UU5.FlexTiles.SorterBar key={"sorterBar"} />, <UU5.FlexTiles.InfoBar key={"infoBar"} />]}
+            bars={[
+              <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
+              <NameFilterBar key={"nameFilterBar"} />,
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+            ]}
             tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>

@@ -7,6 +7,7 @@ import SexFilterBar from "./sex-filter-bar";
 import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
 import UpdateTrailtourButton from "./update-trailtour-button";
 import TrailtourTools from "./tools";
+import NameFilter from "./name-filter";
 //@@viewOff:imports
 
 const Lsi = {
@@ -63,6 +64,8 @@ export const OverallResults = UU5.Common.VisualComponent.create({
     // handle sex filtering
     let targetData = dtoIn.filterMap.sex === "male" ? "menResults" : "womenResults";
     let dataCopy = JSON.parse(JSON.stringify(this.props.data.totalResults[targetData]));
+
+    dataCopy = TrailtourTools.handleFiltering(dataCopy, dtoIn.filterMap);
 
     dataCopy = TrailtourTools.handleSorting(dataCopy, dtoIn.sorterList);
 
@@ -225,7 +228,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
         <UU5.FlexTiles.ListController ucSettings={ucSettings} defaultView={defaultView}>
           <UU5.FlexTiles.List
             bars={[
-              <SexFilterBar key={"sexFilterBar"} />,
+              <SexFilterBar key={"sexFilterBar"} right={<NameFilter />} />,
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
               <UU5.FlexTiles.InfoBar key={"infoBar"} />
             ]}

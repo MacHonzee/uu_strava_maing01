@@ -12,6 +12,8 @@ const RUNNER_COUNT_SEXES = {
 const RUNNER_COUNT_SEX_KEYS = Object.values(RUNNER_COUNT_SEXES);
 
 const TrailtourTools = {
+  NAME_FILTER_KEY: "nameFilter",
+
   handleSorting(sourceData, sorterList, athleteSex) {
     if (!sorterList || sorterList.length === 0) return sourceData;
 
@@ -63,6 +65,21 @@ const TrailtourTools = {
         if (result !== 0) return result;
       }
     });
+    return sourceData;
+  },
+
+  handleFiltering(sourceData, filterMap) {
+    if (filterMap[this.NAME_FILTER_KEY]) {
+      let nameFilter = filterMap[this.NAME_FILTER_KEY].toLocaleLowerCase();
+      sourceData = sourceData.filter(item => {
+        for (let nameKey of NAME_KEYS) {
+          if (item[nameKey] && item[nameKey].toLocaleLowerCase().includes(nameFilter)) {
+            return true;
+          }
+        }
+        return false;
+      });
+    }
     return sourceData;
   }
 };

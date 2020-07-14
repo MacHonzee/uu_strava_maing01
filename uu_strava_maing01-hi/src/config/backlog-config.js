@@ -1,13 +1,10 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Snazší vyhledávání běžců a etap ve výsledcích"
+      cs: "Automatický refresh výsledků"
     },
     {
       cs: "Opravit stahování GPX souboru"
-    },
-    {
-      cs: "Automatický refresh výsledků"
     },
     {
       cs: "Favicona, meta data, podpora pro vyhledávače, noscript varování, cookies bar"

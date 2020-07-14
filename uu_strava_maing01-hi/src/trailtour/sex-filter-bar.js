@@ -53,7 +53,7 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    right: UU5.PropTypes.node
+    right: UU5.PropTypes.oneOfType([UU5.PropTypes.node, UU5.PropTypes.func])
   },
   //@@viewOff:propTypes
 

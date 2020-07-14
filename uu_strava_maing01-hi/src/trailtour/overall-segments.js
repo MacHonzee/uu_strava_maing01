@@ -8,6 +8,7 @@ import SegmentDistance from "../bricks/segment-distance";
 import SegmentElevation from "../bricks/segment-elevation";
 import SegmentLink from "../bricks/segment-link";
 import TrailtourTools from "./tools";
+import NameFilterBar from "./name-filter-bar";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -49,6 +50,8 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
   //@@viewOn:private
   async _handleLoad(dtoIn) {
     let dataCopy = JSON.parse(JSON.stringify(this.props.data.tourSegments));
+
+    dataCopy = TrailtourTools.handleFiltering(dataCopy, dtoIn.filterMap);
 
     dataCopy = TrailtourTools.handleSorting(dataCopy, dtoIn.sorterList);
 
@@ -257,7 +260,11 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
       <UU5.FlexTiles.DataManager {...this.getMainPropsToPass()} onLoad={this._handleLoad} pageSize={PAGE_SIZE}>
         <UU5.FlexTiles.ListController ucSettings={ucSettings}>
           <UU5.FlexTiles.List
-            bars={[<UU5.FlexTiles.SorterBar key={"sorterBar"} />, <UU5.FlexTiles.InfoBar key={"infoBar"} />]}
+            bars={[
+              <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
+              <NameFilterBar key={"nameFilterBar"} />,
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+            ]}
             tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
