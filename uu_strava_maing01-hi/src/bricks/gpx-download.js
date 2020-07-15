@@ -39,30 +39,15 @@ export const GpxDownload = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
-  _handleDownload(_, event) {
-    // FIXME this is blocked by CORS, cannot get something from trailtour.cz
-    // event.preventDefault();
-    // Calls.call("get", this.props.gpx)
-    //   .then(data => {
-    //     console.log(data);
-    //   })
-    //   .catch(e => {
-    //     console.error(e);
-    //   });
-    // return false;
+  _getDownloadUri() {
+    return Calls.getCommandUri("trailtour/downloadGpx?gpxLink=" + this.props.gpx);
   },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
     return (
-      <UU5.Bricks.Link
-        {...this.getMainPropsToPass()}
-        href={this.props.gpx}
-        download
-        target={"_blank"}
-        onClick={this._handleDownload}
-      >
+      <UU5.Bricks.Link {...this.getMainPropsToPass()} href={this._getDownloadUri()} download>
         <UU5.Bricks.Strong>
           <UU5.Bricks.Lsi lsi={TourDetailLsi.gpx} />
         </UU5.Bricks.Strong>

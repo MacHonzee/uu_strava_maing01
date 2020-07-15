@@ -95,6 +95,11 @@
         "realization": "api/controllers/TrailtourController.getSegments",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "trailtour/downloadGpx": {
+        "realization": "api/controllers/TrailtourController.downloadGpx",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

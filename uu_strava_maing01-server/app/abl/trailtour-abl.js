@@ -1,8 +1,7 @@
 "use strict";
-const Path = require("path");
-const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory, ObjectNotFound } = require("uu_appg01_server").ObjectStore;
-const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const ValidationHelper = require("../helpers/validation-helper");
+const AppClient = require("uu_appg01_server").AppClient;
 const Errors = require("../api/errors/trailtour-error.js");
 const TrailtourParser = require("../helpers/trailtour-parser-helper");
 
@@ -27,27 +26,22 @@ const WARNINGS = {
   },
   getSegmentsUnsupportedKeys: {
     code: `${Errors.GetSegments.UC_CODE}unsupportedKeys`
+  },
+  downloadGpxUnsupportedKeys: {
+    code: `${Errors.DownloadGpx.UC_CODE}unsupportedKeys`
   }
 };
 
 class TrailtourAbl {
   constructor() {
-    this.validator = new Validator(Path.join(__dirname, "..", "api", "validation_types", "trailtour-types.js"));
     this.trailtourDao = DaoFactory.getDao("trailtour");
     this.trailtourResultsDao = DaoFactory.getDao("trailtourResults");
     this.segmentDao = DaoFactory.getDao("segment");
   }
 
   async setup(awid, dtoIn, session) {
-    // HDS 1
-    let validationResult = this.validator.validate("trailtourSetupDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.setupUnsupportedKeys.code,
-      Errors.Setup.InvalidDtoIn
-    );
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "setup", dtoIn);
 
     // HDS 2
     let trailtourList = await TrailtourParser.parseBaseUri(dtoIn.baseUri);
@@ -92,7 +86,7 @@ class TrailtourAbl {
       trailtour.trailtourId = trailtourObj.id;
 
       try {
-        trailtour = await this.trailtourResultsDao.updateBySegmentId(trailtour);
+        trailtour = await this.trailtourResultsDao.updateBySegmentAndTtId(trailtour);
       } catch (e) {
         if (e instanceof ObjectNotFound) {
           trailtour = await this.trailtourResultsDao.create(trailtour);
@@ -114,15 +108,8 @@ class TrailtourAbl {
   }
 
   async update(awid, dtoIn) {
-    // HDS 1
-    let validationResult = this.validator.validate("trailtourUpdateDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.updateUnsupportedKeys.code,
-      Errors.Update.InvalidDtoIn
-    );
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "update", dtoIn);
 
     // HDS 2
     let trailtourObj = await this.trailtourDao.getByYear(awid, dtoIn.year);
@@ -151,7 +138,7 @@ class TrailtourAbl {
       trailtour.awid = awid;
       trailtour.trailtourId = trailtourObj.id;
 
-      trailtourList[i] = await this.trailtourResultsDao.updateByStravaId(trailtour);
+      trailtourList[i] = await this.trailtourResultsDao.updateByStravaAndTtId(trailtour);
       statistics = this._updateStatistics(statistics, trailtourList[i]);
     });
     await Promise.all(promises);
@@ -166,15 +153,8 @@ class TrailtourAbl {
   }
 
   async updateConfig(awid, dtoIn) {
-    // HDS 1
-    let validationResult = this.validator.validate("trailtourUpdateConfigDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.updateConfigUnsupportedKeys.code,
-      Errors.UpdateConfig.InvalidDtoIn
-    );
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "updateConfig", dtoIn);
 
     // HDS 2
     let trailtourObj = {
@@ -191,15 +171,8 @@ class TrailtourAbl {
   }
 
   async get(awid, dtoIn) {
-    // HDS 1
-    let validationResult = this.validator.validate("trailtourGetDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.getUnsupportedKeys.code,
-      Errors.Get.InvalidDtoIn
-    );
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "get", dtoIn);
 
     // HDS 2
     let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
@@ -212,15 +185,8 @@ class TrailtourAbl {
   }
 
   async getTourDetail(awid, dtoIn) {
-    // HDS 1
-    let validationResult = this.validator.validate("trailtourGetTourDetailDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.getTourDetailUnsupportedKeys.code,
-      Errors.GetTourDetail.InvalidDtoIn
-    );
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "getTourDetail", dtoIn);
 
     // HDS 2
     let tourDetail = await this.trailtourResultsDao.get(awid, dtoIn.id);
@@ -241,15 +207,8 @@ class TrailtourAbl {
   }
 
   async getAthleteResults(awid, dtoIn) {
-    // HDS 1
-    let validationResult = this.validator.validate("trailtourGetAthleteResultsDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.getAthleteResultsUnsupportedKeys.code,
-      Errors.GetAthleteResults.InvalidDtoIn
-    );
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "getAthleteResults", dtoIn);
 
     // HDS 2
     let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
@@ -274,15 +233,8 @@ class TrailtourAbl {
   }
 
   async getSegments(awid, dtoIn) {
-    // HDS 1
-    let validationResult = this.validator.validate("trailtourGetSegmentsDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.getSegmentsUnsupportedKeys.code,
-      Errors.GetSegments.InvalidDtoIn
-    );
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "getSegments", dtoIn);
 
     // HDS 2
     let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
@@ -297,6 +249,14 @@ class TrailtourAbl {
       tourSegments,
       uuAppErrorMap
     };
+  }
+
+  async downloadGpx(dtoIn) {
+    // HDS 1, A1, A2
+    ValidationHelper.validate(WARNINGS, Errors, "trailtour", "downloadGpx", dtoIn);
+
+    // HDS 2
+    return await AppClient.get(dtoIn.gpxLink);
   }
 
   _updateStatistics(statistics, trailtour) {

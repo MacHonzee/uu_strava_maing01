@@ -103,6 +103,18 @@ const GetSegments = {
   }
 };
 
+const DownloadGpx = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}downloadGpx/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${DownloadGpx.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
 module.exports = {
   GetSegments,
   GetAthleteResults,
@@ -110,5 +122,6 @@ module.exports = {
   Get,
   Setup,
   Update,
-  UpdateConfig
+  UpdateConfig,
+  DownloadGpx
 };

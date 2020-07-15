@@ -4,9 +4,6 @@ const BacklogConfig = {
       cs: "Automatický refresh výsledků"
     },
     {
-      cs: "Opravit stahování GPX souboru"
-    },
-    {
       cs: "Favicona, meta data, podpora pro vyhledávače, noscript varování, cookies bar"
     },
     {

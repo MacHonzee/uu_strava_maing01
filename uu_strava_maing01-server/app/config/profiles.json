@@ -32,7 +32,8 @@
       "trailtour/get": ["UnregisteredUsers"],
       "trailtour/getTourDetail": ["UnregisteredUsers"],
       "trailtour/getAthleteResults": ["UnregisteredUsers"],
-      "trailtour/getSegments": ["UnregisteredUsers"]
+      "trailtour/getSegments": ["UnregisteredUsers"],
+      "trailtour/downloadGpx": ["UnregisteredUsers"]
     }
   }
 }

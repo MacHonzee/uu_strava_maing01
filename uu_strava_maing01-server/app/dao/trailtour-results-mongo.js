@@ -30,8 +30,8 @@ const SEGMENT_LOOKUP_STAGES = [
 
 class TrailtourResultsMongo extends UuObjectDao {
   async createSchema() {
-    await super.createIndex({ awid: 1, segmentId: 1 }, { unique: true });
-    await super.createIndex({ awid: 1, stravaId: 1 }, { unique: true });
+    await super.createIndex({ awid: 1, segmentId: 1, trailtourId: 1 }, { unique: true });
+    await super.createIndex({ awid: 1, stravaId: 1, trailtourId: 1 }, { unique: true });
     await super.createIndex({ awid: 1, trailtourId: 1 });
   }
 
@@ -39,12 +39,20 @@ class TrailtourResultsMongo extends UuObjectDao {
     return await super.insertOne(uuObject);
   }
 
-  async updateBySegmentId(uuObject) {
-    return await super.findOneAndUpdate({ awid: uuObject.awid, segmentId: uuObject.segmentId }, uuObject, "NONE");
+  async updateBySegmentAndTtId(uuObject) {
+    return await super.findOneAndUpdate(
+      { awid: uuObject.awid, segmentId: uuObject.segmentId, trailtourId: uuObject.trailtourId },
+      uuObject,
+      "NONE"
+    );
   }
 
-  async updateByStravaId(uuObject) {
-    return await super.findOneAndUpdate({ awid: uuObject.awid, stravaId: uuObject.stravaId }, uuObject, "NONE");
+  async updateByStravaAndTtId(uuObject) {
+    return await super.findOneAndUpdate(
+      { awid: uuObject.awid, stravaId: uuObject.stravaId, trailtourId: uuObject.trailtourId },
+      uuObject,
+      "NONE"
+    );
   }
 
   async get(awid, id) {

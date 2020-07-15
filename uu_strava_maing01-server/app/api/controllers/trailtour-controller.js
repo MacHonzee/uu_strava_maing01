@@ -29,6 +29,14 @@ class TrailtourController {
   getTourDetail(ucEnv) {
     return TrailtourAbl.getTourDetail(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
+
+  async downloadGpx(ucEnv) {
+    let dtoIn = ucEnv.getDtoIn();
+    let dtoOut = await TrailtourAbl.downloadGpx(dtoIn);
+    // set correct filename of response, since the Trailtour links do not have Content-disposition header
+    let splits = dtoIn.gpxLink.split("/");
+    return ucEnv.setBinaryDtoOut({ data: dtoOut.data, filename: splits[splits.length - 1] });
+  }
 }
 
 module.exports = new TrailtourController();
