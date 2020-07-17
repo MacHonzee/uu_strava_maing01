@@ -4,12 +4,13 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import SegmentLink from "../bricks/segment-link";
 import BrickTools from "../bricks/tools";
-import TourDetailLsi from "../lsi/tour-detail-lsi";
 import SegmentDistance from "../bricks/segment-distance";
 import SegmentElevation from "../bricks/segment-elevation";
 import SegmentPace from "../bricks/segment-pace";
 import TrailtourTools from "./tools";
 import NameFilterBar from "./name-filter-bar";
+import TourDetailLsi from "../lsi/tour-detail-lsi";
+
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -152,11 +153,12 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
 
   _getSmallTile({ data, visibleColumns }) {
     let { id, name, author, order, segment } = data;
+    let { results } = this._getCorrectResults(data);
 
     let rows = [];
     rows.push(
       <div style={{ position: "relative" }}>
-        <div>
+        <div style={{ fontWeight: results.time ? "bold" : "normal" }}>
           #{order} <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
         </div>
         <div>
@@ -181,7 +183,6 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
       }
 
       if (column.id === "pace") {
-        let { results } = this._getCorrectResults(data);
         rows.push(
           <UU5.Common.Fragment>
             <div>

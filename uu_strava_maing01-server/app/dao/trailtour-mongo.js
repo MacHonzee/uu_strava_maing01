@@ -21,6 +21,10 @@ class TrailtourMongo extends UuObjectDao {
   async getByYear(awid, year) {
     return await super.findOne({ awid, year });
   }
+
+  async listAllForCache() {
+    return await super.find({}, {}, {}, { lastUpdate: 1, year: 1 });
+  }
 }
 
 module.exports = TrailtourMongo;

@@ -1,5 +1,6 @@
 "use strict";
 const TrailtourAbl = require("../../abl/trailtour-abl.js");
+const TrailtourCache = require("../../helpers/trailtour-cache");
 
 class TrailtourController {
   setup(ucEnv) {
@@ -15,22 +16,31 @@ class TrailtourController {
   }
 
   get(ucEnv) {
-    return TrailtourAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    return TrailtourCache.withTrailtourCache(ucEnv, () => {
+      return TrailtourAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    });
   }
 
   getSegments(ucEnv) {
-    return TrailtourAbl.getSegments(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    return TrailtourCache.withTrailtourCache(ucEnv, () => {
+      return TrailtourAbl.getSegments(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    });
   }
 
   getAthleteResults(ucEnv) {
-    return TrailtourAbl.getAthleteResults(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    return TrailtourCache.withTrailtourCache(ucEnv, () => {
+      return TrailtourAbl.getAthleteResults(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    });
   }
 
   getTourDetail(ucEnv) {
-    return TrailtourAbl.getTourDetail(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    return TrailtourCache.withTrailtourResultCache(ucEnv, () => {
+      return TrailtourAbl.getTourDetail(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    });
   }
 
   async downloadGpx(ucEnv) {
+    // TODO this is cachable aswell, implement it sometime later
     let dtoIn = ucEnv.getDtoIn();
     let dtoOut = await TrailtourAbl.downloadGpx(dtoIn);
     // set correct filename of response, since the Trailtour links do not have Content-disposition header

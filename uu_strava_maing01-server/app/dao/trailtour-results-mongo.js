@@ -129,6 +129,10 @@ class TrailtourResultsMongo extends UuObjectDao {
       }
     ]);
   }
+
+  async listAllForCache() {
+    return await super.find({}, {}, {}, { trailtourId: 1 });
+  }
 }
 
 module.exports = TrailtourResultsMongo;
