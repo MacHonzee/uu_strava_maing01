@@ -44,6 +44,10 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
         .uu5-flextiles-list .uu5-flextiles-tile:hover {
           background-color: #e6e6e6;
         }
+
+        .uu5-bricks-alert {
+          top: 72px;
+        }
       `
     },
     lsi: {

@@ -1,6 +1,6 @@
 {
   "product": "uu_strava_maing01",
-  "version": "0.6.4-beta",
+  "version": "0.7.0-beta",
   "license": "License Commercial",
   "description": {
     "en": "",
@@ -11,7 +11,7 @@
     "devkit": {
       "development": {
         "appBoxLocationUri": "ues:DEV0184-BT:UU.STRAVA.MAING01/APPBOXES",
-        "appDeploymentUri": "ues:DEV0184-BT[84723967990179609]:UU.STRAVA/POOL[5ee260f8f9038012d05f722a]:UU.STRAVA.MAING01[5ee3315cf439f9a2cc990fee]"
+        "appDeploymentUri": "ues:DEV0184-BT[84723c967990179609]:UU.STRAVA/POOL[5ee260f8f9038012d05f722a]:UU.STRAVA.MAING01[5ee3315cf439f9a2cc990fee]"
       }
     }
   }

@@ -5,14 +5,14 @@ import Config from "./config/config.js";
 import UpdateTrailtourButton from "./update-trailtour-button";
 //@@viewOff:imports
 
-export const UpdateResultsButton = UU5.Common.VisualComponent.create({
+export const ResultsTimestamp = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "UpdateResultsButton",
+    tagName: Config.TAG + "ResultsTimestamp",
     classNames: {
       main: (props, state) => Config.Css.css`
         > .uu5-bricks-span {
@@ -74,4 +74,4 @@ export const UpdateResultsButton = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default UpdateResultsButton;
+export default ResultsTimestamp;

@@ -51,16 +51,8 @@ async function streamToString(stream) {
 }
 
 function parseResults($, selector) {
-  // TODO this now works only for 2020 year
+  // TODO this currently works only for 2020 year - do not lose old data :)
   let results = $(selector);
-  // FIXME not found nows
-  let generatedTag = $(BASE_SELECTORS.generatedResults, results);
-  let generated =
-    generatedTag &&
-    generatedTag
-      .text()
-      .trim()
-      .replace(GENERATED_LABEL, "");
   let tableRows = $(BASE_SELECTORS.tableResults, results).children();
 
   let allResults = [];
@@ -111,7 +103,28 @@ function parseResults($, selector) {
     allResults.push(resultItem);
   }
 
-  return { generated, allResults };
+  return allResults;
+}
+
+function parseGeneratedStamp($) {
+  // FIXME not found nows
+  let generatedTag = $(BASE_SELECTORS.generatedResults);
+  let generated =
+    generatedTag &&
+    generatedTag
+      .text()
+      .trim()
+      .replace(GENERATED_LABEL, "");
+  if (generated) {
+    let splits = generated
+      .replace(/\./g, "")
+      .replace(",", "")
+      .split(" ");
+    // TODO if it proves to be a problem, we will need to solve CET zone
+    let dateStr = `${splits[2]}-${splits[1]}-${splits[0]}T${splits[3]}:00.000Z`;
+    return new Date(dateStr);
+  }
+  return generated;
 }
 
 const TrailtourParser = {
@@ -150,15 +163,14 @@ const TrailtourParser = {
     let stravaId = parseInt(stravaLink.replace(STRAVA_SEGMENT_HREF, ""));
     let foundMapyCzLink = stringData.match(BASE_SELECTORS.mapyCzLink);
     let mapyCzLink = foundMapyCzLink ? foundMapyCzLink[1] : undefined;
-    let { allResults: womenResults } = parseResults($, BASE_SELECTORS.womenResults);
-    let { allResults: menResults } = parseResults($, BASE_SELECTORS.menResults);
-    let { allResults: clubResults, generated } = parseResults($, BASE_SELECTORS.clubResults);
+    let womenResults = parseResults($, BASE_SELECTORS.womenResults);
+    let menResults = parseResults($, BASE_SELECTORS.menResults);
+    let clubResults = parseResults($, BASE_SELECTORS.clubResults);
 
     return {
       name,
       gpxLink,
       stravaId,
-      resultsTimestamp: generated,
       mapyCzLink,
       womenResults,
       menResults,
@@ -168,11 +180,12 @@ const TrailtourParser = {
 
   async parseTotalResults(uri) {
     const { $ } = await parsePage(uri);
-    let { allResults: womenResults } = parseResults($, BASE_SELECTORS.totalWomenResults);
-    let { allResults: menResults } = parseResults($, BASE_SELECTORS.totalMenResults);
-    let { allResults: clubResults } = parseResults($, BASE_SELECTORS.totalClubResults);
+    let generated = parseGeneratedStamp($);
+    let womenResults = parseResults($, BASE_SELECTORS.totalWomenResults);
+    let menResults = parseResults($, BASE_SELECTORS.totalMenResults);
+    let clubResults = parseResults($, BASE_SELECTORS.totalClubResults);
 
-    return { womenResults, menResults, clubResults };
+    return { womenResults, menResults, clubResults, resultsTimestamp: generated };
   }
 };
 

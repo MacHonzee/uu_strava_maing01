@@ -6,6 +6,8 @@ import Calls from "calls";
 import TranslatedServerError from "../bricks/translated-server-error";
 //@@viewOff:imports
 
+const ALREADY_UP_TO_DATE_CODE = "uu-strava-main/trailtour/update/alreadyUpToDate";
+
 export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
@@ -53,6 +55,10 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
       success: {
         cs: "Data úspěšně aktualizována.",
         en: "Data successfully updated."
+      },
+      alreadyUpToDate: {
+        cs: "Na stránkách trailtour.cz nejsou novější data, výsledky jsou tudíž již aktuální.",
+        en: "There are no newer data on trailtour.cz, the results are already up to date."
       }
     }
   },
@@ -118,15 +124,24 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
       .catch(this._handleUpdateTrailtourFail);
   },
 
-  _handleUpdateTrailtourDone() {
+  _handleUpdateTrailtourDone(dtoOut) {
     this.setState({ loading: false });
-    this.props.onUpdateDone();
-    UU5.Environment.getPage()
-      .getAlertBus()
-      .setAlert({
-        colorSchema: "success",
-        content: this.getLsiComponent("success")
-      });
+    if (dtoOut.uuAppErrorMap && dtoOut.uuAppErrorMap[ALREADY_UP_TO_DATE_CODE]) {
+      UU5.Environment.getPage()
+        .getAlertBus()
+        .setAlert({
+          colorSchema: "warning",
+          content: this.getLsiComponent("alreadyUpToDate")
+        });
+    } else {
+      this.props.onUpdateDone();
+      UU5.Environment.getPage()
+        .getAlertBus()
+        .setAlert({
+          colorSchema: "success",
+          content: this.getLsiComponent("success")
+        });
+    }
   },
 
   _handleUpdateTrailtourFail(error) {

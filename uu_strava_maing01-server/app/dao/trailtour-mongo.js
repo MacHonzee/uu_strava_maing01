@@ -25,6 +25,10 @@ class TrailtourMongo extends UuObjectDao {
   async listAllForCache() {
     return await super.find({}, {}, {}, { lastUpdate: 1, year: 1 });
   }
+
+  async listActive(awid) {
+    return await super.find({ awid, state: "active" });
+  }
 }
 
 module.exports = TrailtourMongo;

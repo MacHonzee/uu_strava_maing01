@@ -11,6 +11,11 @@ class TrailtourController {
     return TrailtourAbl.update(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }
 
+  updateAll(ucEnv) {
+    let request = ucEnv.getRequest();
+    return TrailtourAbl.updateAll(ucEnv.getUri().getAwid(), ucEnv.getAuthorizationResult(), request.getHeaders());
+  }
+
   updateConfig(ucEnv) {
     return TrailtourAbl.updateConfig(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
   }

@@ -115,7 +115,22 @@ const DownloadGpx = {
   }
 };
 
+const UpdateAll = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}updateAll/`,
+
+  NotAuthorized: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${DownloadGpx.UC_CODE}notAuthorized`;
+      this.message =
+        "You are not authorized for update. You either need to be in Authorities profile, " +
+        "or the command has to be called as a Cron Job from Google App Engine.";
+    }
+  }
+};
+
 module.exports = {
+  UpdateAll,
   GetSegments,
   GetAthleteResults,
   GetTourDetail,

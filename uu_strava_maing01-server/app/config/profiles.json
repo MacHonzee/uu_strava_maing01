@@ -7,7 +7,7 @@
     "useCaseMap": {}
   },
   "*": {
-    "profileList": ["Authorities","RegisteredUsers","UnregisteredUsers","AwidOwner"],
+    "profileList": ["Authorities","RegisteredUsers","UnregisteredUsers","AwidOwner","Public"],
     "useCaseMap": {
       "init": ["AwidOwner"],
       "defaultUve": ["Public"],
@@ -33,7 +33,8 @@
       "trailtour/getTourDetail": ["UnregisteredUsers"],
       "trailtour/getAthleteResults": ["UnregisteredUsers"],
       "trailtour/getSegments": ["UnregisteredUsers"],
-      "trailtour/downloadGpx": ["UnregisteredUsers"]
+      "trailtour/downloadGpx": ["UnregisteredUsers"],
+      "trailtour/updateAll": ["Authorities","Public"]
     }
   }
 }

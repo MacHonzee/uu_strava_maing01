@@ -16,6 +16,7 @@ const trailtourSetupDtoInType = shape({
 
 const trailtourUpdateDtoInType = shape({
   year: oneOf(CURRENT_TRAILTOURS).isRequired(),
+  force: boolean()
 });
 
 const trailtourUpdateConfigDtoInType = shape({

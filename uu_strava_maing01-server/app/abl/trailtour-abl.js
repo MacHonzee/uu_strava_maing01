@@ -12,6 +12,10 @@ const WARNINGS = {
   updateUnsupportedKeys: {
     code: `${Errors.Update.UC_CODE}unsupportedKeys`
   },
+  trailtourAlreadyUpdated: {
+    code: `${Errors.Update.UC_CODE}alreadyUpToDate`,
+    message: "Trailtour is already up to date with official results."
+  },
   updateConfigUnsupportedKeys: {
     code: `${Errors.UpdateConfig.UC_CODE}unsupportedKeys`
   },
@@ -31,6 +35,8 @@ const WARNINGS = {
     code: `${Errors.DownloadGpx.UC_CODE}unsupportedKeys`
   }
 };
+
+const APP_ENGINE_CRON_HEADER = "x-appengine-cron";
 
 class TrailtourAbl {
   constructor() {
@@ -121,10 +127,24 @@ class TrailtourAbl {
     }
 
     // HDS 3
-    let trailtourList = await TrailtourParser.parseBaseUri(trailtourObj.baseUri);
+    let totalResults = await TrailtourParser.parseTotalResults(trailtourObj.totalResultsUri);
+
+    // HDS 3.1
+    if (!dtoIn.force && trailtourObj.lastUpdate > new Date(totalResults.resultsTimestamp)) {
+      let warning = WARNINGS.trailtourAlreadyUpdated;
+      let paramMap = {
+        lastUpdate: trailtourObj.lastUpdate,
+        resultsTimestamp: totalResults.resultsTimestamp
+      };
+      // we return status 200 because the Cron jobs require status 200 to work correctly
+      ValidationHelper.addWarning(uuAppErrorMap, warning.code, warning.message, paramMap);
+      return {
+        uuAppErrorMap
+      };
+    }
 
     // HDS 4
-    let totalResults = await TrailtourParser.parseTotalResults(trailtourObj.totalResultsUri);
+    let trailtourList = await TrailtourParser.parseBaseUri(trailtourObj.baseUri);
 
     trailtourObj.lastUpdate = new Date();
     trailtourObj.totalResults = totalResults;
@@ -257,6 +277,32 @@ class TrailtourAbl {
 
     // HDS 2
     return await AppClient.get(dtoIn.gpxLink);
+  }
+
+  async updateAll(awid, authzResult, headers) {
+    // HDS 1
+    let profiles = authzResult.getAuthorizedProfiles();
+    if (
+      profiles.length === 0 &&
+      !Object.keys(headers).find(header => header.toLowerCase() === APP_ENGINE_CRON_HEADER)
+    ) {
+      // A1
+      throw new Errors.UpdateAll.NotAuthorized({});
+    }
+
+    // HDS 2
+    let trailtours = await this.trailtourDao.listActive(awid);
+
+    // HDS 3
+    let uuAppErrorMap = {};
+    for (let trailtour of trailtours.itemList) {
+      let dtoOut = await this.update(awid, { year: trailtour.year });
+      Object.assign(uuAppErrorMap, dtoOut.uuAppErrorMap);
+    }
+
+    return {
+      uuAppErrorMap
+    };
   }
 
   _updateStatistics(statistics, trailtour) {

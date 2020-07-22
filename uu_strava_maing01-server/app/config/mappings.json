@@ -100,6 +100,11 @@
         "realization": "api/controllers/TrailtourController.downloadGpx",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "trailtour/updateAll": {
+        "realization": "api/controllers/TrailtourController.updateAll",
+        "httpMethod": ["GET", "POST"],
+        "type": "CMD"
       }
     }
   }

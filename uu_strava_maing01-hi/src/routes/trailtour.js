@@ -9,7 +9,7 @@ import Calls from "calls";
 import OverallResults from "../trailtour/overall-results";
 import BrickTools from "../bricks/tools";
 import UpdateTrailtourButton from "../trailtour/update-trailtour-button";
-import UpdateResultsButton from "../trailtour/update-results-button";
+import ResultsTimestamp from "../trailtour/results-timestamp";
 //@@viewOff:imports
 
 export const Trailtour = UU5.Common.VisualComponent.create({
@@ -86,7 +86,7 @@ export const Trailtour = UU5.Common.VisualComponent.create({
 
   _getUpdateButton(data) {
     if (data.data) {
-      return <UpdateResultsButton data={data.data} year={this.props.year} handleReload={this._handleReload} />;
+      return <ResultsTimestamp data={data.data} year={this.props.year} handleReload={this._handleReload} />;
     }
   },
   //@@viewOff:private

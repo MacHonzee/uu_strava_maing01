@@ -14,6 +14,10 @@ class ValidationHelper {
     let validationResult = this.validator.validate(dtoInType, dtoIn);
     return UuValidationHelper.processValidationResult(dtoIn, validationResult, warning.code, error.InvalidDtoIn);
   }
+
+  addWarning() {
+    UuValidationHelper.addWarning(...arguments);
+  }
 }
 
 module.exports = new ValidationHelper();

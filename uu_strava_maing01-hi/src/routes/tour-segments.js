@@ -8,7 +8,7 @@ import OverallSegments from "../trailtour/overall-segments";
 import UpdateTrailtourButton from "../trailtour/update-trailtour-button";
 import TrailtourMap from "../bricks/trailtour-map";
 import BrickTools from "../bricks/tools";
-import UpdateResultsButton from "../trailtour/update-results-button";
+import ResultsTimestamp from "../trailtour/results-timestamp";
 //@@viewOff:imports
 
 export const TourSegments = UU5.Common.VisualComponent.create({
@@ -82,9 +82,7 @@ export const TourSegments = UU5.Common.VisualComponent.create({
 
   _getUpdateButton(data) {
     if (data.data) {
-      return (
-        <UpdateResultsButton data={data.data.trailtour} year={this.props.year} handleReload={this._handleReload} />
-      );
+      return <ResultsTimestamp data={data.data.trailtour} year={this.props.year} handleReload={this._handleReload} />;
     }
   },
   //@@viewOff:private
