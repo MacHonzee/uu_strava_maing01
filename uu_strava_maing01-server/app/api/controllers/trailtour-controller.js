@@ -1,6 +1,6 @@
 "use strict";
 const TrailtourAbl = require("../../abl/trailtour-abl.js");
-const TrailtourCache = require("../../helpers/trailtour-cache");
+const TrailtourCacheHandler = require("../../helpers/trailtour-cache-handler");
 
 class TrailtourController {
   setup(ucEnv) {
@@ -21,25 +21,25 @@ class TrailtourController {
   }
 
   get(ucEnv) {
-    return TrailtourCache.withTrailtourCache(ucEnv, () => {
+    return TrailtourCacheHandler.withTrailtourCache(ucEnv, () => {
       return TrailtourAbl.get(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
     });
   }
 
   getSegments(ucEnv) {
-    return TrailtourCache.withTrailtourCache(ucEnv, () => {
+    return TrailtourCacheHandler.withTrailtourCache(ucEnv, () => {
       return TrailtourAbl.getSegments(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
     });
   }
 
   getAthleteResults(ucEnv) {
-    return TrailtourCache.withTrailtourCache(ucEnv, () => {
+    return TrailtourCacheHandler.withTrailtourCache(ucEnv, () => {
       return TrailtourAbl.getAthleteResults(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
     });
   }
 
   getTourDetail(ucEnv) {
-    return TrailtourCache.withTrailtourResultCache(ucEnv, () => {
+    return TrailtourCacheHandler.withTrailtourResultCache(ucEnv, () => {
       return TrailtourAbl.getTourDetail(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
     });
   }

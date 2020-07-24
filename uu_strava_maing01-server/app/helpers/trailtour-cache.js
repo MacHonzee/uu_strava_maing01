@@ -29,17 +29,14 @@ class TrailtourCache {
     this._logger.info("Trailtour cache initialized");
   }
 
-  async withTrailtourCache(ucEnv, fn) {
-    let year = ucEnv.getDtoIn().year;
-    let trailtour = this._trailtourYearMap[year];
-    return await this._handleCache(ucEnv, fn, trailtour);
+  getTrailtourCache(year) {
+    return this._active && this._trailtourYearMap[year];
   }
 
-  async withTrailtourResultCache(ucEnv, fn) {
-    let ttResultId = ucEnv.getDtoIn().id;
+  getTrailtourResultCache(ttResultId) {
     let trailtourId = this._ttResultsMap[ttResultId];
     let trailtour = this._trailtours[trailtourId];
-    return await this._handleCache(ucEnv, fn, trailtour);
+    return this._active && trailtour;
   }
 
   updateCache(next) {
@@ -54,21 +51,6 @@ class TrailtourCache {
 
   disableCache() {
     this._active = false;
-  }
-
-  async _handleCache(ucEnv, fn, trailtour) {
-    if (trailtour && this._active && ucEnv.getRequest().isResourceCached({ lastModified: trailtour.lastUpdate })) {
-      // this way it is possible to completely skip Abl call
-      return ucEnv.getResponse().useCachedResource();
-    } else {
-      // otherwise if it is not cached, we call Abl and then save the resource cache
-      let dtoOut = await fn();
-      ucEnv.getResponse().setResourceCache({
-        lastModified: dtoOut.lastUpdate || dtoOut.trailtour.lastUpdate,
-        maxAge: 1 // this parameter is mandatory - if it is 0 or undefined, the browser does not even call the backend
-      });
-      return dtoOut;
-    }
   }
 }
 

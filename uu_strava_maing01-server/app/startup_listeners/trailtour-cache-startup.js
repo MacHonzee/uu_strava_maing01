@@ -4,6 +4,12 @@ const { Config } = require("uu_appg01_server").Utils;
 const { LoggerFactory } = require("uu_appg01_core-logging");
 const TrailtourCache = require("../helpers/trailtour-cache");
 
+async function getDbConnection() {
+  const map = Config.get("uuSubAppDataStoreMap");
+  const uri = map["primary"];
+  return await DbConnection.get(uri);
+}
+
 class TrailtourCacheStartup {
   /**
    * Initialize watching changes in trailtour collection.
@@ -13,9 +19,7 @@ class TrailtourCacheStartup {
       await TrailtourCache.initCache();
 
       const logger = LoggerFactory.get("TrailtourCache.Startup");
-      const map = Config.get("uuSubAppDataStoreMap");
-      const uri = map["primary"];
-      const db = await DbConnection.get(uri);
+      const db = await getDbConnection();
       const changeStream = db
         .collection("trailtour")
         .watch(
