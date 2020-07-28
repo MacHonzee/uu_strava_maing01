@@ -9,6 +9,7 @@ import SegmentElevation from "../bricks/segment-elevation";
 import SegmentPace from "../bricks/segment-pace";
 import TrailtourTools from "./tools";
 import NameFilterBar from "./name-filter-bar";
+import CompareResultsButton from "./compare-results-button";
 import TourDetailLsi from "../lsi/tour-detail-lsi";
 
 //@@viewOff:imports
@@ -32,7 +33,8 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   //@@viewOn:propTypes
   propTypes: {
     data: UU5.PropTypes.array.isRequired,
-    sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired
+    sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired,
+    trailtour: UU5.PropTypes.object.isRequired
   },
   //@@viewOff:propTypes
 
@@ -239,6 +241,10 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
 
     return <div>{rows}</div>;
   },
+
+  _getAthleteForComparison() {
+    return this.props.trailtour.totalResults[this.props.sex === "male" ? "menResults" : "womenResults"];
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -373,7 +379,10 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
           <UU5.FlexTiles.List
             bars={[
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
-              <NameFilterBar key={"nameFilterBar"} />,
+              <NameFilterBar
+                key={"nameFilterBar"}
+                right={<CompareResultsButton forAthlete={this._getAthleteForComparison()} />}
+              />,
               <UU5.FlexTiles.InfoBar key={"infoBar"} />
             ]}
             tile={this._getSmallTile}

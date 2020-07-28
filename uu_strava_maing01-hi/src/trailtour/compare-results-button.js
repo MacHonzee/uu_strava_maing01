@@ -2,33 +2,33 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
-import NameFilter from "./name-filter";
+import CompareResultsHoc from "./compare-results-hoc";
 //@@viewOff:imports
 
-const Lsi = {
-  title: {
-    cs: "Vyhledávání",
-    en: "Search"
-  }
-};
-
-export const NameFilterBar = UU5.Common.VisualComponent.create({
+export const CompareResultsButton = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
   statics: {
-    tagName: Config.TAG + "NameFilterBar",
+    tagName: Config.TAG + "CompareResultsButton",
     classNames: {
       main: (props, state) => Config.Css.css``
+    },
+    lsi: {
+      label: {
+        cs: "Porovnat výsledky",
+        en: "Compare results"
+      }
     }
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    right: UU5.PropTypes.node
+    forAthlete: UU5.PropTypes.object,
+    handleCompare: UU5.PropTypes.func // from HoC
   },
   //@@viewOff:propTypes
 
@@ -50,16 +50,17 @@ export const NameFilterBar = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return (
-      <UU5.FlexTiles.Bar
+      <UU5.Bricks.Button
         {...this.getMainPropsToPass()}
-        title={Lsi.title}
-        layout="xs-horizontal s-vertical m-horizontal"
-        left={<NameFilter showLabel={false} />}
-        right={this.props.right}
-      />
+        onClick={this.props.handleCompare}
+        colorSchema={"orange"}
+        bgStyle={"filled"}
+      >
+        {this.getLsiComponent("label")}
+      </UU5.Bricks.Button>
     );
   }
   //@@viewOff:render
 });
 
-export default NameFilterBar;
+export default CompareResultsHoc(CompareResultsButton);

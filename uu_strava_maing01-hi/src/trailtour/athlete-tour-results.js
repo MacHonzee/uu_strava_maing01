@@ -54,7 +54,11 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
           segments={this.props.data.athleteResults}
           showOwnResults
         />
-        <AthleteTourResultList data={this.props.data.athleteResults} sex={this.props.sex} />
+        <AthleteTourResultList
+          data={this.props.data.athleteResults}
+          sex={this.props.sex}
+          trailtour={this.props.data.trailtour}
+        />
       </UU5.Bricks.Div>
     );
   }

@@ -137,7 +137,7 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
   _getAvgPoints(results, finishedSegments) {
     return (
       <UU5.BlockLayout.Text weight={"primary"}>
-        <UU5.Bricks.Number value={results.points / finishedSegments} maxDecimalLength={2} />
+        <UU5.Bricks.Number value={finishedSegments ? results.points / finishedSegments : 0} maxDecimalLength={2} />
       </UU5.BlockLayout.Text>
     );
   },
