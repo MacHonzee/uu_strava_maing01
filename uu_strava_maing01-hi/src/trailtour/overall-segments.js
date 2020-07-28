@@ -3,12 +3,13 @@ import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
 import UpdateTrailtourButton from "./update-trailtour-button";
-import TourDetailLsi from "../lsi/tour-detail-lsi";
 import SegmentDistance from "../bricks/segment-distance";
 import SegmentElevation from "../bricks/segment-elevation";
 import SegmentLink from "../bricks/segment-link";
 import TrailtourTools from "./tools";
 import NameFilterBar from "./name-filter-bar";
+import TourDetailLsi from "../lsi/tour-detail-lsi";
+
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -184,7 +185,7 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ order }) => order,
-          width: "xs",
+          width: "xxs",
           visibility: "always"
         },
         {

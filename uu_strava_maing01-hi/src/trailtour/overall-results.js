@@ -4,10 +4,11 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import AthleteLink from "../bricks/athlete-link";
 import SexFilterBar from "./sex-filter-bar";
-import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
 import UpdateTrailtourButton from "./update-trailtour-button";
 import TrailtourTools from "./tools";
 import NameFilter from "./name-filter";
+import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
+
 //@@viewOff:imports
 
 const Lsi = {
@@ -147,7 +148,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ order }) => order,
-          width: "xs",
+          width: "xxs",
           visibility: "always"
         },
         {
@@ -158,7 +159,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: this._getStravaLink,
-          width: "xs"
+          width: "xxs"
         },
         {
           id: "name",
@@ -192,7 +193,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ points }) => <UU5.Bricks.Number value={points} />,
-          width: "s"
+          width: "xs"
         },
         {
           id: "totalCount",
@@ -203,7 +204,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ totalCount }) => totalCount,
-          width: "s"
+          width: "xs"
         },
         {
           id: "avgPoints",
@@ -214,7 +215,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ avgPoints }) => <UU5.Bricks.Number value={avgPoints} maxDecimalLength={2} />,
-          width: "s"
+          width: "xs"
         }
       ]
     };

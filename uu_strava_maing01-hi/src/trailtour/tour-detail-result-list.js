@@ -3,13 +3,15 @@ import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
 import SexFilterBar from "./sex-filter-bar";
-import TourDetailLsi from "../lsi/tour-detail-lsi";
 import BrickTools from "../bricks/tools";
 import SegmentPace from "../bricks/segment-pace";
 import AthleteLink from "../bricks/athlete-link";
-import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
 import TrailtourTools from "./tools";
 import NameFilter from "./name-filter";
+import TourDetailLsi from "../lsi/tour-detail-lsi";
+
+import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
+
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -134,7 +136,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ order }) => order,
-          width: "xs",
+          width: "xxs",
           visibility: "always"
         },
         {
@@ -145,7 +147,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: this._getStravaLink,
-          width: "xs"
+          width: "xxs"
         },
         {
           id: "name",
@@ -156,7 +158,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: this._getName,
-          width: "l",
+          width: "m",
           visibility: "always"
         },
         {

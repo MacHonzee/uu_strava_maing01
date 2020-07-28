@@ -254,7 +254,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
             }
           ],
           cellComponent: ({ order }) => order,
-          width: "xs",
+          width: "xxs",
           visibility: "always"
         },
         {
