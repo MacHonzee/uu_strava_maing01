@@ -10,7 +10,8 @@ const DOCUMENT_TITLES = {
   athleteTourDetail: ({ trailtour }) => {
     let results = trailtour.totalResults.menResults || trailtour.totalResults.womenResults;
     return `Trailtour výsledky - ${results.name}`;
-  }
+  },
+  athleteComparison: () => `Porovnání výsledků`
 };
 
 const BrickTools = {

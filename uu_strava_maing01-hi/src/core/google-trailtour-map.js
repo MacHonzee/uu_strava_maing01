@@ -1,8 +1,9 @@
 //@@viewOn:imports
+import polyline from "@mapbox/polyline";
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
-import polyline from "@mapbox/polyline";
+
 import SpaContext from "../context/spa-context";
 //@@viewOff:imports
 
@@ -107,7 +108,8 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
 
   _handleMarkerClick(_, marker, event) {
     let foundSegment = this.props.segments.find(segment => this._getMarkerTitle(segment) === marker.title);
-    this.props.openPopover(foundSegment, event.tb.target);
+    let target = Object.values(event).find(ev => ev instanceof MouseEvent).target;
+    this.props.openPopover(foundSegment, target);
   },
 
   _handleMapRef(map) {

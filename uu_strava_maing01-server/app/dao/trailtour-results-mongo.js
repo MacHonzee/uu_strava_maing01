@@ -28,6 +28,22 @@ const SEGMENT_LOOKUP_STAGES = [
   }
 ];
 
+// $set and $unset does not work in Mongo 4.0 (requires 4.2+)
+const CONVERT_ID_STAGES = [
+  {
+    $addFields: {
+      id: "$_id",
+      "segment.id": "$segment._id"
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      "segment._id": 0
+    }
+  }
+];
+
 class TrailtourResultsMongo extends UuObjectDao {
   async createSchema() {
     await super.createIndex({ awid: 1, segmentId: 1, trailtourId: 1 }, { unique: true });
@@ -59,7 +75,8 @@ class TrailtourResultsMongo extends UuObjectDao {
     return await super.findOne({ awid, id });
   }
 
-  async listAthleteResults(awid, trailtourId, athleteStravaId) {
+  // TODO odstranit po odstranění cmd getAthleteResults
+  async listAthleteResults_(awid, trailtourId, athleteStravaId) {
     let elemMatch = key => ({
       $slice: [
         {
@@ -94,19 +111,44 @@ class TrailtourResultsMongo extends UuObjectDao {
         }
       },
       ...SEGMENT_LOOKUP_STAGES,
-      // $set and $unset does not work in Mongo 4.0 (requires 4.2+)
-      {
-        $addFields: {
-          id: "$_id",
-          "segment.id": "$segment._id"
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          "segment._id": 0
+      ...CONVERT_ID_STAGES
+    ]);
+  }
+
+  async listAthleteResults(awid, trailtourId, stravaIdList) {
+    let elemMatch = key => ({
+      $filter: {
+        input: "$" + key,
+        as: key,
+        cond: {
+          $in: ["$$" + key + ".stravaId", stravaIdList]
         }
       }
+    });
+
+    let resultsTotal = key => ({
+      $cond: {
+        if: { $isArray: "$" + key },
+        then: { $size: "$" + key },
+        else: 0
+      }
+    });
+
+    return await super.aggregate([
+      { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
+      {
+        $project: {
+          menResultsTotal: resultsTotal("menResults"),
+          womenResultsTotal: resultsTotal("womenResults"),
+          clubResultsTotal: resultsTotal("clubResults"),
+          menResults: elemMatch("menResults"),
+          womenResults: elemMatch("womenResults"),
+          clubResults: elemMatch("clubResults"),
+          ...PROJECTION_ATTRS
+        }
+      },
+      ...SEGMENT_LOOKUP_STAGES,
+      ...CONVERT_ID_STAGES
     ]);
   }
 
@@ -114,19 +156,7 @@ class TrailtourResultsMongo extends UuObjectDao {
     return await super.aggregate([
       { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
       ...SEGMENT_LOOKUP_STAGES,
-      // $set and $unset does not work in Mongo 4.0 (requires 4.2+)
-      {
-        $addFields: {
-          id: "$_id",
-          "segment.id": "$segment._id"
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          "segment._id": 0
-        }
-      }
+      ...CONVERT_ID_STAGES
     ]);
   }
 

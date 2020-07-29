@@ -29,6 +29,24 @@ class TrailtourMongo extends UuObjectDao {
   async listActive(awid) {
     return await super.find({ awid, state: "active" });
   }
+
+  async listAthletes(awid, year) {
+    let projection = {
+      lastUpdate: 1
+    };
+    ["womenResults", "menResults"].forEach(resultKey => {
+      projection["totalResults." + resultKey + ".name"] = 1;
+      projection["totalResults." + resultKey + ".stravaId"] = 1;
+    });
+
+    let trailtourObj = await super.findOne({ awid, year }, projection);
+
+    return {
+      lastUpdate: trailtourObj.lastUpdate,
+      men: trailtourObj.totalResults.menResults,
+      women: trailtourObj.totalResults.womenResults
+    };
+  }
 }
 
 module.exports = TrailtourMongo;

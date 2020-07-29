@@ -48,3 +48,12 @@ const trailtourGetAthleteResultsDtoInType = shape({
 const trailtourDownloadGpxDtoInType = shape({
   gpxLink: uri().isRequired()
 });
+
+const trailtourListAthletesDtoInType = shape({
+  year: oneOf(ALL_TRAILTOURS).isRequired(),
+});
+
+const trailtourListAthleteResultsDtoInType = shape({
+  year: oneOf(ALL_TRAILTOURS).isRequired(),
+  stravaIdList: array(number(), 1, 2).isRequired()
+});

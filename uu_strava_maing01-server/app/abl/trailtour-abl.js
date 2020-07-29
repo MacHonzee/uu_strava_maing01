@@ -33,6 +33,12 @@ const WARNINGS = {
   },
   downloadGpxUnsupportedKeys: {
     code: `${Errors.DownloadGpx.UC_CODE}unsupportedKeys`
+  },
+  listAthletesUnsupportedKeys: {
+    code: `${Errors.ListAthletes.UC_CODE}unsupportedKeys`
+  },
+  listAthleteResultsUnsupportedKeys: {
+    code: `${Errors.ListAthleteResults.UC_CODE}unsupportedKeys`
   }
 };
 
@@ -226,6 +232,7 @@ class TrailtourAbl {
     };
   }
 
+  // TODO remove this command and use listAthleteResults instead (after it is done)
   async getAthleteResults(awid, dtoIn) {
     // HDS 1, A1, A2
     let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "getAthleteResults", dtoIn);
@@ -242,7 +249,33 @@ class TrailtourAbl {
     });
 
     // HDS 4
-    let athleteResults = await this.trailtourResultsDao.listAthleteResults(awid, trailtour.id, dtoIn.athleteStravaId);
+    let athleteResults = await this.trailtourResultsDao.listAthleteResults_(awid, trailtour.id, dtoIn.athleteStravaId);
+
+    // HDS 5
+    return {
+      trailtour,
+      athleteResults,
+      uuAppErrorMap
+    };
+  }
+
+  async listAthleteResults(awid, dtoIn) {
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "listAthleteResults", dtoIn);
+
+    // HDS 2
+    let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
+
+    // HDS 3
+    ["womenResults", "menResults", "clubResults"].forEach(results => {
+      trailtour.totalResults[results + "Total"] = trailtour.totalResults[results].length;
+      trailtour.totalResults[results] = trailtour.totalResults[results].filter(result =>
+        dtoIn.stravaIdList.includes(result.stravaId)
+      );
+    });
+
+    // HDS 4
+    let athleteResults = await this.trailtourResultsDao.listAthleteResults(awid, trailtour.id, dtoIn.stravaIdList);
 
     // HDS 5
     return {
@@ -301,6 +334,20 @@ class TrailtourAbl {
     }
 
     return {
+      uuAppErrorMap
+    };
+  }
+
+  async listAthletes(awid, dtoIn) {
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "listAthletes", dtoIn);
+
+    // HDS 2
+    let athletes = await this.trailtourDao.listAthletes(awid, dtoIn.year);
+
+    // HDS 3
+    return {
+      ...athletes,
       uuAppErrorMap
     };
   }

@@ -52,6 +52,18 @@ class TrailtourController {
     let splits = dtoIn.gpxLink.split("/");
     return ucEnv.setBinaryDtoOut({ data: dtoOut.data, filename: splits[splits.length - 1] });
   }
+
+  listAthletes(ucEnv) {
+    return TrailtourCacheHandler.withTrailtourCache(ucEnv, () => {
+      return TrailtourAbl.listAthletes(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    });
+  }
+
+  listAthleteResults(ucEnv) {
+    return TrailtourCacheHandler.withTrailtourCache(ucEnv, () => {
+      return TrailtourAbl.listAthleteResults(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    });
+  }
 }
 
 module.exports = new TrailtourController();

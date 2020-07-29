@@ -27,7 +27,7 @@ export const CompareResultsButton = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    forAthlete: UU5.PropTypes.object,
+    firstAthlete: UU5.PropTypes.object,
     handleCompare: UU5.PropTypes.func // from HoC
   },
   //@@viewOff:propTypes

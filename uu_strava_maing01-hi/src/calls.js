@@ -73,6 +73,7 @@ let Calls = {
     return Calls.call("get", commandUri, dtoInData);
   },
 
+  // TODO odstranit
   getAthleteTourResults(dtoInData) {
     let commandUri = Calls.getCommandUri("trailtour/getAthleteResults");
     return Calls.call("get", commandUri, dtoInData);
@@ -85,6 +86,16 @@ let Calls = {
 
   downloadGpx(dtoInData) {
     let commandUri = Calls.getCommandUri("trailtour/downloadGpx");
+    return Calls.call("get", commandUri, dtoInData);
+  },
+
+  listAthletes(dtoInData) {
+    let commandUri = Calls.getCommandUri("trailtour/listAthletes");
+    return Calls.call("get", commandUri, dtoInData);
+  },
+
+  listAthleteResults(dtoInData) {
+    let commandUri = Calls.getCommandUri("trailtour/listAthleteResults");
     return Calls.call("get", commandUri, dtoInData);
   },
   /*

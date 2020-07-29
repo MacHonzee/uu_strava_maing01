@@ -381,7 +381,12 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
               <NameFilterBar
                 key={"nameFilterBar"}
-                right={<CompareResultsButton forAthlete={this._getAthleteForComparison()} />}
+                right={
+                  <CompareResultsButton
+                    year={this.props.trailtour.year}
+                    firstAthlete={this._getAthleteForComparison()}
+                  />
+                }
               />,
               <UU5.FlexTiles.InfoBar key={"infoBar"} />
             ]}

@@ -129,8 +129,31 @@ const UpdateAll = {
   }
 };
 
+const ListAthletes = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}listAthletes/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListAthletes.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
+const ListAthleteResults = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}listAthleteResults/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListAthleteResults.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
 module.exports = {
-  UpdateAll,
   GetSegments,
   GetAthleteResults,
   GetTourDetail,
@@ -138,5 +161,8 @@ module.exports = {
   Setup,
   Update,
   UpdateConfig,
-  DownloadGpx
+  DownloadGpx,
+  UpdateAll,
+  ListAthletes,
+  ListAthleteResults
 };
