@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createComponent, useRef, useState, useEffect } from "uu5g04-hooks";
+import { createComponent, useEffect, useRef, useState } from "uu5g04-hooks";
 import Calls from "calls";
 //@@viewOff:imports
 
@@ -43,13 +43,19 @@ function CompareResultsHoc(Component, displayName) {
     //@@viewOff:propTypes
 
     //@@viewOn:defaultProps
-    defaultProps: {},
+    defaultProps: {
+      firstAthlete: {},
+      secondAthlete: {}
+    },
     //@@viewOff:defaultProps
 
     //@@viewOn:render
     render(props, ref) {
       const modalRef = useRef();
-      const selectedSecondAthlete = useRef();
+      const selectedFirstAthlete = useRef(props.firstAthlete.stravaId);
+      const selectedSecondAthlete = useRef(props.secondAthlete.stravaId);
+      const selectedAthleteRefs = { firstAthlete: selectedFirstAthlete, secondAthlete: selectedSecondAthlete };
+
       const [athletes, setAthletes] = useState({ men: [], women: [] });
       useEffect(() => {
         Calls.listAthletes({ year: props.year })
@@ -63,29 +69,29 @@ function CompareResultsHoc(Component, displayName) {
 
       function prepareAutocompleteItems() {
         let sex = props.sex === "male" ? "men" : "women";
-        let items = [];
-        athletes[sex].forEach(athl => {
-          if (athl.stravaId !== props.firstAthlete.stravaId) {
-            items.push({
-              value: athl.name,
-              content: athl.name,
-              params: { stravaId: athl.stravaId }
-            });
-          }
+        return athletes[sex].map(athl => {
+          return {
+            value: athl.name,
+            content: athl.name,
+            params: { stravaId: athl.stravaId }
+          };
         });
-        return items;
       }
 
       function saveForm(opt) {
-        if (!selectedSecondAthlete.current) {
-          let input = opt.component.getInputByName("secondAthlete");
-          input.setError(<UU5.Bricks.Lsi lsi={Lsi.noAthleteSelected} />);
-          return;
-        }
+        let hasInvalid = false;
+        Object.keys(selectedAthleteRefs).forEach(inputName => {
+          if (!selectedAthleteRefs[inputName].current) {
+            let input = opt.component.getInputByName(inputName);
+            input.setError(<UU5.Bricks.Lsi lsi={Lsi.noAthleteSelected} />);
+            hasInvalid = true;
+          }
+        });
+        if (hasInvalid) return;
 
         let params = {
           year: props.year,
-          first: props.firstAthlete.stravaId,
+          first: selectedFirstAthlete.current,
           second: selectedSecondAthlete.current
         };
         UU5.Environment.setRoute("athleteComparison", params);
@@ -96,10 +102,12 @@ function CompareResultsHoc(Component, displayName) {
       }
 
       function handleOnChange(opt) {
+        let name = opt.component.getName();
+        let refToSave = selectedAthleteRefs[name];
         if (opt.autocompleteItem) {
-          selectedSecondAthlete.current = opt.autocompleteItem.params.stravaId;
+          refToSave.current = opt.autocompleteItem.params.stravaId;
         } else {
-          selectedSecondAthlete.current = undefined;
+          refToSave.current = undefined;
         }
         opt.component.onChangeDefault(opt);
       }
@@ -118,14 +126,17 @@ function CompareResultsHoc(Component, displayName) {
               <UU5.Forms.Text
                 name="firstAthlete"
                 label={<UU5.Bricks.Lsi lsi={Lsi.firstAthlete} />}
-                readOnly
                 value={props.firstAthlete.name}
                 inputColWidth={"xs-12 m-9"}
                 labelColWidth={"xs-12 m-3"}
+                autocompleteItems={prepareAutocompleteItems()}
+                onChange={handleOnChange}
+                required
               />
               <UU5.Forms.Text
                 name="secondAthlete"
                 label={<UU5.Bricks.Lsi lsi={Lsi.secondAthlete} />}
+                value={props.secondAthlete.name}
                 inputColWidth={"xs-12 m-9"}
                 labelColWidth={"xs-12 m-3"}
                 autocompleteItems={prepareAutocompleteItems()}

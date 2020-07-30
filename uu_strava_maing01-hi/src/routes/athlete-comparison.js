@@ -75,7 +75,7 @@ export const AthleteComparison = UU5.Common.VisualComponent.create({
         {...this.getMainPropsToPass()}
         header={this.getLsiComponent("header")}
         level={3}
-        key={params.firstAthlete}
+        key={`${params.first}_${params.second}`}
       >
         <UU5.Common.DataManager onLoad={Calls.listAthleteResults} data={{ year: params.year, stravaIdList }}>
           {data => (

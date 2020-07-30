@@ -53,8 +53,7 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
     let correctKey = this.props.trailtour.totalResults.menResults[0] ? "menResults" : "womenResults";
     let athletes = [];
     this.props.stravaIdList.forEach((stravaId, i) => {
-      let numId = parseInt(stravaId);
-      let athlete = this.props.trailtour.totalResults[correctKey].find(result => result.stravaId === numId);
+      let athlete = this.props.trailtour.totalResults[correctKey].find(result => result.stravaId === stravaId);
 
       let cardData = { totalResults: {} };
       cardData.totalResults[correctKey] = athlete;
