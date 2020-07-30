@@ -4,11 +4,12 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import GoogleTrailtourMap from "../core/google-trailtour-map";
 import MapyCzTrailtourMap from "../core/mapy-cz-trailtour-map";
-import TourDetailLsi from "../lsi/tour-detail-lsi";
 import SegmentDistance from "./segment-distance";
 import SegmentElevation from "./segment-elevation";
 import BrickTools from "../bricks/tools";
 import SegmentPace from "./segment-pace";
+import TourDetailLsi from "../lsi/tour-detail-lsi";
+
 //@@viewOff:imports
 
 const Lsi = {
@@ -46,22 +47,21 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
    `,
       popover: Config.Css.css`
         width: 100%;
-        padding: 4px 0;
+        padding: 4px 16px;
 
         > .uu5-common-div {
-          width: 100%;
           text-align: left;
+          display: grid;
+          grid-template-columns: 96px auto auto;
 
-          .uu5-common-div {
-            display: inline-block;
-            width: 50%;
+          .uu5-common-div:not(:first-child) {
+            font-weight: bold;
             padding: 0 0 0 8px;
           }
-
-          .uu5-common-div:last-child {
-            font-weight: bold;
-          }
         }
+      `,
+      popoverFooter: Config.Css.css`
+        padding: 0;
       `
     }
   },
@@ -72,7 +72,9 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
     mapConfig: UU5.PropTypes.object.isRequired,
     segments: UU5.PropTypes.array.isRequired,
     showOwnResults: UU5.PropTypes.bool,
-    showTourDetail: UU5.PropTypes.bool
+    showTourDetail: UU5.PropTypes.bool,
+    multipleResults: UU5.PropTypes.bool,
+    year: UU5.PropTypes.string
   },
   //@@viewOff:propTypes
 
@@ -158,6 +160,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
       ),
       content: this._getPopoverContent(foundSegment),
       footer: this._getPopoverFooter(foundSegment),
+      footerClassName: this.getClassName("popoverFooter"),
       aroundElement: eventTarget
     });
   },
@@ -169,11 +172,10 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _getPopoverContent(segment) {
-    let extraStyle = { paddingLeft: "16px" };
     return (
       <UU5.Bricks.Div className={this.getClassName("popover")}>
         <UU5.Bricks.Div>
-          <UU5.Bricks.Div style={extraStyle}>
+          <UU5.Bricks.Div>
             <UU5.Bricks.Lsi lsi={TourDetailLsi.distance} />
           </UU5.Bricks.Div>
           <UU5.Bricks.Div>
@@ -181,7 +183,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
           </UU5.Bricks.Div>
         </UU5.Bricks.Div>
         <UU5.Bricks.Div>
-          <UU5.Bricks.Div style={extraStyle}>
+          <UU5.Bricks.Div>
             <UU5.Bricks.Lsi lsi={TourDetailLsi.elevation} />
           </UU5.Bricks.Div>
           <UU5.Bricks.Div>
@@ -196,12 +198,30 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
     let sex;
     if (segment.menResults[0]) sex = "men";
     if (segment.womenResults[0]) sex = "women";
-    if (!this.props.showOwnResults || !sex) return;
+
+    if (this.props.showOwnResults && sex) {
+      return this._getSinglePopoverResult(segment, sex);
+    } else if (this.props.multipleResults && sex) {
+      return this._getMultiplePopoverResults(segment, sex);
+    }
+  },
+
+  _getSinglePopoverResult(segment, sex) {
     let result = segment[sex + "Results"][0];
     let totalResult = segment[sex + "ResultsTotal"];
 
     return (
       <UU5.Bricks.Div className={this.getClassName("popover")}>
+        {this.props.multipleResults && (
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Div />
+            <UU5.Bricks.Div>
+              <UU5.Bricks.Link href={`athleteTourDetail?year=${this.props.year}&stravaId=${result.stravaId}`}>
+                {result.name}
+              </UU5.Bricks.Link>
+            </UU5.Bricks.Div>
+          </UU5.Bricks.Div>
+        )}
         <UU5.Bricks.Div>
           <UU5.Bricks.Div>
             <UU5.Bricks.Lsi lsi={TourDetailLsi.ownOrder} />
@@ -229,6 +249,70 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
           <UU5.Bricks.Div>
             <SegmentPace pace={result.pace} />
           </UU5.Bricks.Div>
+        </UU5.Bricks.Div>
+      </UU5.Bricks.Div>
+    );
+  },
+
+  _getMultiplePopoverResults(segment, sex) {
+    let results = segment[sex + "Results"];
+    let totalResult = segment[sex + "ResultsTotal"];
+
+    let headers = results.map(result => (
+      <UU5.Bricks.Div key={result.stravaId}>
+        <UU5.Bricks.Link href={`athleteTourDetail?year=${this.props.year}&stravaId=${result.stravaId}`}>
+          {result.name}
+        </UU5.Bricks.Link>
+      </UU5.Bricks.Div>
+    ));
+
+    let orders = results.map(result => (
+      <UU5.Bricks.Div key={result.stravaId}>
+        {result.order}&nbsp;/&nbsp;{totalResult}
+      </UU5.Bricks.Div>
+    ));
+
+    let points = results.map(result => <UU5.Bricks.Div key={result.stravaId}>{result.points}</UU5.Bricks.Div>);
+
+    let durations = results.map(result => (
+      <UU5.Bricks.Div key={result.stravaId}>{BrickTools.formatDuration(result.time)}</UU5.Bricks.Div>
+    ));
+
+    let paces = results.map(result => (
+      <UU5.Bricks.Div key={result.stravaId}>
+        <SegmentPace pace={result.pace} />
+      </UU5.Bricks.Div>
+    ));
+
+    return (
+      <UU5.Bricks.Div className={this.getClassName("popover")}>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div />
+          {headers}
+        </UU5.Bricks.Div>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.ownOrder} />
+          </UU5.Bricks.Div>
+          {orders}
+        </UU5.Bricks.Div>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.points} />
+          </UU5.Bricks.Div>
+          {points}
+        </UU5.Bricks.Div>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.time} />
+          </UU5.Bricks.Div>
+          {durations}
+        </UU5.Bricks.Div>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.pace} />
+          </UU5.Bricks.Div>
+          {paces}
         </UU5.Bricks.Div>
       </UU5.Bricks.Div>
     );

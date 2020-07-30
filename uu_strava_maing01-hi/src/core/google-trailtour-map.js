@@ -78,8 +78,12 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   _getMarkers() {
     return this.props.segments.map(result => {
       let segment = result.segment;
-      let icon = MARKERS.noRun;
-      if (this.props.showOwnResults && (result.menResults[0] || result.womenResults[0])) {
+      let icon;
+      if (this.props.showOwnResults) {
+        icon = result.menResults[0] || result.womenResults[0] ? MARKERS.ownRun : MARKERS.noRun;
+      } else if (result.markerIcon) {
+        icon = MARKERS[result.markerIcon];
+      } else {
         icon = MARKERS.ownRun;
       }
 

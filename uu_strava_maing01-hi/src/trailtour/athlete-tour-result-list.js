@@ -72,10 +72,10 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   _getNameCell({ name, author, id }) {
     return (
       <UU5.Common.Fragment>
-        <UU5.Bricks.Div>
+        <div>
           <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
-        </UU5.Bricks.Div>
-        <UU5.Bricks.Div>{author}</UU5.Bricks.Div>
+        </div>
+        <div>{author}</div>
       </UU5.Common.Fragment>
     );
   },
@@ -127,10 +127,10 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
     if (results.time) {
       return (
         <UU5.Common.Fragment>
-          <UU5.Bricks.Div>{BrickTools.formatDuration(results.time)}</UU5.Bricks.Div>
-          <UU5.Bricks.Div>
+          <div>{BrickTools.formatDuration(results.time)}</div>
+          <div>
             <SegmentPace pace={results.pace} />
-          </UU5.Bricks.Div>
+          </div>
         </UU5.Common.Fragment>
       );
     }
@@ -147,8 +147,8 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   _getState({ segment }) {
     return (
       <UU5.Common.Fragment>
-        <UU5.Bricks.Div>{segment.state}</UU5.Bricks.Div>
-        <UU5.Bricks.Div>{segment.city}</UU5.Bricks.Div>
+        <div>{segment.state}</div>
+        <div>{segment.city}</div>
       </UU5.Common.Fragment>
     );
   },

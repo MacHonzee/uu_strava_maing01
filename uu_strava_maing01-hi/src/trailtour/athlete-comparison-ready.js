@@ -4,6 +4,7 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import AthleteTourCard from "./athlete-tour-card";
 import TrailtourMap from "../bricks/trailtour-map";
+import AthleteComparisonList from "./athlete-comparison-list";
 //@@viewOff:imports
 
 export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
@@ -89,6 +90,20 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
         style={{ marginTop: "8px" }}
         mapConfig={this.props.trailtour.mapConfig}
         segments={this.props.results}
+        multipleResults
+        year={this.props.trailtour.year}
+      />
+    );
+  },
+
+  _getTable() {
+    let sex = this.props.trailtour.totalResults.menResults[0] ? "male" : "female";
+    return (
+      <AthleteComparisonList
+        data={this.props.results}
+        trailtour={this.props.trailtour}
+        stravaIdList={this.props.stravaIdList}
+        sex={sex}
       />
     );
   },
@@ -100,6 +115,7 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
       <div {...this.getMainPropsToPass()}>
         {this._getCards()}
         {this._getMap()}
+        {this._getTable()}
       </div>
     );
   }

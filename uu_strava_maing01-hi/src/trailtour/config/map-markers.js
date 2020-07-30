@@ -1,17 +1,19 @@
 const MapMarkers = {
   mapyCz: {
-    noRun: "./assets/markers/mapy-cz/drop-red.png",
+    noRun: "./assets/markers/mapy-cz/drop-gray.png",
     ownRun: "./assets/markers/mapy-cz/drop-blue.png",
-    otherRun: "./assets/markers/mapy-cz/drop-yellow.png",
-    commonRun: "./assets/markers/mapy-cz/drop-blue-yellow.png",
+    otherRun: "./assets/markers/mapy-cz/drop-green.png",
+    commonRun: "./assets/markers/mapy-cz/drop-blue-green.png",
     finish: "./assets/markers/finish-flag.svg"
   },
+
+  // TODO gray and blueGreen markers are copy pasted from MapyCz
   google: {
-    noRun: "./assets/markers/google/drop-blue.png",
-    ownRun: "./assets/markers/google/drop-green.png",
-    otherRun: "",
-    commonRun: "",
-    finish: "./assets/finish-flag.svg"
+    noRun: "./assets/markers/google/drop-gray.png",
+    ownRun: "./assets/markers/google/drop-blue.png",
+    otherRun: "./assets/markers/google/drop-green.png",
+    commonRun: "./assets/markers/google/drop-blue-green.png",
+    finish: "./assets/markers/finish-flag.svg"
   }
 };
 
