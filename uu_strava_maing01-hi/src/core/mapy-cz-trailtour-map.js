@@ -1,19 +1,16 @@
 //@@viewOn:imports
+import polyline from "@mapbox/polyline";
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
 import LoadFeedback from "../bricks/load-feedback";
-import polyline from "@mapbox/polyline";
+import AllMarkers from "../trailtour/config/map-markers";
 //@@viewOff:imports
 
 const SCRIPT_URL = "https://api.mapy.cz/loader.js";
 const MAPY_CZ_ROOT = "mapyCzTrailtourMapRoot";
 
-const MARKERS = {
-  red: "/marker/drop-red.png",
-  blue: "/marker/drop-blue.png",
-  finish: "./assets/finish-flag.svg"
-};
+const MARKERS = AllMarkers.mapyCz;
 
 export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
@@ -162,14 +159,15 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
       let segment = result.segment;
 
       let center = SMap.Coords.fromWGS84(segment.start_longitude, segment.start_latitude);
-      let icon = MARKERS.red;
+      let icon = MARKERS.noRun;
       if (this.props.showOwnResults && (result.menResults[0] || result.womenResults[0])) {
-        icon = MARKERS.blue;
+        icon = MARKERS.ownRun;
       }
+      if (result.markerIcon && MARKERS[result.markerIcon]) icon = MARKERS[result.markerIcon];
 
       let options = {
         title: this._getMarkerTitle(result),
-        url: SMap.CONFIG.img + icon
+        url: icon
       };
 
       let marker = new SMap.Marker(center, result.stravaId, options);

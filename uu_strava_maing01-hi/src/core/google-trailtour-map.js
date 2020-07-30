@@ -5,22 +5,10 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 
 import SpaContext from "../context/spa-context";
+import AllMarkers from "../trailtour/config/map-markers";
 //@@viewOff:imports
 
-const MARKERS = {
-  blue:
-    "https://mt.googleapis.com/vt/icon/name=" +
-    "icons/onion/SHARED-mymaps-pin-container-bg_4x.png," +
-    "icons/onion/SHARED-mymaps-pin-container_4x.png," +
-    "icons/onion/1899-blank-shape_pin_4x.png",
-  green:
-    "https://www.google.com/maps/vt/icon/name=" +
-    "assets/icons/poi/tactile/pinlet_shadow_v3-2-medium.png," +
-    "assets/icons/poi/tactile/pinlet_outline_v3-2-medium.png," +
-    "assets/icons/poi/tactile/pinlet_v3-2-medium.png," +
-    "assets/icons/poi/quantum/pinlet/dot_pinlet-2-medium.png&highlight=ff000000,ffffff,4db546,ffffff",
-  finish: "./assets/finish-flag.svg"
-};
+const MARKERS = AllMarkers.google;
 
 export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
@@ -90,9 +78,9 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   _getMarkers() {
     return this.props.segments.map(result => {
       let segment = result.segment;
-      let icon = MARKERS.blue;
+      let icon = MARKERS.noRun;
       if (this.props.showOwnResults && (result.menResults[0] || result.womenResults[0])) {
-        icon = MARKERS.green;
+        icon = MARKERS.ownRun;
       }
 
       return {

@@ -4,7 +4,15 @@ import "uu5g04-bricks";
 import "uu5g04-block-layout";
 import Config from "./config/config.js";
 import AthleteLink from "../bricks/athlete-link";
+import MapMarkers from "./config/map-markers";
 //@@viewOff:imports
+
+const STRAVA_LINK_STYLE = {
+  position: "absolute",
+  top: "16px",
+  right: "12px",
+  width: "32px"
+};
 
 export const AthleteTourCard = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
@@ -15,7 +23,9 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "AthleteTourCard",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css`
+        position: relative;
+      `
     },
     lsi: {
       name: {
@@ -49,7 +59,8 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
   //@@viewOn:propTypes
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
-    athleteResults: UU5.PropTypes.array.isRequired
+    forComparison: UU5.PropTypes.oneOf(["first", "second"]),
+    year: UU5.PropTypes.string
   },
   //@@viewOff:propTypes
 
@@ -80,18 +91,26 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
   },
 
   _getAthleteLink(results) {
-    return (
-      <UU5.BlockLayout.Text weight={"primary"}>
-        <AthleteLink stravaId={results.stravaId}>
-          <img
-            src={"./assets/strava_symbol_orange.png"}
-            alt={"strava_symbol_orange"}
-            width={"24px"}
-            style={{ position: "relative", top: "2px" }}
-          />
+    let child;
+    if (this.props.forComparison) {
+      child = (
+        <UU5.Bricks.Link href={`athleteTourDetail?year=${this.props.year}&stravaId=${results.stravaId}`}>
           {results.name}
-        </AthleteLink>
-      </UU5.BlockLayout.Text>
+        </UU5.Bricks.Link>
+      );
+    } else {
+      child = this._getStravaLink(results, true, { position: "relative", top: "2px" });
+    }
+
+    return <UU5.BlockLayout.Text weight={"primary"}>{child}</UU5.BlockLayout.Text>;
+  },
+
+  _getStravaLink(results, includeName, style) {
+    return (
+      <AthleteLink stravaId={results.stravaId}>
+        <img src={"./assets/strava_symbol_orange.png"} alt={"strava_symbol_orange"} width={"24px"} style={style} />
+        {includeName && results.name}
+      </AthleteLink>
     );
   },
 
@@ -172,15 +191,6 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
     );
   },
 
-  _getFinishedSegments(sex) {
-    let finishedSegments = 0;
-    let resultKey = sex === "male" ? "menResults" : "womenResults";
-    this.props.athleteResults.forEach(segment => {
-      if (segment[resultKey][0]) finishedSegments++;
-    });
-    return finishedSegments;
-  },
-
   _getClubLabel() {
     return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("club")}</UU5.BlockLayout.Text>;
   },
@@ -199,10 +209,25 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
     );
   },
 
+  _getMarkerIcons() {
+    let runType = this.props.forComparison === "first" ? "ownRun" : "otherRun";
+    return (
+      <div style={{ position: "absolute", bottom: "8px", right: "12px" }}>
+        <img
+          src={MapMarkers.mapyCz[runType]}
+          alt={"mapyCzRunMarker"}
+          style={{ position: "relative", bottom: "2px", width: "20px" }}
+        />
+        <img src={MapMarkers.google[runType]} alt={"googleRunMarker"} style={{ marginLeft: "8px" }} />
+      </div>
+    );
+  },
+
   _getSmallContent(results, sex, total, finishedSegments) {
     const leftColWidth = "130px";
     return (
       <UU5.BlockLayout.Block>
+        {this.props.forComparison && this._getStravaLink(results, false, STRAVA_LINK_STYLE)}
         <UU5.BlockLayout.Row>
           <UU5.BlockLayout.Column width={leftColWidth}>{this._getAthleteLabel(sex)}</UU5.BlockLayout.Column>
           <UU5.BlockLayout.Column>{this._getAthleteLink(results)}</UU5.BlockLayout.Column>
@@ -227,7 +252,21 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
           <UU5.BlockLayout.Column width={leftColWidth}>{this._getClubLabel()}</UU5.BlockLayout.Column>
           <UU5.BlockLayout.Column>{this._getClub(results)}</UU5.BlockLayout.Column>
         </UU5.BlockLayout.Row>
+        {this.props.forComparison && this._getMarkerIcons()}
       </UU5.BlockLayout.Block>
+    );
+  },
+
+  _getResponsiveContent(results, sex, total, finishedSegments) {
+    return (
+      <UU5.Bricks.ScreenSize>
+        <UU5.Bricks.ScreenSize.Item screenSize={["xs", "s"]}>
+          {this._getSmallContent(results, sex, total, finishedSegments)}
+        </UU5.Bricks.ScreenSize.Item>
+        <UU5.Bricks.ScreenSize.Item screenSize={["m", "l", "xl"]}>
+          {this._getLargeContent(results, sex, total, finishedSegments)}
+        </UU5.Bricks.ScreenSize.Item>
+      </UU5.Bricks.ScreenSize>
     );
   },
   //@@viewOff:private
@@ -235,17 +274,12 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     let { results, sex, total } = this._getCorrectResults();
-    let finishedSegments = this._getFinishedSegments(sex);
+    let finishedSegments = results.totalCount;
     return (
       <UU5.BlockLayout.Tile {...this.getMainPropsToPass()}>
-        <UU5.Bricks.ScreenSize>
-          <UU5.Bricks.ScreenSize.Item screenSize={["xs", "s"]}>
-            {this._getSmallContent(results, sex, total, finishedSegments)}
-          </UU5.Bricks.ScreenSize.Item>
-          <UU5.Bricks.ScreenSize.Item screenSize={["m", "l", "xl"]}>
-            {this._getLargeContent(results, sex, total, finishedSegments)}
-          </UU5.Bricks.ScreenSize.Item>
-        </UU5.Bricks.ScreenSize>
+        {this.props.forComparison
+          ? this._getSmallContent(results, sex, total, finishedSegments)
+          : this._getResponsiveContent(results, sex, total, finishedSegments)}
       </UU5.BlockLayout.Tile>
     );
   }
