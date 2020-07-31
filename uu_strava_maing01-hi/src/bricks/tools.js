@@ -16,6 +16,7 @@ const DOCUMENT_TITLES = {
 
 const BrickTools = {
   formatDuration(seconds) {
+    if (!seconds) return;
     let hours = Math.floor(seconds / 3600);
     let secondsLeft = seconds % 3600;
     let minutes = Math.floor(secondsLeft / 60);
@@ -28,6 +29,7 @@ const BrickTools = {
   },
 
   formatPace(pace) {
+    if (!pace) return;
     let mins = Math.floor(pace);
     let lastSeconds = Math.round((pace % 1) * 60);
     return `${_padNum(mins)}:${_padNum(lastSeconds)}/km`;

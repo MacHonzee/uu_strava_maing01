@@ -1,6 +1,7 @@
 import { AppContainer } from "react-hot-loader";
 import * as UU5 from "uu5g04";
-
+import * as FlexTiles from "uu5flextilesg01";
+UU5.FlexTiles = FlexTiles;
 import Spa from "./core/spa.js";
 
 // propagate app version into environment

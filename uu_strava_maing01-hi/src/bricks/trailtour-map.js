@@ -74,7 +74,8 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
     showOwnResults: UU5.PropTypes.bool,
     showTourDetail: UU5.PropTypes.bool,
     multipleResults: UU5.PropTypes.bool,
-    year: UU5.PropTypes.string
+    year: UU5.PropTypes.string,
+    stravaIdList: UU5.PropTypes.array
   },
   //@@viewOff:propTypes
 
@@ -255,7 +256,10 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _getMultiplePopoverResults(segment, sex) {
-    let results = segment[sex + "Results"];
+    let stravaIdList = this.props.stravaIdList;
+    let results = [...segment[sex + "Results"]].sort(
+      (a, b) => stravaIdList.indexOf(a.stravaId) - stravaIdList.indexOf(b.stravaId)
+    );
     let totalResult = segment[sex + "ResultsTotal"];
 
     let headers = results.map(result => (

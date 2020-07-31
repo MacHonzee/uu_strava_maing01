@@ -31,7 +31,24 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "AthleteComparisonList",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
+      smallTileTable: Config.Css.css`
+        display: flex;
+        flex-direction: column;
+
+        > div {
+          display: flex;
+
+          > div:first-child {
+            width: 80px;
+            font-weight: bold;
+          }
+
+          > div:not(:first-child) {
+            width: calc(50% - 80px);
+          }
+        }
+      `
     }
   },
   //@@viewOff:statics
@@ -159,8 +176,126 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
     }
   },
 
-  _getSmallTile() {
-    return "small tile TODO";
+  _getSmallTile({ data, visibleColumns }) {
+    let { id, name, author, order } = data;
+    let { results: resultsFirst } = this._getCorrectResults(data, 0);
+    let { results: resultsSecond } = this._getCorrectResults(data, 1);
+
+    let rows = [];
+    rows.push(
+      <div style={{ position: "relative" }}>
+        <div>
+          #{order} <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
+        </div>
+        <div>
+          <div style={{ display: "inline-block", width: "80px" }}>
+            <strong>
+              <UU5.Bricks.Lsi lsi={TourDetailLsi.author} />
+              :&nbsp;
+            </strong>
+          </div>
+          {author}
+        </div>
+      </div>
+    );
+
+    let tableRows = [];
+    if (resultsFirst.time || resultsSecond.time) {
+      let athletes = this._getAthletes();
+
+      tableRows.push(
+        <div style={{ fontWeight: "bold" }}>
+          <div>&nbsp;</div>
+          <div>{athletes[0].name}</div>
+          <div>{athletes[1].name}</div>
+        </div>
+      );
+
+      tableRows.push(
+        <div>
+          <div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.ownOrder} />:
+          </div>
+          <div>{this._getOwnOrder(data, 0)}</div>
+          <div>{this._getOwnOrder(data, 1)}</div>
+        </div>
+      );
+
+      tableRows.push(
+        <div>
+          <div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.points} />:
+          </div>
+          <div>{this._getPoints(data, 0)}</div>
+          <div>{this._getPoints(data, 1)}</div>
+        </div>
+      );
+
+      tableRows.push(
+        <div>
+          <div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.time} />:
+          </div>
+          <div>{BrickTools.formatDuration(resultsFirst.time)}</div>
+          <div>{BrickTools.formatDuration(resultsSecond.time)}</div>
+        </div>
+      );
+
+      tableRows.push(
+        <div>
+          <div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.pace} />:
+          </div>
+          <div>
+            <SegmentPace pace={resultsFirst.pace} />
+          </div>
+          <div>
+            <SegmentPace pace={resultsSecond.pace} />
+          </div>
+        </div>
+      );
+    }
+
+    const skippedColumns = [
+      "order",
+      "name",
+      "author",
+      "firstAthleteOrder",
+      "firstAthletePoints",
+      "firstAthletePace",
+      "secondAthleteOrder",
+      "secondAthletePoints",
+      "secondAthletePace"
+    ];
+    visibleColumns.forEach(column => {
+      if (skippedColumns.includes(column.id)) return;
+      let cellComponent = column.cellComponent(data);
+      if (!cellComponent) return;
+
+      if (column.id === "strava") {
+        rows.push(<div style={{ position: "absolute", top: "4px", right: "4px" }}>{cellComponent}</div>);
+        return;
+      }
+
+      rows.push(
+        <div>
+          <strong>
+            <div style={{ display: "inline-block", width: "80px" }}>
+              <UU5.Bricks.Lsi lsi={column.headers[0].label} />
+              :&nbsp;
+            </div>
+          </strong>
+          {cellComponent}
+        </div>
+      );
+    });
+
+    return (
+      <div>
+        {rows}
+        <div className={this.getClassName("smallTileTable")}>{tableRows}</div>
+      </div>
+    );
   },
 
   _getAthletes() {

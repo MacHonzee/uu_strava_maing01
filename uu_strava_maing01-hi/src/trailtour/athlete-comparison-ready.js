@@ -91,6 +91,7 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
         segments={this.props.results}
         multipleResults
         year={this.props.trailtour.year}
+        stravaIdList={this.props.stravaIdList}
       />
     );
   },

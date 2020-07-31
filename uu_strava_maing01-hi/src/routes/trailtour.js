@@ -1,8 +1,6 @@
 //@@viewOn:imports
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
-import * as FlexTiles from "uu5flextilesg01";
-UU5.FlexTiles = FlexTiles;
 import Config from "./config/config.js";
 import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";

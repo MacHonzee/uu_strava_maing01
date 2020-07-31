@@ -2,6 +2,7 @@
 import UU5 from "uu5g04";
 import { createComponent, useEffect, useRef, useState } from "uu5g04-hooks";
 import Calls from "calls";
+import overridenTextInputFind from "../bricks/optimize-autocomplete-items";
 //@@viewOff:imports
 
 const Lsi = {
@@ -71,7 +72,7 @@ function CompareResultsHoc(Component, displayName) {
         let sex = props.sex === "male" ? "men" : "women";
         return athletes[sex].map(athl => {
           return {
-            value: athl.name,
+            value: athl.name.toLowerCase(),
             content: athl.name,
             params: { stravaId: athl.stravaId }
           };
@@ -102,6 +103,9 @@ function CompareResultsHoc(Component, displayName) {
       }
 
       function handleOnChange(opt) {
+        // this is an optimalization to TextInputMixin._find, that keeps lagging autocomplete with many items
+        opt.component._find = overridenTextInputFind;
+
         let name = opt.component.getName();
         let refToSave = selectedAthleteRefs[name];
         if (opt.autocompleteItem) {
