@@ -41,12 +41,10 @@ async function main() {
   await new Package(prjCfg).process();
 
   // git add, git commit, git push, git checkout master, git merge sprint, git tag version/newVersion
-  execSync(`
-    git add . &&
-    git commit -m Version build ${newVersion} &&
+  execSync(`git commit -a -m "Version build ${newVersion}" &&
     git checkout master &&
     git rebase sprint &&
-    git tag -a version/${newVersion} -m Version build ${newVersion} &&
+    git tag -a version/${newVersion} -m "Version build ${newVersion}" &&
     git push origin --tags`,
     { cwd: "..", stdio: "inherit" });
 
