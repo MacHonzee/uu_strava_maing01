@@ -45,6 +45,8 @@ async function main() {
     git checkout master &&
     git rebase sprint &&
     git tag -a version/${newVersion} -m "Version build ${newVersion}" &&
+    git checkout sprint &&
+    git rebase master &&
     git push origin --tags`,
     { cwd: "..", stdio: "inherit" });
 

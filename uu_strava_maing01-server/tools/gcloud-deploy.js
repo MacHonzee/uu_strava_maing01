@@ -39,7 +39,10 @@ async function main() {
   prjCfg.setCommandLineConfig({});
   await new Package(prjCfg).process();
   let config = prjCfg.getAll();
-  let buildName = `${config.name}-${config.version}.${prjCfg.getBuildTimestamp()}`;
+  let buildName = `${config.name}-${config.version}`;
+  if (config.version.match(/beta/)) {
+    buildName = buildName + "." + prjCfg.getBuildTimestamp();
+  }
   let targetGcloudFld = Path.join(".", GCLOUD_FLD, buildName);
 
   // HDS 2 unzip the build to target-gcloud temp fld
