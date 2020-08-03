@@ -26,7 +26,7 @@
     "start": "node app.js",
     "startDev": "uu_appg01_devkit start",
     "prettify": "uu_appg01_devkit prettify",
-    "gcloudDeploy": "node ./tools/gloud-deploy.js",
+    "gcloudDeploy": "node ./tools/gcloud-deploy.js",
     "uuDeploy": "uu_appg01_devkit deploy",
     "uuUndeploy": "uu_appg01_devkit undeploy",
     "uuAppBox": "uu_appg01_devkit uuAppBox",
@@ -37,7 +37,8 @@
     "uuCloudDeployList": "uu_appg01_devkit uuCloudDeployList",
     "uuCloudSwap": "uu_appg01_devkit uuCloudSwap",
     "uuLogStoreExport": "uu_appg01_devkit uuLogStoreExport",
-    "uuCmdCreate": "uu_appg01_devkit uuCmdCreate"
+    "uuCmdCreate": "uu_appg01_devkit uuCmdCreate",
+    "gitVersion": "node ./tools/git-version.js"
   },
   "main": "app.js",
   "files": [
