@@ -45,11 +45,10 @@ async function main() {
     git add . &&
     git commit -m Version build ${newVersion} &&
     git checkout master &&
-    git merge sprint &&
-    git commit &&
+    git rebase sprint &&
     git tag -a version/${newVersion} -m Version build ${newVersion} &&
     git push origin --tags`,
-    { cwd: ".." });
+    { cwd: "..", stdio: "inherit" });
 
   console.log(`Version ${newVersion} succesfully prepared.`)
 }
