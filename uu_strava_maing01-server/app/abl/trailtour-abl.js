@@ -80,7 +80,7 @@ class TrailtourAbl {
     }
 
     // HDS 5
-    let statistics = {};
+    let statistics = { clubs: {} };
     let SegmentAbl = require("./segment-abl");
     for (let trailtour of trailtourList) {
       let tourData = await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
@@ -154,7 +154,7 @@ class TrailtourAbl {
     trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
 
     // HDS 5
-    let statistics = {};
+    let statistics = { clubs: {} };
     let promises = trailtourList.map(async (trailtour, i) => {
       let tourData = await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
       Object.assign(trailtour, tourData);
@@ -324,10 +324,20 @@ class TrailtourAbl {
 
   _updateStatistics(statistics, trailtour) {
     ["menResults", "womenResults"].forEach(resultKey => {
+      let sex = resultKey.replace("Results", "");
+
       trailtour[resultKey].forEach(result => {
         let stravaId = result.stravaId;
         statistics[stravaId] = statistics[stravaId] || { count: 0 };
         statistics[stravaId].count++;
+
+        if (result.club) {
+          statistics.clubs[result.club] = statistics.clubs[result.club] || this._getClubDefault();
+          let clubStats = statistics.clubs[result.club];
+          clubStats.runners[sex][stravaId] = clubStats.runners[sex][stravaId] || 0;
+          clubStats.runners[sex][stravaId] += result.points;
+          clubStats.results[sex]++;
+        }
       });
     });
     return statistics;
@@ -343,7 +353,27 @@ class TrailtourAbl {
       });
     });
 
+    trailtourObj.totalResults.clubResults.forEach(result => {
+      let club = result.name;
+      let stats = statistics.clubs[club] || this._getClubDefault();
+      result.resultsMen = stats.results.men;
+      result.resultsWomen = stats.results.women;
+      result.resultsTotal = stats.results.men + stats.results.women;
+      result.runnersMen = Object.keys(stats.runners.men).length;
+      result.runnersWomen = Object.keys(stats.runners.women).length;
+      result.runnersTotal = result.runnersMen + result.runnersWomen;
+      result.pointsMen = Object.values(stats.runners.men).reduce((sum, points) => sum + points, 0.0);
+      result.pointsWomen = Object.values(stats.runners.women).reduce((sum, points) => sum + points, 0.0);
+      result.avgPoints = result.resultsMen > 0 ? result.pointsMen / result.resultsMen : 0;
+      result.avgPointsMen = result.resultsWomen > 0 ? result.pointsWomen / result.resultsWomen : 0;
+      result.avgPointsWomen = result.resultsTotal > 0 ? result.points / result.resultsTotal : 0;
+    });
+
     return await this.trailtourDao.updateByYear(trailtourObj);
+  }
+
+  _getClubDefault() {
+    return { runners: { men: {}, women: {} }, results: { men: 0, women: 0 } };
   }
 }
 

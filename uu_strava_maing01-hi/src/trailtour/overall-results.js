@@ -4,11 +4,9 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import AthleteLink from "../bricks/athlete-link";
 import SexFilterBar from "./sex-filter-bar";
-import UpdateTrailtourButton from "./update-trailtour-button";
 import TrailtourTools from "./tools";
 import NameFilter from "./name-filter";
 import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
-
 //@@viewOff:imports
 
 const Lsi = {

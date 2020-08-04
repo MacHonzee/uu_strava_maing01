@@ -53,6 +53,10 @@ export const Left = UU5.Common.VisualComponent.create({
         cs: "Výsledky",
         en: "Results"
       },
+      clubResults: {
+        cs: "Výsledky klubů",
+        en: "Club results"
+      },
       about: {
         cs: "O aplikaci",
         en: "About"
@@ -107,6 +111,11 @@ export const Left = UU5.Common.VisualComponent.create({
                 href: "trailtour?year=2020_CZ"
               },
               {
+                id: "trailtourClubs_2020_CZ",
+                content: this.getLsiComponent("clubResults"),
+                href: "trailtourClubs?year=2020_CZ"
+              },
+              {
                 id: "trailtourSegments_2020_CZ",
                 content: this.getLsiComponent("tourSegments"),
                 href: "trailtourSegments?year=2020_CZ"
@@ -123,6 +132,11 @@ export const Left = UU5.Common.VisualComponent.create({
                 href: "trailtour?year=2020_SK"
               },
               {
+                id: "trailtourClubs_2020_SK",
+                content: this.getLsiComponent("clubResults"),
+                href: "trailtourClubs?year=2020_SK"
+              },
+              {
                 id: "trailtourSegments_2020_SK",
                 content: this.getLsiComponent("tourSegments"),
                 href: "trailtourSegments?year=2020_SK"
@@ -137,6 +151,11 @@ export const Left = UU5.Common.VisualComponent.create({
                 id: "trailtour_2019",
                 content: this.getLsiComponent("tourResults"),
                 href: "trailtour?year=2019"
+              },
+              {
+                id: "trailtourClubs_2019",
+                content: this.getLsiComponent("clubResults"),
+                href: "trailtourClubs?year=2019"
               },
               {
                 id: "trailtourSegments_2019",
