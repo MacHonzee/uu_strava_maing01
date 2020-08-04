@@ -5,10 +5,10 @@ import Config from "./config/config.js";
 import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";
 import OverallSegments from "../trailtour/overall-segments";
-import UpdateTrailtourButton from "../trailtour/update-trailtour-button";
 import TrailtourMap from "../bricks/trailtour-map";
 import BrickTools from "../bricks/tools";
 import ResultsTimestamp from "../trailtour/results-timestamp";
+import withSetMenuItem from "../bricks/with-set-menu-item";
 //@@viewOff:imports
 
 export const TourSegments = UU5.Common.VisualComponent.create({
@@ -39,9 +39,6 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {
-    year: UU5.PropTypes.string.isRequired
-  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
@@ -55,7 +52,9 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   },
 
   componentDidMount() {
-    BrickTools.setDocumentTitle({ year: this.props.year }, "overallSegments");
+    let params = this.props.params || {};
+    BrickTools.setDocumentTitle({ year: params.year }, "overallSegments");
+    this.props.setMenuItem("trailtourSegments_" + params.year);
   },
   //@@viewOff:reactLifeCycle
 
@@ -72,28 +71,31 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   },
 
   _getHeader(data) {
+    let params = this.props.params || {};
     return (
       <UU5.Bricks.Div>
-        <UU5.Bricks.Div>{this.getLsiComponent("header", null, [this.props.year])}</UU5.Bricks.Div>
+        <UU5.Bricks.Div>{this.getLsiComponent("header", null, [params.year])}</UU5.Bricks.Div>
         {this._getUpdateButton(data)}
       </UU5.Bricks.Div>
     );
   },
 
   _getUpdateButton(data) {
+    let params = this.props.params || {};
     if (data.data) {
-      return <ResultsTimestamp data={data.data.trailtour} year={this.props.year} handleReload={this._handleReload} />;
+      return <ResultsTimestamp data={data.data.trailtour} year={params.year} handleReload={this._handleReload} />;
     }
   },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
+    let params = this.props.params || {};
     return (
       <UU5.Common.DataManager
         onLoad={Calls.getTourSegments}
-        data={{ year: this.props.year }}
-        key={this.props.year + this.state.stamp.toISOString()}
+        data={{ year: params.year }}
+        key={params.year + this.state.stamp.toISOString()}
       >
         {data => {
           return (
@@ -102,7 +104,7 @@ export const TourSegments = UU5.Common.VisualComponent.create({
                 {data.data && (
                   <div>
                     <TrailtourMap mapConfig={data.data.trailtour.mapConfig} segments={data.data.tourSegments} />
-                    <OverallSegments data={data.data} year={this.props.year} handleReload={this._handleReload} />
+                    <OverallSegments data={data.data} year={params.year} handleReload={this._handleReload} />
                   </div>
                 )}
               </LoadFeedback>
@@ -115,4 +117,4 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default TourSegments;
+export default withSetMenuItem(TourSegments);

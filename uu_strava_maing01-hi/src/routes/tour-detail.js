@@ -6,6 +6,7 @@ import Calls from "calls";
 import LoadFeedback from "../bricks/load-feedback";
 import TourDetailResults from "../trailtour/tour-detail-results";
 import BrickTools from "../bricks/tools";
+import withSetMenuItem from "../bricks/with-set-menu-item";
 //@@viewOff:imports
 
 export const TourDetail = UU5.Common.VisualComponent.create({
@@ -78,7 +79,9 @@ export const TourDetail = UU5.Common.VisualComponent.create({
             <LoadFeedback {...data}>
               {data.data &&
                 this._addPaceToResults(data.data.tourDetail, data.data.segment) &&
-                this._saveTitle(data.data) && <TourDetailResults data={data.data} />}
+                this._saveTitle(data.data) && (
+                  <TourDetailResults data={data.data} setMenuItem={this.props.setMenuItem} />
+                )}
             </LoadFeedback>
           )}
         </UU5.Common.DataManager>
@@ -88,4 +91,4 @@ export const TourDetail = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default TourDetail;
+export default withSetMenuItem(TourDetail);

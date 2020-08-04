@@ -6,6 +6,7 @@ import Calls from "calls";
 import LoadFeedback from "../bricks/load-feedback";
 import BrickTools from "../bricks/tools";
 import AthleteComparisonReady from "../trailtour/athlete-comparison-ready";
+import withSetMenuItem from "../bricks/with-set-menu-item";
 //@@viewOff:imports
 
 export const AthleteComparison = UU5.Common.VisualComponent.create({
@@ -35,6 +36,10 @@ export const AthleteComparison = UU5.Common.VisualComponent.create({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
+  componentDidMount() {
+    let params = this.props.params || {};
+    this.props.setMenuItem("trailtour_" + params.year);
+  },
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
@@ -96,4 +101,4 @@ export const AthleteComparison = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default AthleteComparison;
+export default withSetMenuItem(AthleteComparison);

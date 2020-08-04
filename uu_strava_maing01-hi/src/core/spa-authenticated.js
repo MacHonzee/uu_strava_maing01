@@ -85,12 +85,8 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   _getChild(config) {
     let routes = {
       home: { component: <Home /> },
-      czTrailtour2020: { component: <Trailtour year={"2020_CZ"} /> },
-      skTrailtour2020: { component: <Trailtour year={"2020_SK"} /> },
-      czTrailtour2020segments: { component: <TourSegments year={"2020_CZ"} /> },
-      skTrailtour2020segments: { component: <TourSegments year={"2020_SK"} /> },
-      trailtour2019: { component: <Trailtour year={"2019"} /> },
-      trailtour2019segments: { component: <TourSegments year={"2019"} /> },
+      trailtour: { component: <Trailtour /> },
+      trailtourSegments: { component: <TourSegments /> },
       tourDetail: { component: <TourDetail /> },
       athleteTourDetail: { component: <AthleteTourDetail /> },
       athleteComparison: { component: <AthleteComparison /> },
@@ -104,34 +100,36 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
 
     return (
       <SpaContext.Provider value={{ ...config }}>
-        <Plus4U5.App.Page
-          {...this.getMainPropsToPass()}
-          top={
-            <Plus4U5.App.Top>
-              <UU5.Bricks.Link onClick={this._goBack} style={{ marginRight: "16px" }}>
-                <UU5.Bricks.Icon icon={"mdi-arrow-left"} clickable />
-              </UU5.Bricks.Link>
-              <UU5.Bricks.Link href={Config.DEFAULT_ROUTE}>{this.getLsiComponent("home")}</UU5.Bricks.Link>
-            </Plus4U5.App.Top>
-          }
-          left={<Left />}
-          leftFixed
-          leftRelative="m l xl"
-          leftWidth="!xs-50 !s-40 !m-210px !l-210px !xl-210px"
-          isLeftOpen="m l xl"
-          showLeftToggleButton
-          colorSchemaActive={"red"}
-          bottom={<Bottom />}
-          type={3}
-          displayedLanguages={["cs", "en"]}
-        >
-          <UU5.Common.Router
-            route={Config.DEFAULT_ROUTE}
-            notFoundRoute={Config.DEFAULT_ROUTE}
-            routes={routes}
-            controlled={false}
-          />
-        </Plus4U5.App.Page>
+        <Plus4U5.App.MenuProvider activeItemId={Config.DEFAULT_ROUTE}>
+          <Plus4U5.App.Page
+            {...this.getMainPropsToPass()}
+            top={
+              <Plus4U5.App.Top>
+                <UU5.Bricks.Link onClick={this._goBack} style={{ marginRight: "16px" }}>
+                  <UU5.Bricks.Icon icon={"mdi-arrow-left"} clickable />
+                </UU5.Bricks.Link>
+                <UU5.Bricks.Link href={Config.DEFAULT_ROUTE}>{this.getLsiComponent("home")}</UU5.Bricks.Link>
+              </Plus4U5.App.Top>
+            }
+            left={<Left />}
+            leftFixed
+            leftRelative="m l xl"
+            leftWidth="!xs-50 !s-40 !m-210px !l-210px !xl-210px"
+            isLeftOpen="m l xl"
+            showLeftToggleButton
+            colorSchemaActive={"red"}
+            bottom={<Bottom />}
+            type={3}
+            displayedLanguages={["cs", "en"]}
+          >
+            <UU5.Common.Router
+              route={Config.DEFAULT_ROUTE}
+              notFoundRoute={Config.DEFAULT_ROUTE}
+              routes={routes}
+              controlled={false}
+            />
+          </Plus4U5.App.Page>
+        </Plus4U5.App.MenuProvider>
       </SpaContext.Provider>
     );
   },

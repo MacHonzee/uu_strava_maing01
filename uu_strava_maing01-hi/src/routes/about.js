@@ -5,8 +5,10 @@ import Plus4U5 from "uu_plus4u5g01";
 
 import Config from "./config/config.js";
 import Lsi from "../config/lsi.js";
-import AboutLsi from "../lsi/about-lsi";
 import AboutCfg from "../config/about.js";
+import withSetMenuItem from "../bricks/with-set-menu-item";
+import AboutLsi from "../lsi/about-lsi";
+
 //@@viewOff:imports
 
 export const About = UU5.Common.VisualComponent.create({
@@ -64,6 +66,9 @@ export const About = UU5.Common.VisualComponent.create({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
+  componentDidMount() {
+    this.props.setMenuItem("about");
+  },
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
@@ -132,4 +137,4 @@ export const About = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default About;
+export default withSetMenuItem(About);

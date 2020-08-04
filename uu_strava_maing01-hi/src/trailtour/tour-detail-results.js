@@ -31,6 +31,10 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
+  componentDidMount() {
+    this.props.setMenuItem("trailtourSegments_" + this.props.data.trailtour.year);
+    return true;
+  },
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface

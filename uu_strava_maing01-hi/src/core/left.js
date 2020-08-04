@@ -5,10 +5,10 @@ import "uu5g04-bricks";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
 import Lsi from "../config/lsi";
-
 import Config from "./config/config.js";
+import withLanguage from "../bricks/with-language";
 //@@viewOff:imports
-//@viewOff:imports
+
 export const Left = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
@@ -87,64 +87,69 @@ export const Left = UU5.Common.VisualComponent.create({
         logoProps={{
           backgroundColor: "chocolate",
           backgroundColorTo: "chocolate",
-          title: <UU5.Bricks.Lsi lsi={Lsi.appName} />
+          title: UU5.Common.Tools.getLsiValueByLanguage(Lsi.appName, this.props.language)
         }}
         aboutItems={[
           {
+            id: "about",
             content: this.getLsiComponent("about"),
             href: "about"
           }
         ]}
         homeHref={Config.DEFAULT_ROUTE}
       >
-        <Plus4U5.App.MenuProvider activeItemId={Config.DEFAULT_ROUTE}>
-          <Plus4U5.App.MenuPanel expanded header={this.getLsiComponent("czTrailtour2020")} borderBottom>
-            <Plus4U5.App.MenuTree
-              items={[
-                {
-                  content: this.getLsiComponent("tourResults"),
-                  href: "czTrailtour2020"
-                },
-                {
-                  content: this.getLsiComponent("tourSegments"),
-                  href: "czTrailtour2020segments"
-                }
-              ]}
-            />
-          </Plus4U5.App.MenuPanel>
-          <Plus4U5.App.MenuPanel expanded header={this.getLsiComponent("skTrailtour2020")} borderBottom>
-            <Plus4U5.App.MenuTree
-              items={[
-                {
-                  content: this.getLsiComponent("tourResults"),
-                  href: "skTrailtour2020"
-                },
-                {
-                  content: this.getLsiComponent("tourSegments"),
-                  href: "skTrailtour2020segments"
-                }
-              ]}
-            />
-          </Plus4U5.App.MenuPanel>
-          <Plus4U5.App.MenuPanel header={this.getLsiComponent("trailtour2019")} borderBottom>
-            <Plus4U5.App.MenuTree
-              items={[
-                {
-                  content: this.getLsiComponent("tourResults"),
-                  href: "trailtour2019"
-                },
-                {
-                  content: this.getLsiComponent("tourSegments"),
-                  href: "trailtour2019segments"
-                }
-              ]}
-            />
-          </Plus4U5.App.MenuPanel>
-        </Plus4U5.App.MenuProvider>
+        <Plus4U5.App.MenuPanel expanded header={this.getLsiComponent("czTrailtour2020")} borderBottom>
+          <Plus4U5.App.MenuTree
+            items={[
+              {
+                id: "trailtour_2020_CZ",
+                content: this.getLsiComponent("tourResults"),
+                href: "trailtour?year=2020_CZ"
+              },
+              {
+                id: "trailtourSegments_2020_CZ",
+                content: this.getLsiComponent("tourSegments"),
+                href: "trailtourSegments?year=2020_CZ"
+              }
+            ]}
+          />
+        </Plus4U5.App.MenuPanel>
+        <Plus4U5.App.MenuPanel expanded header={this.getLsiComponent("skTrailtour2020")} borderBottom>
+          <Plus4U5.App.MenuTree
+            items={[
+              {
+                id: "trailtour_2020_SK",
+                content: this.getLsiComponent("tourResults"),
+                href: "trailtour?year=2020_SK"
+              },
+              {
+                id: "trailtourSegments_2020_SK",
+                content: this.getLsiComponent("tourSegments"),
+                href: "trailtourSegments?year=2020_SK"
+              }
+            ]}
+          />
+        </Plus4U5.App.MenuPanel>
+        <Plus4U5.App.MenuPanel header={this.getLsiComponent("trailtour2019")} borderBottom>
+          <Plus4U5.App.MenuTree
+            items={[
+              {
+                id: "trailtour_2019",
+                content: this.getLsiComponent("tourResults"),
+                href: "trailtour?year=2019"
+              },
+              {
+                id: "trailtourSegments_2019",
+                content: this.getLsiComponent("tourSegments"),
+                href: "trailtourSegments?year=2019"
+              }
+            ]}
+          />
+        </Plus4U5.App.MenuPanel>
       </Plus4U5.App.Left>
     );
   }
   //@@viewOff:render
 });
 
-export default Left;
+export default withLanguage(Left);

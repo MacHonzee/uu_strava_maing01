@@ -34,7 +34,7 @@ export const ResultsTimestamp = UU5.Common.VisualComponent.create({
   //@@viewOn:propTypes
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
-    year: UU5.PropTypes.number.isRequired,
+    year: UU5.PropTypes.string.isRequired,
     handleReload: UU5.PropTypes.func.isRequired
   },
   //@@viewOff:propTypes

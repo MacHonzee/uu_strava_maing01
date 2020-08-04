@@ -2,11 +2,12 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Lsi from "../config/lsi";
-import AboutLsi from "../lsi/about-lsi";
-
 import Config from "./config/config.js";
 import BacklogConfig from "../config/backlog-config";
 import BrickTools from "../bricks/tools";
+import withSetMenuItem from "../bricks/with-set-menu-item";
+import AboutLsi from "../lsi/about-lsi";
+
 //@@viewOff:imports
 
 const Home = UU5.Common.VisualComponent.create({
@@ -54,6 +55,7 @@ const Home = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   componentDidMount() {
     BrickTools.setDocumentTitle({}, "home");
+    this.props.setMenuItem("home");
   },
   //@@viewOff:reactLifeCycle
 
@@ -67,10 +69,10 @@ const Home = UU5.Common.VisualComponent.create({
   _getResultsLink() {
     return (
       <UU5.Bricks.Well bgStyle={"transparent"}>
-        <UU5.Bricks.TouchIcon colorSchema={"orange"} icon={"mdi-flag-checkered"} href={"czTrailtour2020"}>
+        <UU5.Bricks.TouchIcon colorSchema={"orange"} icon={"mdi-flag-checkered"} href={"trailtour?year=2020_CZ"}>
           {this.getLsiComponent("resultsLinkCZ")}
         </UU5.Bricks.TouchIcon>
-        <UU5.Bricks.TouchIcon colorSchema={"yellow-rich"} icon={"mdi-flag-checkered"} href={"skTrailtour2020"}>
+        <UU5.Bricks.TouchIcon colorSchema={"yellow-rich"} icon={"mdi-flag-checkered"} href={"trailtour?year=2020_SK"}>
           {this.getLsiComponent("resultsLinkSK")}
         </UU5.Bricks.TouchIcon>
       </UU5.Bricks.Well>
@@ -102,9 +104,7 @@ const Home = UU5.Common.VisualComponent.create({
         <UU5.Bricks.P>
           <UU5.Bricks.Lsi lsi={AboutLsi.registrationText} />
         </UU5.Bricks.P>
-        <UU5.Bricks.P>
-          <UU5.Bricks.Lsi lsi={AboutLsi.contactText} />
-        </UU5.Bricks.P>
+        <UU5.Bricks.Lsi lsi={AboutLsi.contactText} />
         {this._getResultsLink()}
         {this._getBacklog()}
       </UU5.Bricks.Container>
@@ -113,4 +113,4 @@ const Home = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default Home;
+export default withSetMenuItem(Home);

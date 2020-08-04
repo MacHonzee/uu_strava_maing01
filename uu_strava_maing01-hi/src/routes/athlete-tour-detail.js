@@ -6,6 +6,7 @@ import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";
 import AthleteTourResults from "../trailtour/athlete-tour-results";
 import BrickTools from "../bricks/tools";
+import withSetMenuItem from "../bricks/with-set-menu-item";
 //@@viewOff:imports
 
 export const AthleteTourDetail = UU5.Common.VisualComponent.create({
@@ -35,6 +36,10 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
   //@@viewOff:getDefaultProps
 
   //@@viewOn:reactLifeCycle
+  componentDidMount() {
+    let params = this.props.params || {};
+    this.props.setMenuItem("trailtour_" + params.year);
+  },
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
@@ -98,4 +103,4 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default AthleteTourDetail;
+export default withSetMenuItem(AthleteTourDetail);

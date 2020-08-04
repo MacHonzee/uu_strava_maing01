@@ -6,8 +6,8 @@ import LoadFeedback from "../bricks/load-feedback";
 import Calls from "calls";
 import OverallResults from "../trailtour/overall-results";
 import BrickTools from "../bricks/tools";
-import UpdateTrailtourButton from "../trailtour/update-trailtour-button";
 import ResultsTimestamp from "../trailtour/results-timestamp";
+import withSetMenuItem from "../bricks/with-set-menu-item";
 //@@viewOff:imports
 
 export const Trailtour = UU5.Common.VisualComponent.create({
@@ -41,9 +41,6 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
-  propTypes: {
-    year: UU5.PropTypes.string
-  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
@@ -57,7 +54,9 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   },
 
   componentDidMount() {
-    BrickTools.setDocumentTitle({ year: this.props.year }, "overallResults");
+    let params = this.props.params || {};
+    BrickTools.setDocumentTitle({ year: params.year }, "overallResults");
+    this.props.setMenuItem("trailtour_" + params.year);
   },
   //@@viewOff:reactLifeCycle
 
@@ -74,35 +73,36 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   },
 
   _getHeader(data) {
+    let params = this.props.params || {};
     return (
       <UU5.Bricks.Div>
-        <UU5.Bricks.Div>{this.getLsiComponent("header", null, [this.props.year])}</UU5.Bricks.Div>
+        <UU5.Bricks.Div>{this.getLsiComponent("header", null, [params.year])}</UU5.Bricks.Div>
         {this._getUpdateButton(data)}
       </UU5.Bricks.Div>
     );
   },
 
   _getUpdateButton(data) {
+    let params = this.props.params || {};
     if (data.data) {
-      return <ResultsTimestamp data={data.data} year={this.props.year} handleReload={this._handleReload} />;
+      return <ResultsTimestamp data={data.data} year={params.year} handleReload={this._handleReload} />;
     }
   },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
+    let params = this.props.params || {};
     return (
       <UU5.Common.DataManager
         onLoad={Calls.getTrailtour}
-        data={{ year: this.props.year }}
-        key={this.props.year + this.state.stamp.toISOString()}
+        data={{ year: params.year }}
+        key={params.year + this.state.stamp.toISOString()}
       >
         {data => (
           <UU5.Bricks.Container {...this.getMainPropsToPass()} header={this._getHeader(data)} level={3}>
             <LoadFeedback {...data}>
-              {data.data && (
-                <OverallResults data={data.data} year={this.props.year} handleReload={this._handleReload} />
-              )}
+              {data.data && <OverallResults data={data.data} year={params.year} handleReload={this._handleReload} />}
             </LoadFeedback>
           </UU5.Bricks.Container>
         )}
@@ -112,4 +112,4 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   //@@viewOff:render
 });
 
-export default Trailtour;
+export default withSetMenuItem(Trailtour);
