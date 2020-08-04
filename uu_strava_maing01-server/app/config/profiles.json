@@ -31,7 +31,6 @@
       "trailtour/updateConfig": ["Authorities"],
       "trailtour/get": ["UnregisteredUsers"],
       "trailtour/getTourDetail": ["UnregisteredUsers"],
-      "trailtour/getAthleteResults": ["UnregisteredUsers"],
       "trailtour/getSegments": ["UnregisteredUsers"],
       "trailtour/downloadGpx": ["UnregisteredUsers"],
       "trailtour/updateAll": ["Authorities","Public"],

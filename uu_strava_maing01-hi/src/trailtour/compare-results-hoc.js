@@ -72,7 +72,7 @@ function CompareResultsHoc(Component, displayName) {
         let sex = props.sex === "male" ? "men" : "women";
         return athletes[sex].map(athl => {
           return {
-            value: athl.name.toLowerCase(),
+            value: athl.name,
             content: athl.name,
             params: { stravaId: athl.stravaId }
           };

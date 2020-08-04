@@ -8,7 +8,7 @@ const DOCUMENT_TITLES = {
   overallSegments: ({ year }) => `Etapy Trailtour ${year}`,
   tourDetail: ({ tourDetail: { name } }) => `Trailtour - ${name}`,
   athleteTourDetail: ({ trailtour }) => {
-    let results = trailtour.totalResults.menResults || trailtour.totalResults.womenResults;
+    let results = trailtour.totalResults.menResults[0] || trailtour.totalResults.womenResults[0];
     return `Trailtour výsledky - ${results.name}`;
   },
   athleteComparison: () => `Porovnání výsledků`

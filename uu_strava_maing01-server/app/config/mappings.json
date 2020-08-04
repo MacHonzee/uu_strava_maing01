@@ -86,11 +86,6 @@
         "httpMethod": "GET",
         "type": "CMD"
       },
-      "trailtour/getAthleteResults": {
-        "realization": "api/controllers/TrailtourController.getAthleteResults",
-        "httpMethod": "GET",
-        "type": "CMD"
-      },
       "trailtour/getSegments": {
         "realization": "api/controllers/TrailtourController.getSegments",
         "httpMethod": "GET",

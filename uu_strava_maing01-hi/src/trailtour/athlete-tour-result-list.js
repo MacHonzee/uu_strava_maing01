@@ -243,7 +243,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   },
 
   _getAthleteForComparison() {
-    return this.props.trailtour.totalResults[this.props.sex === "male" ? "menResults" : "womenResults"];
+    return this.props.trailtour.totalResults[this.props.sex === "male" ? "menResults" : "womenResults"][0];
   },
   //@@viewOff:private
 
@@ -383,6 +383,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
                 key={"nameFilterBar"}
                 right={
                   <CompareResultsButton
+                    sex={this.props.sex}
                     year={this.props.trailtour.year}
                     firstAthlete={this._getAthleteForComparison()}
                   />

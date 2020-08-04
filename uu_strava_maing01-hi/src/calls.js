@@ -73,12 +73,6 @@ let Calls = {
     return Calls.call("get", commandUri, dtoInData);
   },
 
-  // TODO odstranit
-  getAthleteTourResults(dtoInData) {
-    let commandUri = Calls.getCommandUri("trailtour/getAthleteResults");
-    return Calls.call("get", commandUri, dtoInData);
-  },
-
   updateTrailtour(dtoInData) {
     let commandUri = Calls.getCommandUri("trailtour/update");
     return Calls.call("post", commandUri, dtoInData);

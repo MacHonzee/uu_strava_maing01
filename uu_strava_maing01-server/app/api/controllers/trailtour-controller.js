@@ -32,12 +32,6 @@ class TrailtourController {
     });
   }
 
-  getAthleteResults(ucEnv) {
-    return TrailtourCacheHandler.withTrailtourCache(ucEnv, () => {
-      return TrailtourAbl.getAthleteResults(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
-    });
-  }
-
   getTourDetail(ucEnv) {
     return TrailtourCacheHandler.withTrailtourResultCache(ucEnv, () => {
       return TrailtourAbl.getTourDetail(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());

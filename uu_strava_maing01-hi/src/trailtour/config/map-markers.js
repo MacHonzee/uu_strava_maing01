@@ -7,7 +7,6 @@ const MapMarkers = {
     finish: "./assets/markers/finish-flag.svg"
   },
 
-  // TODO gray and blueGreen markers are copy pasted from MapyCz
   google: {
     noRun: "./assets/markers/google/drop-gray.png",
     ownRun: "./assets/markers/google/drop-blue.png",

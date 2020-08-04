@@ -46,7 +46,7 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
   //@@viewOn:private
   _getSex(data) {
     let totalResults = data.trailtour.totalResults;
-    return totalResults.womenResults ? "female" : "male";
+    return totalResults.womenResults[0] ? "female" : "male";
   },
 
   _addPaceToResults(results) {
@@ -81,8 +81,8 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
         key={params.stravaId}
       >
         <UU5.Common.DataManager
-          onLoad={Calls.getAthleteTourResults}
-          data={{ year: params.year, athleteStravaId: params.stravaId }}
+          onLoad={Calls.listAthleteResults}
+          data={{ year: params.year, stravaIdList: [params.stravaId] }}
         >
           {data => (
             <LoadFeedback {...data}>

@@ -25,9 +25,6 @@ const WARNINGS = {
   getTourDetailUnsupportedKeys: {
     code: `${Errors.GetTourDetail.UC_CODE}unsupportedKeys`
   },
-  getAthleteResultsUnsupportedKeys: {
-    code: `${Errors.GetAthleteResults.UC_CODE}unsupportedKeys`
-  },
   getSegmentsUnsupportedKeys: {
     code: `${Errors.GetSegments.UC_CODE}unsupportedKeys`
   },
@@ -228,33 +225,6 @@ class TrailtourAbl {
       tourDetail,
       segment,
       trailtour,
-      uuAppErrorMap
-    };
-  }
-
-  // TODO remove this command and use listAthleteResults instead (after it is done)
-  async getAthleteResults(awid, dtoIn) {
-    // HDS 1, A1, A2
-    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "getAthleteResults", dtoIn);
-
-    // HDS 2
-    let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
-
-    // HDS 3
-    ["womenResults", "menResults", "clubResults"].forEach(results => {
-      trailtour.totalResults[results + "Total"] = trailtour.totalResults[results].length;
-      trailtour.totalResults[results] = trailtour.totalResults[results].find(
-        result => result.stravaId === dtoIn.athleteStravaId
-      );
-    });
-
-    // HDS 4
-    let athleteResults = await this.trailtourResultsDao.listAthleteResults_(awid, trailtour.id, dtoIn.athleteStravaId);
-
-    // HDS 5
-    return {
-      trailtour,
-      athleteResults,
       uuAppErrorMap
     };
   }

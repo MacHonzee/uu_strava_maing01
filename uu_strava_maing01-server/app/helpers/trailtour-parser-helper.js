@@ -107,7 +107,6 @@ function parseResults($, selector) {
 }
 
 function parseGeneratedStamp($) {
-  // FIXME not found nows
   let generatedTag = $(BASE_SELECTORS.generatedResults);
   let generated =
     generatedTag &&

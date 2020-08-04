@@ -75,46 +75,6 @@ class TrailtourResultsMongo extends UuObjectDao {
     return await super.findOne({ awid, id });
   }
 
-  // TODO odstranit po odstranění cmd getAthleteResults
-  async listAthleteResults_(awid, trailtourId, athleteStravaId) {
-    let elemMatch = key => ({
-      $slice: [
-        {
-          $filter: {
-            input: "$" + key,
-            as: key,
-            cond: { $eq: ["$$" + key + ".stravaId", athleteStravaId] }
-          }
-        },
-        1
-      ]
-    });
-    let resultsTotal = key => ({
-      $cond: {
-        if: { $isArray: "$" + key },
-        then: { $size: "$" + key },
-        else: 0
-      }
-    });
-
-    return await super.aggregate([
-      { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
-      {
-        $project: {
-          menResultsTotal: resultsTotal("menResults"),
-          womenResultsTotal: resultsTotal("womenResults"),
-          clubResultsTotal: resultsTotal("clubResults"),
-          menResults: elemMatch("menResults"),
-          womenResults: elemMatch("womenResults"),
-          clubResults: elemMatch("clubResults"),
-          ...PROJECTION_ATTRS
-        }
-      },
-      ...SEGMENT_LOOKUP_STAGES,
-      ...CONVERT_ID_STAGES
-    ]);
-  }
-
   async listAthleteResults(awid, trailtourId, stravaIdList) {
     let elemMatch = key => ({
       $filter: {

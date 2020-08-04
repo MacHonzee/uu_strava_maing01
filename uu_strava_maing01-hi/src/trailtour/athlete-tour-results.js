@@ -45,19 +45,29 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
+    let ttData = this.props.data.trailtour;
+    let newTtData = {
+      year: ttData.year,
+      totalResults: {
+        menResults: ttData.totalResults.menResults[0],
+        menResultsTotal: ttData.totalResults.menResultsTotal,
+        womenResults: ttData.totalResults.womenResults[0],
+        womenResultsTotal: ttData.totalResults.womenResultsTotal
+      }
+    }
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <AthleteTourCard data={this.props.data.trailtour} athleteResults={this.props.data.athleteResults} />
+        <AthleteTourCard data={newTtData} athleteResults={this.props.data.athleteResults} />
         <TrailtourMap
           style={{ marginTop: "8px" }}
-          mapConfig={this.props.data.trailtour.mapConfig}
+          mapConfig={ttData.mapConfig}
           segments={this.props.data.athleteResults}
           showOwnResults
         />
         <AthleteTourResultList
           data={this.props.data.athleteResults}
           sex={this.props.sex}
-          trailtour={this.props.data.trailtour}
+          trailtour={ttData}
         />
       </UU5.Bricks.Div>
     );
