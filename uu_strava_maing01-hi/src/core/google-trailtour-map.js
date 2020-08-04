@@ -100,7 +100,7 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
 
   _handleMarkerClick(_, marker, event) {
     let foundSegment = this.props.segments.find(segment => this._getMarkerTitle(segment) === marker.title);
-    let target = Object.values(event).find(ev => ev instanceof MouseEvent).target;
+    let target = Object.values(event).find(ev => ev instanceof MouseEvent || ev instanceof TouchEvent).target;
     this.props.openPopover(foundSegment, target);
   },
 
