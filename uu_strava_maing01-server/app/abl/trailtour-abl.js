@@ -364,9 +364,9 @@ class TrailtourAbl {
       result.runnersTotal = result.runnersMen + result.runnersWomen;
       result.pointsMen = Object.values(stats.runners.men).reduce((sum, points) => sum + points, 0.0);
       result.pointsWomen = Object.values(stats.runners.women).reduce((sum, points) => sum + points, 0.0);
-      result.avgPoints = result.resultsMen > 0 ? result.pointsMen / result.resultsMen : 0;
-      result.avgPointsMen = result.resultsWomen > 0 ? result.pointsWomen / result.resultsWomen : 0;
-      result.avgPointsWomen = result.resultsTotal > 0 ? result.points / result.resultsTotal : 0;
+      result.avgPointsMen = result.resultsMen > 0 ? result.pointsMen / result.resultsMen : 0;
+      result.avgPointsWomen = result.resultsWomen > 0 ? result.pointsWomen / result.resultsWomen : 0;
+      result.avgPoints = result.resultsTotal > 0 ? result.points / result.resultsTotal : 0;
     });
 
     return await this.trailtourDao.updateByYear(trailtourObj);
