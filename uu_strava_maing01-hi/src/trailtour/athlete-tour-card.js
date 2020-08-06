@@ -5,6 +5,7 @@ import "uu5g04-block-layout";
 import Config from "./config/config.js";
 import AthleteLink from "../bricks/athlete-link";
 import MapMarkers from "./config/map-markers";
+import ClubLink from "../bricks/club-link";
 //@@viewOff:imports
 
 const STRAVA_LINK_STYLE = {
@@ -196,7 +197,11 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
   },
 
   _getClub(results) {
-    return <UU5.BlockLayout.Text weight={"primary"}>{results.club}</UU5.BlockLayout.Text>;
+    return (
+      <UU5.BlockLayout.Text weight={"primary"}>
+        {results.club && <ClubLink year={this.props.year} club={results.club} />}
+      </UU5.BlockLayout.Text>
+    );
   },
 
   _getLargeContent(results, sex, total, finishedSegments) {

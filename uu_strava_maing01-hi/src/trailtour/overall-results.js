@@ -6,7 +6,9 @@ import AthleteLink from "../bricks/athlete-link";
 import SexFilterBar from "./sex-filter-bar";
 import TrailtourTools from "./tools";
 import NameFilter from "./name-filter";
+import ClubLink from "../bricks/club-link";
 import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
+
 //@@viewOff:imports
 
 const Lsi = {
@@ -97,6 +99,12 @@ export const OverallResults = UU5.Common.VisualComponent.create({
     );
   },
 
+  _getClubLink({ club }) {
+    if (club) {
+      return <ClubLink year={this.props.year} club={club} />;
+    }
+  },
+
   _getSmallTile({ data, visibleColumns }) {
     let { order } = data;
 
@@ -179,7 +187,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
               sorterKey: "club"
             }
           ],
-          cellComponent: ({ club }) => club,
+          cellComponent: this._getClubLink,
           width: "m"
         },
         {

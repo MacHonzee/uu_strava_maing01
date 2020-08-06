@@ -8,6 +8,7 @@ import SegmentPace from "../bricks/segment-pace";
 import AthleteLink from "../bricks/athlete-link";
 import TrailtourTools from "./tools";
 import NameFilter from "./name-filter";
+import ClubLink from "../bricks/club-link";
 import TourDetailLsi from "../lsi/tour-detail-lsi";
 
 import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
@@ -85,6 +86,13 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
         />
       </AthleteLink>
     );
+  },
+
+  _getClubLink({ club }) {
+    if (club) {
+      let year = this.props.data.trailtour.year;
+      return <ClubLink year={year} club={club} />;
+    }
   },
 
   _getSmallTile({ data, visibleColumns }) {
@@ -169,7 +177,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
               sorterKey: "club"
             }
           ],
-          cellComponent: ({ club }) => club,
+          cellComponent: this._getClubLink,
           width: "m"
         },
         {

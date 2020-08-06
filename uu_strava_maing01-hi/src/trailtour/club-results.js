@@ -4,6 +4,7 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import TrailtourTools from "./tools";
 import NameFilter from "./name-filter";
+import ClubLink from "../bricks/club-link";
 import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
 //@@viewOff:imports
 
@@ -107,7 +108,7 @@ export const ClubResults = UU5.Common.VisualComponent.create({
   },
 
   _getClubLink({ name }) {
-    return <UU5.Bricks.Link href={`clubDetail?year=${this.props.year}&name=${name}`}>{name}</UU5.Bricks.Link>;
+    return <ClubLink year={this.props.year} club={name} />;
   },
 
   _getPoints({ points, pointsMen, pointsWomen }) {
@@ -164,8 +165,116 @@ export const ClubResults = UU5.Common.VisualComponent.create({
     );
   },
 
-  _getSmallTile() {
-    return "small tile";
+  _getSmallTile({ data, visibleColumns }) {
+    let { order } = data;
+
+    let rows = [];
+    rows.push(
+      <div style={{ position: "relative" }}>
+        {order}. {this._getClubLink(data)}
+      </div>
+    );
+
+    const skippedColumns = ["order", "name"];
+    visibleColumns.forEach(column => {
+      if (skippedColumns.includes(column.id)) return;
+      let cellComponent = column.cellComponent(data);
+      if (!cellComponent) return;
+
+      if (column.id === "points") {
+        rows.push(
+          <div>
+            <div>
+              <strong>
+                <UU5.Bricks.Lsi lsi={column.headers[0].label} />
+                :&nbsp;
+              </strong>
+              <UU5.Bricks.Number value={data.points} maxDecimalLength={0} />
+            </div>
+            <div>
+              <UU5.Bricks.Lsi lsi={column.headers[1].label} />
+              :&nbsp;
+              <UU5.Bricks.Number value={data.pointsMen} maxDecimalLength={0} /> /{" "}
+              <UU5.Bricks.Number value={data.pointsWomen} maxDecimalLength={0} />
+            </div>
+          </div>
+        );
+        return;
+      }
+
+      if (column.id === "runnersTotal") {
+        rows.push(
+          <div>
+            <div>
+              <strong>
+                <UU5.Bricks.Lsi lsi={column.headers[0].label} />
+                :&nbsp;
+              </strong>
+              <UU5.Bricks.Number value={data.runnersTotal} />
+            </div>
+            <div>
+              <UU5.Bricks.Lsi lsi={column.headers[1].label} />
+              :&nbsp;
+              <UU5.Bricks.Number value={data.runnersMen} /> / <UU5.Bricks.Number value={data.runnersWomen} />
+            </div>
+          </div>
+        );
+        return;
+      }
+
+      if (column.id === "resultsTotal") {
+        rows.push(
+          <div>
+            <div>
+              <strong>
+                <UU5.Bricks.Lsi lsi={column.headers[0].label} />
+                :&nbsp;
+              </strong>
+              <UU5.Bricks.Number value={data.resultsTotal} />
+            </div>
+            <div>
+              <UU5.Bricks.Lsi lsi={column.headers[1].label} />
+              :&nbsp;
+              <UU5.Bricks.Number value={data.resultsMen} /> / <UU5.Bricks.Number value={data.resultsWomen} />
+            </div>
+          </div>
+        );
+        return;
+      }
+
+      if (column.id === "avgPoints") {
+        rows.push(
+          <div>
+            <div>
+              <strong>
+                <UU5.Bricks.Lsi lsi={column.headers[0].label} />
+                :&nbsp;
+              </strong>
+              <UU5.Bricks.Number value={data.avgPoints} maxDecimalLength={2} />
+            </div>
+            <div>
+              <UU5.Bricks.Lsi lsi={column.headers[1].label} />
+              :&nbsp;
+              <UU5.Bricks.Number value={data.avgPointsMen} maxDecimalLength={2} /> /{" "}
+              <UU5.Bricks.Number value={data.avgPointsWomen} maxDecimalLength={2} />
+            </div>
+          </div>
+        );
+        return;
+      }
+
+      rows.push(
+        <div>
+          <strong>
+            <UU5.Bricks.Lsi lsi={column.headers[0].label} />
+            :&nbsp;
+          </strong>
+          {cellComponent}
+        </div>
+      );
+    });
+
+    return <div>{rows}</div>;
   },
   //@@viewOff:private
 
