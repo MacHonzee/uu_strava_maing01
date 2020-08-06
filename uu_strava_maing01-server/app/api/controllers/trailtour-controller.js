@@ -58,6 +58,12 @@ class TrailtourController {
       return TrailtourAbl.listAthleteResults(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
     });
   }
+
+  listClubResults(ucEnv) {
+    return TrailtourCacheHandler.withTrailtourCache(ucEnv, () => {
+      return TrailtourAbl.listClubResults(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    });
+  }
 }
 
 module.exports = new TrailtourController();

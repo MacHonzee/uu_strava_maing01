@@ -113,6 +113,11 @@
         "realization": "api/controllers/TrailtourController.listAthleteResults",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "trailtour/listClubResults": {
+        "realization": "api/controllers/TrailtourController.listClubResults",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

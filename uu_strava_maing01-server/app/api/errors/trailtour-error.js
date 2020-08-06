@@ -141,6 +141,18 @@ const ListAthleteResults = {
   }
 };
 
+const ListClubResults = {
+  UC_CODE: `${TRAILTOUR_ERROR_PREFIX}listClubResults/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${ListClubResults.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  }
+};
+
 module.exports = {
   GetSegments,
   GetTourDetail,
@@ -151,5 +163,6 @@ module.exports = {
   DownloadGpx,
   UpdateAll,
   ListAthletes,
-  ListAthleteResults
+  ListAthleteResults,
+  ListClubResults
 };

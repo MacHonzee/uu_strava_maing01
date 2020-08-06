@@ -36,6 +36,9 @@ const WARNINGS = {
   },
   listAthleteResultsUnsupportedKeys: {
     code: `${Errors.ListAthleteResults.UC_CODE}unsupportedKeys`
+  },
+  listClubResultsUnsupportedKeys: {
+    code: `${Errors.ListClubResults.UC_CODE}unsupportedKeys`
   }
 };
 
@@ -251,6 +254,32 @@ class TrailtourAbl {
     return {
       trailtour,
       athleteResults,
+      uuAppErrorMap
+    };
+  }
+
+  async listClubResults(awid, dtoIn) {
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(WARNINGS, Errors, "trailtour", "listClubResults", dtoIn);
+
+    // HDS 2
+    let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
+
+    // HDS 3
+    ["womenResults", "menResults", "clubResults"].forEach(results => {
+      trailtour.totalResults[results + "Total"] = trailtour.totalResults[results].length;
+      trailtour.totalResults[results] = trailtour.totalResults[results].filter(result =>
+        dtoIn.clubNameList.includes(result.club || result.name)
+      );
+    });
+
+    // HDS 4
+    let clubResults = await this.trailtourResultsDao.listClubResults(awid, trailtour.id, dtoIn.clubNameList);
+
+    // HDS 5
+    return {
+      trailtour,
+      clubResults,
       uuAppErrorMap
     };
   }

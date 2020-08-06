@@ -199,7 +199,7 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
   _getClub(results) {
     return (
       <UU5.BlockLayout.Text weight={"primary"}>
-        {results.club && <ClubLink year={this.props.year} club={results.club} />}
+        {results.club && <ClubLink year={this.props.data.year} club={results.club} />}
       </UU5.BlockLayout.Text>
     );
   },

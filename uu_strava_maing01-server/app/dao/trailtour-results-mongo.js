@@ -44,6 +44,16 @@ const CONVERT_ID_STAGES = [
   }
 ];
 
+function getResultTotalStage(key) {
+  return {
+    $cond: {
+      if: { $isArray: "$" + key },
+      then: { $size: "$" + key },
+      else: 0
+    }
+  };
+}
+
 class TrailtourResultsMongo extends UuObjectDao {
   async createSchema() {
     await super.createIndex({ awid: 1, segmentId: 1, trailtourId: 1 }, { unique: true });
@@ -86,11 +96,32 @@ class TrailtourResultsMongo extends UuObjectDao {
       }
     });
 
-    let resultsTotal = key => ({
-      $cond: {
-        if: { $isArray: "$" + key },
-        then: { $size: "$" + key },
-        else: 0
+    return await super.aggregate([
+      { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
+      {
+        $project: {
+          menResultsTotal: getResultTotalStage("menResults"),
+          womenResultsTotal: getResultTotalStage("womenResults"),
+          clubResultsTotal: getResultTotalStage("clubResults"),
+          menResults: elemMatch("menResults"),
+          womenResults: elemMatch("womenResults"),
+          clubResults: elemMatch("clubResults"),
+          ...PROJECTION_ATTRS
+        }
+      },
+      ...SEGMENT_LOOKUP_STAGES,
+      ...CONVERT_ID_STAGES
+    ]);
+  }
+
+  async listClubResults(awid, trailtourId, clubNameList) {
+    let elemMatch = key => ({
+      $filter: {
+        input: "$" + key,
+        as: key,
+        cond: {
+          $in: ["$$" + key + ".name", clubNameList]
+        }
       }
     });
 
@@ -98,11 +129,7 @@ class TrailtourResultsMongo extends UuObjectDao {
       { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
       {
         $project: {
-          menResultsTotal: resultsTotal("menResults"),
-          womenResultsTotal: resultsTotal("womenResults"),
-          clubResultsTotal: resultsTotal("clubResults"),
-          menResults: elemMatch("menResults"),
-          womenResults: elemMatch("womenResults"),
+          clubResultsTotal: getResultTotalStage("clubResults"),
           clubResults: elemMatch("clubResults"),
           ...PROJECTION_ATTRS
         }

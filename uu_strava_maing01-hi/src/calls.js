@@ -78,11 +78,6 @@ let Calls = {
     return Calls.call("post", commandUri, dtoInData);
   },
 
-  downloadGpx(dtoInData) {
-    let commandUri = Calls.getCommandUri("trailtour/downloadGpx");
-    return Calls.call("get", commandUri, dtoInData);
-  },
-
   listAthletes(dtoInData) {
     let commandUri = Calls.getCommandUri("trailtour/listAthletes");
     return Calls.call("get", commandUri, dtoInData);
@@ -90,6 +85,11 @@ let Calls = {
 
   listAthleteResults(dtoInData) {
     let commandUri = Calls.getCommandUri("trailtour/listAthleteResults");
+    return Calls.call("get", commandUri, dtoInData);
+  },
+
+  listClubResults(dtoInData) {
+    let commandUri = Calls.getCommandUri("trailtour/listClubResults");
     return Calls.call("get", commandUri, dtoInData);
   },
   /*

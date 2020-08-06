@@ -12,7 +12,11 @@ const DOCUMENT_TITLES = {
     let results = trailtour.totalResults.menResults[0] || trailtour.totalResults.womenResults[0];
     return `Trailtour výsledky - ${results.name}`;
   },
-  athleteComparison: () => `Porovnání výsledků`
+  athleteComparison: () => `Porovnání výsledků`,
+  clubDetail: ({ trailtour }) => {
+    let results = trailtour.totalResults.clubResults[0];
+    return `Výsledky klubu - ${results.name}`;
+  }
 };
 
 const BrickTools = {

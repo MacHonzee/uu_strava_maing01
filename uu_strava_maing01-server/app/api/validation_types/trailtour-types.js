@@ -52,3 +52,8 @@ const trailtourListAthleteResultsDtoInType = shape({
   year: oneOf(ALL_TRAILTOURS).isRequired(),
   stravaIdList: array(number(), 1, 2).isRequired()
 });
+
+const trailtourListClubResultsDtoInType = shape({
+  year: oneOf(ALL_TRAILTOURS).isRequired(),
+  clubNameList: array(string(), 1, 2).isRequired()
+});

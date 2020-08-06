@@ -42,8 +42,7 @@ export const OverallResults = UU5.Common.VisualComponent.create({
   //@@viewOn:propTypes
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
-    year: UU5.PropTypes.string.isRequired,
-    handleReload: UU5.PropTypes.func
+    year: UU5.PropTypes.string.isRequired
   },
   //@@viewOff:propTypes
 
