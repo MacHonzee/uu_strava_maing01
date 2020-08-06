@@ -7,7 +7,6 @@ import withSetMenuItem from "../bricks/with-set-menu-item";
 import BrickTools from "../bricks/tools";
 import ResultsTimestamp from "../trailtour/results-timestamp";
 import LoadFeedback from "../bricks/load-feedback";
-import OverallResults from "../trailtour/overall-results";
 import ClubResults from "../trailtour/club-results";
 //@@viewOff:imports
 

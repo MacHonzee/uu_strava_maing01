@@ -23,6 +23,7 @@ import Home from "../routes/home";
 import TourSegments from "../routes/tour-segments";
 import AthleteComparison from "../routes/athlete-comparison";
 import TrailtourClubs from "../routes/trailtour-clubs";
+import ClubDetail from "../routes/club-detail";
 //@@viewOff:imports
 
 const SpaAuthenticated = UU5.Common.VisualComponent.create({
@@ -92,6 +93,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
       athleteTourDetail: { component: <AthleteTourDetail /> },
       athleteComparison: { component: <AthleteComparison /> },
       trailtourClubs: { component: <TrailtourClubs /> },
+      clubDetail: { component: <ClubDetail /> },
       about: { component: <About /> }
     };
 
