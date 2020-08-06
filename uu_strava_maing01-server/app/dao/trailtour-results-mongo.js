@@ -54,6 +54,18 @@ function getResultTotalStage(key) {
   };
 }
 
+function getElemMatchStage(rootKey, matchKey, matchList) {
+  return {
+    $filter: {
+      input: "$" + rootKey,
+      as: rootKey,
+      cond: {
+        $in: ["$$" + rootKey + "." + matchKey, matchList]
+      }
+    }
+  };
+}
+
 class TrailtourResultsMongo extends UuObjectDao {
   async createSchema() {
     await super.createIndex({ awid: 1, segmentId: 1, trailtourId: 1 }, { unique: true });
@@ -86,16 +98,6 @@ class TrailtourResultsMongo extends UuObjectDao {
   }
 
   async listAthleteResults(awid, trailtourId, stravaIdList) {
-    let elemMatch = key => ({
-      $filter: {
-        input: "$" + key,
-        as: key,
-        cond: {
-          $in: ["$$" + key + ".stravaId", stravaIdList]
-        }
-      }
-    });
-
     return await super.aggregate([
       { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
       {
@@ -103,9 +105,9 @@ class TrailtourResultsMongo extends UuObjectDao {
           menResultsTotal: getResultTotalStage("menResults"),
           womenResultsTotal: getResultTotalStage("womenResults"),
           clubResultsTotal: getResultTotalStage("clubResults"),
-          menResults: elemMatch("menResults"),
-          womenResults: elemMatch("womenResults"),
-          clubResults: elemMatch("clubResults"),
+          menResults: getElemMatchStage("menResults", "stravaId", stravaIdList),
+          womenResults: getElemMatchStage("womenResults", "stravaId", stravaIdList),
+          clubResults: getElemMatchStage("clubResults", "stravaId", stravaIdList),
           ...PROJECTION_ATTRS
         }
       },
@@ -115,13 +117,21 @@ class TrailtourResultsMongo extends UuObjectDao {
   }
 
   async listClubResults(awid, trailtourId, clubNameList) {
-    let elemMatch = key => ({
-      $filter: {
+    const getPointsSum = key => ({
+      $reduce: {
         input: "$" + key,
-        as: key,
-        cond: {
-          $in: ["$$" + key + ".name", clubNameList]
-        }
+        initialValue: 0.0,
+        in: { $add: ["$$value", "$$this.points"] }
+      }
+    });
+
+    const getResultLength = key => ({ $size: "$" + key });
+
+    const getAvgPoints = key => ({
+      $cond: {
+        if: { $eq: ["$" + key + "Count", 0] },
+        then: 0,
+        else: { $divide: ["$" + key + "Points", "$" + key + "Count"] }
       }
     });
 
@@ -130,8 +140,34 @@ class TrailtourResultsMongo extends UuObjectDao {
       {
         $project: {
           clubResultsTotal: getResultTotalStage("clubResults"),
-          clubResults: elemMatch("clubResults"),
+          menResults: getElemMatchStage("menResults", "club", clubNameList),
+          womenResults: getElemMatchStage("womenResults", "club", clubNameList),
+          clubResults: getElemMatchStage("clubResults", "name", clubNameList),
           ...PROJECTION_ATTRS
+        }
+      },
+      {
+        $addFields: {
+          menResultsPoints: getPointsSum("menResults"),
+          womenResultsPoints: getPointsSum("womenResults"),
+          clubResultsPoints: getPointsSum("clubResults"),
+          menResultsCount: getResultLength("menResults"),
+          womenResultsCount: getResultLength("womenResults"),
+          clubResultsCount: getResultLength("clubResults")
+        }
+      },
+      {
+        $addFields: {
+          menResultsAvgPoints: getAvgPoints("menResults"),
+          womenResultsAvgPoints: getAvgPoints("womenResults"),
+          clubResultsAvgPoints: getAvgPoints("clubResults")
+        }
+      },
+      {
+        $project: {
+          menResults: 0,
+          womenResults: 0,
+          clubResults: 0
         }
       },
       ...SEGMENT_LOOKUP_STAGES,

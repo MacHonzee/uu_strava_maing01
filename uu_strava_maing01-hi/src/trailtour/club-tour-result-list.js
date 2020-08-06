@@ -38,6 +38,15 @@ export const ClubTourResultList = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
+    // pořadí
+    // strava + trailtour
+    // název + autor
+    // délka
+    // převýšení
+    // body celkem, muži / ženy
+    // běžci celkem, muži / ženy
+    // průměr bodů, muži / ženy
+
     return <UU5.Bricks.Div {...this.getMainPropsToPass()}>Component {this.getTagName()}</UU5.Bricks.Div>;
   }
   //@@viewOff:render
