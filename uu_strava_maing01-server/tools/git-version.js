@@ -7,13 +7,15 @@ const fs = require("fs");
 const APP_JSON_PATH = "../uuapp.json";
 
 function getCurrentBranch() {
-  return execSync("git branch --show-current", { cwd: ".." }).toString().trim();
+  return execSync("git branch --show-current", { cwd: ".." })
+    .toString()
+    .trim();
 }
 
 async function main() {
   // check if you are on sprint branch - else raise error
   if (getCurrentBranch() !== "sprint") {
-    throw "You have to be on a sprint branch to create new version."
+    throw "You have to be on a sprint branch to create new version.";
   }
 
   // read app.json
@@ -41,18 +43,21 @@ async function main() {
   await new Package(prjCfg).process();
 
   // git add, git commit, git push, git checkout master, git merge sprint, git tag version/newVersion
-  execSync(`git commit -a -m "Version build ${newVersion}" &&
+  // FIXME does not work yet
+  execSync(
+    `git commit -a -m "Version build ${newVersion}" &&
     git checkout master &&
     git rebase sprint &&
     git tag -a version/${newVersion} -m "Version build ${newVersion}" &&
     git checkout sprint &&
     git rebase master &&
     git push origin --tags`,
-    { cwd: "..", stdio: "inherit" });
+    { cwd: "..", stdio: "inherit" }
+  );
 
-  console.log(`Version ${newVersion} succesfully prepared.`)
+  console.log(`Version ${newVersion} succesfully prepared.`);
 }
 
 main().catch(e => {
-  console.error(e)
+  console.error(e);
 });
