@@ -3,16 +3,9 @@ import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
 import SexFilterBar from "./sex-filter-bar";
-import BrickTools from "../bricks/tools";
-import SegmentPace from "../bricks/segment-pace";
-import AthleteLink from "../bricks/athlete-link";
 import TrailtourTools from "./tools";
 import NameFilter from "./name-filter";
-import ClubLink from "../bricks/club-link";
-import TourDetailLsi from "../lsi/tour-detail-lsi";
-
-import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
-
+import FlexColumns from "./config/flex-columns";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -70,149 +63,33 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
     };
   },
 
-  _getName({ name, stravaId }) {
-    let year = this.props.data.trailtour.year;
-    return <UU5.Bricks.Link href={`athleteTourDetail?year=${year}&stravaId=${stravaId}`}>{name}</UU5.Bricks.Link>;
-  },
-
-  _getStravaLink({ stravaId }) {
-    return (
-      <AthleteLink stravaId={stravaId}>
-        <UU5.Bricks.Image
-          src={"./assets/strava_symbol_orange.png"}
-          responsive={false}
-          alt={"strava_symbol_orange"}
-          width={"32px"}
-        />
-      </AthleteLink>
-    );
-  },
-
-  _getClubLink({ club }) {
-    if (club) {
-      let year = this.props.data.trailtour.year;
-      return <ClubLink year={year} club={club} />;
-    }
-  },
-
   _getSmallTile({ data, visibleColumns }) {
-    let { order } = data;
+    const skippedColumns = ["order", "name"];
+    let visibleRows = FlexColumns.processVisibleColumns(visibleColumns, skippedColumns, data);
 
-    let rows = [];
-    rows.push(
-      <div style={{ position: "relative" }}>
-        #{order} {this._getName(data)}
+    return (
+      <div>
+        <div>
+          #{data.order} {FlexColumns.athleteLink({}, this.props.data.trailtour.year).cellComponent(data)}
+        </div>
+        {visibleRows}
       </div>
     );
-
-    const skippedColumns = ["order", "name"];
-    visibleColumns.forEach(column => {
-      if (skippedColumns.includes(column.id)) return;
-      let cellComponent = column.cellComponent(data);
-      if (!cellComponent) return;
-
-      if (column.id === "strava") {
-        rows.push(<div style={{ position: "absolute", top: "4px", right: "4px" }}>{cellComponent}</div>);
-        return;
-      }
-
-      rows.push(
-        <div>
-          <strong>
-            <UU5.Bricks.Lsi lsi={column.headers[0].label} />
-            :&nbsp;
-          </strong>
-          {cellComponent}
-        </div>
-      );
-    });
-
-    return <div>{rows}</div>;
   },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
+    let year = this.props.data.trailtour.year;
     const ucSettings = {
       columns: [
-        {
-          id: "order",
-          headers: [
-            {
-              label: TourDetailLsi.order,
-              sorterKey: "order"
-            }
-          ],
-          cellComponent: ({ order }) => order,
-          width: "xxs",
-          visibility: "always"
-        },
-        {
-          id: "strava",
-          headers: [
-            {
-              label: TourDetailLsi.strava
-            }
-          ],
-          cellComponent: this._getStravaLink,
-          width: "xxs"
-        },
-        {
-          id: "name",
-          headers: [
-            {
-              label: AthleteTourDetailLsi.name,
-              sorterKey: "name"
-            }
-          ],
-          cellComponent: this._getName,
-          width: "m",
-          visibility: "always"
-        },
-        {
-          id: "club",
-          headers: [
-            {
-              label: AthleteTourDetailLsi.club,
-              sorterKey: "club"
-            }
-          ],
-          cellComponent: this._getClubLink,
-          width: "m"
-        },
-        {
-          id: "points",
-          headers: [
-            {
-              label: TourDetailLsi.points,
-              sorterKey: "points"
-            }
-          ],
-          cellComponent: ({ points }) => <UU5.Bricks.Number value={points} />,
-          width: "xs"
-        },
-        {
-          id: "time",
-          headers: [
-            {
-              label: TourDetailLsi.time,
-              sorterKey: "time"
-            }
-          ],
-          cellComponent: ({ time }) => BrickTools.formatDuration(time),
-          width: "xs"
-        },
-        {
-          id: "pace",
-          headers: [
-            {
-              label: TourDetailLsi.pace,
-              sorterKey: "pace"
-            }
-          ],
-          cellComponent: ({ pace }) => <SegmentPace pace={pace} />,
-          width: "xs"
-        }
+        FlexColumns.order(),
+        FlexColumns.stravaLink(),
+        FlexColumns.athleteLink({}, year),
+        FlexColumns.clubLink({}, year),
+        FlexColumns.points(),
+        FlexColumns.time(),
+        FlexColumns.pace()
       ]
     };
     const defaultView = {

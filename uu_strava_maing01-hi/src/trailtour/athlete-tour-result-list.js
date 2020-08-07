@@ -10,6 +10,7 @@ import SegmentPace from "../bricks/segment-pace";
 import TrailtourTools from "./tools";
 import NameFilterBar from "./name-filter-bar";
 import CompareResultsButton from "./compare-results-button";
+import FlexColumns from "./config/flex-columns";
 import TourDetailLsi from "../lsi/tour-detail-lsi";
 
 //@@viewOff:imports
@@ -69,177 +70,18 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
     };
   },
 
-  _getNameCell({ name, author, id }) {
-    return (
-      <UU5.Common.Fragment>
-        <div>
-          <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
-        </div>
-        <div>{author}</div>
-      </UU5.Common.Fragment>
-    );
-  },
-
-  _getLinksCell({ stravaId, link }) {
-    return (
-      <UU5.Common.Fragment>
-        <SegmentLink stravaId={stravaId} style={{ marginRight: "4px" }}>
-          <UU5.Bricks.Image
-            src={"./assets/strava_symbol_orange.png"}
-            responsive={false}
-            alt={"strava_symbol_orange"}
-            width={"32px"}
-          />
-        </SegmentLink>
-        <UU5.Bricks.Link href={link} target={"_blank"}>
-          <UU5.Bricks.Image src={"./assets/inov8-logo.png"} responsive={false} alt={"trailtour-logo"} width={"24px"} />
-        </UU5.Bricks.Link>
-      </UU5.Common.Fragment>
-    );
-  },
-
-  _getCorrectResults(data) {
-    if (data.womenResults[0]) {
-      return { results: data.womenResults[0] || {}, sex: "female", total: data.womenResultsTotal };
-    } else {
-      return { results: data.menResults[0] || {}, sex: "male", total: data.menResultsTotal };
-    }
-  },
-
-  _getOwnOrder(data) {
-    let { results, total } = this._getCorrectResults(data);
-    if (results.order) {
-      return (
-        <UU5.Common.Fragment>
-          <UU5.Bricks.Strong>{results.order}</UU5.Bricks.Strong>&nbsp;/&nbsp;{total}
-        </UU5.Common.Fragment>
-      );
-    }
-  },
-
-  _getPoints(data) {
-    let { results } = this._getCorrectResults(data);
-    return results.points && <UU5.Bricks.Number value={results.points} />;
-  },
-
-  _getTime(data) {
-    let { results } = this._getCorrectResults(data);
-    if (results.time) {
-      return (
-        <UU5.Common.Fragment>
-          <div>{BrickTools.formatDuration(results.time)}</div>
-          <div>
-            <SegmentPace pace={results.pace} />
-          </div>
-        </UU5.Common.Fragment>
-      );
-    }
-  },
-
-  _getDistance({ segment: { distance } }) {
-    return <SegmentDistance distance={distance} />;
-  },
-
-  _getElevation({ segment: { total_elevation_gain } }) {
-    return <SegmentElevation elevation={total_elevation_gain} />;
-  },
-
-  _getState({ segment }) {
-    return (
-      <UU5.Common.Fragment>
-        <div>{segment.state}</div>
-        <div>{segment.city}</div>
-      </UU5.Common.Fragment>
-    );
-  },
-
   _getSmallTile({ data, visibleColumns }) {
-    let { id, name, author, order, segment } = data;
-    let { results } = this._getCorrectResults(data);
-
-    let rows = [];
-    rows.push(
-      <div style={{ position: "relative" }}>
-        <div style={{ fontWeight: results.time ? "bold" : "normal" }}>
-          #{order} <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
-        </div>
-        <div>
-          <strong>
-            <UU5.Bricks.Lsi lsi={TourDetailLsi.author} />
-            :&nbsp;
-          </strong>
-          {author}
-        </div>
-      </div>
-    );
+    let { results } = FlexColumns.getCorrectResults(data);
 
     const skippedColumns = ["order", "name", "author"];
-    visibleColumns.forEach(column => {
-      if (skippedColumns.includes(column.id)) return;
-      let cellComponent = column.cellComponent(data);
-      if (!cellComponent) return;
+    let visibleRows = FlexColumns.processVisibleColumns(visibleColumns, skippedColumns, data);
 
-      if (column.id === "strava") {
-        rows.push(<div style={{ position: "absolute", top: "4px", right: "4px" }}>{cellComponent}</div>);
-        return;
-      }
-
-      if (column.id === "pace") {
-        rows.push(
-          <UU5.Common.Fragment>
-            <div>
-              <strong>
-                <UU5.Bricks.Lsi lsi={column.headers[0].label} />
-                :&nbsp;
-              </strong>
-              {BrickTools.formatDuration(results.time)}
-            </div>
-            <div>
-              <strong>
-                <UU5.Bricks.Lsi lsi={column.headers[1].label} />
-                :&nbsp;
-              </strong>
-              <SegmentPace pace={results.pace} />
-            </div>
-          </UU5.Common.Fragment>
-        );
-        return;
-      }
-
-      if (column.id === "location") {
-        rows.push(
-          <UU5.Common.Fragment>
-            <div>
-              <strong>
-                <UU5.Bricks.Lsi lsi={column.headers[0].label} />
-                :&nbsp;
-              </strong>
-              {segment.state}
-            </div>
-            <div>
-              <strong>
-                <UU5.Bricks.Lsi lsi={column.headers[1].label} />
-                :&nbsp;
-              </strong>
-              {segment.city}
-            </div>
-          </UU5.Common.Fragment>
-        );
-        return;
-      }
-
-      rows.push(
-        <div>
-          <strong>
-            <UU5.Bricks.Lsi lsi={column.headers[0].label} />
-            :&nbsp;
-          </strong>
-          {cellComponent}
-        </div>
-      );
-    });
-
-    return <div>{rows}</div>;
+    return (
+      <div>
+        {FlexColumns.segmentName().tileComponent(data, results.time)}
+        {visibleRows}
+      </div>
+    );
   },
 
   _getAthleteForComparison() {
@@ -251,125 +93,15 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   render() {
     const ucSettings = {
       columns: [
-        {
-          id: "order",
-          headers: [
-            {
-              label: TourDetailLsi.order,
-              sorterKey: "order"
-            }
-          ],
-          cellComponent: ({ order }) => order,
-          width: "xxs",
-          visibility: "always"
-        },
-        {
-          id: "strava",
-          headers: [
-            {
-              label: TourDetailLsi.strava
-            },
-            {
-              label: TourDetailLsi.trailtour
-            }
-          ],
-          cellComponent: this._getLinksCell,
-          width: "xs"
-        },
-        {
-          id: "name",
-          headers: [
-            {
-              label: TourDetailLsi.name,
-              sorterKey: "name"
-            },
-            {
-              label: TourDetailLsi.author,
-              sorterKey: "author"
-            }
-          ],
-          cellComponent: this._getNameCell,
-          width: "l",
-          visibility: "always"
-        },
-        {
-          id: "ownOrder",
-          headers: [
-            {
-              label: TourDetailLsi.ownOrder,
-              sorterKey: "ownOrder"
-            },
-            {
-              label: TourDetailLsi.runnerCount,
-              sorterKey: "runnerCount"
-            }
-          ],
-          cellComponent: this._getOwnOrder,
-          width: "xs"
-        },
-        {
-          id: "points",
-          headers: [
-            {
-              label: TourDetailLsi.points,
-              sorterKey: "points"
-            }
-          ],
-          cellComponent: this._getPoints,
-          width: "xs"
-        },
-        {
-          id: "pace",
-          headers: [
-            {
-              label: TourDetailLsi.time,
-              sorterKey: "time"
-            },
-            {
-              label: TourDetailLsi.pace,
-              sorterKey: "pace"
-            }
-          ],
-          cellComponent: this._getTime,
-          width: "xs"
-        },
-        {
-          id: "distance",
-          headers: [
-            {
-              label: TourDetailLsi.distance,
-              sorterKey: "distance"
-            }
-          ],
-          cellComponent: this._getDistance,
-          width: "xs"
-        },
-        {
-          id: "elevation",
-          headers: [
-            {
-              label: TourDetailLsi.elevation,
-              sorterKey: "total_elevation_gain"
-            }
-          ],
-          cellComponent: this._getElevation,
-          width: "xs"
-        },
-        {
-          id: "location",
-          headers: [
-            {
-              label: TourDetailLsi.state,
-              sorterKey: "state"
-            },
-            {
-              label: TourDetailLsi.city,
-              sorterKey: "city"
-            }
-          ],
-          cellComponent: this._getState,
-          width: "m"
-        }
+        FlexColumns.order(),
+        FlexColumns.stravaTtLink(),
+        FlexColumns.segmentName(),
+        FlexColumns.ownOrder(),
+        FlexColumns.ownPoints(),
+        FlexColumns.timeAndPace(),
+        FlexColumns.distance(),
+        FlexColumns.elevation(),
+        FlexColumns.location()
       ]
     };
 

@@ -2,14 +2,9 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
-import UpdateTrailtourButton from "./update-trailtour-button";
-import SegmentDistance from "../bricks/segment-distance";
-import SegmentElevation from "../bricks/segment-elevation";
-import SegmentLink from "../bricks/segment-link";
 import TrailtourTools from "./tools";
 import NameFilterBar from "./name-filter-bar";
-import TourDetailLsi from "../lsi/tour-detail-lsi";
-
+import FlexColumns from "./config/flex-columns";
 //@@viewOff:imports
 
 const PAGE_SIZE = 1000;
@@ -66,109 +61,16 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
     };
   },
 
-  // FIXME lots of copy paste for columns between the routes, prepare some column service or helper
-  _getNameCell({ name, author, id }) {
-    return (
-      <UU5.Common.Fragment>
-        <UU5.Bricks.Div>
-          <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
-        </UU5.Bricks.Div>
-        <UU5.Bricks.Div>{author}</UU5.Bricks.Div>
-      </UU5.Common.Fragment>
-    );
-  },
-
-  _getLinksCell({ stravaId, link }) {
-    return (
-      <UU5.Common.Fragment>
-        <SegmentLink stravaId={stravaId} style={{ marginRight: "4px" }}>
-          <UU5.Bricks.Image
-            src={"./assets/strava_symbol_orange.png"}
-            responsive={false}
-            alt={"strava_symbol_orange"}
-            width={"32px"}
-          />
-        </SegmentLink>
-        <UU5.Bricks.Link href={link} target={"_blank"}>
-          <UU5.Bricks.Image src={"./assets/inov8-logo.png"} responsive={false} alt={"trailtour-logo"} width={"24px"} />
-        </UU5.Bricks.Link>
-      </UU5.Common.Fragment>
-    );
-  },
-
-  _getDistance({ segment: { distance } }) {
-    return <SegmentDistance distance={distance} />;
-  },
-
-  _getElevation({ segment: { total_elevation_gain } }) {
-    return <SegmentElevation elevation={total_elevation_gain} />;
-  },
-
-  _getState({ segment }) {
-    return (
-      <UU5.Common.Fragment>
-        <UU5.Bricks.Div>{segment.state}</UU5.Bricks.Div>
-        <UU5.Bricks.Div>{segment.city}</UU5.Bricks.Div>
-      </UU5.Common.Fragment>
-    );
-  },
-
   _getSmallTile({ data, visibleColumns }) {
-    let { id, name, order, segment } = data;
+    const skippedColumns = ["order", "name"];
+    let visibleRows = FlexColumns.processVisibleColumns(visibleColumns, skippedColumns, data);
 
-    let rows = [];
-    rows.push(
-      <div style={{ position: "relative" }}>
-        {order}. <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
+    return (
+      <div>
+        {FlexColumns.segmentName().tileComponent(data)}
+        {visibleRows}
       </div>
     );
-
-    const skippedColumns = ["order", "name"];
-    visibleColumns.forEach(column => {
-      if (skippedColumns.includes(column.id)) return;
-      let cellComponent = column.cellComponent(data);
-      if (!cellComponent) return;
-
-      if (column.id === "strava") {
-        rows.push(<div style={{ position: "absolute", top: "4px", right: "4px" }}>{cellComponent}</div>);
-        return;
-      }
-
-      if (column.id === "location") {
-        rows.push(
-          <div>
-            <strong>
-              <UU5.Bricks.Lsi lsi={column.headers[0].label} />
-              :&nbsp;
-            </strong>
-            {segment.state}
-          </div>
-        );
-
-        rows.push(
-          <div>
-            <strong>
-              <UU5.Bricks.Lsi lsi={column.headers[1].label} />
-              :&nbsp;
-            </strong>
-            {segment.city}
-          </div>
-        );
-        return;
-      }
-
-      rows.push(
-        <div>
-          <strong>
-            <UU5.Bricks.Lsi lsi={column.headers[0].label} />
-            :&nbsp;
-          </strong>
-          {cellComponent}
-        </div>
-      );
-    });
-
-    return <div>{rows}</div>;
   },
   //@@viewOff:private
 
@@ -176,84 +78,12 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
   render() {
     const ucSettings = {
       columns: [
-        {
-          id: "order",
-          headers: [
-            {
-              label: TourDetailLsi.order,
-              sorterKey: "order"
-            }
-          ],
-          cellComponent: ({ order }) => order,
-          width: "xxs",
-          visibility: "always"
-        },
-        {
-          id: "strava",
-          headers: [
-            {
-              label: TourDetailLsi.strava
-            },
-            {
-              label: TourDetailLsi.trailtour
-            }
-          ],
-          cellComponent: this._getLinksCell,
-          width: "xs"
-        },
-        {
-          id: "name",
-          headers: [
-            {
-              label: TourDetailLsi.name,
-              sorterKey: "name"
-            },
-            {
-              label: TourDetailLsi.author,
-              sorterKey: "author"
-            }
-          ],
-          cellComponent: this._getNameCell,
-          width: "l",
-          visibility: "always"
-        },
-        {
-          id: "distance",
-          headers: [
-            {
-              label: TourDetailLsi.distance,
-              sorterKey: "distance"
-            }
-          ],
-          cellComponent: this._getDistance,
-          width: "xs"
-        },
-        {
-          id: "elevation",
-          headers: [
-            {
-              label: TourDetailLsi.elevation,
-              sorterKey: "total_elevation_gain"
-            }
-          ],
-          cellComponent: this._getElevation,
-          width: "xs"
-        },
-        {
-          id: "location",
-          headers: [
-            {
-              label: TourDetailLsi.state,
-              sorterKey: "state"
-            },
-            {
-              label: TourDetailLsi.city,
-              sorterKey: "city"
-            }
-          ],
-          cellComponent: this._getState,
-          width: "m"
-        }
+        FlexColumns.order(),
+        FlexColumns.stravaTtLink(),
+        FlexColumns.segmentName(),
+        FlexColumns.distance(),
+        FlexColumns.elevation(),
+        FlexColumns.location()
       ]
     };
 

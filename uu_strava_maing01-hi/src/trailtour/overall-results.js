@@ -65,21 +65,14 @@ export const OverallResults = UU5.Common.VisualComponent.create({
   },
 
   _getSmallTile({ data, visibleColumns }) {
-    let { order } = data;
-
-    let rows = [];
-    rows.push(
-      <div style={{ position: "relative" }}>
-        {order}. {FlexColumns.athleteLink({}, this.props.year).cellComponent(data)}
-      </div>
-    );
-
     const skippedColumns = ["order", "name"];
     let visibleRows = FlexColumns.processVisibleColumns(visibleColumns, skippedColumns, data);
 
     return (
       <div>
-        {rows}
+        <div style={{ position: "relative" }}>
+          {data.order}. {FlexColumns.athleteLink({}, this.props.year).cellComponent(data)}
+        </div>
         {visibleRows}
       </div>
     );

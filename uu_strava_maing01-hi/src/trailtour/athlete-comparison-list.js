@@ -2,23 +2,13 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
-import SegmentLink from "../bricks/segment-link";
 import TrailtourTools from "./tools";
-import SegmentDistance from "../bricks/segment-distance";
-import SegmentElevation from "../bricks/segment-elevation";
 import BrickTools from "../bricks/tools";
-import SegmentPace from "../bricks/segment-pace";
 import NameFilterBar from "./name-filter-bar";
 import CompareResultsButton from "./compare-results-button";
+import FlexColumns from "./config/flex-columns";
 import TourDetailLsi from "../lsi/tour-detail-lsi";
 //@@viewOff:imports
-
-const Lsi = {
-  emptyHeader: {
-    cs: "<uu5string/>&nbsp;",
-    en: "<uu5string/>&nbsp;"
-  }
-};
 
 const PAGE_SIZE = 1000;
 
@@ -32,6 +22,12 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
     tagName: Config.TAG + "AthleteComparisonList",
     classNames: {
       main: (props, state) => Config.Css.css``,
+      smallTileRows: Config.Css.css`
+        strong {
+          display: inline-block;
+          width: 80px;
+        }
+      `,
       smallTileTable: Config.Css.css`
         display: flex;
         flex-direction: column;
@@ -45,7 +41,8 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
           }
 
           > div:not(:first-child) {
-            width: calc(50% - 80px);
+            ${UU5.Utils.ScreenSize.getMediaQueries("m", `width: calc(35% - 80px);`)}
+            ${UU5.Utils.ScreenSize.getMaxMediaQueries("s", `width: calc((100% - 80px)/2);`)}
           }
         }
       `
@@ -93,45 +90,6 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
     };
   },
 
-  _getLinksCell({ stravaId, link }) {
-    return (
-      <UU5.Common.Fragment>
-        <SegmentLink stravaId={stravaId} style={{ marginRight: "4px" }}>
-          <UU5.Bricks.Image
-            src={"./assets/strava_symbol_orange.png"}
-            responsive={false}
-            alt={"strava_symbol_orange"}
-            width={"32px"}
-          />
-        </SegmentLink>
-        <UU5.Bricks.Link href={link} target={"_blank"}>
-          <UU5.Bricks.Image src={"./assets/inov8-logo.png"} responsive={false} alt={"trailtour-logo"} width={"24px"} />
-        </UU5.Bricks.Link>
-      </UU5.Common.Fragment>
-    );
-  },
-
-  _getNameCell({ name, author, id, order }) {
-    return (
-      <UU5.Common.Fragment>
-        <div>
-          <UU5.Bricks.Link href={"tourDetail?id=" + id}>
-            #{order} {name}
-          </UU5.Bricks.Link>
-        </div>
-        <div>{author}</div>
-      </UU5.Common.Fragment>
-    );
-  },
-
-  _getDistance({ segment: { distance } }) {
-    return <SegmentDistance distance={distance} />;
-  },
-
-  _getElevation({ segment: { total_elevation_gain } }) {
-    return <SegmentElevation elevation={total_elevation_gain} />;
-  },
-
   _getCorrectResults(data, resultIndex) {
     let sex, resultKey;
     if (data.womenResults.length > 0) {
@@ -146,63 +104,13 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
     return { results: result || {}, sex, total: data[resultKey + "Total"] };
   },
 
-  _getOwnOrder(data, resultIndex) {
-    let { results, total } = this._getCorrectResults(data, resultIndex);
-    if (results.order) {
-      return (
-        <UU5.Common.Fragment>
-          <strong>{results.order}</strong>&nbsp;/&nbsp;{total}
-        </UU5.Common.Fragment>
-      );
-    }
-  },
-
-  _getPoints(data, resultIndex) {
-    let { results } = this._getCorrectResults(data, resultIndex);
-    return results.points && <UU5.Bricks.Number value={results.points} />;
-  },
-
-  _getTime(data, resultIndex) {
-    let { results } = this._getCorrectResults(data, resultIndex);
-    if (results.time) {
-      return (
-        <UU5.Common.Fragment>
-          <div>{BrickTools.formatDuration(results.time)}</div>
-          <div>
-            <SegmentPace pace={results.pace} />
-          </div>
-        </UU5.Common.Fragment>
-      );
-    }
-  },
-
   _getSmallTile({ data, visibleColumns }) {
-    let { id, name, author, order } = data;
-    let { results: resultsFirst } = this._getCorrectResults(data, 0);
-    let { results: resultsSecond } = this._getCorrectResults(data, 1);
-
-    let rows = [];
-    rows.push(
-      <div style={{ position: "relative" }}>
-        <div>
-          #{order} <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
-        </div>
-        <div>
-          <div style={{ display: "inline-block", width: "80px" }}>
-            <strong>
-              <UU5.Bricks.Lsi lsi={TourDetailLsi.author} />
-              :&nbsp;
-            </strong>
-          </div>
-          {author}
-        </div>
-      </div>
-    );
+    let athletes = this._getAthletes();
+    let { results: resultsFirst } = FlexColumns.getComparisonResults(data, 0, athletes);
+    let { results: resultsSecond } = FlexColumns.getComparisonResults(data, 1, athletes);
 
     let tableRows = [];
     if (resultsFirst.time || resultsSecond.time) {
-      let athletes = this._getAthletes();
-
       tableRows.push(
         <div style={{ fontWeight: "bold" }}>
           <div>&nbsp;</div>
@@ -216,8 +124,8 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
           <div>
             <UU5.Bricks.Lsi lsi={TourDetailLsi.ownOrder} />:
           </div>
-          <div>{this._getOwnOrder(data, 0)}</div>
-          <div>{this._getOwnOrder(data, 1)}</div>
+          <div>{FlexColumns.comparisonOrder({}, athletes, 0).cellComponent(data)}</div>
+          <div>{FlexColumns.comparisonOrder({}, athletes, 1).cellComponent(data)}</div>
         </div>
       );
 
@@ -226,8 +134,8 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
           <div>
             <UU5.Bricks.Lsi lsi={TourDetailLsi.points} />:
           </div>
-          <div>{this._getPoints(data, 0)}</div>
-          <div>{this._getPoints(data, 1)}</div>
+          <div>{FlexColumns.comparisonPoints({}, athletes, 0).cellComponent(data)}</div>
+          <div>{FlexColumns.comparisonPoints({}, athletes, 1).cellComponent(data)}</div>
         </div>
       );
 
@@ -246,12 +154,8 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
           <div>
             <UU5.Bricks.Lsi lsi={TourDetailLsi.pace} />:
           </div>
-          <div>
-            <SegmentPace pace={resultsFirst.pace} />
-          </div>
-          <div>
-            <SegmentPace pace={resultsSecond.pace} />
-          </div>
+          <div>{FlexColumns.comparisonPace({}, athletes, 0).cellComponent(data)}</div>
+          <div>{FlexColumns.comparisonPace({}, athletes, 1).cellComponent(data)}</div>
         </div>
       );
     }
@@ -267,32 +171,12 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
       "secondAthletePoints",
       "secondAthletePace"
     ];
-    visibleColumns.forEach(column => {
-      if (skippedColumns.includes(column.id)) return;
-      let cellComponent = column.cellComponent(data);
-      if (!cellComponent) return;
-
-      if (column.id === "strava") {
-        rows.push(<div style={{ position: "absolute", top: "4px", right: "4px" }}>{cellComponent}</div>);
-        return;
-      }
-
-      rows.push(
-        <div>
-          <strong>
-            <div style={{ display: "inline-block", width: "80px" }}>
-              <UU5.Bricks.Lsi lsi={column.headers[0].label} />
-              :&nbsp;
-            </div>
-          </strong>
-          {cellComponent}
-        </div>
-      );
-    });
+    let visibleRows = FlexColumns.processVisibleColumns(visibleColumns, skippedColumns, data);
 
     return (
       <div>
-        {rows}
+        {FlexColumns.segmentName().tileComponent(data, true, "80px")}
+        <div className={this.getClassName("smallTileRows")}>{visibleRows}</div>
         <div className={this.getClassName("smallTileTable")}>{tableRows}</div>
       </div>
     );
@@ -304,171 +188,23 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
       return this.props.trailtour.totalResults[correctKey].find(result => result.stravaId === stravaId);
     });
   },
-
-  _getAthleteHeader(athletes, index) {
-    return `
-      <uu5string/>
-      <UU5.Bricks.Span style="white-space: nowrap; font-weight: bold;">
-        ${athletes[index].name}
-      </UU5.Bricks.Span>
-    `;
-  },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
-    // strava + trailtour
-    // etapa + autor
-    // délka
-    // převýšení
-    // Atlet 1 + Pořadí
-    // Body
-    // Čas + Tempo
-    // Atlet 2 + Pořadí
-    // Body
-    // Čas + Tempo
-
     let athletes = this._getAthletes();
-
     const ucSettings = {
       columns: [
-        {
-          id: "strava",
-          headers: [
-            {
-              label: TourDetailLsi.strava
-            },
-            {
-              label: TourDetailLsi.trailtour
-            }
-          ],
-          cellComponent: this._getLinksCell,
-          width: "xs"
-        },
-        {
-          id: "name",
-          headers: [
-            {
-              label: TourDetailLsi.name,
-              sorterKey: "name"
-            },
-            {
-              label: TourDetailLsi.author,
-              sorterKey: "author"
-            }
-          ],
-          cellComponent: this._getNameCell,
-          width: "l",
-          visibility: "always"
-        },
-        {
-          id: "distance",
-          headers: [
-            {
-              label: TourDetailLsi.distance,
-              sorterKey: "distance"
-            }
-          ],
-          cellComponent: this._getDistance,
-          width: "xs"
-        },
-        {
-          id: "elevation",
-          headers: [
-            {
-              label: TourDetailLsi.elevation,
-              sorterKey: "total_elevation_gain"
-            }
-          ],
-          cellComponent: this._getElevation,
-          width: "xs"
-        },
-
-        {
-          id: "firstAthleteOrder",
-          headers: [
-            {
-              label: this._getAthleteHeader(athletes, 0)
-            },
-            {
-              label: TourDetailLsi.ownOrder
-              // sorterKey: "ownOrder"
-            }
-          ],
-          cellComponent: data => this._getOwnOrder(data, 0),
-          width: "xs"
-        },
-        {
-          id: "firstAthletePoints",
-          headers: [
-            {
-              label: Lsi.emptyHeader
-            },
-            {
-              label: TourDetailLsi.points
-              // sorterKey: "points"
-            }
-          ],
-          cellComponent: data => this._getPoints(data, 0),
-          width: "xs"
-        },
-        {
-          id: "firstAthletePace",
-          headers: [
-            {
-              label: Lsi.emptyHeader
-            },
-            {
-              label: TourDetailLsi.time
-              // sorterKey: "time"
-            }
-          ],
-          cellComponent: data => this._getTime(data, 0),
-          width: "xs"
-        },
-
-        {
-          id: "secondAthleteOrder",
-          headers: [
-            {
-              label: this._getAthleteHeader(athletes, 1)
-            },
-            {
-              label: TourDetailLsi.ownOrder
-              // sorterKey: "ownOrder"
-            }
-          ],
-          cellComponent: data => this._getOwnOrder(data, 1),
-          width: "xs"
-        },
-        {
-          id: "secondAthletePoints",
-          headers: [
-            {
-              label: Lsi.emptyHeader
-            },
-            {
-              label: TourDetailLsi.points
-              // sorterKey: "points"
-            }
-          ],
-          cellComponent: data => this._getPoints(data, 1),
-          width: "xs"
-        },
-        {
-          id: "secondAthletePace",
-          headers: [
-            {
-              label: Lsi.emptyHeader
-            },
-            {
-              label: TourDetailLsi.time
-              // sorterKey: "time"
-            }
-          ],
-          cellComponent: data => this._getTime(data, 1),
-          width: "xs"
-        }
+        FlexColumns.stravaTtLink(),
+        FlexColumns.segmentNameWithOrder(),
+        FlexColumns.distance(),
+        FlexColumns.elevation(),
+        FlexColumns.comparisonOrder({}, athletes, 0),
+        FlexColumns.comparisonPoints({}, athletes, 0),
+        FlexColumns.comparisonPace({}, athletes, 0),
+        FlexColumns.comparisonOrder({}, athletes, 1),
+        FlexColumns.comparisonPoints({}, athletes, 1),
+        FlexColumns.comparisonPace({}, athletes, 1)
       ]
     };
 
