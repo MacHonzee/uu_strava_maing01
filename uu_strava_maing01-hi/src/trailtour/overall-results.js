@@ -2,26 +2,11 @@
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
-import AthleteLink from "../bricks/athlete-link";
 import SexFilterBar from "./sex-filter-bar";
 import TrailtourTools from "./tools";
 import NameFilter from "./name-filter";
-import ClubLink from "../bricks/club-link";
-import AthleteTourDetailLsi from "../lsi/athlete-tour-detail-lsi";
-
+import FlexColumns from "./config/flex-columns";
 //@@viewOff:imports
-
-const Lsi = {
-  ...AthleteTourDetailLsi,
-  strava: {
-    cs: "Strava",
-    en: "Strava"
-  },
-  generatedStamp: {
-    cs: "Poslední update: ",
-    en: "Last update: "
-  }
-};
 
 const PAGE_SIZE = 1000;
 
@@ -79,64 +64,25 @@ export const OverallResults = UU5.Common.VisualComponent.create({
     };
   },
 
-  _getAthleteLink({ name, stravaId }) {
-    return (
-      <UU5.Bricks.Link href={`athleteTourDetail?year=${this.props.year}&stravaId=${stravaId}`}>{name}</UU5.Bricks.Link>
-    );
-  },
-
-  _getStravaLink({ stravaId }) {
-    return (
-      <AthleteLink stravaId={stravaId}>
-        <UU5.Bricks.Image
-          src={"./assets/strava_symbol_orange.png"}
-          responsive={false}
-          alt={"strava_symbol_orange"}
-          width={"32px"}
-        />
-      </AthleteLink>
-    );
-  },
-
-  _getClubLink({ club }) {
-    if (club) {
-      return <ClubLink year={this.props.year} club={club} />;
-    }
-  },
-
   _getSmallTile({ data, visibleColumns }) {
     let { order } = data;
 
     let rows = [];
     rows.push(
       <div style={{ position: "relative" }}>
-        {order}. {this._getAthleteLink(data)}
+        {order}. {FlexColumns.athleteLink({}, this.props.year).cellComponent(data)}
       </div>
     );
 
     const skippedColumns = ["order", "name"];
-    visibleColumns.forEach(column => {
-      if (skippedColumns.includes(column.id)) return;
-      let cellComponent = column.cellComponent(data);
-      if (!cellComponent) return;
+    let visibleRows = FlexColumns.processVisibleColumns(visibleColumns, skippedColumns, data);
 
-      if (column.id === "stravaLink") {
-        rows.push(<div style={{ position: "absolute", top: "4px", right: "4px" }}>{cellComponent}</div>);
-        return;
-      }
-
-      rows.push(
-        <div>
-          <strong>
-            <UU5.Bricks.Lsi lsi={column.headers[0].label} />
-            :&nbsp;
-          </strong>
-          {cellComponent}
-        </div>
-      );
-    });
-
-    return <div>{rows}</div>;
+    return (
+      <div>
+        {rows}
+        {visibleRows}
+      </div>
+    );
   },
   //@@viewOff:private
 
@@ -144,84 +90,13 @@ export const OverallResults = UU5.Common.VisualComponent.create({
   render() {
     const ucSettings = {
       columns: [
-        {
-          id: "order",
-          headers: [
-            {
-              label: Lsi.order,
-              sorterKey: "order"
-            }
-          ],
-          cellComponent: ({ order }) => order,
-          width: "xxs",
-          visibility: "always"
-        },
-        {
-          id: "stravaLink",
-          headers: [
-            {
-              label: Lsi.strava
-            }
-          ],
-          cellComponent: this._getStravaLink,
-          width: "xxs"
-        },
-        {
-          id: "name",
-          headers: [
-            {
-              label: Lsi.name,
-              sorterKey: "name"
-            }
-          ],
-          cellComponent: this._getAthleteLink,
-          width: "l",
-          visibility: "always"
-        },
-        {
-          id: "club",
-          headers: [
-            {
-              label: Lsi.club,
-              sorterKey: "club"
-            }
-          ],
-          cellComponent: this._getClubLink,
-          width: "m"
-        },
-        {
-          id: "points",
-          headers: [
-            {
-              label: Lsi.points,
-              sorterKey: "points"
-            }
-          ],
-          cellComponent: ({ points }) => <UU5.Bricks.Number value={points} />,
-          width: "xs"
-        },
-        {
-          id: "totalCount",
-          headers: [
-            {
-              label: Lsi.runCount,
-              sorterKey: "totalCount"
-            }
-          ],
-          cellComponent: ({ totalCount }) => totalCount,
-          width: "xs"
-        },
-        {
-          id: "avgPoints",
-          headers: [
-            {
-              label: Lsi.avgPoints,
-              sorterKey: "avgPoints"
-            }
-          ],
-          cellComponent: ({ avgPoints }) => <UU5.Bricks.Number value={avgPoints} maxDecimalLength={2} />,
-          width: "xs"
-        }
+        FlexColumns.order(),
+        FlexColumns.stravaLink(),
+        FlexColumns.athleteLink({}, this.props.year),
+        FlexColumns.clubLink({}, this.props.year),
+        FlexColumns.points(),
+        FlexColumns.totalCount(),
+        FlexColumns.avgPoints()
       ]
     };
 
