@@ -98,55 +98,16 @@ function getTileComponent(column, data) {
   }
 }
 
-function getClubPoints({ points, pointsMen, pointsWomen }) {
+function getSexCellComponent(data, totalKey, menKey, womenKey, maxDecimalLength) {
   return (
     <UU5.Common.Fragment>
       <div>
-        <UU5.Bricks.Number value={points} maxDecimalLength={0} />
+        <UU5.Bricks.Number value={data[totalKey]} maxDecimalLength={maxDecimalLength} />
       </div>
       <div>
-        <UU5.Bricks.Number value={pointsMen} maxDecimalLength={0} /> /{" "}
-        <UU5.Bricks.Number value={pointsWomen} maxDecimalLength={0} />
-      </div>
-    </UU5.Common.Fragment>
-  );
-}
-
-function getClubRunners({ runnersTotal, runnersMen, runnersWomen }) {
-  return (
-    <UU5.Common.Fragment>
-      <div>
-        <UU5.Bricks.Number value={runnersTotal} />
-      </div>
-      <div>
-        <UU5.Bricks.Number value={runnersMen} /> / <UU5.Bricks.Number value={runnersWomen} />
-      </div>
-    </UU5.Common.Fragment>
-  );
-}
-
-function getClubResults({ resultsTotal, resultsMen, resultsWomen }) {
-  return (
-    <UU5.Common.Fragment>
-      <div>
-        <UU5.Bricks.Number value={resultsTotal} />
-      </div>
-      <div>
-        <UU5.Bricks.Number value={resultsMen} /> / <UU5.Bricks.Number value={resultsWomen} />
-      </div>
-    </UU5.Common.Fragment>
-  );
-}
-
-function getClubAvgPoints({ avgPoints, avgPointsMen, avgPointsWomen }) {
-  return (
-    <UU5.Common.Fragment>
-      <div>
-        <UU5.Bricks.Number value={avgPoints} maxDecimalLength={2} />
-      </div>
-      <div>
-        <UU5.Bricks.Number value={avgPointsMen} maxDecimalLength={2} /> /{" "}
-        <UU5.Bricks.Number value={avgPointsWomen} maxDecimalLength={2} />
+        <UU5.Bricks.Number value={data[menKey]} maxDecimalLength={maxDecimalLength} />
+        &nbsp;/&nbsp;
+        <UU5.Bricks.Number value={data[womenKey]} maxDecimalLength={maxDecimalLength} />
       </div>
     </UU5.Common.Fragment>
   );
@@ -542,7 +503,7 @@ const FlexColumns = {
     return mergeColumn(options, column);
   },
 
-  clubPoints(options = {}) {
+  clubPoints(options = {}, totalKey, pointsMen, pointsWomen) {
     const column = {
       id: "clubPoints",
       headers: [
@@ -554,16 +515,16 @@ const FlexColumns = {
           label: Lsi.menOrWomen
         }
       ],
-      cellComponent: getClubPoints,
+      cellComponent: data => getSexCellComponent(data, totalKey, pointsMen, pointsWomen, 0),
       width: "xs"
     };
     column.tileComponent = data => {
-      return getSexTileComponent(column, data, "points", "pointsMen", "pointsWomen", 0);
+      return getSexTileComponent(column, data, totalKey, pointsMen, pointsWomen, 0);
     };
     return mergeColumn(options, column);
   },
 
-  clubRunners(options = {}) {
+  clubRunners(options = {}, totalKey, pointsMen, pointsWomen) {
     const column = {
       id: "clubRunners",
       headers: [
@@ -575,16 +536,16 @@ const FlexColumns = {
           label: Lsi.menOrWomen
         }
       ],
-      cellComponent: getClubRunners,
+      cellComponent: data => getSexCellComponent(data, totalKey, pointsMen, pointsWomen),
       width: "xs"
     };
     column.tileComponent = data => {
-      return getSexTileComponent(column, data, "runnersTotal", "runnersMen", "runnersWomen");
+      return getSexTileComponent(column, data, totalKey, pointsMen, pointsWomen);
     };
     return mergeColumn(options, column);
   },
 
-  clubResults(options = {}) {
+  clubResults(options = {}, totalKey, pointsMen, pointsWomen) {
     const column = {
       id: "clubResults",
       headers: [
@@ -596,16 +557,16 @@ const FlexColumns = {
           label: Lsi.menOrWomen
         }
       ],
-      cellComponent: getClubResults,
+      cellComponent: data => getSexCellComponent(data, totalKey, pointsMen, pointsWomen),
       width: "xs"
     };
     column.tileComponent = data => {
-      return getSexTileComponent(column, data, "resultsTotal", "resultsMen", "resultsWomen");
+      return getSexTileComponent(column, data, totalKey, pointsMen, pointsWomen);
     };
     return mergeColumn(options, column);
   },
 
-  clubAvgPoints(options = {}) {
+  clubAvgPoints(options = {}, totalKey, pointsMen, pointsWomen) {
     const column = {
       id: "clubAvgPoints",
       headers: [
@@ -617,11 +578,11 @@ const FlexColumns = {
           label: Lsi.menOrWomen
         }
       ],
-      cellComponent: getClubAvgPoints,
+      cellComponent: data => getSexCellComponent(data, totalKey, pointsMen, pointsWomen, 2),
       width: "xs"
     };
     column.tileComponent = data => {
-      return getSexTileComponent(column, data, "avgPoints", "avgPointsMen", "avgPointsWomen", 2);
+      return getSexTileComponent(column, data, totalKey, pointsMen, pointsWomen, 2);
     };
     return mergeColumn(options, column);
   },

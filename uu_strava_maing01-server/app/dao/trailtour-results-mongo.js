@@ -153,7 +153,7 @@ class TrailtourResultsMongo extends UuObjectDao {
           clubResultsPoints: getPointsSum("clubResults"),
           menResultsCount: getResultLength("menResults"),
           womenResultsCount: getResultLength("womenResults"),
-          clubResultsCount: getResultLength("clubResults")
+          clubResultsCount: { $add: [getResultLength("menResults"), getResultLength("womenResults")] }
         }
       },
       {

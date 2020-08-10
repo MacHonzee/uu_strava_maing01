@@ -1,7 +1,7 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Výsledky klubů"
+      cs: "Historie výsledků - celkový přehled, jednotlivec, etapa atd."
     },
     {
       cs: "Favicona, meta data, podpora pro vyhledávače, noscript varování"

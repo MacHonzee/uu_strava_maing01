@@ -90,10 +90,10 @@ export const ClubResults = UU5.Common.VisualComponent.create({
       columns: [
         FlexColumns.order(),
         FlexColumns.clubByName({}, this.props.year),
-        FlexColumns.clubPoints(),
-        FlexColumns.clubRunners(),
-        FlexColumns.clubResults(),
-        FlexColumns.clubAvgPoints()
+        FlexColumns.clubPoints({}, "points", "pointsMen", "pointsWomen"),
+        FlexColumns.clubRunners({}, "runnersTotal", "runnersMen", "runnersWomen"),
+        FlexColumns.clubResults({}, "resultsTotal", "resultsMen", "resultsWomen"),
+        FlexColumns.clubAvgPoints({}, "avgPoints", "avgPointsMen", "avgPointsWomen")
       ]
     };
 

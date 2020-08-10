@@ -3,8 +3,8 @@ import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
 import ClubTourCard from "./club-tour-card";
-import ClubTourResultList from "./club-tour-result-list";
 import OverallResults from "./overall-results";
+import ClubTourResultList from "./club-tour-result-list";
 //@@viewOff:imports
 
 export const ClubTourResults = UU5.Common.VisualComponent.create({
@@ -55,15 +55,16 @@ export const ClubTourResults = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     let trailtour = this.props.data.trailtour;
+    let club = trailtour.totalResults.clubResults[0];
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <ClubTourCard trailtour={trailtour} club={trailtour.totalResults.clubResults[0]} />
+        <ClubTourCard trailtour={trailtour} club={club} />
         <UU5.Bricks.Tabs fade mountTabContent={"onFirstActive"}>
           <UU5.Bricks.Tabs.Item header={this.getLsiComponent("runnersTab")}>
             <OverallResults data={trailtour} year={trailtour.year} />
           </UU5.Bricks.Tabs.Item>
           <UU5.Bricks.Tabs.Item header={this.getLsiComponent("segmentsTab")}>
-            <ClubTourResultList trailtour={trailtour} />
+            <ClubTourResultList trailtour={trailtour} clubResults={this.props.data.clubResults} />
           </UU5.Bricks.Tabs.Item>
         </UU5.Bricks.Tabs>
       </UU5.Bricks.Div>
