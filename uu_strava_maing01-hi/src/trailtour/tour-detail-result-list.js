@@ -93,7 +93,7 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
       ]
     };
     const defaultView = {
-      filters: [{ key: "sex", value: "female" }]
+      filters: [{ key: "sex", value: SexFilterBar.getDefaultValue() }]
     };
 
     return (

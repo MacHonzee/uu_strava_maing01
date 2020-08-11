@@ -21,6 +21,8 @@ const Lsi = {
   }
 };
 
+const LOCAL_STRG_KEY = "uuStravaSexFilter";
+
 export const SexFilterBar = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
   mixins: [UU5.Common.BaseMixin],
@@ -47,6 +49,13 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
             }`
           )}
       `
+    },
+    getDefaultValue() {
+      if (window.localStorage && window.localStorage.getItem(LOCAL_STRG_KEY)) {
+        return window.localStorage.getItem(LOCAL_STRG_KEY);
+      } else {
+        return "female";
+      }
     }
   },
   //@@viewOff:statics
@@ -89,6 +98,9 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
 
   _handleOnFilterChange(opt, context) {
     context.addFilter("sex", opt.value);
+    if (window.localStorage) {
+      window.localStorage.setItem(LOCAL_STRG_KEY, opt.value);
+    }
   },
   //@@viewOff:private
 
