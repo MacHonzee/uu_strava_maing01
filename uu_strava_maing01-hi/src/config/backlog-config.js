@@ -1,6 +1,9 @@
 const BacklogConfig = {
   items: [
     {
+      cs: "Zobrazení převýšení etapy v grafu"
+    },
+    {
       cs: "Historie výsledků - celkový přehled, jednotlivec, etapa atd."
     },
     {
