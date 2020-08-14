@@ -4,9 +4,6 @@ const BacklogConfig = {
       cs: "Historie výsledků - celkový přehled, jednotlivec, etapa atd."
     },
     {
-      cs: "Favicona, meta data, podpora pro vyhledávače, noscript varování"
-    },
-    {
       cs: "Appka do Google a iPhone storu"
     },
     {

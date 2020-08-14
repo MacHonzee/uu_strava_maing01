@@ -3,12 +3,30 @@
   <head>
     <meta charset="utf-8" name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=2, minimum-scale=0.5">
+    <meta name="description" content="Application for Trailtour results analysis and overview. Check results of any segment, athlete, club or overall results. Built upon UAF.">
+    <meta property="og:title" content="Trailtour Analytics" />
+    <meta property="og:image" content="http://www.trailtour.cz/2020/theme/Bootstrap/images/OG_trailtour_2020_v01.jpg" />
+    <meta property="og:image:type" content="image/jpg" />
+    <meta property="og:image:width" content="600" />
+    <meta property="og:image:height" content="315" />
+    <meta property="og:description" content="Application for Trailtour results analysis and overview. Check results of any segment, athlete, club or overall results. Built upon UAF." />
+    <meta property="og:url" content="https://uustravamaing01.ew.r.appspot.com/uu-strava-maing01/9cb6f576dcb44633b5d7e5afd9384a49" />
     <title>Trailtour Analytics</title>
 
     <!-- NOTE Following URLs are automatically replaced during build according to the configuration in config/config.js.
       Additionally, <base> element is automatically inserted here so that relative paths are loaded relatively to app base,
       not relatively to current use case in the URL. -->
     <% template = `
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-175189874-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-175189874-1');
+    </script>
 
     <link type="text/css" rel="stylesheet" href="https://cdn.plus4u.net/libs/clearsans/1.0.0/fonts/clear-sans.min.css">
     <link type="text/css" rel="stylesheet" href="loading.css">
@@ -20,11 +38,24 @@
     <meta name="msapplication-TileImage" content="assets/meta/mstile-150x150.png">
     <meta name="msapplication-TileColor" content="#004191">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/meta/apple-touch-icon.png">
-    <link rel="icon" type="image/png" href="assets/meta/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="assets/meta/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/x-icon" href="assets/meta/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/x-icon" href="assets/meta/favicon-16x16.png" sizes="16x16">
     <link rel="mask-icon" href="assets/meta/safari-pinned-tab.svg" color="#004191">
 
-    <!-- Add extra <link>s or <script>s here if necessary. -->
+    <script>
+      UU5.Environment.browserUpdate = {
+        required:{
+          e:-4,
+          i:11,
+          f:-4,
+          o:-4,
+          s:-2,
+          samsung:-2
+        },
+        test: false // display the warning everywhere (test mode)
+      }
+    </script>
+    <script src="https://cdn.plus4u.net/uu-uu5g04/1.0.0/uu5g04-browser-update.min.js"></script>
 
     ` %><%= htmlWebpackPlugin.options.ejsFixUrls(template) %>
   </head>
@@ -39,6 +70,15 @@
         </div>
         <div class="uu-app-loading-content">Trailtour Analytics</div>
       </div>
+      <noscript class="noscript">
+        <h3>Trailtour Analytics</h3>
+        <h4>Zjistili jsme, že nemáte povolený JavaScript. Tato aplikace ke spuštění vyžaduje JavaScript.</h4>
+        <div>
+          <a href="http://www.enable-javascript.com/cz/" target="_blank">
+            Jak povolit JavaScript ve Vašem prohlížeči?
+          </a>
+        </div>
+      </noscript>
     </div>
     <script>
       SystemJS.import("./index.js").then(function (Index) {
