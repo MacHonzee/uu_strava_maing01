@@ -3,7 +3,7 @@ runtime: nodejs12
 instance_class: F2
 
 handlers:
-  - url: /uu-strava-maing01/9cb6f576dcb44633b5d7e5afd9384a49/public
+  - url: /public
     static_dir: public
 
   - url: /.*
