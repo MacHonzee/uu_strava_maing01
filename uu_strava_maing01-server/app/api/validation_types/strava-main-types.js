@@ -5,14 +5,16 @@ const initDtoInType = shape({
   configuration: shape({
     clientId: string().isRequired(),
     clientSecret: string().isRequired(),
-    googleApiKey: string().isRequired()
+    googleApiKey: string().isRequired(),
+    elevationApiKey: string().isRequired()
   }).isRequired()
 });
 
 const updateConfigDtoInType = shape({
   clientId: string(),
   clientSecret: string(),
-  googleApiKey: string()
+  googleApiKey: string(),
+  elevationApiKey: string().isRequired()
 });
 
 const redirectToPlus4uNetApiDtoInType = shape({

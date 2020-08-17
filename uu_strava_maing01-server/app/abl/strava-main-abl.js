@@ -85,6 +85,7 @@ class StravaMainAbl {
   async loadConfig(awid, session) {
     let config = await this.configDao.get(awid);
     delete config.clientSecret;
+    delete config.elevationApiKey;
 
     const AthleteAbl = require("./athlete-abl");
     let { athlete } = await AthleteAbl.loadMyself(awid, session);

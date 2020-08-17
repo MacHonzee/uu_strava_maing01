@@ -20,11 +20,29 @@ const SEGMENT_LOOKUP_STAGES = [
       from: "segment",
       localField: "segmentId",
       foreignField: "_id",
-      as: "segment"
+      as: "segmentTemp"
     }
   },
   {
-    $unwind: "$segment"
+    $unwind: "$segmentTemp"
+  },
+  // just a workaround for negative $project
+  {
+    $addFields: {
+      segment: {
+        city: "$segmentTemp.city",
+        distance: "$segmentTemp.distance",
+        start_latlng: "$segmentTemp.start_latlng",
+        state: "$segmentTemp.state",
+        stravaId: "$segmentTemp.stravaId",
+        total_elevation_gain: "$segmentTemp.total_elevation_gain"
+      }
+    }
+  },
+  {
+    $project: {
+      segmentTemp: 0
+    }
   }
 ];
 
@@ -178,6 +196,13 @@ class TrailtourResultsMongo extends UuObjectDao {
   async listSegments(awid, trailtourId) {
     return await super.aggregate([
       { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
+      {
+        $project: {
+          menResults: 0,
+          womenResults: 0,
+          clubResults: 0
+        }
+      },
       ...SEGMENT_LOOKUP_STAGES,
       ...CONVERT_ID_STAGES
     ]);

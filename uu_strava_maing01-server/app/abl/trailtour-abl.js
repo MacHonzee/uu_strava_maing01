@@ -216,12 +216,14 @@ class TrailtourAbl {
 
     // HDS 2
     let tourDetail = await this.trailtourResultsDao.get(awid, dtoIn.id);
+    delete tourDetail.clubResults;
 
     // HDS 3
     let segment = await this.segmentDao.getByStravaId(awid, tourDetail.stravaId);
 
     // HDS 4
     let trailtour = await this.trailtourDao.get(awid, tourDetail.trailtourId);
+    delete trailtour.totalResults;
 
     // HDS 4
     return {

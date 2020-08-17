@@ -158,7 +158,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     this.props.segments.forEach(result => {
       let segment = result.segment;
 
-      let center = SMap.Coords.fromWGS84(segment.start_longitude, segment.start_latitude);
+      let center = SMap.Coords.fromWGS84(segment.start_latlng[1], segment.start_latlng[0]);
       let icon;
       if (this.props.showOwnResults) {
         icon = result.menResults[0] || result.womenResults[0] ? MARKERS.ownRun : MARKERS.noRun;

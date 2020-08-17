@@ -27,3 +27,7 @@ const segmentListDtoInType = shape({
     pageSize: integer()
   })
 });
+
+const calculateElevationDtoInType = shape({
+  stravaId: number().isRequired()
+});

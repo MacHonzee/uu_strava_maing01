@@ -5,6 +5,7 @@ const { DaoFactory } = require("uu_appg01_server").ObjectStore;
 const { ValidationHelper } = require("uu_appg01_server").AppServer;
 const Errors = require("../api/errors/segment-error.js");
 const StravaApiHelper = require("../helpers/strava-api-helper");
+const GoogleApiHelper = require("../helpers/google-api-helper");
 
 const WARNINGS = {
   createUnsupportedKeys: {
@@ -15,6 +16,13 @@ const WARNINGS = {
   },
   listUnsupportedKeys: {
     code: `${Errors.List.UC_CODE}unsupportedKeys`
+  },
+  calculateElevationUnsupportedKeys: {
+    code: `${Errors.List.UC_CODE}unsupportedKeys`
+  },
+  segmentAlreadyCalculated: {
+    code: `${Errors.CalculateElevation.UC_CODE}segmentAlreadyCalculated`,
+    message: `Segment has already calculated elevation data.`
   }
 };
 
@@ -24,6 +32,7 @@ class SegmentAbl {
     this.segmentDao = DaoFactory.getDao("segment");
     this.athlSegDao = DaoFactory.getDao("athleteSegment");
     this.athleteDao = DaoFactory.getDao("athlete");
+    this.stravaMainDao = DaoFactory.getDao("stravaMain");
   }
 
   // this is just a model, it is not on a public API
@@ -193,6 +202,54 @@ class SegmentAbl {
 
     return {
       ...items,
+      uuAppErrorMap
+    };
+  }
+
+  async calculateElevation(awid, dtoIn) {
+    // HDS 1
+    let validationResult = this.validator.validate("calculateElevationDtoInType", dtoIn);
+    // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(
+      dtoIn,
+      validationResult,
+      WARNINGS.calculateElevationUnsupportedKeys.code,
+      Errors.CalculateElevation.InvalidDtoIn
+    );
+
+    // HDS 2
+    let stravaConfig = await this.stravaMainDao.get(awid);
+    if (!stravaConfig.elevationApiKey) {
+      // A3
+      throw new Errors.CalculateElevation.MissingGoogleElevationApiKey({ uuAppErrorMap });
+    }
+
+    // HDS 3
+    let segment = await this.segmentDao.getByStravaId(awid, dtoIn.stravaId);
+    if (!segment) {
+      // A4
+      throw new Errors.CalculateElevation.SegmentNotFound({ uuAppErrorMap }, { stravaId: dtoIn.stravaId });
+    }
+
+    // HDS 4
+    if (segment.elevationProfile) {
+      // A5
+      ValidationHelper.addWarning(
+        uuAppErrorMap,
+        WARNINGS.segmentAlreadyCalculated.code,
+        WARNINGS.segmentAlreadyCalculated.message
+      );
+    } else {
+      // HDS 4.1
+      let elevationProfile = await GoogleApiHelper.calculateElevation(segment, stravaConfig.elevationApiKey);
+
+      // HDS 4.2
+      segment = await this.segmentDao.updateByStravaId(awid, dtoIn.stravaId, { elevationProfile });
+    }
+
+    // HDS 5
+    return {
+      ...segment,
       uuAppErrorMap
     };
   }

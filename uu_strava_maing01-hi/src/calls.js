@@ -92,6 +92,11 @@ let Calls = {
     let commandUri = Calls.getCommandUri("trailtour/listClubResults");
     return Calls.call("get", commandUri, dtoInData);
   },
+
+  calculateElevation(dtoInData) {
+    let commandUri = Calls.getCommandUri("segment/calculateElevation");
+    return Calls.call("post", commandUri, dtoInData);
+  },
   /*
   For calling command on specific server, in case of developing client site with already deployed
   server in uuCloud etc. You can specify url of this application (or part of url) in development

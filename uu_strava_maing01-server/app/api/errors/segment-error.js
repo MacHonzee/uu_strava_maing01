@@ -51,7 +51,36 @@ const List = {
   }
 };
 
+const CalculateElevation = {
+  UC_CODE: `${SEGMENT_ERROR_PREFIX}calculateElevation/`,
+
+  InvalidDtoIn: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${CalculateElevation.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+
+  MissingGoogleElevationApiKey: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${CalculateElevation.UC_CODE}missingGoogleElevationApiKey`;
+      this.message = "Google API Key for Elevation is missing in configuration.";
+    }
+  },
+
+  SegmentNotFound: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${CalculateElevation.UC_CODE}SegmentNotFound`;
+      this.message = "Segment was not found.";
+    }
+  }
+};
+
 module.exports = {
+  CalculateElevation,
   Create,
   RefreshOne,
   RefreshAll,

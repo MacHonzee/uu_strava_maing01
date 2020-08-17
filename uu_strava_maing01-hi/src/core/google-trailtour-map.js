@@ -89,8 +89,8 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
 
       return {
         id: result.stravaId,
-        latitude: segment.start_latitude,
-        longitude: segment.start_longitude,
+        latitude: segment.start_latlng[0],
+        longitude: segment.start_latlng[1],
         title: this._getMarkerTitle(result),
         icon,
         onClick: this._handleMarkerClick

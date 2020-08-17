@@ -197,8 +197,8 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
 
   _getPopoverFooter(segment) {
     let sex;
-    if (segment.menResults[0]) sex = "men";
-    if (segment.womenResults[0]) sex = "women";
+    if (segment.menResults && segment.menResults[0]) sex = "men";
+    if (segment.womenResults && segment.womenResults[0]) sex = "women";
 
     if (this.props.showOwnResults && sex) {
       return this._getSinglePopoverResult(segment, sex);

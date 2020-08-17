@@ -118,6 +118,11 @@
         "realization": "api/controllers/TrailtourController.listClubResults",
         "httpMethod": "GET",
         "type": "CMD"
+      },
+      "segment/calculateElevation": {
+        "realization": "api/controllers/SegmentController.calculateElevation",
+        "httpMethod": "POST",
+        "type": "CMD"
       }
     }
   }

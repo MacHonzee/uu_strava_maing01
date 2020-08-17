@@ -5,7 +5,15 @@ import Config from "./config/config.js";
 import TourDetailCard from "./tour-detail-card";
 import TourDetailResultList from "./tour-detail-result-list";
 import TrailtourMap from "../bricks/trailtour-map";
+import ElevationProfile from "./elevation-profile";
 //@@viewOff:imports
+
+const Lsi = {
+  elevationHeader: {
+    cs: "Graf převýšení",
+    en: "Elevation profile"
+  }
+};
 
 export const TourDetailResults = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
@@ -16,7 +24,13 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "TourDetailResults",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
+      elevationPanel: Config.Css.css`
+        .uu5-bricks-panel-header {
+          padding: 16px 12px 16px 20px;
+          font-family: ClearSans-Medium, sans-serif;
+        }
+      `
     }
   },
   //@@viewOff:statics
@@ -53,6 +67,22 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
     let mapSegment = { ...tourDetail, segment };
     return <TrailtourMap style={{ marginTop: "8px" }} mapConfig={mapConfig} segments={[mapSegment]} showTourDetail />;
   },
+
+  _getElevationPanel() {
+    return (
+      <UU5.Bricks.Panel
+        className={this.getClassName("elevationPanel")}
+        bgStyleHeader={"underline"}
+        bgStyleContent={"underline"}
+        iconExpanded={"mdi-chevron-up"}
+        iconCollapsed={"mdi-chevron-down"}
+        mountContent={"onFirstExpand"}
+        header={<UU5.Bricks.Lsi lsi={Lsi.elevationHeader} />}
+      >
+        <ElevationProfile segment={this.props.data.segment} />
+      </UU5.Bricks.Panel>
+    );
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -61,6 +91,7 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <TourDetailCard data={this.props.data} />
         {this._getMap()}
+        {this._getElevationPanel()}
         <TourDetailResultList data={this.props.data} />
       </UU5.Bricks.Div>
     );
