@@ -15,7 +15,13 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "ElevationProfile",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
+      tooltip: Config.Css.css`
+        padding: 8px;
+        border: 1px solid rgb(189, 189, 189);
+        background-color: white;
+        opacity: 0.9;
+      `
     }
   },
   //@@viewOff:statics
@@ -62,7 +68,6 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
       };
     });
 
-    console.log(min, max);
     let diff = max - min;
     let ticks = [
       min,
@@ -80,14 +85,26 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
           <UU5.Chart.XAxis dataKey="name" type={"number"} tickCount={20} unit={" m"} domain={[0, "dataMax"]} />
           <UU5.Chart.YAxis domain={["dataMin - 5", "dataMax + 5"]} ticks={ticks} unit={" m"} />
           <UU5.Chart.Line type={"linear"} dataKey={"value"} dot={false} />
-          <UU5.Chart.Tooltip />
+          <UU5.Chart.Tooltip content={this._formatTooltip} />
         </UU5.Chart.LineChart>
       </UU5.Chart.ResponsiveContainer>
     );
   },
 
+  _formatTooltip(data) {
+    if (data.active) {
+      return (
+        <div className={this.getClassName("tooltip")}>
+          {UU5.Common.Tools.formatNumber(data.label)}&nbsp;m
+          <br />
+          {data.payload[0].value}&nbsp;m.n.m.
+        </div>
+      );
+    }
+  },
+
   _handleClick(data, event) {
-    console.log(data, event);
+    // console.log(data, event);
   },
 
   _getLoader() {

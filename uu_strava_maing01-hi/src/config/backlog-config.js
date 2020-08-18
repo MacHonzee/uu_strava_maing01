@@ -1,7 +1,9 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Zobrazení převýšení etapy v grafu"
+      cs:
+        "Vylepšení převýšení etapy v grafu - podbarvení stoupání barvama, " +
+        "interaktivní výběr na detail, zobrazení pozice na mapě"
     },
     {
       cs: "Historie výsledků - celkový přehled, jednotlivec, etapa atd."
