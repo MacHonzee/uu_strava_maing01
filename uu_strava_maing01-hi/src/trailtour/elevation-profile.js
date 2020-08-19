@@ -50,41 +50,124 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
-  _getChart() {
-    let profile = this.state.elevationProfile;
-    let totalLength = this.props.segment.distance;
-
+  _prepareData(profile, totalLength) {
     let min = profile[0].elevation;
     let max = profile[0].elevation;
+    let percentSegments = [];
+    let previousDistance, previusElevation;
     let data = profile.map((result, i) => {
       let value = Math.round(result.elevation);
       if (min > value) min = value;
       if (max < value) max = value;
-      let label = Math.round(((i + 1) / profile.length) * totalLength);
+      let percOfDistance = (i + 1) / profile.length;
+      let exactDistance = percOfDistance * totalLength;
+      let distance = Math.round(exactDistance);
+
+      // prepare percentage data for colors
+      if (previousDistance) {
+        let distDiff = exactDistance - previousDistance;
+        let elevDiff = result.elevation - previusElevation;
+        let elevPerc = Math.floor(Math.abs(elevDiff / distDiff) * 10) / 10;
+        let previousSegment = percentSegments[percentSegments.length - 1];
+        if (previousSegment && previousSegment.elevationPercent === elevPerc) {
+          previousSegment.distance += distDiff;
+          previousSegment.elevation += elevDiff;
+          previousSegment.distancePerc = percOfDistance;
+        } else {
+          percentSegments.push({
+            distance: distDiff,
+            elevationPercent: elevPerc,
+            elevation: elevDiff,
+            distancePerc: percOfDistance
+          });
+        }
+      }
+
+      previousDistance = exactDistance;
+      previusElevation = result.elevation;
 
       return {
-        name: label,
+        name: distance,
         value
       };
     });
 
+    if (percentSegments.length > 0) {
+      percentSegments.unshift({
+        distance: 0,
+        elevationPercent: percentSegments[0].elevationPercent,
+        elevation: 0,
+        distancePerc: 0
+      });
+    }
+
+    return { min, max, data, percentSegments };
+  },
+
+  _prepareTicks(max, min) {
     let diff = max - min;
-    let ticks = [
-      min,
-      min + Math.round(diff / 5),
-      min + Math.round((2 * diff) / 5),
-      min + Math.round((3 * diff) / 5),
-      min + Math.round((4 * diff) / 5),
-      max
+    let roundedMin = Math.round(min);
+    return [
+      roundedMin,
+      roundedMin + Math.round(diff / 5),
+      roundedMin + Math.round((2 * diff) / 5),
+      roundedMin + Math.round((3 * diff) / 5),
+      roundedMin + Math.round((4 * diff) / 5),
+      Math.round(max)
     ];
+  },
+
+  _getSegmentColor(segment) {
+    switch (segment.elevationPercent) {
+      case 0:
+        return "green";
+      case 0.1:
+        return "orange";
+      case 0.2:
+        return "red";
+      default:
+        return "black";
+    }
+  },
+
+  _prepareGradient(percentSegments) {
+    let stops = percentSegments.map((segment, i) => {
+      let stopPairs = [];
+      if (i !== 0 && i !== percentSegments.length - 1) {
+        let color = this._getSegmentColor(segment);
+        let nextColor = this._getSegmentColor(percentSegments[i + 1]);
+        let offset = Math.round(segment.distancePerc * 100) + "%";
+        stopPairs.push(<stop key={i + "_this"} offset={offset} stopColor={color} />);
+        stopPairs.push(<stop key={i + "_next"} offset={offset} stopColor={nextColor} />);
+      }
+      return stopPairs;
+    });
+
+    return (
+      <defs>
+        <linearGradient id="profileGradient" x1="0%" y1="0" x2="100%" y2="0">
+          {stops}
+        </linearGradient>
+      </defs>
+    );
+  },
+
+  _getChart() {
+    let profile = this.state.elevationProfile;
+    let totalLength = this.props.segment.distance;
+
+    let { min, max, data, percentSegments } = this._prepareData(profile, totalLength);
+    let ticks = this._prepareTicks(max, min);
+    let gradient = this._prepareGradient(percentSegments);
 
     // TODO lazyload na grafy
     return (
       <UU5.Chart.ResponsiveContainer height={300}>
         <UU5.Chart.LineChart data={data} onClick={this._handleClick}>
+          {gradient}
           <UU5.Chart.XAxis dataKey="name" type={"number"} tickCount={20} unit={" m"} domain={[0, "dataMax"]} />
           <UU5.Chart.YAxis domain={["dataMin - 5", "dataMax + 5"]} ticks={ticks} unit={" m"} />
-          <UU5.Chart.Line type={"linear"} dataKey={"value"} dot={false} />
+          <UU5.Chart.Line type={"linear"} dataKey={"value"} dot={false} stroke="url(#profileGradient)" />
           <UU5.Chart.Tooltip content={this._formatTooltip} />
         </UU5.Chart.LineChart>
       </UU5.Chart.ResponsiveContainer>
