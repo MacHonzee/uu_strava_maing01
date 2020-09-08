@@ -28,7 +28,9 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
 
   //@@viewOn:propTypes
   propTypes: {
-    segment: UU5.PropTypes.object.isRequired
+    segment: UU5.PropTypes.object.isRequired,
+    drawMapMarker: UU5.PropTypes.func,
+    undrawMapMarker: UU5.PropTypes.func
   },
   //@@viewOff:propTypes
 
@@ -59,7 +61,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
       let value = Math.round(result.elevation);
       if (min > value) min = value;
       if (max < value) max = value;
-      let percOfDistance = (i + 1) / profile.length;
+      let percOfDistance = i / profile.length;
       let exactDistance = percOfDistance * totalLength;
       let distance = Math.round(exactDistance);
 
@@ -163,13 +165,18 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
     // TODO lazyload na grafy
     return (
       <UU5.Chart.ResponsiveContainer height={300}>
-        <UU5.Chart.LineChart data={data} onClick={this._handleClick}>
+        <UU5.Chart.AreaChart data={data}>
           {gradient}
           <UU5.Chart.XAxis dataKey="name" type={"number"} tickCount={20} unit={" m"} domain={[0, "dataMax"]} />
           <UU5.Chart.YAxis domain={["dataMin - 5", "dataMax + 5"]} ticks={ticks} unit={" m"} />
-          <UU5.Chart.Line type={"linear"} dataKey={"value"} dot={false} stroke="url(#profileGradient)" />
+          <UU5.Chart.Area
+            type={"linear"}
+            dataKey={"value"}
+            fill="url(#profileGradient)"
+            stroke="url(#profileGradient)"
+          />
           <UU5.Chart.Tooltip content={this._formatTooltip} />
-        </UU5.Chart.LineChart>
+        </UU5.Chart.AreaChart>
       </UU5.Chart.ResponsiveContainer>
     );
   },
@@ -186,9 +193,17 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
     }
   },
 
-  _handleClick(data, event) {
-    // console.log(data, event);
-  },
+  // _handleClick(data, event) {
+  // console.log(data, event);
+  // },
+
+  // _handleMouseMove(data, event) {
+  //   requestAnimationFrame(() => {
+  //     if (data.activeCoordinate) {
+  //       console.log(data, event);
+  //     }
+  //   });
+  // },
 
   _getLoader() {
     return (

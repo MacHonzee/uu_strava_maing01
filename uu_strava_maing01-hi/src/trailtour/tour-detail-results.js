@@ -65,7 +65,15 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
       center: segment.start_latlng
     };
     let mapSegment = { ...tourDetail, segment };
-    return <TrailtourMap style={{ marginTop: "8px" }} mapConfig={mapConfig} segments={[mapSegment]} showTourDetail />;
+    return (
+      <TrailtourMap
+        ref_={inst => (this._map = inst)}
+        style={{ marginTop: "8px" }}
+        mapConfig={mapConfig}
+        segments={[mapSegment]}
+        showTourDetail
+      />
+    );
   },
 
   _getElevationPanel() {
@@ -79,9 +87,23 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
         mountContent={"onFirstExpand"}
         header={<UU5.Bricks.Lsi lsi={Lsi.elevationHeader} />}
       >
-        <ElevationProfile segment={this.props.data.segment} />
+        <ElevationProfile
+          segment={this.props.data.segment}
+          drawMapMarker={this._drawMapMarker}
+          undrawMapMarker={this._undrawMapMarker}
+        />
       </UU5.Bricks.Panel>
     );
+  },
+
+  _drawMapMarker() {
+    this._map.drawMapMarker();
+    return this;
+  },
+
+  _undrawMapMarker() {
+    this._map.undrawMapMarker();
+    return this;
   },
   //@@viewOff:private
 

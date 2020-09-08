@@ -95,6 +95,13 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
+  drawMapMarker(a, b, c) {
+    console.log(a, b, c);
+  },
+
+  undrawMapMarker(a, b, c) {
+    console.log(a, b, c);
+  },
   //@@viewOff:interface
 
   //@@viewOn:overriding
