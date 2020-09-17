@@ -165,7 +165,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
     // TODO lazyload na grafy
     return (
       <UU5.Chart.ResponsiveContainer height={300}>
-        <UU5.Chart.AreaChart data={data}>
+        <UU5.Chart.AreaChart data={data} onMouseMove={this._handleMouseMove} onMouseLeave={this._handleMouseLeave}>
           {gradient}
           <UU5.Chart.XAxis dataKey="name" type={"number"} tickCount={20} unit={" m"} domain={[0, "dataMax"]} />
           <UU5.Chart.YAxis domain={["dataMin - 5", "dataMax + 5"]} ticks={ticks} unit={" m"} />
@@ -197,13 +197,19 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
   // console.log(data, event);
   // },
 
-  // _handleMouseMove(data, event) {
-  //   requestAnimationFrame(() => {
-  //     if (data.activeCoordinate) {
-  //       console.log(data, event);
-  //     }
-  //   });
-  // },
+  _handleMouseMove(data, event) {
+    requestAnimationFrame(() => {
+      if (data.activeTooltipIndex != null) {
+        this.props.drawMapMarker(data.activeTooltipIndex);
+      } else {
+        this.props.undrawMapMarker();
+      }
+    });
+  },
+
+  _handleMouseLeave() {
+    this.props.undrawMapMarker();
+  },
 
   _getLoader() {
     return (

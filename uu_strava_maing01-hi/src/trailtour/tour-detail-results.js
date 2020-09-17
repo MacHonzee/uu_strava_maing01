@@ -96,8 +96,8 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
     );
   },
 
-  _drawMapMarker() {
-    this._map.drawMapMarker();
+  _drawMapMarker(coordsIndex) {
+    this._map.drawMapMarker(coordsIndex);
     return this;
   },
 

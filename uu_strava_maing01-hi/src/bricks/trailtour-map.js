@@ -1,4 +1,5 @@
 //@@viewOn:imports
+import polyline from "@mapbox/polyline";
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
@@ -95,12 +96,17 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
-  drawMapMarker(a, b, c) {
-    console.log(a, b, c);
+  drawMapMarker(coordsIndex) {
+    let mapRef = this._mapRef.current;
+    if (mapRef && mapRef.drawMapMarker) {
+      let coords = this._decodedPolyline[coordsIndex];
+      mapRef.drawMapMarker(coords);
+    }
   },
 
-  undrawMapMarker(a, b, c) {
-    console.log(a, b, c);
+  undrawMapMarker() {
+    let mapRef = this._mapRef.current;
+    mapRef && mapRef.undrawMapMarker && mapRef.undrawMapMarker();
   },
   //@@viewOff:interface
 
@@ -108,7 +114,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
-  _getGoogleMap() {
+  _getGoogleMap(decodedPolyline) {
     return (
       <GoogleTrailtourMap
         ref_={this._mapRef}
@@ -117,6 +123,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
         showOwnResults={this.props.showOwnResults}
         showTourDetail={this.props.showTourDetail}
         openPopover={this._openPopover}
+        decodedPolyline={decodedPolyline}
       />
     );
   },
@@ -125,7 +132,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
     return "#" + result.order + " " + result.name;
   },
 
-  _getMapyCz() {
+  _getMapyCz(decodedPolyline) {
     return (
       <MapyCzTrailtourMap
         ref_={this._mapRef}
@@ -134,6 +141,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
         showOwnResults={this.props.showOwnResults}
         showTourDetail={this.props.showTourDetail}
         openPopover={this._openPopover}
+        decodedPolyline={decodedPolyline}
       />
     );
   },
@@ -328,15 +336,27 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
       </UU5.Bricks.Div>
     );
   },
+
+  _polyline: polyline,
+
+  _decodePolyline() {
+    if (!this.props.showTourDetail) return;
+
+    let segment = this.props.segments[0].segment;
+    let decodedPolyline = this._polyline.decode(segment.map.polyline);
+    this._decodedPolyline = decodedPolyline;
+    return decodedPolyline;
+  },
   //@@viewOff:private
 
   //@@viewOn:render
   render() {
+    let decodedPolyline = this._decodePolyline();
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         {this._getMapChangeButton()}
-        {this.state.map === "google" && this._getGoogleMap()}
-        {this.state.map === "mapyCz" && this._getMapyCz()}
+        {this.state.map === "google" && this._getGoogleMap(decodedPolyline)}
+        {this.state.map === "mapyCz" && this._getMapyCz(decodedPolyline)}
       </UU5.Bricks.Div>
     );
   }

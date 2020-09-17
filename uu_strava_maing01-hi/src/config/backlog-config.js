@@ -1,7 +1,13 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Vylepšení převýšení etapy v grafu - interaktivní výběr na detail, zobrazení pozice na mapě"
+      cs: "Datum u výsledku"
+    },
+    {
+      cs: "Možnost zakliknutí převýšení v grafu pro zamknutí pozice na mapě"
+    },
+    {
+      cs: "Zobrazení pozice na mapě i v grafu převýšení, tedy obousměrné"
     },
     {
       cs: "Historie výsledků - celkový přehled, jednotlivec, etapa atd."

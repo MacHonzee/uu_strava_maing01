@@ -1,5 +1,4 @@
 //@@viewOn:imports
-import polyline from "@mapbox/polyline";
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
@@ -49,7 +48,8 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     segments: UU5.PropTypes.array.isRequired,
     showOwnResults: UU5.PropTypes.bool,
     showTourDetail: UU5.PropTypes.bool,
-    openPopover: UU5.PropTypes.func
+    openPopover: UU5.PropTypes.func,
+    decodedPolyline: UU5.PropTypes.array
   },
   //@@viewOff:propTypes
 
@@ -85,6 +85,31 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
       center: [center.y, center.x],
       zoom: this._map.getZoom()
     };
+  },
+
+  drawMapMarker(coords) {
+    const { SMap } = window;
+
+    // get layer for current location markers
+    // we need geometry layer, because marker layer is somehow moving the coordinates to a different place
+    // than the drawn polyline
+    let layer = this._getGeometryLayer();
+
+    // remove previous markers
+    layer.removeAll();
+
+    // create location marker (by drawing circle)
+    let options = {
+      color: "#00f"
+    };
+    let center = SMap.Coords.fromWGS84(coords[1], coords[0]);
+
+    let geometry = new SMap.Geometry(SMap.GEOMETRY_CIRCLE, null, [center, 8], options);
+    layer.addGeometry(geometry);
+  },
+
+  undrawMapMarker() {
+    this._getGeometryLayer().removeAll();
   },
   //@@viewOff:interface
 
@@ -151,6 +176,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
 
   _addMarkers(map) {
     const { SMap, JAK } = window;
+    // we need extra layer for two sets of markers - current location and map markers
     let layer = new SMap.Layer.Marker();
     map.addLayer(layer);
     layer.enable();
@@ -186,9 +212,6 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
         anchor: { top: 32, right: 32 }
       };
       let marker = new SMap.Marker(center, this.props.segments[0].stravaId + "_end", options);
-      // marker.decorate(SMap.Marker.Feature.RelativeAnchor, {
-      //   anchor: { left: 0.5, top: 0.5 }
-      // });
       layer.addMarker(marker);
     }
 
@@ -199,8 +222,6 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     });
   },
 
-  _polyline: polyline,
-
   _addPolyline(map) {
     const { SMap } = window;
     if (!this.props.showTourDetail) return;
@@ -209,9 +230,9 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     map.addLayer(layer);
     layer.enable();
 
-    let segment = this.props.segments[0].segment;
-    let decodedCoords = this._polyline.decode(segment.map.polyline);
-    let path = decodedCoords.map(coords => SMap.Coords.fromWGS84(coords[1], coords[0]));
+    let decodedPolyline = this.props.decodedPolyline;
+    let path = decodedPolyline.map(coords => SMap.Coords.fromWGS84(coords[1], coords[0]));
+    this._path = path; // TODO remove
     let options = {
       color: "#f00",
       width: 3
@@ -238,6 +259,18 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
         </UU5.Bricks.Button>
       );
     }
+  },
+
+  _getGeometryLayer() {
+    const { SMap } = window;
+    let layer = this._currentLocationLayer;
+    if (!layer) {
+      layer = new SMap.Layer.Geometry();
+      this._map.addLayer(layer);
+      layer.enable();
+      this._currentLocationLayer = layer;
+    }
+    return layer;
   },
   //@@viewOff:private
 

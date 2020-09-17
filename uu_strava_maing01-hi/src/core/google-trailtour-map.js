@@ -1,9 +1,7 @@
 //@@viewOn:imports
-import polyline from "@mapbox/polyline";
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
 import Config from "./config/config.js";
-
 import SpaContext from "../context/spa-context";
 import AllMarkers from "../trailtour/config/map-markers";
 //@@viewOff:imports
@@ -30,7 +28,8 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
     segments: UU5.PropTypes.array.isRequired,
     showOwnResults: UU5.PropTypes.bool,
     showTourDetail: UU5.PropTypes.bool,
-    openPopover: UU5.PropTypes.func
+    openPopover: UU5.PropTypes.func,
+    decodedPolyline: UU5.PropTypes.array
   },
   //@@viewOff:propTypes
 
@@ -47,6 +46,16 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
       center: [center.lat(), center.lng()],
       zoom: this._map.getZoom()
     };
+  },
+
+  drawMapMarker(coords) {
+    let marker = this._getCurrentLocationMarker();
+    if (!marker.getMap()) marker.setMap(this._map);
+    marker.setPosition({ lat: coords[0], lng: coords[1] });
+  },
+
+  undrawMapMarker() {
+    this._getCurrentLocationMarker().setMap(null);
   },
   //@@viewOff:interface
 
@@ -109,8 +118,8 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
     if (this.props.showTourDetail) {
       let google = window.google; // loaded from UU5.Bricks.GoogleMap
       let segment = this.props.segments[0].segment;
-      let decodedCoords = this._polyline.decode(segment.map.polyline);
-      let path = decodedCoords.map(coords => ({ lat: coords[0], lng: coords[1] }));
+      let decodedPolyline = this.props.decodedPolyline;
+      let path = decodedPolyline.map(coords => ({ lat: coords[0], lng: coords[1] }));
       new google.maps.Polyline({
         map,
         path,
@@ -132,8 +141,15 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
     }
   },
 
-  // can someone explain why closure does not work properly here?
-  _polyline: polyline,
+  _getCurrentLocationMarker() {
+    let marker = this._currentMarker;
+    if (!marker) {
+      let google = window.google; // loaded from UU5.Bricks.GoogleMap
+      marker = new google.maps.Marker({});
+      this._currentMarker = marker;
+    }
+    return marker;
+  },
   //@@viewOff:private
 
   //@@viewOn:render
