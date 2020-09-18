@@ -1,7 +1,7 @@
 const BacklogConfig = {
   items: [
     {
-      cs: "Datum u výsledku"
+      cs: "Přehled posledních zaběhnutých běhů"
     },
     {
       cs: "Možnost zakliknutí převýšení v grafu pro zamknutí pozice na mapě"

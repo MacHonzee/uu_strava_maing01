@@ -18,7 +18,15 @@ export const AthleteComparison = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "AthleteComparison",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css`
+        .uu5-bricks-header:first-child {
+          margin-top: 0;
+        }
+
+        ${UU5.Utils.ScreenSize.getMaxMediaQueries("xl", "padding: 48px 48px 0 48px;")}
+        ${UU5.Utils.ScreenSize.getMaxMediaQueries("m", "padding: 24px 24px 0 24px;")}
+        ${UU5.Utils.ScreenSize.getMaxMediaQueries("xs", "padding: 16px 16px 0 16px;")}
+      `
     },
     lsi: {
       header: {
@@ -81,6 +89,7 @@ export const AthleteComparison = UU5.Common.VisualComponent.create({
         header={this.getLsiComponent("header")}
         level={3}
         key={`${params.first}_${params.second}`}
+        noSpacing
       >
         <UU5.Common.DataManager onLoad={Calls.listAthleteResults} data={{ year: params.year, stravaIdList }}>
           {data => (

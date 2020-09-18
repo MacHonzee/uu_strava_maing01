@@ -115,6 +115,10 @@ class TrailtourResultsMongo extends UuObjectDao {
     return await super.findOne({ awid, id });
   }
 
+  async listByTrailtour(awid, trailtourId) {
+    return await super.find({ awid, trailtourId: new ObjectId(trailtourId) });
+  }
+
   async listAthleteResults(awid, trailtourId, stravaIdList) {
     return await super.aggregate([
       { $match: { awid, trailtourId: new ObjectId(trailtourId) } },

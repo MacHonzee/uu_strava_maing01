@@ -26,6 +26,14 @@ const AthleteTourDetailLsi = {
   club: {
     cs: "Klub",
     en: "Club"
+  },
+  runDate: {
+    cs: "Zaběhnuto",
+    en: "Run date"
+  },
+  lastRun: {
+    cs: "Poslední běh",
+    en: "Last runs"
   }
 };
 

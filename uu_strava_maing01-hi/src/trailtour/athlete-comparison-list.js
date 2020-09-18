@@ -198,13 +198,15 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
         FlexColumns.stravaTtLink(),
         FlexColumns.segmentNameWithOrder(),
         FlexColumns.distance(),
-        FlexColumns.elevation(),
+        FlexColumns.elevation({ width: "s" }),
         FlexColumns.comparisonOrder({}, athletes, 0),
         FlexColumns.comparisonPoints({}, athletes, 0),
         FlexColumns.comparisonPace({}, athletes, 0),
+        FlexColumns.comparisonRunDate({}, athletes, 0),
         FlexColumns.comparisonOrder({}, athletes, 1),
         FlexColumns.comparisonPoints({}, athletes, 1),
-        FlexColumns.comparisonPace({}, athletes, 1)
+        FlexColumns.comparisonPace({}, athletes, 1),
+        FlexColumns.comparisonRunDate({}, athletes, 1)
       ]
     };
 

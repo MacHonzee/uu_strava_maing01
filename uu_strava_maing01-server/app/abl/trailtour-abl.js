@@ -152,23 +152,34 @@ class TrailtourAbl {
     // HDS 4
     let trailtourList = await TrailtourParser.parseBaseUri(trailtourObj.baseUri);
 
-    trailtourObj.lastUpdate = new Date();
     trailtourObj.totalResults = totalResults;
     trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
 
     // HDS 5
+    let trailtourResultDates = await this._prepareTrailtourResultDates(trailtourObj);
+
+    // HDS 6
     let statistics = { clubs: {} };
+    let yesterday = new Date(); // this assumes daily updates and only from previous day
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(12, 0, 0, 0);
+    yesterday = this._getYesterdayStr(yesterday);
+
     let promises = trailtourList.map(async (trailtour, i) => {
       let tourData = await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
       Object.assign(trailtour, tourData);
       trailtour.awid = awid;
       trailtour.trailtourId = trailtourObj.id;
 
+      // HDS 6.1
+      trailtour = this._updateDatesOfResults(trailtour, trailtourResultDates, yesterday);
+
       trailtourList[i] = await this.trailtourResultsDao.updateByStravaAndTtId(trailtour);
-      statistics = this._updateStatistics(statistics, trailtourList[i]);
+      statistics = this._updateStatistics(statistics, trailtourList[i], yesterday);
     });
     await Promise.all(promises);
 
+    trailtourObj.lastUpdate = new Date();
     trailtourObj = await this._saveStatistics(statistics, trailtourObj);
 
     return {
@@ -353,7 +364,7 @@ class TrailtourAbl {
     };
   }
 
-  _updateStatistics(statistics, trailtour) {
+  _updateStatistics(statistics, trailtour, yesterday) {
     ["menResults", "womenResults"].forEach(resultKey => {
       let sex = resultKey.replace("Results", "");
 
@@ -361,6 +372,15 @@ class TrailtourAbl {
         let stravaId = result.stravaId;
         statistics[stravaId] = statistics[stravaId] || { count: 0 };
         statistics[stravaId].count++;
+        if (yesterday) {
+          if (!statistics[stravaId].lastRun) {
+            statistics[stravaId].lastRun = result.runDate;
+          }
+
+          if (result.runDate > statistics[stravaId].lastRun) {
+            statistics[stravaId].lastRun = result.runDate;
+          }
+        }
 
         if (result.club) {
           statistics.clubs[result.club] = statistics.clubs[result.club] || this._getClubDefault();
@@ -381,6 +401,7 @@ class TrailtourAbl {
         let stats = statistics[stravaId] || { count: 0 };
         result.totalCount = stats.count;
         result.avgPoints = stats.count > 0 ? result.points / result.totalCount : 0;
+        if (stats.lastRun) result.lastRun = stats.lastRun;
       });
     });
 
@@ -405,6 +426,45 @@ class TrailtourAbl {
 
   _getClubDefault() {
     return { runners: { men: {}, women: {} }, results: { men: 0, women: 0 } };
+  }
+
+  async _prepareTrailtourResultDates(trailtourObj) {
+    let allTrailtours = await this.trailtourResultsDao.listByTrailtour(trailtourObj.awid, trailtourObj.id);
+
+    let dateMap = {};
+    allTrailtours.itemList.forEach(trailtour => {
+      dateMap[trailtour.stravaId] = dateMap[trailtour.stravaId] || {};
+      ["womenResults", "menResults"].forEach(sexResultsKey => {
+        trailtour[sexResultsKey].forEach(athleteResult => {
+          dateMap[trailtour.stravaId][athleteResult.stravaId] = athleteResult;
+        });
+      });
+    });
+    return dateMap;
+  }
+
+  _updateDatesOfResults(trailtour, trailtourResultDates, yesterday) {
+    ["womenResults", "menResults"].forEach(sexResultsKey => {
+      trailtour[sexResultsKey].forEach((athleteResult, i) => {
+        let originalResult = trailtourResultDates[trailtour.stravaId][athleteResult.stravaId];
+        // either it was not run at all, or it was run again and the result was improved by getting more points
+        if (!originalResult || originalResult.points < athleteResult.points) {
+          trailtour[sexResultsKey][i].runDate = yesterday;
+          trailtourResultDates[trailtour.stravaId][athleteResult.stravaId] = trailtour[sexResultsKey][i];
+        } else {
+          trailtour[sexResultsKey][i].runDate = originalResult.runDate;
+        }
+      });
+    });
+    return trailtour;
+  }
+
+  _padNum(num) {
+    return num < 10 ? "0" + num : num;
+  }
+
+  _getYesterdayStr(date) {
+    return `${date.getFullYear()}-${this._padNum(date.getMonth() + 1)}-${this._padNum(date.getDate())}`;
   }
 }
 

@@ -89,7 +89,8 @@ export const TourDetailResultList = UU5.Common.VisualComponent.create({
         FlexColumns.clubLink({}, year),
         FlexColumns.points(),
         FlexColumns.time(),
-        FlexColumns.pace()
+        FlexColumns.pace(),
+        FlexColumns.lastRun({}, "runDate")
       ]
     };
     const defaultView = {

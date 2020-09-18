@@ -89,7 +89,8 @@ export const OverallResults = UU5.Common.VisualComponent.create({
         FlexColumns.clubLink({}, this.props.year),
         FlexColumns.points(),
         FlexColumns.totalCount(),
-        FlexColumns.avgPoints()
+        FlexColumns.avgPoints(),
+        FlexColumns.lastRun({}, "lastRun")
       ]
     };
 

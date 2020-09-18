@@ -255,6 +255,11 @@ function getOwnPoints(data) {
   return results.points && <UU5.Bricks.Number value={results.points} />;
 }
 
+function getOwnRunDate(data) {
+  let { results } = getCorrectResults(data);
+  return results.runDate && <UU5.Bricks.DateTime value={results.runDate} dateOnly />;
+}
+
 function getTimeAndPace(data) {
   let { results } = getCorrectResults(data);
   if (results.time) {
@@ -343,6 +348,13 @@ function getComparisonPace(data, resultIndex, athletes) {
         </div>
       </UU5.Common.Fragment>
     );
+  }
+}
+
+function getComparisonRunDate(data, resultIndex, athletes) {
+  let { results } = getComparisonResults(data, resultIndex, athletes);
+  if (results.runDate) {
+    return <UU5.Bricks.DateTime value={results.runDate} dateOnly />;
   }
 }
 
@@ -797,6 +809,44 @@ const FlexColumns = {
       ],
       cellComponent: data => getComparisonPace(data, index, athletes),
       width: "xs"
+    };
+    return mergeColumn(options, column);
+  },
+
+  lastRun(options = {}, runDateKey, getOwn = false) {
+    const column = {
+      id: "lastRun",
+      headers: [
+        {
+          label: Lsi[runDateKey],
+          sorterKey: runDateKey
+        }
+      ],
+      cellComponent: data => {
+        if (getOwn) {
+          return getOwnRunDate(data);
+        } else {
+          return data[runDateKey] && <UU5.Bricks.DateTime value={data[runDateKey]} dateOnly />;
+        }
+      },
+      width: "xs"
+    };
+    return mergeColumn(options, column);
+  },
+
+  comparisonRunDate(options = {}, athletes, index) {
+    const column = {
+      id: NUM_TO_STR.get(index) + "RunDate",
+      headers: [
+        {
+          label: Lsi.emptyHeader
+        },
+        {
+          label: Lsi.runDate
+        }
+      ],
+      cellComponent: data => getComparisonRunDate(data, index, athletes),
+      width: "s"
     };
     return mergeColumn(options, column);
   }

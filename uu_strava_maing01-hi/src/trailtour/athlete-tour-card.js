@@ -52,6 +52,10 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
       club: {
         cs: "Klub",
         en: "Club"
+      },
+      lastRun: {
+        cs: "Poslední běh",
+        en: "Last run"
       }
     }
   },
@@ -210,6 +214,7 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
         {this._getNameRow(results, sex, total)}
         {this._getPointsRow(results, finishedSegments)}
         {this._getSegmentsRow(results, finishedSegments)}
+        {this._getLastRunRow(results)}
       </UU5.BlockLayout.Block>
     );
   },
@@ -254,6 +259,10 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
           <UU5.BlockLayout.Column>{this._getSegmentsCount(finishedSegments)}</UU5.BlockLayout.Column>
         </UU5.BlockLayout.Row>
         <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getLastRunLabel()}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getLastRun(results)}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Row>
           <UU5.BlockLayout.Column width={leftColWidth}>{this._getClubLabel()}</UU5.BlockLayout.Column>
           <UU5.BlockLayout.Column>{this._getClub(results)}</UU5.BlockLayout.Column>
         </UU5.BlockLayout.Row>
@@ -272,6 +281,27 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
           {this._getLargeContent(results, sex, total, finishedSegments)}
         </UU5.Bricks.ScreenSize.Item>
       </UU5.Bricks.ScreenSize>
+    );
+  },
+
+  _getLastRunRow(results) {
+    return (
+      <UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getLastRunLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>{this._getLastRun(results)}</UU5.BlockLayout.Column>
+      </UU5.BlockLayout.Row>
+    );
+  },
+
+  _getLastRunLabel() {
+    return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("lastRun")}</UU5.BlockLayout.Text>;
+  },
+
+  _getLastRun(results) {
+    return (
+      <UU5.BlockLayout.Text weight={"primary"}>
+        {results.lastRun && <UU5.Bricks.DateTime value={results.lastRun} dateOnly />}
+      </UU5.BlockLayout.Text>
     );
   },
   //@@viewOff:private

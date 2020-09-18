@@ -101,7 +101,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
         FlexColumns.timeAndPace(),
         FlexColumns.distance(),
         FlexColumns.elevation(),
-        FlexColumns.location()
+        FlexColumns.lastRun({}, "runDate", true)
       ]
     };
 
