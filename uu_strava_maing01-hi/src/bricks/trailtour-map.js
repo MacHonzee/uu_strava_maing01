@@ -266,6 +266,14 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
             <SegmentPace pace={result.pace} />
           </UU5.Bricks.Div>
         </UU5.Bricks.Div>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.runDate} />
+          </UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.DateTime value={result.runDate} dateOnly />
+          </UU5.Bricks.Div>
+        </UU5.Bricks.Div>
       </UU5.Bricks.Div>
     );
   },
@@ -303,6 +311,12 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
       </UU5.Bricks.Div>
     ));
 
+    let runDates = results.map(result => (
+      <UU5.Bricks.Div key={result.stravaId}>
+        <UU5.Bricks.DateTime value={result.runDate} dateOnly />
+      </UU5.Bricks.Div>
+    ));
+
     return (
       <UU5.Bricks.Div className={this.getClassName("popover")}>
         <UU5.Bricks.Div>
@@ -332,6 +346,12 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
             <UU5.Bricks.Lsi lsi={TourDetailLsi.pace} />
           </UU5.Bricks.Div>
           {paces}
+        </UU5.Bricks.Div>
+        <UU5.Bricks.Div>
+          <UU5.Bricks.Div>
+            <UU5.Bricks.Lsi lsi={TourDetailLsi.runDate} />
+          </UU5.Bricks.Div>
+          {runDates}
         </UU5.Bricks.Div>
       </UU5.Bricks.Div>
     );

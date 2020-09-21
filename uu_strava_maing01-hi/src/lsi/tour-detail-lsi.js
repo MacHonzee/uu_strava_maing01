@@ -62,6 +62,10 @@ const TourDetailLsi = {
   city: {
     cs: "Město",
     en: "City"
+  },
+  runDate: {
+    cs: "Zaběhnuto",
+    en: "Run date"
   }
 };
 
