@@ -57,3 +57,9 @@ const trailtourListClubResultsDtoInType = shape({
   year: oneOf(ALL_TRAILTOURS).isRequired(),
   clubNameList: array(string(), 1, 2).isRequired()
 });
+
+const trailtourListLastRunsDtoInType = shape({
+  year: oneOf(ALL_TRAILTOURS).isRequired(),
+  dateFrom: date().isRequired(),
+  dateTo: date().isRequired()
+});

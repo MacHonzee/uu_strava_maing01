@@ -84,6 +84,25 @@ function getElemMatchStage(rootKey, matchKey, matchList) {
   };
 }
 
+function getDateRangeMatchStage(rootKey, dateFrom, dateTo) {
+  return {
+    $filter: {
+      input: "$" + rootKey,
+      as: rootKey,
+      cond: {
+        $and: [
+          {
+            $gte: ["$$" + rootKey + ".runDate", dateFrom]
+          },
+          {
+            $lte: ["$$" + rootKey + ".runDate", dateTo]
+          }
+        ]
+      }
+    }
+  };
+}
+
 class TrailtourResultsMongo extends UuObjectDao {
   async createSchema() {
     await super.createIndex({ awid: 1, segmentId: 1, trailtourId: 1 }, { unique: true });
@@ -214,6 +233,20 @@ class TrailtourResultsMongo extends UuObjectDao {
 
   async listAllForCache() {
     return await super.find({}, {}, {}, { trailtourId: 1 });
+  }
+
+  async listByDateRange(awid, trailtourId, dateFrom, dateTo) {
+    return await super.aggregate([
+      { $match: { awid, trailtourId: new ObjectId(trailtourId) } },
+      {
+        $project: {
+          menResults: getDateRangeMatchStage("menResults", dateFrom, dateTo),
+          womenResults: getDateRangeMatchStage("womenResults", dateFrom, dateTo),
+          ...PROJECTION_ATTRS
+        }
+      },
+      ...SEGMENT_LOOKUP_STAGES
+    ]);
   }
 }
 

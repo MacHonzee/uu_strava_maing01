@@ -37,7 +37,8 @@
       "trailtour/listAthletes": ["UnregisteredUsers"],
       "trailtour/listAthleteResults": ["UnregisteredUsers"],
       "trailtour/listClubResults": ["UnregisteredUsers"],
-      "segment/calculateElevation": ["UnregisteredUsers"]
+      "segment/calculateElevation": ["UnregisteredUsers"],
+      "trailtour/listLastRuns": ["UnregisteredUsers"]
     }
   }
 }

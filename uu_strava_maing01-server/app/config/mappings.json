@@ -142,6 +142,11 @@
         "realization": "api/controllers/SegmentController.calculateElevation",
         "httpMethod": "POST",
         "type": "CMD"
+      },
+      "trailtour/listLastRuns": {
+        "realization": "api/controllers/TrailtourController.listLastRuns",
+        "httpMethod": "GET",
+        "type": "CMD"
       }
     }
   }

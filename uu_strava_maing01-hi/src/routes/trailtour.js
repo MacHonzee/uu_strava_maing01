@@ -30,7 +30,8 @@ export const Trailtour = UU5.Common.VisualComponent.create({
     },
     lsi: {
       header: {
-        cs: "Průběžné výsledky Trailtour %s"
+        cs: "Průběžné výsledky Trailtour %s",
+        en: "Overall results of Trailtour %s"
       },
       generatedStamp: {
         cs: "Poslední update: ",
