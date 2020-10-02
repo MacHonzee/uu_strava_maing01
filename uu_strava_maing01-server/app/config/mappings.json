@@ -1,4 +1,18 @@
 {
+  "": {
+    "useCaseMap": {
+      "robots.txt": {
+        "realization": "robots.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "defaultUve": {
+        "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      }
+    }
+  },
   "{vendor}-{uuApp}-{uuSubApp}": {
     "useCaseMap": {
       "sys/redirectToPlus4uNetApi": {
@@ -13,6 +27,11 @@
       },
       "defaultUve": {
         "realization": "index.html",
+        "httpMethod": "GET",
+        "type": "UVE"
+      },
+      "robots.txt": {
+        "realization": "robots.html",
         "httpMethod": "GET",
         "type": "UVE"
       },
