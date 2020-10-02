@@ -7,6 +7,7 @@ import "uu_plus4u5g01-app";
 import Lsi from "../config/lsi";
 import Config from "./config/config.js";
 import withLanguage from "../bricks/with-language";
+import TrailtourNamesLsi from "../lsi/trailtour-names-lsi";
 //@@viewOff:imports
 
 export const Left = UU5.Common.VisualComponent.create({
@@ -33,18 +34,6 @@ export const Left = UU5.Common.VisualComponent.create({
         cs: "Segmenty",
         en: "Segments"
       },
-      czTrailtour2020: {
-        cs: "Trailtour 2020 CZ",
-        en: "Trailtour 2020 CZ"
-      },
-      skTrailtour2020: {
-        cs: "Trailtour 2020 SK",
-        en: "Trailtour 2020 SK"
-      },
-      trailtour2019: {
-        cs: "Trailtour 2019",
-        en: "Trailtour 2019"
-      },
       tourSegments: {
         cs: "Etapy",
         en: "Segments"
@@ -57,6 +46,10 @@ export const Left = UU5.Common.VisualComponent.create({
         cs: "Výsledky klubů",
         en: "Club results"
       },
+      tourRuns: {
+        cs: "Poslední běhy",
+        en: "Last runs"
+      },
       about: {
         cs: "O aplikaci",
         en: "About"
@@ -66,6 +59,9 @@ export const Left = UU5.Common.VisualComponent.create({
   //@@viewOff:statics
 
   //@@viewOn:propTypes
+  propTypes: {
+    config: UU5.PropTypes.object.isRequired
+  },
   //@@viewOff:propTypes
 
   //@@viewOn:getDefaultProps
@@ -81,6 +77,43 @@ export const Left = UU5.Common.VisualComponent.create({
   //@@viewOff:overriding
 
   //@@viewOn:private
+  _getMenuPanels() {
+    return this.props.config.trailtours.map(trailtour => {
+      return (
+        <Plus4U5.App.MenuPanel
+          key={trailtour.id}
+          expanded={trailtour.state === "active"}
+          header={<UU5.Bricks.Lsi lsi={TrailtourNamesLsi[trailtour.year]} />}
+          borderBottom
+        >
+          <Plus4U5.App.MenuTree
+            items={[
+              {
+                id: "trailtour_" + trailtour.year,
+                content: this.getLsiComponent("tourResults"),
+                href: "trailtour?year=" + trailtour.year
+              },
+              {
+                id: "trailtourRuns_" + trailtour.year,
+                content: this.getLsiComponent("tourRuns"),
+                href: "trailtourRuns?year=" + trailtour.year
+              },
+              {
+                id: "trailtourClubs_" + trailtour.year,
+                content: this.getLsiComponent("clubResults"),
+                href: "trailtourClubs?year=" + trailtour.year
+              },
+              {
+                id: "trailtourSegments_" + trailtour.year,
+                content: this.getLsiComponent("tourSegments"),
+                href: "trailtourSegments?year=" + trailtour.year
+              }
+            ]}
+          />
+        </Plus4U5.App.MenuPanel>
+      );
+    });
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -102,69 +135,7 @@ export const Left = UU5.Common.VisualComponent.create({
         ]}
         homeHref={Config.DEFAULT_ROUTE}
       >
-        <Plus4U5.App.MenuPanel expanded header={this.getLsiComponent("czTrailtour2020")} borderBottom>
-          <Plus4U5.App.MenuTree
-            items={[
-              {
-                id: "trailtour_2020_CZ",
-                content: this.getLsiComponent("tourResults"),
-                href: "trailtour?year=2020_CZ"
-              },
-              {
-                id: "trailtourClubs_2020_CZ",
-                content: this.getLsiComponent("clubResults"),
-                href: "trailtourClubs?year=2020_CZ"
-              },
-              {
-                id: "trailtourSegments_2020_CZ",
-                content: this.getLsiComponent("tourSegments"),
-                href: "trailtourSegments?year=2020_CZ"
-              }
-            ]}
-          />
-        </Plus4U5.App.MenuPanel>
-        <Plus4U5.App.MenuPanel expanded header={this.getLsiComponent("skTrailtour2020")} borderBottom>
-          <Plus4U5.App.MenuTree
-            items={[
-              {
-                id: "trailtour_2020_SK",
-                content: this.getLsiComponent("tourResults"),
-                href: "trailtour?year=2020_SK"
-              },
-              {
-                id: "trailtourClubs_2020_SK",
-                content: this.getLsiComponent("clubResults"),
-                href: "trailtourClubs?year=2020_SK"
-              },
-              {
-                id: "trailtourSegments_2020_SK",
-                content: this.getLsiComponent("tourSegments"),
-                href: "trailtourSegments?year=2020_SK"
-              }
-            ]}
-          />
-        </Plus4U5.App.MenuPanel>
-        <Plus4U5.App.MenuPanel header={this.getLsiComponent("trailtour2019")} borderBottom>
-          <Plus4U5.App.MenuTree
-            items={[
-              {
-                id: "trailtour_2019",
-                content: this.getLsiComponent("tourResults"),
-                href: "trailtour?year=2019"
-              },
-              {
-                id: "trailtourClubs_2019",
-                content: this.getLsiComponent("clubResults"),
-                href: "trailtourClubs?year=2019"
-              },
-              {
-                id: "trailtourSegments_2019",
-                content: this.getLsiComponent("tourSegments"),
-                href: "trailtourSegments?year=2019"
-              }
-            ]}
-          />
-        </Plus4U5.App.MenuPanel>
+        {this._getMenuPanels()}
       </Plus4U5.App.Left>
     );
   }

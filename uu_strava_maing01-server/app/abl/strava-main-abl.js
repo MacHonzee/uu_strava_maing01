@@ -25,6 +25,7 @@ class StravaMainAbl {
   constructor() {
     this.validator = Validator.load();
     this.configDao = DaoFactory.getDao("stravaMain");
+    this.trailtourDao = DaoFactory.getDao("trailtour");
     this.personalRoleCache = new LruCache();
   }
 
@@ -90,8 +91,11 @@ class StravaMainAbl {
     const AthleteAbl = require("./athlete-abl");
     let { athlete } = await AthleteAbl.loadMyself(awid, session);
 
+    let trailtours = await this.trailtourDao.list(awid, {}, { state: 1 }, { _id: 1, year: 1, state: 1 });
+
     return {
       config,
+      trailtours: trailtours.itemList,
       athlete
     };
   }
@@ -122,7 +126,7 @@ class StravaMainAbl {
     // HDS 1
     let validationResult = this.validator.validate("redirectToPlus4uNetApiDtoInType", dtoIn);
     // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
+    ValidationHelper.processValidationResult(
       dtoIn,
       validationResult,
       WARNINGS.redirectToPlus4uNetApiUnsupportedKeys.code,

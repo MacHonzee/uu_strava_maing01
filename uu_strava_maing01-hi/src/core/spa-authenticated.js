@@ -24,6 +24,7 @@ import TourSegments from "../routes/tour-segments";
 import AthleteComparison from "../routes/athlete-comparison";
 import TrailtourClubs from "../routes/trailtour-clubs";
 import ClubDetail from "../routes/club-detail";
+import TrailtourRuns from "../routes/trailtour-runs";
 //@@viewOff:imports
 
 const SpaAuthenticated = UU5.Common.VisualComponent.create({
@@ -94,6 +95,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
       athleteComparison: { component: <AthleteComparison /> },
       trailtourClubs: { component: <TrailtourClubs /> },
       clubDetail: { component: <ClubDetail /> },
+      trailtourRuns: { component: <TrailtourRuns /> },
       about: { component: <About /> }
     };
 
@@ -115,7 +117,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
                 <UU5.Bricks.Link href={Config.DEFAULT_ROUTE}>{this.getLsiComponent("home")}</UU5.Bricks.Link>
               </Plus4U5.App.Top>
             }
-            left={<Left />}
+            left={<Left config={config} />}
             leftFixed
             leftRelative="m l xl"
             leftWidth="!xs-50 !s-40 !m-210px !l-210px !xl-210px"

@@ -2,8 +2,8 @@
 const AppClient = require("uu_appg01_server").AppClient;
 const { MongoClient } = require("mongodb");
 
-const TT_YEAR = "2020_SK";
-const DATABASE_NAME = "uuStravaMainPrimary";
+const TT_YEAR = "2020_CZ";
+const DATABASE_NAME = "stravaMainPrimary";
 const CONN_STRING = "mongodb://127.0.0.1:27017/" + DATABASE_NAME;
 const SKIPPED_STRAVA_IDS = [58106992, 45535394];
 
