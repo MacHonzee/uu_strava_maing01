@@ -68,6 +68,20 @@ function getAthleteLink({ name, stravaId }, year) {
   return <UU5.Bricks.Link href={`athleteTourDetail?year=${year}&stravaId=${stravaId}`}>{name}</UU5.Bricks.Link>;
 }
 
+function getAthleteAndClubLink({ name, stravaId, club }, year) {
+  if (!year) {
+    console.error("No year was passed into atheteLink column, not rendering!");
+    return;
+  }
+
+  return (
+    <UU5.Common.Fragment>
+      <div>{getAthleteLink({ name, stravaId }, year)}</div>
+      <div>{getClubLink(club, year)}</div>
+    </UU5.Common.Fragment>
+  );
+}
+
 function getClubLink(clubName, year) {
   if (!year) {
     console.error("No year was passed into atheteLink column, not rendering!");
@@ -142,10 +156,12 @@ function getElevation({ segment: { total_elevation_gain } }) {
   return <SegmentElevation elevation={total_elevation_gain} />;
 }
 
-function getStravaTtLinks({ stravaId, link }) {
+function getStravaTtLinks(data, keyOverrides) {
+  let stravaIdKey = keyOverrides.stravaId || "stravaId";
+  let linkKey = keyOverrides.link || "link";
   return (
     <UU5.Common.Fragment>
-      <SegmentLink stravaId={stravaId} style={{ marginRight: "4px" }}>
+      <SegmentLink stravaId={data[stravaIdKey]} style={{ marginRight: "4px" }}>
         <UU5.Bricks.Image
           src={"./assets/strava_symbol_orange.png"}
           responsive={false}
@@ -153,36 +169,43 @@ function getStravaTtLinks({ stravaId, link }) {
           width={"32px"}
         />
       </SegmentLink>
-      <UU5.Bricks.Link href={link} target={"_blank"}>
+      <UU5.Bricks.Link href={data[linkKey]} target={"_blank"}>
         <UU5.Bricks.Image src={"./assets/inov8-logo.png"} responsive={false} alt={"trailtour-logo"} width={"24px"} />
       </UU5.Bricks.Link>
     </UU5.Common.Fragment>
   );
 }
 
-function getSegmentName({ name, author, id }) {
+function getSegmentName(data, keyOverrides) {
+  let nameKey = keyOverrides.name || "name";
+  let authorKey = keyOverrides.author || "author";
+  let idKey = keyOverrides.id || "id";
   return (
     <UU5.Common.Fragment>
       <div>
-        <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
+        <UU5.Bricks.Link href={"tourDetail?id=" + data[idKey]}>{data[nameKey]}</UU5.Bricks.Link>
       </div>
-      <div>{author}</div>
+      <div>{data[authorKey]}</div>
     </UU5.Common.Fragment>
   );
 }
 
-function getSegmentNameTile({ name, author, id, order }, shouldBeBold, labelWidth) {
+function getSegmentNameTile(data, shouldBeBold, labelWidth, keyOverrides) {
+  let nameKey = keyOverrides.name || "name";
+  let authorKey = keyOverrides.author || "author";
+  let idKey = keyOverrides.id || "id";
+  let orderKey = keyOverrides.order || "order";
   return (
     <UU5.Common.Fragment>
       <div style={{ fontWeight: shouldBeBold ? "bold" : "normal" }}>
-        #{order} <UU5.Bricks.Link href={"tourDetail?id=" + id}>{name}</UU5.Bricks.Link>
+        #{data[orderKey]} <UU5.Bricks.Link href={"tourDetail?id=" + data[idKey]}>{data[nameKey]}</UU5.Bricks.Link>
       </div>
       <div>
         <strong style={labelWidth ? { display: "inline-block", width: labelWidth } : {}}>
           <UU5.Bricks.Lsi lsi={TourDetailLsi.author} />
           :&nbsp;
         </strong>
-        {author}
+        {data[authorKey]}
       </div>
     </UU5.Common.Fragment>
   );
@@ -244,7 +267,10 @@ function getOwnOrder(data) {
   if (results.order) {
     return (
       <UU5.Common.Fragment>
-        <UU5.Bricks.Strong>{results.order}</UU5.Bricks.Strong>&nbsp;/&nbsp;{total}
+        <UU5.Bricks.Strong>{results.order}</UU5.Bricks.Strong>&nbsp;/&nbsp;{total}&nbsp;
+        {results.order === 1 && `🥇`}
+        {results.order === 2 && `🥈`}
+        {results.order === 3 && `🥉`}
       </UU5.Common.Fragment>
     );
   }
@@ -403,7 +429,7 @@ const FlexColumns = {
     return mergeColumn(options, column);
   },
 
-  stravaTtLink(options = {}) {
+  stravaTtLink(options = {}, keyOverrides = {}) {
     const column = {
       id: "strava",
       headers: [
@@ -414,7 +440,7 @@ const FlexColumns = {
           label: TourDetailLsi.trailtour
         }
       ],
-      cellComponent: getStravaTtLinks,
+      cellComponent: data => getStravaTtLinks(data, keyOverrides),
       width: "xs"
     };
     column.tileComponent = data => (
@@ -434,6 +460,26 @@ const FlexColumns = {
       ],
       cellComponent: data => getAthleteLink(data, year),
       width: "l",
+      visibility: "always"
+    };
+    return mergeColumn(options, column);
+  },
+
+  athleteAndClubLink(options = {}, year) {
+    const column = {
+      id: "name",
+      headers: [
+        {
+          label: Lsi.name,
+          sorterKey: "name"
+        },
+        {
+          label: Lsi.club,
+          sorterKey: "club"
+        }
+      ],
+      cellComponent: data => getAthleteAndClubLink(data, year),
+      width: "m",
       visibility: "always"
     };
     return mergeColumn(options, column);
@@ -599,7 +645,7 @@ const FlexColumns = {
     return mergeColumn(options, column);
   },
 
-  segmentName(options = {}) {
+  segmentName(options = {}, keyOverrides = {}) {
     const column = {
       id: "name",
       headers: [
@@ -612,8 +658,8 @@ const FlexColumns = {
           sorterKey: "author"
         }
       ],
-      cellComponent: getSegmentName,
-      tileComponent: getSegmentNameTile,
+      cellComponent: data => getSegmentName(data, keyOverrides),
+      tileComponent: data => getSegmentNameTile(data, false, false, keyOverrides),
       width: "l",
       visibility: "always"
     };

@@ -1,4 +1,4 @@
-const NAME_KEYS = ["name", "club", "author"];
+const NAME_KEYS = ["name", "club", "author", "tourName"];
 const SEGMENT_KEYS = ["distance", "total_elevation_gain", "state", "city"];
 const ATHLETE_SEX_KEYS = ["order", "points", "time", "pace"];
 const KEY_TRANSLATE = {

@@ -56,7 +56,8 @@ const Tools = {
       result.avgPoints = result.resultsTotal > 0 ? result.points / result.resultsTotal : 0;
     });
 
-    return await this.trailtourDao.updateByYear(trailtourObj);
+    const trailtourDao = require("../trailtour/update-abl").trailtourDao;
+    return await trailtourDao.updateByYear(trailtourObj);
   },
 
   getClubDefault: () => {
