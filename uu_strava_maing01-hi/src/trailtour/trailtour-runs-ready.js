@@ -71,6 +71,7 @@ export const TrailtourRunsReady = UU5.Common.VisualComponent.create({
         ttResult.link = allTtResults.link;
         ttResult.tourName = allTtResults.name;
         ttResult.tourStravaId = allTtResults.stravaId;
+        ttResult.tourOrder = allTtResults.order;
         ttResult.author = allTtResults.author;
         ttResult.id = allTtResults._id;
         ttResult.pace = BrickTools.countPace(ttResult.time, ttResult.segment.distance);
@@ -114,7 +115,10 @@ export const TrailtourRunsReady = UU5.Common.VisualComponent.create({
 
   //@@viewOn:render
   render() {
-    let segmentNameColumn = FlexColumns.segmentName({ id: "tourName", width: "l" }, { name: "tourName" });
+    let segmentNameColumn = FlexColumns.segmentName(
+      { id: "tourName", width: "l" },
+      { name: "tourName", order: "tourOrder" }
+    );
     let stravaTtColumn = FlexColumns.stravaTtLink({}, { stravaId: "tourStravaId" });
 
     stravaTtColumn.tileComponent = data => (
