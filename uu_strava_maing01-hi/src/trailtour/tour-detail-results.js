@@ -5,7 +5,7 @@ import Config from "./config/config.js";
 import TourDetailCard from "./tour-detail-card";
 import TourDetailResultList from "./tour-detail-result-list";
 import TrailtourMap from "../bricks/trailtour-map";
-import ElevationProfile from "./elevation-profile";
+import ElevationProfileLazy from "./elevation-profile-lazy";
 //@@viewOff:imports
 
 const Lsi = {
@@ -87,7 +87,7 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
         mountContent={"onFirstExpand"}
         header={<UU5.Bricks.Lsi lsi={Lsi.elevationHeader} />}
       >
-        <ElevationProfile
+        <ElevationProfileLazy
           segment={this.props.data.segment}
           drawMapMarker={this._drawMapMarker}
           undrawMapMarker={this._undrawMapMarker}

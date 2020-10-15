@@ -1,7 +1,6 @@
 //@@viewOn:imports
 import * as UU5 from "uu5g04";
 import "uu5g04-bricks";
-import "uu5chartg01";
 import Lsi from "../config/lsi";
 import Config from "./config/config.js";
 import BacklogConfig from "../config/backlog-config";

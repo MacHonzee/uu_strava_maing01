@@ -5,6 +5,7 @@ import Config from "./config/config.js";
 import AthleteTourCard from "./athlete-tour-card";
 import AthleteTourResultList from "./athlete-tour-result-list";
 import TrailtourMap from "../bricks/trailtour-map";
+import AthleteTourStatisticsLazy from "./athlete-tour-statistics-lazy";
 //@@viewOff:imports
 
 export const AthleteTourResults = UU5.Common.VisualComponent.create({
@@ -17,6 +18,16 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
     tagName: Config.TAG + "AthleteTourResults",
     classNames: {
       main: (props, state) => Config.Css.css``
+    },
+    lsi: {
+      resultsTab: {
+        cs: "Výsledky",
+        en: "Results"
+      },
+      statsTab: {
+        cs: "Statistiky",
+        en: "Statistics"
+      }
     }
   },
   //@@viewOff:statics
@@ -59,13 +70,22 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <AthleteTourCard data={newTtData} athleteResults={this.props.data.athleteResults} />
-        <TrailtourMap
-          style={{ marginTop: "8px" }}
-          mapConfig={ttData.mapConfig}
-          segments={this.props.data.athleteResults}
-          showOwnResults
-        />
-        <AthleteTourResultList data={this.props.data.athleteResults} sex={this.props.sex} trailtour={ttData} />
+        <UU5.Bricks.Tabs fade mountTabContent={"onFirstActive"}>
+          {/* FIXME přehodit pořadí tabů */}
+          <UU5.Bricks.Tabs.Item header={this.getLsiComponent("statsTab")}>
+            <AthleteTourStatisticsLazy data={this.props.data.athleteResults} sex={this.props.sex} trailtour={ttData} />
+          </UU5.Bricks.Tabs.Item>
+
+          <UU5.Bricks.Tabs.Item header={this.getLsiComponent("resultsTab")}>
+            <TrailtourMap
+              style={{ marginTop: "8px" }}
+              mapConfig={ttData.mapConfig}
+              segments={this.props.data.athleteResults}
+              showOwnResults
+            />
+            <AthleteTourResultList data={this.props.data.athleteResults} sex={this.props.sex} trailtour={ttData} />
+          </UU5.Bricks.Tabs.Item>
+        </UU5.Bricks.Tabs>
       </UU5.Bricks.Div>
     );
   }
