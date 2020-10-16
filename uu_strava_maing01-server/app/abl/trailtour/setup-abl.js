@@ -31,6 +31,8 @@ class SetupAbl {
       mapConfig: dtoIn.mapConfig,
       lastUpdate: new Date(),
       state: "active",
+      validFrom: dtoIn.validFrom,
+      validTo: dtoIn.validTo,
       totalResults
     };
     try {

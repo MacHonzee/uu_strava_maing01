@@ -11,7 +11,9 @@ const trailtourSetupDtoInType = shape({
   mapConfig: shape({
     zoom: number().isRequired(),
     center: array(number(), 2, 2).isRequired()
-  }).isRequired()
+  }).isRequired(),
+  validFrom: date().isRequired(),
+  validTo: date().isRequired()
 });
 
 const trailtourUpdateDtoInType = shape({
@@ -25,7 +27,9 @@ const trailtourUpdateConfigDtoInType = shape({
   mapConfig: shape({
     zoom: number().isRequired(),
     center: array(number(), 2, 2).isRequired()
-  })
+  }),
+  validFrom: date(),
+  validTo: date()
 });
 
 const trailtourGetDtoInType = shape({
