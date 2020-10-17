@@ -81,12 +81,13 @@ export const AthleteTourStatistics = UU5.Common.VisualComponent.create({
           editable
           header={this.getLsiComponent("segmentsByDay")}
           xAxis={"day"}
-          yAxises={["segments"]}
+          yAxis={"segments"}
+          yAxisMathType={"sum"}
         />
-        <InteractiveResultChartPanel {...chartProps} xAxis={"week"} yAxises={["distance"]} />
-        <InteractiveResultChartPanel {...chartProps} xAxis={"month"} yAxises={["distance"]} />
-        <InteractiveResultChartPanel {...chartProps} xAxis={"dayOfWeek"} yAxises={["distance"]} />
-        <InteractiveResultChartPanel {...chartProps} xAxis={"none"} yAxises={["time"]} />
+        <InteractiveResultChartPanel {...chartProps} xAxis={"week"} yAxis={"distance"} yAxisMathType={"sum"} />
+        <InteractiveResultChartPanel {...chartProps} xAxis={"month"} yAxis={"distance"} yAxisMathType={"sum"} />
+        <InteractiveResultChartPanel {...chartProps} xAxis={"dayOfWeek"} yAxis={"distance"} yAxisMathType={"sum"} />
+        <InteractiveResultChartPanel {...chartProps} xAxis={"none"} yAxis={"time"} yAxisMathType={"sum"} />
       </UU5.Bricks.Div>
     );
   }

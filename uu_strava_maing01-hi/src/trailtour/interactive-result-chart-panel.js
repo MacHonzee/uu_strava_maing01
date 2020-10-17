@@ -11,7 +11,15 @@ const Lsi = {
   },
   xAxisInputLabel: {
     cs: "Popisky osy X",
-    en: "Labels of X Axis"
+    en: "Labels of X axis"
+  },
+  yAxisInputLabel: {
+    cs: "Jednotky osy Y",
+    en: "Units of Y axis"
+  },
+  yAxisMathTypeInputLabel: {
+    cs: "Výpočet osy Y",
+    en: "Calculation of Y axis"
   },
   xAxisLabels: {
     none: {
@@ -34,10 +42,44 @@ const Lsi = {
       cs: "Den v týdnu",
       en: "Day of week"
     }
+  },
+  yAxisLabels: {
+    segments: {
+      cs: "Počet etap",
+      en: "Segment count"
+    },
+    distance: {
+      cs: "Vzdálenost",
+      en: "Distance"
+    },
+    elevation: {
+      cs: "Převýšení",
+      en: "Elevation"
+    },
+    points: {
+      cs: "Body",
+      en: "Points"
+    },
+    time: {
+      cs: "Strávený čas",
+      en: "Elapsed time"
+    }
+  },
+  yAxisMathTypeLabels: {
+    sum: {
+      cs: "Součet",
+      en: "Sum"
+    },
+    avg: {
+      cs: "Průměr",
+      en: "Average"
+    }
   }
 };
 
 const X_AXIS_TYPES = ["none", "day", "week", "month", "dayOfWeek"];
+const Y_AXIS_TYPES = ["segments", "distance", "elevation", "points", "time"];
+const Y_AXIS_MATH_TYPES = ["sum", "avg"];
 
 const DAY_IN_SECONDS = 86400000;
 
@@ -70,7 +112,8 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
     sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired,
     header: UU5.PropTypes.node,
     xAxis: UU5.PropTypes.oneOf(X_AXIS_TYPES).isRequired,
-    yAxises: UU5.PropTypes.arrayOf(UU5.PropTypes.oneOf(["segments", "distance", "elevation", "points", "time"])),
+    yAxis: UU5.PropTypes.oneOf(Y_AXIS_TYPES).isRequired,
+    yAxisMathType: UU5.PropTypes.oneOf(Y_AXIS_MATH_TYPES).isRequired,
     editable: UU5.PropTypes.bool,
     expanded: UU5.PropTypes.bool
   },
@@ -87,7 +130,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
 
   //@@viewOn:reactLifeCycle
   getInitialState() {
-    let stateKeys = ["xAxis", "yAxises", "editable"];
+    let stateKeys = ["xAxis", "yAxis", "yAxisMathType", "editable"];
     return stateKeys.reduce((map, key) => {
       map[key] = this.props[key];
       return map;
@@ -104,15 +147,14 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
   //@@viewOn:private
   _getChart() {
     let chartData = this._prepareData();
-    console.log(chartData);
     return (
       <UU5.Chart.ResponsiveContainer height={300}>
         <UU5.Chart.BarChart data={chartData}>
           <UU5.Chart.XAxis dataKey="name" label={this._getXAxisLabel()} />
-          {this._getYAxises(chartData)}
+          {this._getYAxis(chartData)}
           <UU5.Chart.Tooltip content={this._getTooltipContent} />
           <UU5.Chart.Legend />
-          {this._getBars()}
+          <UU5.Chart.Bar dataKey={this.state.yAxis} />
         </UU5.Chart.BarChart>
       </UU5.Chart.ResponsiveContainer>
     );
@@ -139,22 +181,14 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
     return { value: this.state.xAxis, position: "insideBottomRight", offset: 4 };
   },
 
-  _getYAxises(chartData) {
-    return this.state.yAxises.map(yAxis => {
-      if (yAxis === "segments") {
-        let max = Math.max(...chartData.map(item => item.segments), 0);
-        let ticks = Array.from(Array(max + 1).keys());
-        return <UU5.Chart.YAxis key={yAxis} ticks={ticks} />;
-      } else {
-        return <UU5.Chart.YAxis key={yAxis} />;
-      }
-    });
-  },
-
-  _getBars() {
-    return this.state.yAxises.map(yAxis => {
-      return <UU5.Chart.Bar key={yAxis} dataKey={yAxis} />;
-    });
+  _getYAxis(chartData) {
+    if (this.state.yAxis === "segments") {
+      let max = Math.max(...chartData.map(item => item.segments), 0);
+      let ticks = Array.from(Array(max + 1).keys());
+      return <UU5.Chart.YAxis ticks={ticks} />;
+    } else {
+      return <UU5.Chart.YAxis />;
+    }
   },
 
   _prepareData() {
@@ -176,33 +210,34 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
       runs
     };
 
-    let counterMap = this.state.yAxises.reduce((map, key) => {
-      map[key] = 0.0;
-      return map;
-    }, {});
+    let counterMap = {};
+    counterMap[this.state.yAxis] = 0.0;
 
+    let yAxisKey = this.state.yAxis;
     runs &&
       runs.forEach(run => {
         let result = run[sexKey][0];
 
-        this.state.yAxises.forEach(yAxisKey => {
-          switch (yAxisKey) {
-            case "points":
-            case "time":
-              counterMap[yAxisKey] += result[yAxisKey];
-              break;
-            case "segments":
-              counterMap[yAxisKey]++;
-              break;
-            case "distance":
-              counterMap[yAxisKey] += run.segment.distance;
-              break;
-            case "elevation":
-              counterMap[yAxisKey] += run.segment.total_elevation_gain;
-              break;
-          }
-        });
+        switch (yAxisKey) {
+          case "points":
+          case "time":
+            counterMap[yAxisKey] += result[yAxisKey];
+            break;
+          case "segments":
+            counterMap[yAxisKey]++;
+            break;
+          case "distance":
+            counterMap[yAxisKey] += run.segment.distance;
+            break;
+          case "elevation":
+            counterMap[yAxisKey] += run.segment.total_elevation_gain;
+            break;
+        }
       });
+
+    if (runs && this.state.yAxisMathType === "avg") {
+      counterMap[yAxisKey] = counterMap[yAxisKey] / runs.length;
+    }
 
     Object.assign(chartDataItem, counterMap);
     return chartDataItem;
@@ -311,7 +346,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
   _getEditableInputs() {
     return (
       <UU5.Bricks.Row>
-        <UU5.Bricks.Column colWidth={"xs-12 m-6"}>
+        <UU5.Bricks.Column colWidth={"xs-12 m-4"}>
           <UU5.Forms.Radios
             labelColWidth={"xs-12"}
             inputColWidth={"xs-12"}
@@ -324,12 +359,46 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
             onChange={this._handleXAxisChange}
           />
         </UU5.Bricks.Column>
+        <UU5.Bricks.Column colWidth={"xs-12 m-4"}>
+          <UU5.Forms.Radios
+            labelColWidth={"xs-12"}
+            inputColWidth={"xs-12"}
+            label={<UU5.Bricks.Lsi lsi={Lsi.yAxisInputLabel} />}
+            value={Y_AXIS_TYPES.map(yAxisType => ({
+              label: <UU5.Bricks.Lsi lsi={Lsi.yAxisLabels[yAxisType]} />,
+              value: this.state.yAxis === yAxisType,
+              name: yAxisType
+            }))}
+            onChange={this._handleYAxisChange}
+          />
+        </UU5.Bricks.Column>
+        <UU5.Bricks.Column colWidth={"xs-12 m-4"}>
+          <UU5.Forms.Radios
+            labelColWidth={"xs-12"}
+            inputColWidth={"xs-12"}
+            label={<UU5.Bricks.Lsi lsi={Lsi.yAxisMathTypeInputLabel} />}
+            value={Y_AXIS_MATH_TYPES.map(yAxisMathType => ({
+              label: <UU5.Bricks.Lsi lsi={Lsi.yAxisMathTypeLabels[yAxisMathType]} />,
+              value: this.state.yAxisMathType === yAxisMathType,
+              name: yAxisMathType
+            }))}
+            onChange={this._handleYAxisMathTypeChange}
+          />
+        </UU5.Bricks.Column>
       </UU5.Bricks.Row>
     );
   },
 
   _handleXAxisChange(opt) {
     this.setState({ xAxis: opt.value });
+  },
+
+  _handleYAxisChange(opt) {
+    this.setState({ yAxis: opt.value });
+  },
+
+  _handleYAxisMathTypeChange(opt) {
+    this.setState({ yAxisMathType: opt.value });
   },
   //@@viewOff:private
 
