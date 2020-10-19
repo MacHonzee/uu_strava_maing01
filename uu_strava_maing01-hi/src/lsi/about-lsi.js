@@ -17,27 +17,29 @@ const AboutLsi = {
   },
   welcomeText: {
     cs:
-      "Aplikace umožňuje zobrazit souhrnné výsledky, detail jednoho běžce či detail jedné etapy," +
-      " vše s možnostmi řazení či zobrazením na mobilních zařízeních.",
+      "Aplikace umožňuje zobrazit souhrnné výsledky běžců i klubů, detail jednoho běžce, jedné etapy či " +
+      "jednoho klubu, vše s možnostmi řazení či zobrazením na mobilních zařízeních. Aplikace umožňuje etapy " +
+      "plánovat či naopak analyzovat v grafech, jak se v minulosti dařilo. Načítá ovšem data z výsledků z " +
+      "oficiálního webu Trailtour, a neručím tedy za kompletní správnost údajů. Appka přeci jen vzniká pro " +
+      "radost a pouze ve volném čase.",
     en:
-      "Application allows to display overall results, detail of one runner or detail of one segment, " +
-      "all including possibility of sorting or mobile display."
+      "The application can display overall results of runners and clubs, detail of one runner, one segment " +
+      "or one club, all with possibilities of sorting or mobile display. The application can help you plan the " +
+      "runs or analyze already existing results of the past. It however reads and parses data from official " +
+      "Trailtour web, so I can not guarantee full results precision. The app is intended just for enjoyment " +
+      "of development, and only in free time."
   },
   registrationText: {
     cs:
       "<uu5string/>Aplikace je postavena nad <UU5.Bricks.Link href='https://unicorn.com/cs/'>" +
       "UAF</UU5.Bricks.Link> frameworkem a službou <UU5.Bricks.Link href='https://www.plus4u.net/'>" +
-      "Plus4U</UU5.Bricks.Link>. Bezplatnou registrací do této služby získáte nejen přístupům k " +
-      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>produktům Plus4U</UU5.Bricks.Link>, ale také " +
-      "možnost tlačítkem synchronizovat výsledky Trailtour s oficiálními stránkami. Další funkčnosti pro " +
-      "přihlášené budou implementovány v budoucnu, například podrobnější osobní statistiky o segmentech Stravy.",
+      "Plus4U</UU5.Bricks.Link>. Bezplatnou registrací do této služby získáte přístup k " +
+      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>produktům Plus4U</UU5.Bricks.Link>.",
     en:
       "<uu5string/>Application is built upon <UU5.Bricks.Link href='https://unicorn.com/cs/'>" +
       "UAF</UU5.Bricks.Link> frameworke a service <UU5.Bricks.Link href='https://www.plus4u.net/'>" +
-      "Plus4U</UU5.Bricks.Link>. By free registration to this service you will get access not only to " +
-      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>Plus4U products</UU5.Bricks.Link>, but also to " +
-      "possibility of synchronizing Trailtour results with official pages. Other functionalities for " +
-      "registered users will be implemented in the future, ie. detailed personal statistics about Strava segments."
+      "Plus4U</UU5.Bricks.Link>. By free registration to this service you will get access " +
+      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>Plus4U products</UU5.Bricks.Link>."
   },
   contactText: {
     cs:

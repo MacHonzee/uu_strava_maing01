@@ -71,11 +71,6 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
         <AthleteTourCard data={newTtData} athleteResults={this.props.data.athleteResults} />
         <UU5.Bricks.Tabs fade mountTabContent={"onFirstActive"}>
-          {/* FIXME přehodit pořadí tabů */}
-          <UU5.Bricks.Tabs.Item header={this.getLsiComponent("statsTab")}>
-            <AthleteTourStatisticsLazy data={this.props.data.athleteResults} sex={this.props.sex} trailtour={ttData} />
-          </UU5.Bricks.Tabs.Item>
-
           <UU5.Bricks.Tabs.Item header={this.getLsiComponent("resultsTab")}>
             <TrailtourMap
               style={{ marginTop: "8px" }}
@@ -84,6 +79,9 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
               showOwnResults
             />
             <AthleteTourResultList data={this.props.data.athleteResults} sex={this.props.sex} trailtour={ttData} />
+          </UU5.Bricks.Tabs.Item>
+          <UU5.Bricks.Tabs.Item header={this.getLsiComponent("statsTab")}>
+            <AthleteTourStatisticsLazy data={this.props.data.athleteResults} sex={this.props.sex} trailtour={ttData} />
           </UU5.Bricks.Tabs.Item>
         </UU5.Bricks.Tabs>
       </UU5.Bricks.Div>

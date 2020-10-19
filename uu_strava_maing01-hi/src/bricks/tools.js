@@ -22,7 +22,7 @@ const DOCUMENT_TITLES = {
 
 const BrickTools = {
   formatDuration(seconds) {
-    if (!seconds) return;
+    if (!seconds) return seconds;
     let hours = Math.floor(seconds / 3600);
     let secondsLeft = seconds % 3600;
     let minutes = Math.floor(secondsLeft / 60);

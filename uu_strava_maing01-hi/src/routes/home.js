@@ -4,6 +4,7 @@ import "uu5g04-bricks";
 import Lsi from "../config/lsi";
 import Config from "./config/config.js";
 import BacklogConfig from "../config/backlog-config";
+import ChangelogConfig from "../config/changelog-config";
 import BrickTools from "../bricks/tools";
 import withSetMenuItem from "../bricks/with-set-menu-item";
 import AboutLsi from "../lsi/about-lsi";
@@ -38,8 +39,12 @@ const Home = UU5.Common.VisualComponent.create({
         en: "Results SK 2020"
       },
       backlogHeader: {
-        cs: "Rozpracované funkčnosti",
-        en: "Future functions"
+        cs: "Backlog funkčností",
+        en: "Backlog of functions"
+      },
+      changelogHeader: {
+        cs: "Poslední dokončené funkčnosti",
+        en: "Recent released functions"
       }
     }
   },
@@ -78,6 +83,20 @@ const Home = UU5.Common.VisualComponent.create({
     );
   },
 
+  _getChangelog() {
+    return (
+      <UU5.Bricks.Section header={this.getLsiComponent("changelogHeader")}>
+        <UU5.Bricks.Ul>
+          {ChangelogConfig.items.map((item, i) => (
+            <UU5.Bricks.Li key={i}>
+              <UU5.Bricks.Lsi lsi={item} />
+            </UU5.Bricks.Li>
+          ))}
+        </UU5.Bricks.Ul>
+      </UU5.Bricks.Section>
+    );
+  },
+
   _getBacklog() {
     return (
       <UU5.Bricks.Section header={this.getLsiComponent("backlogHeader")}>
@@ -105,6 +124,7 @@ const Home = UU5.Common.VisualComponent.create({
         </UU5.Bricks.P>
         <UU5.Bricks.Lsi lsi={AboutLsi.contactText} />
         {this._getResultsLink()}
+        {this._getChangelog()}
         {this._getBacklog()}
       </UU5.Bricks.Container>
     );
