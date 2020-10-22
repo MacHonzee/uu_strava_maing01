@@ -78,7 +78,9 @@ class TrailtourController {
   }
 
   listLastRuns(ucEnv) {
-    return ListLastRunsAbl.listLastRuns(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    return TrailtourCacheHandler.withTrailtourCache(ucEnv, () => {
+      return ListLastRunsAbl.listLastRuns(ucEnv.getUri().getAwid(), ucEnv.getDtoIn());
+    });
   }
 }
 
