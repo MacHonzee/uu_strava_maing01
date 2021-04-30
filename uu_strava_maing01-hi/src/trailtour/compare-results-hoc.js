@@ -1,6 +1,6 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createComponent, useEffect, useRef, useState } from "uu5g04-hooks";
+import { createComponentWithRef, useEffect, useRef, useState } from "uu5g04-hooks";
 import Calls from "calls";
 import overridenTextInputFind from "../bricks/optimize-autocomplete-items";
 //@@viewOff:imports
@@ -30,7 +30,7 @@ const Lsi = {
 };
 
 function CompareResultsHoc(Component, displayName) {
-  return createComponent({
+  return createComponentWithRef({
     //@@viewOn:statics
     displayName,
     //@@viewOff:statics

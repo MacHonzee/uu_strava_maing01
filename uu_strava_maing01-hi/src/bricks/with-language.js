@@ -1,10 +1,10 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createComponent } from "uu5g04-hooks";
+import { createComponentWithRef } from "uu5g04-hooks";
 //@@viewOff:imports
 
 function withLanguage(Component, displayName) {
-  return createComponent({
+  return createComponentWithRef({
     //@@viewOn:statics
     displayName,
     //@@viewOff:statics
