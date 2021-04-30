@@ -1,6 +1,6 @@
 {
   "name": "uu_strava_maing01-server",
-  "version": "1.4.2",
+  "version": "1.5.2",
   "description": "",
   "license": "License Commercial",
   "spec": "nodejs-app; uu_appg01@1.4.1",
@@ -27,6 +27,7 @@
     "start": "uu_appg01_devkit start",
     "prettify": "uu_appg01_devkit prettify",
     "gcloudDeploy": "node ./tools/gcloud-deploy.js",
+    "gcloudCron": "gcloud app deploy cron.yaml",
     "uuDeploy": "uu_appg01_devkit deploy",
     "uuUndeploy": "uu_appg01_devkit undeploy",
     "uuAppBox": "uu_appg01_devkit uuAppBox",

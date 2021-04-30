@@ -93,6 +93,15 @@ class StravaMainAbl {
 
     let trailtours = await this.trailtourDao.list(awid, {}, { state: 1 }, { _id: 1, year: 1, state: 1 });
 
+    // sort first by year, then by CZ > SK (it should sort to 2021_CZ, 2021_SK, 2020_CZ, 2020_SK and 2019)
+    trailtours.itemList.sort((a, b) => {
+      let yearA = a.year.match(/^\d+/)[0];
+      let yearB = b.year.match(/^\d+/)[0];
+      if (yearA > yearB) return -1;
+      if (yearA < yearB) return 1;
+      if (a.year.includes("CZ")) return -1;
+    });
+
     return {
       config,
       trailtours: trailtours.itemList,

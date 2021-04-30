@@ -1,6 +1,10 @@
 const ChangelogConfig = {
   items: [
     {
+      cs: "30.04.2021 - Nastartována appka pro Trailtour 2021.",
+      en: "30.04.2021 - Application started for Trailtour 2021."
+    },
+    {
       cs:
         "19.10.2020 - Přidány osobní statistiky, grafy výsledků a drobná analýzy minulosti. K nalezení v detailu běžce v záložce nad mapou.",
       en:

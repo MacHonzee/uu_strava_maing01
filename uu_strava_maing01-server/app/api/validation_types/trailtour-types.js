@@ -1,7 +1,7 @@
 /* eslint-disable */
 
-const CURRENT_TRAILTOURS = ["2020_CZ", "2020_SK"];
-const ALL_TRAILTOURS = ["2020_CZ", "2020_SK", "2019"];
+const CURRENT_TRAILTOURS = ["2021_CZ", "2021_SK"];
+const ALL_TRAILTOURS = ["2021_CZ", "2021_SK", "2020_CZ", "2020_SK", "2019"];
 const STATE_LIST = ["active", "closed"];
 
 const trailtourSetupDtoInType = shape({
