@@ -31,12 +31,12 @@ const Home = UU5.Common.VisualComponent.create({
         en: "Welcome to application " + Lsi.appName.en
       },
       resultsLinkCZ: {
-        cs: "Výsledky CZ 2020",
-        en: "Results CZ 2020"
+        cs: "Výsledky CZ 2021",
+        en: "Results CZ 2021"
       },
       resultsLinkSK: {
-        cs: "Výsledky SK 2020",
-        en: "Results SK 2020"
+        cs: "Výsledky SK 2021",
+        en: "Results SK 2021"
       },
       backlogHeader: {
         cs: "Backlog funkčností",
@@ -73,10 +73,10 @@ const Home = UU5.Common.VisualComponent.create({
   _getResultsLink() {
     return (
       <UU5.Bricks.Well bgStyle={"transparent"}>
-        <UU5.Bricks.TouchIcon colorSchema={"orange"} icon={"mdi-flag-checkered"} href={"trailtour?year=2020_CZ"}>
+        <UU5.Bricks.TouchIcon colorSchema={"orange"} icon={"mdi-flag-checkered"} href={"trailtour?year=2021_CZ"}>
           {this.getLsiComponent("resultsLinkCZ")}
         </UU5.Bricks.TouchIcon>
-        <UU5.Bricks.TouchIcon colorSchema={"yellow-rich"} icon={"mdi-flag-checkered"} href={"trailtour?year=2020_SK"}>
+        <UU5.Bricks.TouchIcon colorSchema={"yellow-rich"} icon={"mdi-flag-checkered"} href={"trailtour?year=2021_SK"}>
           {this.getLsiComponent("resultsLinkSK")}
         </UU5.Bricks.TouchIcon>
       </UU5.Bricks.Well>
