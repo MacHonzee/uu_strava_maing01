@@ -8,11 +8,12 @@ import "uu_plus4u5g01-app";
 import { Session } from "uu_appg01_oidc";
 import Config from "./config/config.js";
 import SpaAuthenticated from "./spa-authenticated.js";
+import SpaLoading from "./spa-loading";
 //@@viewOff:imports
 
 const Spa = UU5.Common.VisualComponent.create({
   //@@viewOn:mixins
-  mixins: [UU5.Common.BaseMixin, UU5.Common.IdentityMixin],
+  mixins: [UU5.Common.BaseMixin],
   //@@viewOff:mixins
 
   //@@viewOn:statics
@@ -60,7 +61,7 @@ const Spa = UU5.Common.VisualComponent.create({
         <UU5.Common.Session session={Session.currentSession}>
           <UU5.Common.Identity>
             <UU5.Common.Identity.Item pending>
-              <Plus4U5.App.SpaLoading {...this.getMainPropsToPass()} content="Trailtour Analytics" />{" "}
+              <SpaLoading />
             </UU5.Common.Identity.Item>
             <UU5.Common.Identity.Item authenticated notAuthenticated>
               <SpaAuthenticated {...this.getMainPropsToPass()} />

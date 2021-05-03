@@ -25,6 +25,7 @@ import AthleteComparison from "../routes/athlete-comparison";
 import TrailtourClubs from "../routes/trailtour-clubs";
 import ClubDetail from "../routes/club-detail";
 import TrailtourRuns from "../routes/trailtour-runs";
+import SpaLoading from "./spa-loading";
 //@@viewOff:imports
 
 const SpaAuthenticated = UU5.Common.VisualComponent.create({
@@ -156,7 +157,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
             let config = data && (data.data || data);
             return this._getChild(config);
           } else {
-            return <Plus4U5.App.SpaLoading content={"Trailtour Analytics"} />;
+            return <SpaLoading />;
           }
         }}
       </UU5.Common.DataManager>
