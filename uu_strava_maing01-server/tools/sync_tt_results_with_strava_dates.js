@@ -4,10 +4,10 @@ const fetch = require("node-fetch");
 const cheerio = require("cheerio");
 const fs = require("fs");
 
-const TT_YEAR = "2020_CZ";
+const TT_YEAR = "2021_CZ";
 
 // DB setup
-const DATABASE_NAME = "stravaMainPrimary";
+const DATABASE_NAME = "uuStravaMainPrimary";
 const CONN_STRING = "mongodb://127.0.0.1:27017/" + DATABASE_NAME;
 
 // setup of headers file for the fetch. Easiest way is copying the headers from browser, it needs cookie mainly
