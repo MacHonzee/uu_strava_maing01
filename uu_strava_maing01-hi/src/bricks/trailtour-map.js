@@ -96,10 +96,9 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOff:reactLifeCycle
 
   //@@viewOn:interface
-  drawMapMarker(coordsIndex) {
+  drawMapMarker(coords) {
     let mapRef = this._mapRef.current;
     if (mapRef && mapRef.drawMapMarker) {
-      let coords = this._decodedPolyline[coordsIndex];
       mapRef.drawMapMarker(coords);
     }
   },

@@ -197,10 +197,11 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
   // console.log(data, event);
   // },
 
-  _handleMouseMove(data, event) {
+  _handleMouseMove(data) {
     requestAnimationFrame(() => {
       if (data.activeTooltipIndex != null) {
-        this.props.drawMapMarker(data.activeTooltipIndex);
+        let coords = this.state.elevationProfile[data.activeTooltipIndex].location;
+        this.props.drawMapMarker([coords.lat, coords.lng]);
       } else {
         this.props.undrawMapMarker();
       }
