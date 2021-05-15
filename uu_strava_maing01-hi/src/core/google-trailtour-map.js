@@ -4,6 +4,7 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import SpaContext from "../context/spa-context";
 import AllMarkers from "../trailtour/config/map-markers";
+import GeolocationButton from "./geolocation-button";
 //@@viewOff:imports
 
 const MARKERS = AllMarkers.google;
@@ -17,7 +18,52 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "GoogleTrailtourMap",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
+      geolocation: Config.Css.css`
+        position: absolute;
+        right: 10px;
+        bottom: 110px;
+        z-index: 10;
+
+        &.uu5-bricks-button {
+          border-bottom-left-radius: 2px;
+          border-top-left-radius: 2px;
+          width: 40px;
+          height: 32px;
+          min-height: 32px;
+          text-align: center;
+          line-height: 27px;
+          font-weight: 400;
+          background: #fff;
+          color: #6b7580;
+          border: none;
+          outline: 0;
+
+          > * {
+            vertical-align: baseline;
+          }
+
+          .uu5-bricks-icon {
+            font-size: 24px;
+          }
+
+          &:active {
+            font-size: 23px;
+          }
+
+          &:hover {
+            color: #29ac07;
+            background: #f7f7f7;
+          }
+        }
+      `,
+      activeGeolocation: Config.Css.css`
+        &.uu5-bricks-button.uu5-bricks-button-m {
+          color: #29ac07;
+          background: #f7f7f7;
+          line-height: 24px;
+        }
+      `
     }
   },
   //@@viewOff:statics
@@ -66,18 +112,47 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   _getChild(context) {
     let mapConfig = this.props.mapConfig;
     return (
-      <UU5.Bricks.GoogleMap
-        {...this.getMainPropsToPass()}
-        width={"100%"}
-        latitude={mapConfig.center[0]}
-        longitude={mapConfig.center[1]}
-        googleApiKey={context.config.googleApiKey}
-        zoom={mapConfig.zoom}
-        disableDefaultUI
-        markers={this._getMarkers()}
-        mapRef={this._handleMapRef}
-      />
+      <>
+        <UU5.Bricks.GoogleMap
+          {...this.getMainPropsToPass()}
+          width={"100%"}
+          latitude={mapConfig.center[0]}
+          longitude={mapConfig.center[1]}
+          googleApiKey={context.config.googleApiKey}
+          zoom={mapConfig.zoom}
+          disableDefaultUI
+          markers={this._getMarkers()}
+          mapRef={this._handleMapRef}
+        />
+        <GeolocationButton
+          className={this.getClassName("geolocation")}
+          activeClassName={this.getClassName("activeGeolocation")}
+          drawPosition={this._drawCurrentPosition}
+        />
+      </>
     );
+  },
+
+  _drawCurrentPosition(position) {
+    let marker = this._geolocMarker;
+    if (!marker) {
+      let google = window.google; // loaded from UU5.Bricks.GoogleMap
+      marker = new google.maps.Marker({
+        map: this._map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: "blue",
+          fillOpacity: 0.6,
+          scale: 8,
+          strokeWeight: 2,
+          strokeColor: "white"
+        }
+      });
+      this._geolocMarker = marker;
+    }
+
+    let coords = position.coords;
+    marker.setPosition({ lat: coords.latitude, lng: coords.longitude });
   },
 
   _getMarkerTitle(result) {

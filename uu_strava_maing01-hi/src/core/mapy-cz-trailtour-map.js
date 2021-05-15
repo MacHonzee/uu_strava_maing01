@@ -4,6 +4,7 @@ import "uu5g04-bricks";
 import Config from "./config/config.js";
 import LoadFeedback from "../bricks/load-feedback";
 import AllMarkers from "../trailtour/config/map-markers";
+import GeolocationButton from "./geolocation-button";
 //@@viewOff:imports
 
 const SCRIPT_URL = "https://api.mapy.cz/loader.js";
@@ -31,6 +32,49 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
         bottom: 54px;
         z-index: 10;
         width: 200px;
+      `,
+      geolocation: Config.Css.css`
+        position: absolute;
+        right: 70px;
+        top: 10px;
+        z-index: 10;
+
+        &.uu5-bricks-button {
+          border-bottom-left-radius: 2px;
+          border-top-left-radius: 2px;
+          width: 32px;
+          height: 27px;
+          min-height: 27px;
+          text-align: center;
+          font-size: 17px;
+          line-height: 27px;
+          font-weight: 400;
+          background: #fff;
+          color: #6b7580;
+          border: none;
+          outline: 0;
+
+          > * {
+            vertical-align: baseline;
+          }
+
+          &:active {
+            font-size: 23px;
+          }
+
+          &:hover {
+            color: #29ac07;
+            background: #f7f7f7;
+          }
+        }
+      `,
+      activeGeolocation: Config.Css.css`
+        &.uu5-bricks-button.uu5-bricks-button-m {
+          color: #29ac07;
+          background: #f7f7f7;
+          font-size: 23px;
+          line-height: 24px;
+        }
       `
     },
     lsi: {
@@ -272,6 +316,22 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     }
     return layer;
   },
+
+  _getGeolocationButton() {
+    return (
+      <GeolocationButton
+        className={this.getClassName("geolocation")}
+        activeClassName={this.getClassName("activeGeolocation")}
+        drawPosition={this._drawCurrentPosition}
+      />
+    );
+  },
+
+  _drawCurrentPosition(position) {
+    this.undrawMapMarker();
+    let coords = position.coords;
+    this.drawMapMarker([coords.latitude, coords.longitude]);
+  },
   //@@viewOff:private
 
   //@@viewOn:render
@@ -284,6 +344,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
         </LoadFeedback>
         <div id={MAPY_CZ_ROOT} style={{ height: "400px" }} />
         {this.props.showTourDetail && this._getMapyCzDetailButton()}
+        {this._getGeolocationButton()}
       </UU5.Bricks.Div>
     );
   }

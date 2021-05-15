@@ -1,6 +1,10 @@
 const ChangelogConfig = {
   items: [
     {
+      cs: "15.05.2021 - Přidána možnost zobrazení vlastní polohy na všech mapičkách.",
+      en: "15.05.2021 - Added button to show current location on all maps."
+    },
+    {
       cs: "30.04.2021 - Nastartována appka pro Trailtour 2021.",
       en: "30.04.2021 - Application started for Trailtour 2021."
     },
