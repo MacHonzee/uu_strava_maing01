@@ -191,6 +191,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
         </div>
       );
     }
+    return null;
   },
 
   // _handleClick(data, event) {
