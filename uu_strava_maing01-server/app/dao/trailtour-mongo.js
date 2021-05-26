@@ -36,9 +36,9 @@ class TrailtourMongo extends UuObjectDao {
 
   async listAthletes(awid, year) {
     let projection = {
-      lastUpdate: 1
+      lastUpdate: 1,
     };
-    ["womenResults", "menResults"].forEach(resultKey => {
+    ["womenResults", "menResults"].forEach((resultKey) => {
       projection["totalResults." + resultKey + ".name"] = 1;
       projection["totalResults." + resultKey + ".stravaId"] = 1;
     });
@@ -48,7 +48,7 @@ class TrailtourMongo extends UuObjectDao {
     return {
       lastUpdate: trailtourObj.lastUpdate,
       men: trailtourObj.totalResults.menResults,
-      women: trailtourObj.totalResults.womenResults
+      women: trailtourObj.totalResults.womenResults,
     };
   }
 }

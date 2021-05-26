@@ -10,24 +10,24 @@ const createDtoInType = shape({
       moving_time: number().isRequired(),
       start_date: datetime().isRequired(),
       start_date_local: datetime().isRequired(),
-      rank: number().isRequired()
+      rank: number().isRequired(),
     })
-  )
+  ),
 });
 
 const refreshOneDtoInType = shape({
   stravaId: number().isRequired(),
-  force: boolean().isRequired()
+  force: boolean().isRequired(),
 });
 
 const segmentListDtoInType = shape({
   activityType: oneOf(["Run", "Ride", "Hike"]),
   pageInfo: shape({
     pageIndex: integer(),
-    pageSize: integer()
-  })
+    pageSize: integer(),
+  }),
 });
 
 const calculateElevationDtoInType = shape({
-  stravaId: number().isRequired()
+  stravaId: number().isRequired(),
 });

@@ -1,10 +1,10 @@
 {
   "port": 8080,
+  "asid_license_owner_list": [
+    "5-8385-1"
+  ],
   "uuSubAppDataStoreMap": {
     "primary": "mongodb://127.0.0.1:27017/uuStravaMainPrimary"
-  },
-  "privilegedUserMap": {
-    "asidOwner": "5-8385-1"
   },
   "asid": "8935ea906f1a43b390de3631f8231ea2",
   "log_level": "INFO",
@@ -12,6 +12,5 @@
   "uu_app_auditlog_record_limit_check_after": 10000,
   "uu_app_oidc_providers_oidcg02_enabled": true,
   "uu_app_oidc_primary_provider": "oidcg02",
-  "uu_app_oidc_providers_oidcg01_enabled": true,
-  "defaultUriOverride": "/uu-strava-maing01/11111111111111111111111111111112"
+  "uu_app_oidc_providers_oidcg01_enabled": true
 }

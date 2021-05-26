@@ -21,7 +21,7 @@ const GoogleApiHelper = {
     } else {
       return dtoOut.data.results;
     }
-  }
+  },
 };
 
 module.exports = GoogleApiHelper;

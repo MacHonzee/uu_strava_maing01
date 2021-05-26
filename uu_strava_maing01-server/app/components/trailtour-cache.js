@@ -13,14 +13,14 @@ class TrailtourCache {
   async initCache() {
     const trailtourDao = DaoFactory.getDao("trailtour");
     let trailtours = await trailtourDao.listAllForCache();
-    trailtours.itemList.forEach(tt => {
+    trailtours.itemList.forEach((tt) => {
       this._trailtours[tt.id] = tt;
       this._trailtourYearMap[tt.year] = tt;
     });
 
     const ttResultsDao = DaoFactory.getDao("trailtourResults");
     let ttResults = await ttResultsDao.listAllForCache();
-    ttResults.itemList.forEach(tt => {
+    ttResults.itemList.forEach((tt) => {
       this._ttResultsMap[tt.id] = { trailtour: tt.trailtourId };
     });
 

@@ -1,26 +1,14 @@
 "use strict";
-const Path = require("path");
-const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
-const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const ValidationHelper = require("../components/validation-helper");
 const { LruCache } = require("uu_appg01_server").Utils;
 const Errors = require("../api/errors/athlete-error.js");
-const StravaApiHelper = require("../helpers/strava-api-helper");
-
-const WARNINGS = {
-  createUnsupportedKeys: {
-    code: `${Errors.Create.UC_CODE}unsupportedKeys`
-  },
-  exportActivitiesUnsupportedKeys: {
-    code: `${Errors.ExportActivities.UC_CODE}unsupportedKeys`
-  }
-};
+const StravaApiHelper = require("../components/strava-api-helper");
 
 const STRAVA_PAGE_SIZE = 200;
 
 class AthleteAbl {
   constructor() {
-    this.validator = new Validator(Path.join(__dirname, "..", "api", "validation_types", "athlete-types.js"));
     this.configDao = DaoFactory.getDao("stravaMain");
     this.athleteDao = DaoFactory.getDao("athlete");
     this.activityDao = DaoFactory.getDao("activity");
@@ -28,16 +16,11 @@ class AthleteAbl {
     this.athleteCache = new LruCache({ maxAge: 1000 * 60 * 30 });
   }
 
-  async create(awid, dtoIn, session) {
-    // HDS 1
-    let validationResult = this.validator.validate("athleteCreateDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.createUnsupportedKeys.code,
-      Errors.Create.InvalidDtoIn
-    );
+  async create(uri, dtoIn, session) {
+    const awid = uri.getAwid();
+
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(uri, dtoIn);
 
     let { clientId, clientSecret } = await this.configDao.get(awid);
 
@@ -45,7 +28,7 @@ class AthleteAbl {
       client_id: clientId,
       client_secret: clientSecret,
       code: dtoIn.code,
-      grant_type: "authorization_code"
+      grant_type: "authorization_code",
     };
     let token = await StravaApiHelper.getToken(tokenDtoIn);
 
@@ -70,11 +53,13 @@ class AthleteAbl {
 
     return {
       athleteObject,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 
-  async getValidToken(awid, session) {
+  async getValidToken(uri, session) {
+    const awid = uri.getAwid();
+
     // HDS 1
     let uuIdentity = session.getIdentity().getUuIdentity();
 
@@ -103,7 +88,7 @@ class AthleteAbl {
           client_id: clientId,
           client_secret: clientSecret,
           refresh_token: athlete.token.refresh_token,
-          grant_type: "refresh_token"
+          grant_type: "refresh_token",
         };
         let newToken = await StravaApiHelper.getToken(tokenDtoIn);
         athlete = await this.athleteDao.update({ awid, uuIdentity: athlete.uuIdentity, token: { ...newToken.data } });
@@ -115,20 +100,15 @@ class AthleteAbl {
     return {
       athlete,
       token,
-      uuAppErrorMap: {}
+      uuAppErrorMap: {},
     };
   }
 
-  async exportActivities(awid, dtoIn, session) {
-    // HDS 1
-    let validationResult = this.validator.validate("exportActivitiesDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.exportActivitiesUnsupportedKeys.code,
-      Errors.ExportActivities.InvalidDtoIn
-    );
+  async exportActivities(uri, dtoIn, session) {
+    const awid = uri.getAwid();
+
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(uri, dtoIn);
 
     let preparedDtoIn = {};
     if (dtoIn.after) {
@@ -145,7 +125,7 @@ class AthleteAbl {
       let athlDtoIn = {
         page: pageIndex,
         per_page: STRAVA_PAGE_SIZE,
-        ...preparedDtoIn
+        ...preparedDtoIn,
       };
       myActivities = await StravaApiHelper.getLoggedInAthleteActivities(token, athlDtoIn);
 
@@ -168,7 +148,7 @@ class AthleteAbl {
           if (segmentEffort.segment.hazardous) continue;
           let segmentId = segmentEffort.segment.id;
           let exportDtoIn = { stravaId: segmentId, force: dtoIn.force };
-          let newSegment = await SegmentAbl.refreshOne(awid, exportDtoIn, session);
+          let newSegment = await SegmentAbl.refreshOne(uri, exportDtoIn, session);
           if (newSegment) createdSegments.push(newSegment);
         }
       }
@@ -177,21 +157,25 @@ class AthleteAbl {
 
     return {
       createdSegments,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 
-  async loadMyself(awid, session) {
+  async loadMyself(uri, session) {
+    const awid = uri.getAwid();
+
     let athlete = await this.athleteDao.getByUuIdentity(awid, session.getIdentity().getUuIdentity());
     if (athlete) athlete.token = !!athlete.token;
 
     return {
       athlete,
-      uuAppErrorMap: {}
+      uuAppErrorMap: {},
     };
   }
 
-  async updateNewActivities(awid, session) {
+  async updateNewActivities(uri, session) {
+    const awid = uri.getAwid();
+
     // HDS 1
     let uuIdentity = session.getIdentity().getUuIdentity();
     let lastActivity = await this.activityDao.listLatestByUuIdentity(awid, uuIdentity);
@@ -204,7 +188,7 @@ class AthleteAbl {
       awid,
       {
         after: lastActivity.start_date,
-        force: true
+        force: true,
       },
       session
     );
@@ -212,7 +196,7 @@ class AthleteAbl {
     // HDS 3
     return {
       createdSegments,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 }

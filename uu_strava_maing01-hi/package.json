@@ -1,6 +1,6 @@
 {
   "name": "uu_strava_maing01-hi",
-  "version": "1.5.6",
+  "version": "1.6.0",
   "description": "",
   "license": "License Commercial",
   "namespace": "UuStrava",
@@ -18,7 +18,7 @@
     "externals": {}
   },
   "devDependencies": {
-    "uu_appg01_devkit": "^1.8.0"
+    "uu_appg01_devkit": "^3.0.0"
   },
   "engines": {
     "node": ">=10.16.0"

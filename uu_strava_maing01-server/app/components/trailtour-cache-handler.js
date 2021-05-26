@@ -22,7 +22,7 @@ class TrailtourCacheHandler {
       let dtoOut = await fn();
       ucEnv.getResponse().setResourceCache({
         lastModified: dtoOut.lastUpdate || dtoOut.trailtour.lastUpdate,
-        maxAge: 1 // this parameter is mandatory - if it is 0 or undefined, the browser does not even call the backend
+        maxAge: 1, // this parameter is mandatory - if it is 0 or undefined, the browser does not even call the backend
       });
       return dtoOut;
     }

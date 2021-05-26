@@ -1,12 +1,16 @@
 {
   "asid": "8935ea906f1a43b390de3631f8231ea2",
-  "asidOwner": "25-7135-1",
   "osid": "6e2ec383d71641238078fc8f80d8d028",
+  "//": "All keys from uuConfigMap below are automatically added to production.json",
   "uuConfigMap": {
     "uu_app_auditlog_record_count_limit": 100000,
     "uu_app_auditlog_record_limit_check_after": 10000,
     "uu_app_oidc_providers_oidcg02_enabled": true,
     "uu_app_oidc_primary_provider": "oidcg02",
-    "uu_app_oidc_providers_oidcg01_enabled": true
+    "uu_app_oidc_providers_oidcg01_enabled": true,
+    "asid_license_owner_list": [
+      "5-8385-1",
+      "25-7135-1"
+    ]
   }
 }

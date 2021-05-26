@@ -26,8 +26,8 @@ class AthleteSegmentMongo extends UuObjectDao {
     let matchStage = {
       $match: {
         awid,
-        uuIdentity
-      }
+        uuIdentity,
+      },
     };
     if (criteria.activityType) matchStage.$match.activityType = criteria.activityType;
 
@@ -39,24 +39,24 @@ class AthleteSegmentMongo extends UuObjectDao {
     let itemList = await super.aggregate([
       matchStage,
       {
-        $skip: pageIndex * pageSize
+        $skip: pageIndex * pageSize,
       },
       {
-        $limit: pageSize
+        $limit: pageSize,
       },
       {
         $lookup: {
           from: "segment",
           localField: "segmentId",
           foreignField: "_id",
-          as: "segment"
-        }
+          as: "segment",
+        },
       },
       {
         // there will be always only one segment
         $unwind: {
-          path: "$segment"
-        }
+          path: "$segment",
+        },
       },
 
       // TODO $set a $unset nefungují v Mongu v Cloudu (4.2+)
@@ -64,13 +64,13 @@ class AthleteSegmentMongo extends UuObjectDao {
         $set: {
           id: "$_id",
           segment: {
-            id: "$segment._id"
-          }
-        }
+            id: "$segment._id",
+          },
+        },
       },
       {
-        $unset: ["_id", "segment._id"]
-      }
+        $unset: ["_id", "segment._id"],
+      },
     ]);
 
     return {
@@ -78,8 +78,8 @@ class AthleteSegmentMongo extends UuObjectDao {
       pageInfo: {
         pageIndex: pageIndex,
         pageSize: pageSize,
-        total: total
-      }
+        total: total,
+      },
     };
   }
 }

@@ -10,15 +10,15 @@ const trailtourSetupDtoInType = shape({
   totalResultsUri: uri().isRequired(),
   mapConfig: shape({
     zoom: number().isRequired(),
-    center: array(number(), 2, 2).isRequired()
+    center: array(number(), 2, 2).isRequired(),
   }).isRequired(),
   validFrom: date().isRequired(),
-  validTo: date().isRequired()
+  validTo: date().isRequired(),
 });
 
 const trailtourUpdateDtoInType = shape({
   year: oneOf(CURRENT_TRAILTOURS).isRequired(),
-  force: boolean()
+  force: boolean(),
 });
 
 const trailtourUpdateConfigDtoInType = shape({
@@ -26,10 +26,10 @@ const trailtourUpdateConfigDtoInType = shape({
   state: oneOf(STATE_LIST),
   mapConfig: shape({
     zoom: number().isRequired(),
-    center: array(number(), 2, 2).isRequired()
+    center: array(number(), 2, 2).isRequired(),
   }),
   validFrom: date(),
-  validTo: date()
+  validTo: date(),
 });
 
 const trailtourGetDtoInType = shape({
@@ -41,11 +41,11 @@ const trailtourGetSegmentsDtoInType = shape({
 });
 
 const trailtourGetTourDetailDtoInType = shape({
-  id: id().isRequired()
+  id: id().isRequired(),
 });
 
 const trailtourDownloadGpxDtoInType = shape({
-  gpxLink: uri().isRequired()
+  gpxLink: uri().isRequired(),
 });
 
 const trailtourListAthletesDtoInType = shape({
@@ -54,16 +54,16 @@ const trailtourListAthletesDtoInType = shape({
 
 const trailtourListAthleteResultsDtoInType = shape({
   year: oneOf(ALL_TRAILTOURS).isRequired(),
-  stravaIdList: array(number(), 1, 2).isRequired()
+  stravaIdList: array(number(), 1, 2).isRequired(),
 });
 
 const trailtourListClubResultsDtoInType = shape({
   year: oneOf(ALL_TRAILTOURS).isRequired(),
-  clubNameList: array(string(), 1, 2).isRequired()
+  clubNameList: array(string(), 1, 2).isRequired(),
 });
 
 const trailtourListLastRunsDtoInType = shape({
   year: oneOf(ALL_TRAILTOURS).isRequired(),
   dateFrom: date().isRequired(),
-  dateTo: date().isRequired()
+  dateTo: date().isRequired(),
 });

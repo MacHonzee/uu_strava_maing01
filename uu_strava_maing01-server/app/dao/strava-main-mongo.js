@@ -12,14 +12,14 @@ class StravaMainMongo extends UuObjectDao {
 
   async get(awid) {
     let filter = {
-      awid: awid
+      awid: awid,
     };
     return await super.findOne(filter);
   }
 
   async update(uuObject) {
     let filter = {
-      awid: uuObject.awid
+      awid: uuObject.awid,
     };
     return await super.findOneAndUpdate(filter, uuObject, "NONE");
   }

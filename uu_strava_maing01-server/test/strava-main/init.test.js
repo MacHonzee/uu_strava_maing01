@@ -2,8 +2,8 @@ const { TestHelper } = require("uu_appg01_workspace-test");
 
 beforeAll(async () => {
   await TestHelper.setup();
-  await TestHelper.initApp();
-  await TestHelper.initAppWorkspace();
+  await TestHelper.initUuSubAppInstance();
+  await TestHelper.createUuAppWorkspace();
 });
 
 afterAll(async () => {
@@ -12,10 +12,10 @@ afterAll(async () => {
 
 describe("Testing the init uuCmd...", () => {
   test("HDS", async () => {
-    await TestHelper.login("AwidOwner");
+    await TestHelper.login("AwidLicenseOwner");
 
     let dtoIn = {
-      authoritiesUri: "urn:uu:GGALL"
+      authoritiesUri: "urn:uu:GGALL",
     };
     let result = await TestHelper.executePostCommand("init", dtoIn);
 

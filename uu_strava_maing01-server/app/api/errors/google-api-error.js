@@ -10,9 +10,9 @@ const CalculateElevation = {
       this.code = `${CalculateElevation.UC_CODE}invalidGoogleApiResult`;
       this.message = "Google API did not return OK status.";
     }
-  }
+  },
 };
 
 module.exports = {
-  CalculateElevation
+  CalculateElevation,
 };

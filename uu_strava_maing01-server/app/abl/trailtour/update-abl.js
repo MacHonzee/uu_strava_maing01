@@ -1,9 +1,9 @@
 "use strict";
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
-const ValidationHelper = require("../../helpers/validation-helper");
+const ValidationHelper = require("../../components/validation-helper");
 const Warnings = require("../../api/warnings/trailtour-warnings");
 const Errors = require("../../api/errors/trailtour-error.js");
-const TrailtourParser = require("../../helpers/trailtour-parser-helper");
+const TrailtourParser = require("../../components/trailtour-parser-helper");
 const Tools = require("./tools");
 
 class UpdateAbl {
@@ -12,9 +12,11 @@ class UpdateAbl {
     this.trailtourResultsDao = DaoFactory.getDao("trailtourResults");
   }
 
-  async update(awid, dtoIn) {
+  async update(uri, dtoIn) {
+    const awid = uri.getAwid();
+
     // HDS 1, A1, A2
-    let uuAppErrorMap = ValidationHelper.validate(Warnings, Errors, "trailtour", "update", dtoIn);
+    let uuAppErrorMap = ValidationHelper.validate(uri, dtoIn);
 
     // HDS 2
     let trailtourObj = await this.trailtourDao.getByYear(awid, dtoIn.year);
@@ -33,12 +35,12 @@ class UpdateAbl {
       let warning = Warnings.trailtourAlreadyUpdated;
       let paramMap = {
         lastUpdate: trailtourObj.lastUpdate,
-        resultsTimestamp: totalResults.resultsTimestamp
+        resultsTimestamp: totalResults.resultsTimestamp,
       };
       // we return status 200 because the Cron jobs require status 200 to work correctly
       ValidationHelper.addWarning(uuAppErrorMap, warning.code, warning.message, paramMap);
       return {
-        uuAppErrorMap
+        uuAppErrorMap,
       };
     }
 
@@ -78,7 +80,7 @@ class UpdateAbl {
     return {
       trailtourObj,
       trailtourList,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 
@@ -86,10 +88,10 @@ class UpdateAbl {
     let allTrailtours = await this.trailtourResultsDao.listByTrailtour(trailtourObj.awid, trailtourObj.id);
 
     let dateMap = {};
-    allTrailtours.itemList.forEach(trailtour => {
+    allTrailtours.itemList.forEach((trailtour) => {
       dateMap[trailtour.stravaId] = dateMap[trailtour.stravaId] || {};
-      ["womenResults", "menResults"].forEach(sexResultsKey => {
-        trailtour[sexResultsKey].forEach(athleteResult => {
+      ["womenResults", "menResults"].forEach((sexResultsKey) => {
+        trailtour[sexResultsKey].forEach((athleteResult) => {
           dateMap[trailtour.stravaId][athleteResult.stravaId] = athleteResult;
         });
       });
@@ -98,7 +100,7 @@ class UpdateAbl {
   }
 
   _updateDatesOfResults(trailtour, trailtourResultDates, yesterday) {
-    ["womenResults", "menResults"].forEach(sexResultsKey => {
+    ["womenResults", "menResults"].forEach((sexResultsKey) => {
       trailtour[sexResultsKey].forEach((athleteResult, i) => {
         let originalResult = trailtourResultDates[trailtour.stravaId][athleteResult.stravaId];
         // either it was not run at all, or it was run again and the result was improved by getting more points

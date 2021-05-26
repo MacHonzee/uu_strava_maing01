@@ -1,34 +1,19 @@
 "use strict";
-const Path = require("path");
-const { Validator } = require("uu_appg01_server").Validation;
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
-const { ValidationHelper } = require("uu_appg01_server").AppServer;
+const ValidationHelper = require("../components/validation-helper");
 const Errors = require("../api/errors/segment-error.js");
-const StravaApiHelper = require("../helpers/strava-api-helper");
-const GoogleApiHelper = require("../helpers/google-api-helper");
+const StravaApiHelper = require("../components/strava-api-helper");
+const GoogleApiHelper = require("../components/google-api-helper");
 
 const WARNINGS = {
-  createUnsupportedKeys: {
-    code: `${Errors.Create.UC_CODE}unsupportedKeys`
-  },
-  refreshOneUnsupportedKeys: {
-    code: `${Errors.RefreshOne.UC_CODE}unsupportedKeys`
-  },
-  listUnsupportedKeys: {
-    code: `${Errors.List.UC_CODE}unsupportedKeys`
-  },
-  calculateElevationUnsupportedKeys: {
-    code: `${Errors.List.UC_CODE}unsupportedKeys`
-  },
   segmentAlreadyCalculated: {
     code: `${Errors.CalculateElevation.UC_CODE}segmentAlreadyCalculated`,
-    message: `Segment has already calculated elevation data.`
-  }
+    message: `Segment has already calculated elevation data.`,
+  },
 };
 
 class SegmentAbl {
   constructor() {
-    this.validator = new Validator(Path.join(__dirname, "..", "api", "validation_types", "segment-types.js"));
     this.segmentDao = DaoFactory.getDao("segment");
     this.athlSegDao = DaoFactory.getDao("athleteSegment");
     this.athleteDao = DaoFactory.getDao("athlete");
@@ -36,16 +21,11 @@ class SegmentAbl {
   }
 
   // this is just a model, it is not on a public API
-  async create(awid, dtoIn, session) {
-    // HDS 1
-    let validationResult = this.validator.validate("createDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.createUnsupportedKeys.code,
-      Errors.Create.InvalidDtoIn
-    );
+  async create(uri, dtoIn, session) {
+    const awid = uri.getAwid();
+
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(uri, dtoIn);
 
     // HDS 2
     let segmentId = dtoIn.stravaId;
@@ -56,7 +36,7 @@ class SegmentAbl {
 
     // HDS 3
     let AthleteAbl = require("./athlete-abl");
-    let { token } = await AthleteAbl.getValidToken(awid, session);
+    let { token } = await AthleteAbl.getValidToken(uri, session);
 
     // HDS 4
     let stravaSegment = await StravaApiHelper.getSegmentById(token, segmentId);
@@ -88,20 +68,15 @@ class SegmentAbl {
     return {
       stravaSegment,
       segment: segmentObj,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 
-  async refreshOne(awid, dtoIn, session) {
-    // HDS 1
-    let validationResult = this.validator.validate("refreshOneDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.refreshOneUnsupportedKeys.code,
-      Errors.RefreshOne.InvalidDtoIn
-    );
+  async refreshOne(uri, dtoIn, session) {
+    const awid = uri.getAwid();
+
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(uri, dtoIn);
 
     // HDS 2
     let segmentId = dtoIn.stravaId;
@@ -111,17 +86,17 @@ class SegmentAbl {
 
     // HDS 3
     let AthleteAbl = require("./athlete-abl");
-    let { token, athlete } = await AthleteAbl.getValidToken(awid, session);
+    let { token, athlete } = await AthleteAbl.getValidToken(uri, session);
 
     // HDS 4
     let segmentLeaderboard = await StravaApiHelper.getSegmentLeaderboard(token, segmentId, { per_page: 3 });
 
     // HDS 5
-    let segLeaderEntries = segmentLeaderboard.entries.filter(entry => entry.rank <= 3);
+    let segLeaderEntries = segmentLeaderboard.entries.filter((entry) => entry.rank <= 3);
     let createSegmentDtoIn = {
       stravaId: segmentId,
       force: true,
-      leaderboard: segLeaderEntries
+      leaderboard: segLeaderEntries,
     };
     let { stravaSegment, segment } = await this.create(awid, createSegmentDtoIn, session);
 
@@ -132,10 +107,10 @@ class SegmentAbl {
       stravaId: segmentId,
       segmentId: segment.id,
       activityType: segment.activity_type,
-      athleteSegmentStats: stravaSegment.athlete_segment_stats
+      athleteSegmentStats: stravaSegment.athlete_segment_stats,
     };
     let abbrev = `${athlete.firstname} ${athlete.lastname.charAt(0)}.`;
-    newAthlSegObj.ownLeaderboard = segLeaderEntries.find(entry => entry.athlete_name === abbrev);
+    newAthlSegObj.ownLeaderboard = segLeaderEntries.find((entry) => entry.athlete_name === abbrev);
 
     // HDS 7
     if (newAthlSegObj.ownLeaderboard) {
@@ -150,11 +125,13 @@ class SegmentAbl {
     return {
       segment,
       athleteSegment,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 
-  async refreshAll(awid, session) {
+  async refreshAll(uri, session) {
+    const awid = uri.getAwid();
+
     // HDS 1
     let segments = await this.list(awid, {}, session);
 
@@ -164,7 +141,7 @@ class SegmentAbl {
 
       let exportDtoIn = {
         force: true,
-        stravaId: segment.stravaId
+        stravaId: segment.stravaId,
       };
       try {
         await this.refreshOne(awid, exportDtoIn, session);
@@ -175,24 +152,19 @@ class SegmentAbl {
 
     // HDS 3
     return {
-      uuAppErrorMap: {}
+      uuAppErrorMap: {},
     };
   }
 
-  async list(awid, dtoIn, session) {
-    // HDS 1
-    let validationResult = this.validator.validate("segmentListDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.listUnsupportedKeys.code,
-      Errors.List.InvalidDtoIn
-    );
+  async list(uri, dtoIn, session) {
+    const awid = uri.getAwid();
+
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(uri, dtoIn);
 
     let uuIdentity = session.getIdentity().getUuIdentity();
     let criteria = {
-      ...dtoIn
+      ...dtoIn,
     };
     delete criteria.pageInfo;
     let pageInfo = dtoIn.pageInfo || {};
@@ -202,20 +174,15 @@ class SegmentAbl {
 
     return {
       ...items,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 
-  async calculateElevation(awid, dtoIn) {
-    // HDS 1
-    let validationResult = this.validator.validate("calculateElevationDtoInType", dtoIn);
-    // A1, A2
-    let uuAppErrorMap = ValidationHelper.processValidationResult(
-      dtoIn,
-      validationResult,
-      WARNINGS.calculateElevationUnsupportedKeys.code,
-      Errors.CalculateElevation.InvalidDtoIn
-    );
+  async calculateElevation(uri, dtoIn) {
+    const awid = uri.getAwid();
+
+    // HDS 1, A1, A2
+    let uuAppErrorMap = ValidationHelper.validate(uri, dtoIn);
 
     // HDS 2
     let stravaConfig = await this.stravaMainDao.get(awid);
@@ -250,7 +217,7 @@ class SegmentAbl {
     // HDS 5
     return {
       ...segment,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 }

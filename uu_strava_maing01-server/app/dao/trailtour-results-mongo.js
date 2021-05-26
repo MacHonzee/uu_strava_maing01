@@ -11,7 +11,7 @@ const PROJECTION_ATTRS = {
   sys: 1,
   author: 1,
   link: 1,
-  order: 1
+  order: 1,
 };
 
 const SEGMENT_LOOKUP_STAGES = [
@@ -20,11 +20,11 @@ const SEGMENT_LOOKUP_STAGES = [
       from: "segment",
       localField: "segmentId",
       foreignField: "_id",
-      as: "segmentTemp"
-    }
+      as: "segmentTemp",
+    },
   },
   {
-    $unwind: "$segmentTemp"
+    $unwind: "$segmentTemp",
   },
   // just a workaround for negative $project
   {
@@ -35,15 +35,15 @@ const SEGMENT_LOOKUP_STAGES = [
         start_latlng: "$segmentTemp.start_latlng",
         state: "$segmentTemp.state",
         stravaId: "$segmentTemp.stravaId",
-        total_elevation_gain: "$segmentTemp.total_elevation_gain"
-      }
-    }
+        total_elevation_gain: "$segmentTemp.total_elevation_gain",
+      },
+    },
   },
   {
     $project: {
-      segmentTemp: 0
-    }
-  }
+      segmentTemp: 0,
+    },
+  },
 ];
 
 // $set and $unset does not work in Mongo 4.0 (requires 4.2+)
@@ -51,15 +51,15 @@ const CONVERT_ID_STAGES = [
   {
     $addFields: {
       id: "$_id",
-      "segment.id": "$segment._id"
-    }
+      "segment.id": "$segment._id",
+    },
   },
   {
     $project: {
       _id: 0,
-      "segment._id": 0
-    }
-  }
+      "segment._id": 0,
+    },
+  },
 ];
 
 function getResultTotalStage(key) {
@@ -67,8 +67,8 @@ function getResultTotalStage(key) {
     $cond: {
       if: { $isArray: "$" + key },
       then: { $size: "$" + key },
-      else: 0
-    }
+      else: 0,
+    },
   };
 }
 
@@ -78,9 +78,9 @@ function getElemMatchStage(rootKey, matchKey, matchList) {
       input: "$" + rootKey,
       as: rootKey,
       cond: {
-        $in: ["$$" + rootKey + "." + matchKey, matchList]
-      }
-    }
+        $in: ["$$" + rootKey + "." + matchKey, matchList],
+      },
+    },
   };
 }
 
@@ -92,14 +92,14 @@ function getDateRangeMatchStage(rootKey, dateFrom, dateTo) {
       cond: {
         $and: [
           {
-            $gte: ["$$" + rootKey + ".runDate", dateFrom]
+            $gte: ["$$" + rootKey + ".runDate", dateFrom],
           },
           {
-            $lte: ["$$" + rootKey + ".runDate", dateTo]
-          }
-        ]
-      }
-    }
+            $lte: ["$$" + rootKey + ".runDate", dateTo],
+          },
+        ],
+      },
+    },
   };
 }
 
@@ -149,31 +149,31 @@ class TrailtourResultsMongo extends UuObjectDao {
           menResults: getElemMatchStage("menResults", "stravaId", stravaIdList),
           womenResults: getElemMatchStage("womenResults", "stravaId", stravaIdList),
           clubResults: getElemMatchStage("clubResults", "stravaId", stravaIdList),
-          ...PROJECTION_ATTRS
-        }
+          ...PROJECTION_ATTRS,
+        },
       },
       ...SEGMENT_LOOKUP_STAGES,
-      ...CONVERT_ID_STAGES
+      ...CONVERT_ID_STAGES,
     ]);
   }
 
   async listClubResults(awid, trailtourId, clubNameList) {
-    const getPointsSum = key => ({
+    const getPointsSum = (key) => ({
       $reduce: {
         input: "$" + key,
         initialValue: 0.0,
-        in: { $add: ["$$value", "$$this.points"] }
-      }
+        in: { $add: ["$$value", "$$this.points"] },
+      },
     });
 
-    const getResultLength = key => ({ $size: "$" + key });
+    const getResultLength = (key) => ({ $size: "$" + key });
 
-    const getAvgPoints = key => ({
+    const getAvgPoints = (key) => ({
       $cond: {
         if: { $eq: ["$" + key + "Count", 0] },
         then: 0,
-        else: { $divide: ["$" + key + "Points", "$" + key + "Count"] }
-      }
+        else: { $divide: ["$" + key + "Points", "$" + key + "Count"] },
+      },
     });
 
     return await super.aggregate([
@@ -184,8 +184,8 @@ class TrailtourResultsMongo extends UuObjectDao {
           menResults: getElemMatchStage("menResults", "club", clubNameList),
           womenResults: getElemMatchStage("womenResults", "club", clubNameList),
           clubResults: getElemMatchStage("clubResults", "name", clubNameList),
-          ...PROJECTION_ATTRS
-        }
+          ...PROJECTION_ATTRS,
+        },
       },
       {
         $addFields: {
@@ -194,25 +194,25 @@ class TrailtourResultsMongo extends UuObjectDao {
           clubResultsPoints: getPointsSum("clubResults"),
           menResultsCount: getResultLength("menResults"),
           womenResultsCount: getResultLength("womenResults"),
-          clubResultsCount: { $add: [getResultLength("menResults"), getResultLength("womenResults")] }
-        }
+          clubResultsCount: { $add: [getResultLength("menResults"), getResultLength("womenResults")] },
+        },
       },
       {
         $addFields: {
           menResultsAvgPoints: getAvgPoints("menResults"),
           womenResultsAvgPoints: getAvgPoints("womenResults"),
-          clubResultsAvgPoints: getAvgPoints("clubResults")
-        }
+          clubResultsAvgPoints: getAvgPoints("clubResults"),
+        },
       },
       {
         $project: {
           menResults: 0,
           womenResults: 0,
-          clubResults: 0
-        }
+          clubResults: 0,
+        },
       },
       ...SEGMENT_LOOKUP_STAGES,
-      ...CONVERT_ID_STAGES
+      ...CONVERT_ID_STAGES,
     ]);
   }
 
@@ -223,11 +223,11 @@ class TrailtourResultsMongo extends UuObjectDao {
         $project: {
           menResults: 0,
           womenResults: 0,
-          clubResults: 0
-        }
+          clubResults: 0,
+        },
       },
       ...SEGMENT_LOOKUP_STAGES,
-      ...CONVERT_ID_STAGES
+      ...CONVERT_ID_STAGES,
     ]);
   }
 
@@ -242,10 +242,10 @@ class TrailtourResultsMongo extends UuObjectDao {
         $project: {
           menResults: getDateRangeMatchStage("menResults", dateFrom, dateTo),
           womenResults: getDateRangeMatchStage("womenResults", dateFrom, dateTo),
-          ...PROJECTION_ATTRS
-        }
+          ...PROJECTION_ATTRS,
+        },
       },
-      ...SEGMENT_LOOKUP_STAGES
+      ...SEGMENT_LOOKUP_STAGES,
     ]);
   }
 }

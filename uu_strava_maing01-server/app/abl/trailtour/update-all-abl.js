@@ -9,12 +9,14 @@ class UpdateAllAbl {
     this.trailtourDao = DaoFactory.getDao("trailtour");
   }
 
-  async updateAll(awid, authzResult, headers) {
+  async updateAll(uri, authzResult, headers) {
+    const awid = uri.getAwid();
+
     // HDS 1
     let profiles = authzResult.getAuthorizedProfiles();
     if (
       profiles.length === 0 &&
-      !Object.keys(headers).find(header => header.toLowerCase() === APP_ENGINE_CRON_HEADER)
+      !Object.keys(headers).find((header) => header.toLowerCase() === APP_ENGINE_CRON_HEADER)
     ) {
       // A1
       throw new Errors.UpdateAll.NotAuthorized({});
@@ -27,12 +29,12 @@ class UpdateAllAbl {
     let uuAppErrorMap = {};
     const UpdateAbl = require("./update-abl");
     for (let trailtour of trailtours.itemList) {
-      let dtoOut = await UpdateAbl.update(awid, { year: trailtour.year });
+      let dtoOut = await UpdateAbl.update(uri, { year: trailtour.year });
       Object.assign(uuAppErrorMap, dtoOut.uuAppErrorMap);
     }
 
     return {
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 }

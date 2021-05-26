@@ -1,10 +1,10 @@
 /* eslint-disable */
 
 const athleteCreateDtoInType = shape({
-  code: string().isRequired()
+  code: string().isRequired(),
 });
 
 const exportActivitiesDtoInType = shape({
   force: boolean().isRequired(),
-  after: datetime()
+  after: datetime(),
 });

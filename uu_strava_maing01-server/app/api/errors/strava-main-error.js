@@ -4,14 +4,6 @@ const StravaMainUseCaseError = require("./strava-main-use-case-error.js");
 const Init = {
   UC_CODE: `${StravaMainUseCaseError.ERROR_PREFIX}init/`,
 
-  InvalidDtoIn: class extends StravaMainUseCaseError {
-    constructor() {
-      super(...arguments);
-      this.code = `${Init.UC_CODE}invalidDtoIn`;
-      this.message = "DtoIn is not valid.";
-    }
-  },
-
   SchemaDaoCreateSchemaFailed: class extends StravaMainUseCaseError {
     constructor() {
       super(...arguments);
@@ -27,35 +19,9 @@ const Init = {
       this.code = `${Init.UC_CODE}sys/setProfileFailed`;
       this.message = "Set profile failed.";
     }
-  }
-};
-
-const UpdateConfig = {
-  UC_CODE: `${StravaMainUseCaseError.ERROR_PREFIX}updateConfig/`,
-
-  InvalidDtoIn: class extends StravaMainUseCaseError {
-    constructor() {
-      super(...arguments);
-      this.code = `${UpdateConfig.UC_CODE}invalidDtoIn`;
-      this.message = "DtoIn is not valid.";
-    }
-  }
-};
-
-const RedirectToPlus4uNetApi = {
-  UC_CODE: `${StravaMainUseCaseError.ERROR_PREFIX}redirectToPlus4uNetApi/`,
-
-  InvalidDtoIn: class extends StravaMainUseCaseError {
-    constructor() {
-      super(...arguments);
-      this.code = `${RedirectToPlus4uNetApi.UC_CODE}invalidDtoIn`;
-      this.message = "DtoIn is not valid.";
-    }
-  }
+  },
 };
 
 module.exports = {
-  UpdateConfig,
   Init,
-  RedirectToPlus4uNetApi
 };

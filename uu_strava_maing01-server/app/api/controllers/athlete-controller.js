@@ -3,19 +3,19 @@ const AthleteAbl = require("../../abl/athlete-abl.js");
 
 class AthleteController {
   create(ucEnv) {
-    return AthleteAbl.create(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession());
+    return AthleteAbl.create(ucEnv.getUri(), ucEnv.getDtoIn(), ucEnv.getSession());
   }
 
   exportActivities(ucEnv) {
-    return AthleteAbl.exportActivities(ucEnv.getUri().getAwid(), ucEnv.getDtoIn(), ucEnv.getSession());
+    return AthleteAbl.exportActivities(ucEnv.getUri(), ucEnv.getDtoIn(), ucEnv.getSession());
   }
 
   loadMyself(ucEnv) {
-    return AthleteAbl.loadMyself(ucEnv.getUri().getAwid(), ucEnv.getSession());
+    return AthleteAbl.loadMyself(ucEnv.getUri(), ucEnv.getSession());
   }
 
   updateNewActivities(ucEnv) {
-    return AthleteAbl.updateNewActivities(ucEnv.getUri().getAwid(), ucEnv.getSession());
+    return AthleteAbl.updateNewActivities(ucEnv.getUri(), ucEnv.getSession());
   }
 }
 

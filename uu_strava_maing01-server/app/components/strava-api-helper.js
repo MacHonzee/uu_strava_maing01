@@ -6,7 +6,7 @@ const STRAVA_API = {
   athlete: "https://www.strava.com/api/v3/athlete",
   athleteActivities: "https://www.strava.com/api/v3/athlete/activities",
   activity: "https://www.strava.com/api/v3/activities",
-  segment: "https://www.strava.com/api/v3/segments"
+  segment: "https://www.strava.com/api/v3/segments",
 };
 
 async function callApi(url, method, dtoIn, params) {
@@ -16,8 +16,8 @@ async function callApi(url, method, dtoIn, params) {
 function getTokenHeaders(token) {
   return {
     headers: {
-      Authorization: "Bearer " + token.replace("Bearer ", "")
-    }
+      Authorization: "Bearer " + token.replace("Bearer ", ""),
+    },
   };
 }
 
@@ -47,7 +47,7 @@ const StravaApiHelper = {
   async getSegmentLeaderboard(token, id, dtoIn) {
     let url = STRAVA_API.segment + "/" + id + "/leaderboard";
     return callApi(url, "get", dtoIn, getTokenHeaders(token));
-  }
+  },
 };
 
 module.exports = StravaApiHelper;

@@ -2,7 +2,7 @@ const { DaoFactory } = require("uu_appg01_objectstore");
 const { DbConnection } = require("uu_appg01_datastore");
 const { Config } = require("uu_appg01_server").Utils;
 const { LoggerFactory } = require("uu_appg01_core-logging");
-const TrailtourCache = require("../helpers/trailtour-cache");
+const TrailtourCache = require("../components/trailtour-cache");
 
 async function getDbConnection() {
   const map = Config.get("uuSubAppDataStoreMap");
@@ -25,14 +25,14 @@ class TrailtourCacheStartup {
         .watch(
           [
             { $match: { operationType: { $in: ["insert", "replace", "update"] } } },
-            { $project: { operationType: 1, fullDocument: { _id: 1, lastUpdate: 1, year: 1 } } }
+            { $project: { operationType: 1, fullDocument: { _id: 1, lastUpdate: 1, year: 1 } } },
           ],
           { fullDocument: "updateLookup" }
         );
-      changeStream.on("change", next => {
+      changeStream.on("change", (next) => {
         TrailtourCache.updateCache(next);
       });
-      changeStream.on("error", e => {
+      changeStream.on("error", (e) => {
         logger.warn("ChangeStream not available in current MongoDB deployment.", e);
         changeStream.close();
       });

@@ -7,7 +7,7 @@ import Config from "./config/config";
 
 const STATICS = {
   //@@viewOn:statics
-  displayName: Config.TAG + "ClubLink"
+  displayName: Config.TAG + "ClubLink",
   //@@viewOff:statics
 };
 
@@ -17,7 +17,7 @@ export const ClubLink = createVisualComponent({
   //@@viewOn:propTypes
   propTypes: {
     year: UU5.PropTypes.string.isRequired,
-    club: UU5.PropTypes.string.isRequired
+    club: UU5.PropTypes.string.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -40,10 +40,10 @@ export const ClubLink = createVisualComponent({
       </UU5.Bricks.Link>
     );
     //@@viewOff:render
-  }
+  },
 });
 
-//@@viewOn:helpers
-//@@viewOff:helpers
+//@@viewOn:components
+//@@viewOff:components
 
 export default ClubLink;

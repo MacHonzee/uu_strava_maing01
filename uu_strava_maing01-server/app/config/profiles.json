@@ -1,44 +1,110 @@
 {
   "{asid}": {
-    "profileList": ["AsidOwner"],
-    "permissionMap": {
-      "{asidOwner}": ["AsidOwner"]
-    },
+    "profileList": [
+      "AsidLicenseOwner"
+    ],
     "useCaseMap": {}
   },
   "*": {
-    "profileList": ["Authorities","RegisteredUsers","UnregisteredUsers","AwidOwner","Public"],
+    "profileList": [
+      "Authorities",
+      "RegisteredUsers",
+      "UnregisteredUsers",
+      "AwidLicenseOwner",
+      "Public"
+    ],
     "useCaseMap": {
-      "init": ["AwidOwner"],
-      "defaultUve": ["Public"],
-      "sys/listProfiles": ["AwidOwner","Authorities"],
-      "sys/setProfile": ["AwidOwner","Authorities"],
-      "sys/createPermission": ["AwidOwner","Authorities"],
-      "sys/deletePermission": ["AwidOwner","Authorities"],
-      "sys/listPermissions": ["AwidOwner","Authorities"],
-      "sys/redirectToPlus4uNetApi": ["Public"],
-      "stravaMain/loadConfig": ["UnregisteredUsers"],
-      "stravaMain/updateConfig": ["AwidOwner","Authorities"],
-      "athlete/create": ["RegisteredUsers"],
-      "athlete/exportActivities": ["RegisteredUsers"],
-      "athlete/loadMyself": ["RegisteredUsers"],
-      "athlete/updateNewActivities": ["RegisteredUsers"],
-      "segment/list": ["RegisteredUsers"],
-      "segment/refreshOne": ["RegisteredUsers"],
-      "segment/refreshAll": ["RegisteredUsers"],
-      "trailtour/setup": ["Authorities"],
-      "trailtour/update": ["RegisteredUsers"],
-      "trailtour/updateConfig": ["Authorities"],
-      "trailtour/get": ["UnregisteredUsers"],
-      "trailtour/getTourDetail": ["UnregisteredUsers"],
-      "trailtour/getSegments": ["UnregisteredUsers"],
-      "trailtour/downloadGpx": ["UnregisteredUsers"],
-      "trailtour/updateAll": ["Authorities","Public"],
-      "trailtour/listAthletes": ["UnregisteredUsers"],
-      "trailtour/listAthleteResults": ["UnregisteredUsers"],
-      "trailtour/listClubResults": ["UnregisteredUsers"],
-      "segment/calculateElevation": ["UnregisteredUsers"],
-      "trailtour/listLastRuns": ["UnregisteredUsers"]
+      "sys/uuAppWorkspace/init": {
+        "profileList": [ "AwidLicenseOwner" ],
+        "sysStateList": [ "created" ]
+      },
+      "defaultUve": {
+        "profileList": [ "Public" ]
+      },
+      "sys/listProfiles": {
+        "profileList": [ "AwidLicenseOwner", "Authorities" ]
+      },
+      "sys/setProfile": {
+        "profileList": [ "AwidLicenseOwner", "Authorities" ]
+      },
+      "sys/createPermission": {
+        "profileList": [ "AwidLicenseOwner", "Authorities" ]
+      },
+      "sys/deletePermission": {
+        "profileList": [ "AwidLicenseOwner", "Authorities" ]
+      },
+      "sys/listPermissions": {
+        "profileList": [ "AwidLicenseOwner", "Authorities" ]
+      },
+      "sys/redirectToPlus4uNetApi": {
+        "profileList": [ "Public" ]
+      },
+      "stravaMain/loadConfig": {
+        "profileList": [ "UnregisteredUsers" ]
+      },
+      "stravaMain/updateConfig": {
+        "profileList": [ "AwidLicenseOwner", "Authorities" ]
+      },
+      "athlete/create": {
+        "profileList": [ "RegisteredUsers" ]
+      },
+      "athlete/exportActivities": {
+        "profileList": [ "RegisteredUsers" ]
+      },
+      "athlete/loadMyself": {
+        "profileList": [ "RegisteredUsers" ]
+      },
+      "athlete/updateNewActivities": {
+        "profileList": [ "RegisteredUsers" ]
+      },
+      "segment/list": {
+        "profileList": [ "RegisteredUsers" ]
+      },
+      "segment/refreshOne": {
+        "profileList": [ "RegisteredUsers" ]
+      },
+      "segment/refreshAll": {
+        "profileList": [ "RegisteredUsers" ]
+      },
+      "trailtour/setup": {
+        "profileList": [ "Authorities" ]
+      },
+      "trailtour/update": {
+        "profileList": [ "RegisteredUsers" ]
+      },
+      "trailtour/updateConfig": {
+        "profileList": [ "Authorities" ]
+      },
+      "trailtour/get": {
+        "profileList": [ "UnregisteredUsers" ]
+      },
+      "trailtour/getTourDetail": {
+        "profileList": [ "UnregisteredUsers" ]
+      },
+      "trailtour/getSegments": {
+        "profileList": [ "UnregisteredUsers" ]
+      },
+      "trailtour/downloadGpx": {
+        "profileList": [ "UnregisteredUsers" ]
+      },
+      "trailtour/updateAll": {
+        "profileList": [ "Authorities", "Public" ]
+      },
+      "trailtour/listAthletes": {
+        "profileList": [ "UnregisteredUsers" ]
+      },
+      "trailtour/listAthleteResults": {
+        "profileList": [ "UnregisteredUsers" ]
+      },
+      "trailtour/listClubResults": {
+        "profileList": [ "UnregisteredUsers" ]
+      },
+      "segment/calculateElevation": {
+        "profileList": [ "UnregisteredUsers" ]
+      },
+      "trailtour/listLastRuns": {
+        "profileList": [ "UnregisteredUsers" ]
+      }
     }
   }
 }

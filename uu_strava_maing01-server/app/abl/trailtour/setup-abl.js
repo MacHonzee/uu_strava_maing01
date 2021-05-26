@@ -1,9 +1,7 @@
 "use strict";
 const { DaoFactory, ObjectNotFound } = require("uu_appg01_server").ObjectStore;
-const ValidationHelper = require("../../helpers/validation-helper");
-const Warnings = require("../../api/warnings/trailtour-warnings");
-const Errors = require("../../api/errors/trailtour-error.js");
-const TrailtourParser = require("../../helpers/trailtour-parser-helper");
+const ValidationHelper = require("../../components/validation-helper");
+const TrailtourParser = require("../../components/trailtour-parser-helper");
 const Tools = require("./tools");
 
 class SetupAbl {
@@ -12,9 +10,11 @@ class SetupAbl {
     this.trailtourResultsDao = DaoFactory.getDao("trailtourResults");
   }
 
-  async setup(awid, dtoIn, session) {
+  async setup(uri, dtoIn, session) {
+    const awid = uri.getAwid();
+
     // HDS 1, A1, A2
-    let uuAppErrorMap = ValidationHelper.validate(Warnings, Errors, "trailtour", "setup", dtoIn);
+    let uuAppErrorMap = ValidationHelper.validate(uri, dtoIn);
 
     // HDS 2
     let trailtourList = await TrailtourParser.parseBaseUri(dtoIn.baseUri);
@@ -33,7 +33,7 @@ class SetupAbl {
       state: "active",
       validFrom: dtoIn.validFrom,
       validTo: dtoIn.validTo,
-      totalResults
+      totalResults,
     };
     try {
       trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
@@ -53,9 +53,9 @@ class SetupAbl {
       Object.assign(trailtour, tourData);
 
       let createSegmentDtoIn = {
-        stravaId: tourData.stravaId
+        stravaId: tourData.stravaId,
       };
-      let { segment } = await SegmentAbl.create(awid, createSegmentDtoIn, session);
+      let { segment } = await SegmentAbl.create(uri, createSegmentDtoIn, session);
       trailtour.awid = awid;
       trailtour.segmentId = segment.id;
       trailtour.trailtourId = trailtourObj.id;
@@ -78,7 +78,7 @@ class SetupAbl {
     return {
       trailtourObj,
       trailtourList,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 }

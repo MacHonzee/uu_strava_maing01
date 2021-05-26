@@ -15,16 +15,16 @@ const BASE_SELECTORS = {
   totalWomenResults: ".default-content table.table:nth-child(3)",
   totalMenResults: ".default-content table.table:nth-child(7)",
   totalClubResults: ".default-content table.table:nth-child(11)",
-  mapyCzLink: 'JAK.mel\\("a", {href:"(.*)", target'
+  mapyCzLink: 'JAK.mel\\("a", {href:"(.*)", target',
 };
 
 const YEARLY_SELECTORS = {
   2019: {
-    tourDetailStravalink: ".etapa-vysledky .text-center a.btn-success"
+    tourDetailStravalink: ".etapa-vysledky .text-center a.btn-success",
   },
   2020: {
-    tourDetailStravalink: "#vysledky + p.text-center a.btn-warning"
-  }
+    tourDetailStravalink: "#vysledky + p.text-center a.btn-warning",
+  },
 };
 
 const TRAILTOUR_ORDER_TITLE = /TRAILTOUR (CZ |SK )?#/;
@@ -41,12 +41,12 @@ async function parsePage(pageUri) {
 async function streamToString(stream) {
   let body = [];
   return new Promise((resolve, reject) => {
-    stream.on("data", chunk => body.push(chunk));
+    stream.on("data", (chunk) => body.push(chunk));
     stream.on("end", () => {
       body = Buffer.concat(body).toString();
       resolve(body);
     });
-    stream.on("error", err => reject(err));
+    stream.on("error", (err) => reject(err));
   });
 }
 
@@ -57,7 +57,7 @@ function parseResults($, selector) {
 
   let allResults = [];
   for (let i = 1; i < tableRows.length; i++) {
-    let rowCells = tableRows[i].childNodes.filter(node => node.type === "tag");
+    let rowCells = tableRows[i].childNodes.filter((node) => node.type === "tag");
     let nameTd = $(rowCells[1]);
     let name = nameTd.text().trim();
     let nameLink = nameTd.find("a")[0];
@@ -68,9 +68,7 @@ function parseResults($, selector) {
 
     let club;
     if (rowCells.length === 4 || rowCells.length === 5) {
-      club = $(rowCells[2])
-        .text()
-        .trim();
+      club = $(rowCells[2]).text().trim();
 
       if (club === "---") club = undefined;
     }
@@ -78,10 +76,7 @@ function parseResults($, selector) {
     let seconds;
     if (rowCells.length === 5) {
       seconds = 0;
-      let timeSplits = $(rowCells[3])
-        .text()
-        .trim()
-        .split(":");
+      let timeSplits = $(rowCells[3]).text().trim().split(":");
 
       for (let pow = 0; pow <= 2; pow++) {
         seconds += Math.pow(60, pow) * parseFloat(timeSplits[2 - pow]);
@@ -94,7 +89,7 @@ function parseResults($, selector) {
     let resultItem = {
       order: i,
       name,
-      points
+      points,
     };
     if (seconds) resultItem.time = seconds;
     if (stravaId) resultItem.stravaId = stravaId;
@@ -108,17 +103,9 @@ function parseResults($, selector) {
 
 function parseGeneratedStamp($) {
   let generatedTag = $(BASE_SELECTORS.generatedResults);
-  let generated =
-    generatedTag &&
-    generatedTag
-      .text()
-      .trim()
-      .replace(GENERATED_LABEL, "");
+  let generated = generatedTag && generatedTag.text().trim().replace(GENERATED_LABEL, "");
   if (generated) {
-    let splits = generated
-      .replace(/\./g, "")
-      .replace(",", "")
-      .split(" ");
+    let splits = generated.replace(/\./g, "").replace(",", "").split(" ");
     // TODO if it proves to be a problem, we will need to solve CET zone
     let dateStr = `${splits[2]}-${splits[1]}-${splits[0]}T${splits[3]}:00.000Z`;
     return new Date(dateStr);
@@ -130,13 +117,10 @@ const TrailtourParser = {
   async parseBaseUri(baseUri) {
     const { $ } = await parsePage(baseUri);
     let items = $(BASE_SELECTORS.tourItem);
-    return Array.from(items).map(item => {
+    return Array.from(items).map((item) => {
       let a = $("a", item);
       let link = a[0].attribs.href;
-      let titleSplits = $(BASE_SELECTORS.tourItemHeader, item)
-        .text()
-        .trim()
-        .split("\n");
+      let titleSplits = $(BASE_SELECTORS.tourItemHeader, item).text().trim().split("\n");
       let order = titleSplits[0].trim().replace(TRAILTOUR_ORDER_TITLE, "");
       order = parseInt(order);
       let author = titleSplits[1].trim();
@@ -144,18 +128,14 @@ const TrailtourParser = {
       return {
         link,
         order,
-        author
+        author,
       };
     });
   },
 
   async parseTourDetail(link, year) {
     const { $, stringData } = await parsePage(link);
-    let name = $(BASE_SELECTORS.tourDetailName)
-      .text()
-      .replace(/\n/g, "")
-      .replace(/\/\s+/, "/ ")
-      .trim();
+    let name = $(BASE_SELECTORS.tourDetailName).text().replace(/\n/g, "").replace(/\/\s+/, "/ ").trim();
     let gpxLink = $(BASE_SELECTORS.tourDetailGpx)[0].attribs.href;
     let yearlySelector = YEARLY_SELECTORS[year.toString()] || YEARLY_SELECTORS["2020"];
     let stravaLink = $(yearlySelector.tourDetailStravalink)[0].attribs.href;
@@ -173,7 +153,7 @@ const TrailtourParser = {
       mapyCzLink,
       womenResults,
       menResults,
-      clubResults
+      clubResults,
     };
   },
 
@@ -185,7 +165,7 @@ const TrailtourParser = {
     let clubResults = parseResults($, BASE_SELECTORS.totalClubResults);
 
     return { womenResults, menResults, clubResults, resultsTimestamp: generated };
-  }
+  },
 };
 
 module.exports = TrailtourParser;

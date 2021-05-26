@@ -22,7 +22,7 @@ async function unzipFileToPath(sourceZip, targetPath) {
 
 async function getOsidSecret(osid) {
   const [version] = await client.accessSecretVersion({
-    name: OSID_SECRET_PATH.replace("%s", osid)
+    name: OSID_SECRET_PATH.replace("%s", osid),
   });
 
   return version.payload.data.toString();
@@ -61,13 +61,10 @@ async function main() {
   let productionDevInfo = {
     port: 8080,
     uuSubAppDataStoreMap: {
-      primary: mongoConnectionString
-    },
-    privilegedUserMap: {
-      asidOwner: gcloudJson.asidOwner
+      primary: mongoConnectionString,
     },
     asid: gcloudJson.asid,
-    ...gcloudJson.uuConfigMap
+    ...gcloudJson.uuConfigMap,
   };
   let productionDevFile = Path.join(targetGcloudFld, "env", "production.json");
   fs.writeFileSync(productionDevFile, JSON.stringify(productionDevInfo, null, 2));

@@ -1,8 +1,6 @@
 "use strict";
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
-const ValidationHelper = require("../../helpers/validation-helper");
-const Warnings = require("../../api/warnings/trailtour-warnings");
-const Errors = require("../../api/errors/trailtour-error.js");
+const ValidationHelper = require("../../components/validation-helper");
 
 class ListAthleteResultsAbl {
   constructor() {
@@ -10,17 +8,19 @@ class ListAthleteResultsAbl {
     this.trailtourResultsDao = DaoFactory.getDao("trailtourResults");
   }
 
-  async listAthleteResults(awid, dtoIn) {
+  async listAthleteResults(uri, dtoIn) {
+    const awid = uri.getAwid();
+
     // HDS 1, A1, A2
-    let uuAppErrorMap = ValidationHelper.validate(Warnings, Errors, "trailtour", "listAthleteResults", dtoIn);
+    let uuAppErrorMap = ValidationHelper.validate(uri, dtoIn);
 
     // HDS 2
     let trailtour = await this.trailtourDao.getByYear(awid, dtoIn.year);
 
     // HDS 3
-    ["womenResults", "menResults", "clubResults"].forEach(results => {
+    ["womenResults", "menResults", "clubResults"].forEach((results) => {
       trailtour.totalResults[results + "Total"] = trailtour.totalResults[results].length;
-      trailtour.totalResults[results] = trailtour.totalResults[results].filter(result =>
+      trailtour.totalResults[results] = trailtour.totalResults[results].filter((result) =>
         dtoIn.stravaIdList.includes(result.stravaId)
       );
     });
@@ -32,7 +32,7 @@ class ListAthleteResultsAbl {
     return {
       trailtour,
       athleteResults,
-      uuAppErrorMap
+      uuAppErrorMap,
     };
   }
 }
