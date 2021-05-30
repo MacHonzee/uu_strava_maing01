@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-const createDtoInType = shape({
+const segmentCreateDtoInType = shape({
   stravaId: number().isRequired(),
   force: boolean(),
   leaderboard: array(
@@ -15,7 +15,7 @@ const createDtoInType = shape({
   ),
 });
 
-const refreshOneDtoInType = shape({
+const segmentRefreshOneDtoInType = shape({
   stravaId: number().isRequired(),
   force: boolean().isRequired(),
 });
@@ -28,6 +28,6 @@ const segmentListDtoInType = shape({
   }),
 });
 
-const calculateElevationDtoInType = shape({
+const segmentCalculateElevationDtoInType = shape({
   stravaId: number().isRequired(),
 });
