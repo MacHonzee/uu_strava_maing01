@@ -1,5 +1,6 @@
 "use strict";
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
+const { UriBuilder } = require("uu_appg01_server").Uri;
 const Errors = require("../../api/errors/trailtour-error.js");
 
 const APP_ENGINE_CRON_HEADER = "x-appengine-cron";
@@ -28,8 +29,9 @@ class UpdateAllAbl {
     // HDS 3
     let uuAppErrorMap = {};
     const UpdateAbl = require("./update-abl");
+    let updateUri = UriBuilder.parse(uri).setUseCase("trailtour/update").toUri();
     for (let trailtour of trailtours.itemList) {
-      let dtoOut = await UpdateAbl.update(uri, { year: trailtour.year });
+      let dtoOut = await UpdateAbl.update(updateUri, { year: trailtour.year });
       Object.assign(uuAppErrorMap, dtoOut.uuAppErrorMap);
     }
 
