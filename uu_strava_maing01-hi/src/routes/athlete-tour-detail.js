@@ -18,14 +18,14 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "AthleteTourDetail",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
     },
     lsi: {
       header: {
         cs: "Výsledky atleta",
-        en: "Athlete results"
-      }
-    }
+        en: "Athlete results",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -55,12 +55,12 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
   },
 
   _addPaceToResults(results) {
-    results.forEach(result => {
+    results.forEach((result) => {
       let distance = result.segment.distance;
-      ["womenResults", "menResults"].forEach(resultKey => {
+      ["womenResults", "menResults"].forEach((resultKey) => {
         if (!result[resultKey]) return;
 
-        result[resultKey].forEach(athlResult => {
+        result[resultKey].forEach((athlResult) => {
           let seconds = athlResult.time;
           athlResult.pace = BrickTools.countPace(seconds, distance);
         });
@@ -89,7 +89,7 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
           onLoad={Calls.listAthleteResults}
           data={{ year: params.year, stravaIdList: [params.stravaId] }}
         >
-          {data => (
+          {(data) => (
             <LoadFeedback {...data}>
               {data.data && this._addPaceToResults(data.data.athleteResults) && this._saveTitle(data.data) && (
                 <AthleteTourResults data={data.data} sex={this._getSex(data.data)} />
@@ -99,7 +99,7 @@ export const AthleteTourDetail = UU5.Common.VisualComponent.create({
         </UU5.Common.DataManager>
       </UU5.Bricks.Container>
     );
-  }
+  },
   //@@viewOff:render
 });
 

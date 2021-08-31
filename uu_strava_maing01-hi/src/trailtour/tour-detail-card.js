@@ -27,24 +27,24 @@ export const TourDetailCard = UU5.Common.VisualComponent.create({
           position: absolute;
           right: 0;
         }
-      `
+      `,
     },
     lsi: {
       menCount: {
         cs: "Počet běžců",
-        en: "Male runners count"
+        en: "Male runners count",
       },
       womenCount: {
         cs: "Počet běžkyň",
-        en: "Female runners count"
-      }
-    }
+        en: "Female runners count",
+      },
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    data: UU5.PropTypes.object.isRequired
+    data: UU5.PropTypes.object.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -265,7 +265,7 @@ export const TourDetailCard = UU5.Common.VisualComponent.create({
         </UU5.Bricks.ScreenSize>
       </UU5.BlockLayout.Tile>
     );
-  }
+  },
   //@@viewOff:render
 });
 

@@ -12,8 +12,8 @@ const PAGE_SIZE = 1000;
 const Lsi = {
   nameFilter: {
     cs: "Vyhledávání",
-    en: "Search"
-  }
+    en: "Search",
+  },
 };
 
 export const ClubResults = UU5.Common.VisualComponent.create({
@@ -25,8 +25,8 @@ export const ClubResults = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "ClubResults",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
@@ -34,7 +34,7 @@ export const ClubResults = UU5.Common.VisualComponent.create({
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
     year: UU5.PropTypes.string.isRequired,
-    handleReload: UU5.PropTypes.func
+    handleReload: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -64,8 +64,8 @@ export const ClubResults = UU5.Common.VisualComponent.create({
       pageInfo: {
         pageSize: PAGE_SIZE,
         pageIndex: 0,
-        total: dataCopy.length
-      }
+        total: dataCopy.length,
+      },
     };
   },
 
@@ -93,8 +93,8 @@ export const ClubResults = UU5.Common.VisualComponent.create({
         FlexColumns.clubPoints({}, "points", "pointsMen", "pointsWomen"),
         FlexColumns.clubRunners({}, "runnersTotal", "runnersMen", "runnersWomen"),
         FlexColumns.clubResults({}, "resultsTotal", "resultsMen", "resultsWomen"),
-        FlexColumns.clubAvgPoints({}, "avgPoints", "avgPointsMen", "avgPointsWomen")
-      ]
+        FlexColumns.clubAvgPoints({}, "avgPoints", "avgPointsMen", "avgPointsWomen"),
+      ],
     };
 
     return (
@@ -111,14 +111,14 @@ export const ClubResults = UU5.Common.VisualComponent.create({
                 left={<NameFilter showLabel={false} />}
               />,
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
-              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />,
             ]}
             tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

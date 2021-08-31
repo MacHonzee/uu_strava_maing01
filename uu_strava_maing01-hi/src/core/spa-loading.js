@@ -28,8 +28,8 @@ const SpaLoading = UU5.Common.VisualComponent.create({
         color: #fff;
         font-size: 2.3em;
         font-weight: 700;
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -68,7 +68,7 @@ const SpaLoading = UU5.Common.VisualComponent.create({
         <div className="running-caption">Trailtour Analytics</div>
       </div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

@@ -19,15 +19,15 @@ export const ClubTourResultList = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "ClubTourResultList",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
     trailtour: UU5.PropTypes.object.isRequired,
-    clubResults: UU5.PropTypes.array.isRequired
+    clubResults: UU5.PropTypes.array.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -57,8 +57,8 @@ export const ClubTourResultList = UU5.Common.VisualComponent.create({
       pageInfo: {
         pageSize: PAGE_SIZE,
         pageIndex: 0,
-        total: dataCopy.length
-      }
+        total: dataCopy.length,
+      },
     };
   },
 
@@ -92,8 +92,8 @@ export const ClubTourResultList = UU5.Common.VisualComponent.create({
           "clubResultsAvgPoints",
           "menResultsAvgPoints",
           "womenResultsAvgPoints"
-        )
-      ]
+        ),
+      ],
     };
 
     return (
@@ -105,14 +105,14 @@ export const ClubTourResultList = UU5.Common.VisualComponent.create({
             bars={[
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
               <NameFilterBar key={"nameFilterBar"} />,
-              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />,
             ]}
             tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

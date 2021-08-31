@@ -39,14 +39,14 @@ const StravaLogin = UU5.Common.VisualComponent.create({
           margin: 24px 0;
           font-size: 18px;
         }
-      `
+      `,
     },
     lsi: {
       authorize: {
         en:
-          "You have not authorized access to your Strava athlete account. Please authorize this application and confirm the full scope."
-      }
-    }
+          "You have not authorized access to your Strava athlete account. Please authorize this application and confirm the full scope.",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -80,7 +80,7 @@ const StravaLogin = UU5.Common.VisualComponent.create({
       elevation: 2,
       elevationHover: 3,
       borderRadius: "6px",
-      size: "xl"
+      size: "xl",
     };
 
     return (
@@ -90,7 +90,7 @@ const StravaLogin = UU5.Common.VisualComponent.create({
         <AuthorizeStravaButton buttonProps={buttonProps} />
       </UU5.Bricks.Div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

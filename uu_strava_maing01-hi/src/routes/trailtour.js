@@ -26,18 +26,18 @@ export const Trailtour = UU5.Common.VisualComponent.create({
 
           ${UU5.Utils.ScreenSize.getMaxMediaQueries("s", `flex-direction: column;`)}
         }
-      `
+      `,
     },
     lsi: {
       header: {
         cs: "Průběžné výsledky Trailtour %s",
-        en: "Overall results of Trailtour %s"
+        en: "Overall results of Trailtour %s",
       },
       generatedStamp: {
         cs: "Poslední update: ",
-        en: "Last update: "
-      }
-    }
+        en: "Last update: ",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -50,7 +50,7 @@ export const Trailtour = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      stamp: new Date()
+      stamp: new Date(),
     };
   },
 
@@ -100,7 +100,7 @@ export const Trailtour = UU5.Common.VisualComponent.create({
         data={{ year: params.year }}
         key={params.year + this.state.stamp.toISOString()}
       >
-        {data => (
+        {(data) => (
           <UU5.Bricks.Container {...this.getMainPropsToPass()} header={this._getHeader(data)} level={3}>
             <LoadFeedback {...data}>
               {data.data && <OverallResults data={data.data} year={params.year} handleReload={this._handleReload} />}
@@ -109,7 +109,7 @@ export const Trailtour = UU5.Common.VisualComponent.create({
         )}
       </UU5.Common.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

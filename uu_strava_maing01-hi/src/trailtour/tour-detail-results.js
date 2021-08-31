@@ -11,8 +11,8 @@ import ElevationProfileLazy from "./elevation-profile-lazy";
 const Lsi = {
   elevationHeader: {
     cs: "Graf převýšení",
-    en: "Elevation profile"
-  }
+    en: "Elevation profile",
+  },
 };
 
 export const TourDetailResults = UU5.Common.VisualComponent.create({
@@ -30,14 +30,14 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
           padding: 16px 12px 16px 20px;
           font-family: ClearSans-Medium, sans-serif;
         }
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    data: UU5.PropTypes.object.isRequired
+    data: UU5.PropTypes.object.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -62,12 +62,12 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
     let { segment, tourDetail } = this.props.data;
     let mapConfig = {
       zoom: 12,
-      center: segment.start_latlng
+      center: segment.start_latlng,
     };
     let mapSegment = { ...tourDetail, segment };
     return (
       <TrailtourMap
-        ref_={inst => (this._map = inst)}
+        ref_={(inst) => (this._map = inst)}
         style={{ marginTop: "8px" }}
         mapConfig={mapConfig}
         segments={[mapSegment]}
@@ -117,7 +117,7 @@ export const TourDetailResults = UU5.Common.VisualComponent.create({
         <TourDetailResultList data={this.props.data} />
       </UU5.Bricks.Div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

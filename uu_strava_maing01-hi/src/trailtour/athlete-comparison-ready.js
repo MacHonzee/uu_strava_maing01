@@ -23,8 +23,8 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
         grid-template-columns: auto auto;
 
         ${UU5.Utils.ScreenSize.getMaxMediaQueries("s", `grid-template-columns: auto;`)}
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -32,7 +32,7 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
   propTypes: {
     trailtour: UU5.PropTypes.object,
     results: UU5.PropTypes.array,
-    stravaIdList: UU5.PropTypes.array
+    stravaIdList: UU5.PropTypes.array,
   },
   //@@viewOff:propTypes
 
@@ -53,7 +53,7 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
     let correctKey = this.props.trailtour.totalResults.menResults[0] ? "menResults" : "womenResults";
     let athletes = [];
     this.props.stravaIdList.forEach((stravaId, i) => {
-      let athlete = this.props.trailtour.totalResults[correctKey].find(result => result.stravaId === stravaId);
+      let athlete = this.props.trailtour.totalResults[correctKey].find((result) => result.stravaId === stravaId);
 
       let cardData = { totalResults: {} };
       cardData.totalResults[correctKey] = athlete;
@@ -72,7 +72,7 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
 
   _getMap() {
     let correctKey = this.props.trailtour.totalResults.menResults[0] ? "menResults" : "womenResults";
-    this.props.results.forEach(result => {
+    this.props.results.forEach((result) => {
       let resLng = result[correctKey].length;
       if (resLng === 0) {
         result.markerIcon = "noRun";
@@ -118,7 +118,7 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
         {this._getTable()}
       </div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

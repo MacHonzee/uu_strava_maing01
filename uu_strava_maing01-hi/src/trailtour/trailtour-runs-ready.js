@@ -35,8 +35,8 @@ export const TrailtourRunsReady = UU5.Common.VisualComponent.create({
           position: absolute;
           right: 8px;
         }
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -44,7 +44,7 @@ export const TrailtourRunsReady = UU5.Common.VisualComponent.create({
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
     handleLoad: UU5.PropTypes.func.isRequired,
-    year: UU5.PropTypes.string.isRequired
+    year: UU5.PropTypes.string.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -65,8 +65,8 @@ export const TrailtourRunsReady = UU5.Common.VisualComponent.create({
     // handle sex filtering
     let targetData = dtoIn.filterMap.sex === "male" ? "menResults" : "womenResults";
     let itemList = [];
-    this.props.data.trailtourResults.forEach(allTtResults => {
-      allTtResults[targetData].forEach(ttResult => {
+    this.props.data.trailtourResults.forEach((allTtResults) => {
+      allTtResults[targetData].forEach((ttResult) => {
         ttResult.segment = allTtResults.segment;
         ttResult.link = allTtResults.link;
         ttResult.tourName = allTtResults.name;
@@ -89,8 +89,8 @@ export const TrailtourRunsReady = UU5.Common.VisualComponent.create({
       pageInfo: {
         pageSize: PAGE_SIZE,
         pageIndex: 0,
-        total: itemList.length
-      }
+        total: itemList.length,
+      },
     };
   },
 
@@ -121,7 +121,7 @@ export const TrailtourRunsReady = UU5.Common.VisualComponent.create({
     );
     let stravaTtColumn = FlexColumns.stravaTtLink({}, { stravaId: "tourStravaId" });
 
-    stravaTtColumn.tileComponent = data => (
+    stravaTtColumn.tileComponent = (data) => (
       <div className={this.getClassName("stravaLinkTile")}>
         <div>
           <strong>
@@ -148,12 +148,12 @@ export const TrailtourRunsReady = UU5.Common.VisualComponent.create({
         FlexColumns.order({ cellComponent: this._getOrderCell }),
         FlexColumns.points(),
         FlexColumns.time(),
-        FlexColumns.pace()
-      ]
+        FlexColumns.pace(),
+      ],
     };
 
     const defaultView = {
-      filters: [{ key: "sex", value: SexFilterBar.getDefaultValue() }]
+      filters: [{ key: "sex", value: SexFilterBar.getDefaultValue() }],
     };
 
     return (
@@ -164,14 +164,14 @@ export const TrailtourRunsReady = UU5.Common.VisualComponent.create({
               <SexFilterBar key={"sexFilterBar"} right={<NameFilter />} />,
               <DateRangeFilterBar key={"dateRangeFilterBar"} onChangeCb={this.props.handleLoad} />,
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
-              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />,
             ]}
             tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

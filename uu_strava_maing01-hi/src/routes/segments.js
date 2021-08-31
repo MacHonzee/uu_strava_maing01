@@ -15,8 +15,8 @@ export const Segments = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "Segments",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
@@ -46,7 +46,7 @@ export const Segments = UU5.Common.VisualComponent.create({
         <SegmentsTableProvider />
       </UU5.Bricks.Div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

@@ -33,15 +33,15 @@ const WelcomeRow = UU5.Common.VisualComponent.create({
         }
 
         ${UU5.Utils.ScreenSize.getMinMediaQueries("s", `text-align: right;`)}
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
     icon: UU5.PropTypes.string,
-    textPadding: UU5.PropTypes.string
+    textPadding: UU5.PropTypes.string,
   },
   //@@viewOff:propTypes
 
@@ -49,7 +49,7 @@ const WelcomeRow = UU5.Common.VisualComponent.create({
   getDefaultProps() {
     return {
       icon: undefined, // default of UU5.Bricks.Icon
-      textPadding: null
+      textPadding: null,
     };
   },
   //@@viewOff:getDefaultProps
@@ -77,7 +77,7 @@ const WelcomeRow = UU5.Common.VisualComponent.create({
         <UU5.Bricks.Column className={this.getClassName("text")} colWidth="xs-12 s-10" content={this.props.children} />
       </UU5.Bricks.Row>
     );
-  }
+  },
   //@@viewOff:render
 });
 

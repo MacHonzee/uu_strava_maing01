@@ -11,19 +11,19 @@ import DaysLsi from "../lsi/days-lsi";
 const Lsi = {
   defaultHeader: {
     cs: "Graf výsledků",
-    en: "Results chart"
+    en: "Results chart",
   },
   xAxisInputLabel: {
     cs: "Popisky na ose X",
-    en: "Labels of X axis"
+    en: "Labels of X axis",
   },
   yAxisInputLabel: {
     cs: "Jednotky osy Y",
-    en: "Units of Y axis"
+    en: "Units of Y axis",
   },
   yAxisMathTypeInputLabel: {
     cs: "Výpočet pro osu Y",
-    en: "Calculation of Y axis"
+    en: "Calculation of Y axis",
   },
   xAxisTooltip: {
     cs:
@@ -35,11 +35,11 @@ const Lsi = {
       "Way in which the results will be aggregated on X axis. Ie. when you select week, all the results" +
       " in same week will be summed (or averaged). Analogically it goes for day (in case for multiple runs" +
       ' in one day), month and day of week. In case of selecting "In order" there will be no aggregation' +
-      " and results will be only chronologically sorted."
+      " and results will be only chronologically sorted.",
   },
   yAxisTooltip: {
     cs: "Určuje, co bude na grafu zobrazeno ve sloupečkách a na ose Y.",
-    en: "Decides what will be displayed in chart bars and on Y axis."
+    en: "Decides what will be displayed in chart bars and on Y axis.",
   },
   yAxisMathTypeTooltip: {
     cs:
@@ -48,78 +48,78 @@ const Lsi = {
       " převýšení na den v týdnu apod).",
     en:
       "Decides the way of aggregating data for individual charts, whether the resulted data and unit will " +
-      "be summed or averaged (ie. sum of average in month or average elevation gain per day of week)."
+      "be summed or averaged (ie. sum of average in month or average elevation gain per day of week).",
   },
   xAxisLabels: {
     none: {
       cs: "Popořadě",
-      en: "In order"
+      en: "In order",
     },
     day: {
       cs: "Den",
-      en: "Day"
+      en: "Day",
     },
     week: {
       cs: "Týden",
-      en: "Week"
+      en: "Week",
     },
     month: {
       cs: "Měsíc",
-      en: "Month"
+      en: "Month",
     },
     dayOfWeek: {
       cs: "Den v týdnu",
-      en: "Day of week"
-    }
+      en: "Day of week",
+    },
   },
   yAxisLabels: {
     segments: {
       cs: "Počet etap",
-      en: "Segment count"
+      en: "Segment count",
     },
     distance: {
       cs: "Vzdálenost",
-      en: "Distance"
+      en: "Distance",
     },
     elevation: {
       cs: "Převýšení",
-      en: "Elevation"
+      en: "Elevation",
     },
     points: {
       cs: "Body",
-      en: "Points"
+      en: "Points",
     },
     time: {
       cs: "Strávený čas",
-      en: "Elapsed time"
-    }
+      en: "Elapsed time",
+    },
   },
   yAxisMathTypeLabels: {
     sum: {
       cs: "Součet",
-      en: "Sum"
+      en: "Sum",
     },
     avg: {
       cs: "Průměr",
-      en: "Average"
-    }
+      en: "Average",
+    },
   },
   units: {
     segments: {
       1: {
         cs: "etapa",
-        en: "segment"
+        en: "segment",
       },
       "2to4": {
         cs: "etapy",
-        en: "segments"
+        en: "segments",
       },
       5: {
         cs: "etap",
-        en: "segments"
-      }
-    }
-  }
+        en: "segments",
+      },
+    },
+  },
 };
 
 const X_AXIS_TYPES = ["none", "day", "week", "month", "dayOfWeek"];
@@ -145,8 +145,8 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
         border: 1px solid ${UU5.Environment.colors.grey.c500};
         border-radius: 2px;
         padding: 4px;
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -160,7 +160,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
     yAxis: UU5.PropTypes.oneOf(Y_AXIS_TYPES).isRequired,
     yAxisMathType: UU5.PropTypes.oneOf(Y_AXIS_MATH_TYPES).isRequired,
     editable: UU5.PropTypes.bool,
-    expanded: UU5.PropTypes.bool
+    expanded: UU5.PropTypes.bool,
   },
   //@@viewOff:propTypes
 
@@ -168,7 +168,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
   getDefaultProps() {
     return {
       header: <UU5.Bricks.Lsi lsi={Lsi.defaultHeader} />,
-      expanded: true
+      expanded: true,
     };
   },
   //@@viewOff:getDefaultProps
@@ -208,7 +208,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
   _getTooltipContent(opt) {
     if (opt.active && opt.payload[0].payload.runs) {
       let data = opt.payload[0];
-      let runs = data.payload.runs.map(run => {
+      let runs = data.payload.runs.map((run) => {
         return <div key={run.stravaId}>{run.name}</div>;
       });
 
@@ -234,6 +234,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
         </div>
       );
     }
+    return null;
   },
 
   _getXAxisLabel() {
@@ -243,7 +244,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
 
   _getYAxis(chartData) {
     if (this.state.yAxis === "segments") {
-      let max = Math.max(...chartData.map(item => item.segments), 0);
+      let max = Math.max(...chartData.map((item) => item.segments), 0);
       let ticks = Array.from(Array(max + 1).keys());
       return <UU5.Chart.YAxis tickFormatter={this._formatUnit} ticks={ticks} />;
     } else {
@@ -287,7 +288,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
     let grouppedData = this._groupRunsByUnit();
     let chartData = [];
     let sexKey = this._getSexKey();
-    this._iterateByUnit(groupKey => {
+    this._iterateByUnit((groupKey) => {
       let runs = grouppedData[groupKey];
       let chartDataItem = this._getChartDataItem(runs, sexKey, groupKey);
       chartData.push(chartDataItem);
@@ -299,7 +300,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
   _getChartDataItem(runs, sexKey, groupKey) {
     let chartDataItem = {
       name: groupKey,
-      runs
+      runs,
     };
 
     let counterMap = {};
@@ -307,7 +308,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
 
     let yAxisKey = this.state.yAxis;
     runs &&
-      runs.forEach(run => {
+      runs.forEach((run) => {
         let result = run[sexKey][0];
 
         switch (yAxisKey) {
@@ -390,7 +391,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
     let sexKey = this._getSexKey();
     let grouppedRuns = {};
     let counter = 0;
-    sortedData.forEach(ttRun => {
+    sortedData.forEach((ttRun) => {
       let result = ttRun[sexKey][0];
       if (result) {
         let groupKey;
@@ -436,7 +437,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
     } else if (this.state.xAxis === "none") {
       let sexKey = this._getSexKey();
       let counter = 0;
-      this.props.results.forEach(ttRun => {
+      this.props.results.forEach((ttRun) => {
         let result = ttRun[sexKey][0];
         if (result) {
           groupKeys.push("" + counter);
@@ -463,10 +464,10 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
             labelColWidth={"xs-12"}
             inputColWidth={"xs-12"}
             label={<UU5.Bricks.Lsi lsi={Lsi.xAxisInputLabel} />}
-            value={X_AXIS_TYPES.map(xAxisType => ({
+            value={X_AXIS_TYPES.map((xAxisType) => ({
               label: <UU5.Bricks.Lsi lsi={Lsi.xAxisLabels[xAxisType]} />,
               value: this.state.xAxis === xAxisType,
-              name: xAxisType
+              name: xAxisType,
             }))}
             onChange={this._handleXAxisChange}
             tooltip={UU5.Common.Tools.getLsiValueByLanguage(Lsi.xAxisTooltip, this.props.language)}
@@ -477,10 +478,10 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
             labelColWidth={"xs-12"}
             inputColWidth={"xs-12"}
             label={<UU5.Bricks.Lsi lsi={Lsi.yAxisInputLabel} />}
-            value={Y_AXIS_TYPES.map(yAxisType => ({
+            value={Y_AXIS_TYPES.map((yAxisType) => ({
               label: <UU5.Bricks.Lsi lsi={Lsi.yAxisLabels[yAxisType]} />,
               value: this.state.yAxis === yAxisType,
-              name: yAxisType
+              name: yAxisType,
             }))}
             onChange={this._handleYAxisChange}
             tooltip={UU5.Common.Tools.getLsiValueByLanguage(Lsi.yAxisTooltip, this.props.language)}
@@ -492,10 +493,10 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
               labelColWidth={"xs-12"}
               inputColWidth={"xs-12"}
               label={<UU5.Bricks.Lsi lsi={Lsi.yAxisMathTypeInputLabel} />}
-              value={Y_AXIS_MATH_TYPES.map(yAxisMathType => ({
+              value={Y_AXIS_MATH_TYPES.map((yAxisMathType) => ({
                 label: <UU5.Bricks.Lsi lsi={Lsi.yAxisMathTypeLabels[yAxisMathType]} />,
                 value: this.state.yAxisMathType === yAxisMathType,
-                name: yAxisMathType
+                name: yAxisMathType,
               }))}
               onChange={this._handleYAxisMathTypeChange}
               tooltip={UU5.Common.Tools.getLsiValueByLanguage(Lsi.yAxisMathTypeTooltip, this.props.language)}
@@ -535,7 +536,7 @@ export const InteractiveResultChartPanel = UU5.Common.VisualComponent.create({
         {this._getChart()}
       </UU5.Bricks.Panel>
     );
-  }
+  },
   //@@viewOff:render
 });
 

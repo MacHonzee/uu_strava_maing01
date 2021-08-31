@@ -7,18 +7,18 @@ import Config from "./config/config.js";
 const Lsi = {
   sexFilter: {
     cs: "Pohlaví",
-    en: "Sex"
+    en: "Sex",
   },
   sex: {
     males: {
       cs: "Muži",
-      en: "Males"
+      en: "Males",
     },
     females: {
       cs: "Ženy",
-      en: "Females"
-    }
-  }
+      en: "Females",
+    },
+  },
 };
 
 const LOCAL_STRG_KEY = "uuStravaSexFilter";
@@ -37,7 +37,8 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
           display: inline;
         }
 
-        ${props.right &&
+        ${
+          props.right &&
           UU5.Utils.ScreenSize.getMaxMediaQueries(
             "xs",
             `.uu5-bricks-panel-header-content > .uu5-common-div {
@@ -47,8 +48,9 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
                 margin: 8px 0px;
               }
             }`
-          )}
-      `
+          )
+        }
+      `,
     },
     getDefaultValue() {
       if (window.localStorage && window.localStorage.getItem(LOCAL_STRG_KEY)) {
@@ -56,13 +58,13 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
       } else {
         return "female";
       }
-    }
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    right: UU5.PropTypes.oneOfType([UU5.PropTypes.node, UU5.PropTypes.func])
+    right: UU5.PropTypes.oneOfType([UU5.PropTypes.node, UU5.PropTypes.func]),
   },
   //@@viewOff:propTypes
 
@@ -80,7 +82,7 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
 
   //@@viewOn:private
   _getFilter(context) {
-    let currentValue = context.activeFilters.find(filter => filter.key === "sex") || {};
+    let currentValue = context.activeFilters.find((filter) => filter.key === "sex") || {};
     let value = currentValue.value;
 
     return (
@@ -89,9 +91,9 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
         value={value}
         items={[
           { value: "male", content: <UU5.Bricks.Lsi lsi={Lsi.sex.males} /> },
-          { value: "female", content: <UU5.Bricks.Lsi lsi={Lsi.sex.females} /> }
+          { value: "female", content: <UU5.Bricks.Lsi lsi={Lsi.sex.females} /> },
         ]}
-        onChange={opt => this._handleOnFilterChange(opt, context)}
+        onChange={(opt) => this._handleOnFilterChange(opt, context)}
       />
     );
   },
@@ -115,7 +117,7 @@ export const SexFilterBar = UU5.Common.VisualComponent.create({
         right={this.props.right}
       />
     );
-  }
+  },
   //@@viewOff:render
 });
 

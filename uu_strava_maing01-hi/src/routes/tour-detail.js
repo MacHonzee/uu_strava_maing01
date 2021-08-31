@@ -18,14 +18,14 @@ export const TourDetail = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "TourDetail",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
     },
     lsi: {
       header: {
         cs: "Detail etapy",
-        en: "Segment detail"
-      }
-    }
+        en: "Segment detail",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -47,10 +47,10 @@ export const TourDetail = UU5.Common.VisualComponent.create({
   //@@viewOn:private
   _addPaceToResults(results, segment) {
     let distance = segment.distance;
-    ["womenResults", "menResults"].forEach(resultKey => {
+    ["womenResults", "menResults"].forEach((resultKey) => {
       if (!results[resultKey]) return;
 
-      results[resultKey].forEach(athlResult => {
+      results[resultKey].forEach((athlResult) => {
         let seconds = athlResult.time;
         athlResult.pace = BrickTools.countPace(seconds, distance);
       });
@@ -75,7 +75,7 @@ export const TourDetail = UU5.Common.VisualComponent.create({
         key={params.id}
       >
         <UU5.Common.DataManager onLoad={Calls.getTourDetail} data={{ id: params.id }}>
-          {data => (
+          {(data) => (
             <LoadFeedback {...data}>
               {data.data &&
                 this._addPaceToResults(data.data.tourDetail, data.data.segment) &&
@@ -87,7 +87,7 @@ export const TourDetail = UU5.Common.VisualComponent.create({
         </UU5.Common.DataManager>
       </UU5.Bricks.Container>
     );
-  }
+  },
   //@@viewOff:render
 });
 

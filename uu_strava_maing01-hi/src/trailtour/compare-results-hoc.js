@@ -8,25 +8,25 @@ import overridenTextInputFind from "../bricks/optimize-autocomplete-items";
 const Lsi = {
   modalHeader: {
     cs: "Porovnání výsledků",
-    en: "Results comparison"
+    en: "Results comparison",
   },
   modalInfo: {
     cs: "Vyberte dalšího atleta, se kterým budou srovnány výsledky. Stačí zadat část jména a našeptávač napoví zbytek.",
     en:
-      "Pick another athlete to compare results with. It is enough to input just a part of name and autocomplete will do the rest."
+      "Pick another athlete to compare results with. It is enough to input just a part of name and autocomplete will do the rest.",
   },
   firstAthlete: {
     cs: "První atlet/ka",
-    en: "First athlete"
+    en: "First athlete",
   },
   secondAthlete: {
     cs: "Druhý atlet/ka",
-    en: "Second athlete"
+    en: "Second athlete",
   },
   noAthleteSelected: {
     cs: "Nezvolili jste žádného atleta/ku k porovnání.",
-    en: "No athlete was selected for comparison."
-  }
+    en: "No athlete was selected for comparison.",
+  },
 };
 
 function CompareResultsHoc(Component, displayName) {
@@ -39,14 +39,14 @@ function CompareResultsHoc(Component, displayName) {
     propTypes: {
       year: UU5.PropTypes.string.isRequired,
       firstAthlete: UU5.PropTypes.object,
-      secondAthlete: UU5.PropTypes.object
+      secondAthlete: UU5.PropTypes.object,
     },
     //@@viewOff:propTypes
 
     //@@viewOn:defaultProps
     defaultProps: {
       firstAthlete: {},
-      secondAthlete: {}
+      secondAthlete: {},
     },
     //@@viewOff:defaultProps
 
@@ -60,28 +60,28 @@ function CompareResultsHoc(Component, displayName) {
       const [athletes, setAthletes] = useState({ men: [], women: [] });
       useEffect(() => {
         Calls.listAthletes({ year: props.year })
-          .then(dtoOut => {
+          .then((dtoOut) => {
             setAthletes(dtoOut);
           })
-          .catch(errorDtoOut => {
+          .catch((errorDtoOut) => {
             console.error(errorDtoOut);
           });
       }, [props.year]);
 
       function prepareAutocompleteItems() {
         let sex = props.sex === "male" ? "men" : "women";
-        return athletes[sex].map(athl => {
+        return athletes[sex].map((athl) => {
           return {
             value: athl.name,
             content: athl.name,
-            params: { stravaId: athl.stravaId }
+            params: { stravaId: athl.stravaId },
           };
         });
       }
 
       function saveForm(opt) {
         let hasInvalid = false;
-        Object.keys(selectedAthleteRefs).forEach(inputName => {
+        Object.keys(selectedAthleteRefs).forEach((inputName) => {
           if (!selectedAthleteRefs[inputName].current) {
             let input = opt.component.getInputByName(inputName);
             input.setError(<UU5.Bricks.Lsi lsi={Lsi.noAthleteSelected} />);
@@ -93,7 +93,7 @@ function CompareResultsHoc(Component, displayName) {
         let params = {
           year: props.year,
           first: selectedFirstAthlete.current,
-          second: selectedSecondAthlete.current
+          second: selectedSecondAthlete.current,
         };
         UU5.Environment.setRoute("athleteComparison", params);
       }
@@ -149,7 +149,7 @@ function CompareResultsHoc(Component, displayName) {
               />
             </UU5.Forms.ContextForm>
           ),
-          footer: <UU5.Forms.ContextControls />
+          footer: <UU5.Forms.ContextControls />,
         });
       }
 
@@ -159,7 +159,7 @@ function CompareResultsHoc(Component, displayName) {
           <Component handleCompare={openModal} ref={ref} />
         </UU5.Common.Fragment>
       );
-    }
+    },
   });
   //@@viewOff:render
 }

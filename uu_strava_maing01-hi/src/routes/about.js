@@ -53,9 +53,9 @@ export const About = UU5.Common.VisualComponent.create({
       termsOfUse: Config.Css.css`
         text-align: center;
         margin-top: 56px;
-      `
+      `,
     },
-    lsi: Lsi.about
+    lsi: Lsi.about,
   },
   //@@viewOff:statics
 
@@ -81,7 +81,7 @@ export const About = UU5.Common.VisualComponent.create({
   _getAuthors(authors) {
     return (
       authors &&
-      authors.slice().map(author => {
+      authors.slice().map((author) => {
         author = UU5.Common.Tools.merge({}, author);
         author.role =
           author.role && typeof author.role === "object" ? <UU5.Bricks.Lsi lsi={author.role} /> : author.role;
@@ -133,7 +133,7 @@ export const About = UU5.Common.VisualComponent.create({
         </UU5.Bricks.Div>
       </UU5.Bricks.Section>
     );
-  }
+  },
   //@@viewOff:render
 });
 

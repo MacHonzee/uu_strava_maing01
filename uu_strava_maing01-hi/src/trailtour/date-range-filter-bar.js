@@ -7,8 +7,8 @@ import Config from "./config/config.js";
 const Lsi = {
   dateRangeFilter: {
     cs: "Rozpětí datumů",
-    en: "Date range"
-  }
+    en: "Date range",
+  },
 };
 
 const DATE_FROM_OFFSET = 14;
@@ -29,7 +29,7 @@ export const DateRangeFilterBar = UU5.Common.VisualComponent.create({
         &.uu5-forms-daterangepicker {
           margin-bottom: 0;
         }
-      `
+      `,
     },
     getDefaultDates() {
       let now = new Date();
@@ -37,15 +37,15 @@ export const DateRangeFilterBar = UU5.Common.VisualComponent.create({
       dateFrom.setDate(now.getDate() - DATE_FROM_OFFSET);
       return {
         dateFrom,
-        dateTo: now
+        dateTo: now,
       };
-    }
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    onChangeCb: UU5.PropTypes.func
+    onChangeCb: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -72,7 +72,7 @@ export const DateRangeFilterBar = UU5.Common.VisualComponent.create({
         inputWidth={"246px"}
         dateTo={new Date()}
         showTodayButton
-        onChange={opt => this._handleOnChange(opt, context)}
+        onChange={(opt) => this._handleOnChange(opt, context)}
       />
     );
   },
@@ -99,7 +99,7 @@ export const DateRangeFilterBar = UU5.Common.VisualComponent.create({
         left={this._getFilter}
       />
     );
-  }
+  },
   //@@viewOff:render
 });
 

@@ -7,12 +7,12 @@ import Config from "./config/config.js";
 const Lsi = {
   noRightsError: {
     en: "You do not have rights to run the use case.",
-    cs: "Nemáte práva spustit tuto funkčnost."
+    cs: "Nemáte práva spustit tuto funkčnost.",
   },
   unexpectedError: {
     en: "An unexpected error occured during the server call.",
-    cs: "Došlo k neočekávané chybě."
-  }
+    cs: "Došlo k neočekávané chybě.",
+  },
 };
 
 export const TranslatedServerError = UU5.Common.VisualComponent.create({
@@ -24,14 +24,14 @@ export const TranslatedServerError = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "TranslatedServerError",
     classNames: {
-      main: Config.CSS + "translated-server-error"
+      main: Config.CSS + "translated-server-error",
     },
     defaults: {
       errorCodes: {
-        "uu-appg01/authorization/accessDenied": Lsi.noRightsError
-      }
+        "uu-appg01/authorization/accessDenied": Lsi.noRightsError,
+      },
     },
-    lsi: Lsi
+    lsi: Lsi,
   },
   //@@viewOff:statics
 
@@ -39,7 +39,7 @@ export const TranslatedServerError = UU5.Common.VisualComponent.create({
   propTypes: {
     lsi: UU5.PropTypes.PropTypes.object,
     errorData: UU5.PropTypes.PropTypes.object,
-    errorMessage: UU5.PropTypes.PropTypes.string
+    errorMessage: UU5.PropTypes.PropTypes.string,
   },
   //@@viewOff:propTypes
 
@@ -48,7 +48,7 @@ export const TranslatedServerError = UU5.Common.VisualComponent.create({
     return {
       lsi: {},
       errorData: { data: {} },
-      errorMessageLsi: Lsi.unexpectedError
+      errorMessageLsi: Lsi.unexpectedError,
     };
   },
   //@@viewOff:getDefaultProps
@@ -68,7 +68,7 @@ export const TranslatedServerError = UU5.Common.VisualComponent.create({
     let errorMap = errorData && errorData.uuAppErrorMap;
 
     if (errorData && errorMap) {
-      let errCode = Object.keys(errorMap).find(key => errorMap[key].type === "error");
+      let errCode = Object.keys(errorMap).find((key) => errorMap[key].type === "error");
       let error = errorMap[errCode];
 
       let lsiItem = this.props.lsi[errCode] || this.getDefault("errorCodes")[errCode];
@@ -104,7 +104,7 @@ export const TranslatedServerError = UU5.Common.VisualComponent.create({
         errorData={this.props.errorData}
       />
     );
-  }
+  },
   //@@viewOff:render
 });
 

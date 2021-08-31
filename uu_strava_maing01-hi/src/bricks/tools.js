@@ -17,7 +17,7 @@ const DOCUMENT_TITLES = {
   clubDetail: ({ trailtour }) => {
     let results = trailtour.totalResults.clubResults[0];
     return `Výsledky klubu - ${results.name}`;
-  }
+  },
 };
 
 const BrickTools = {
@@ -43,7 +43,7 @@ const BrickTools = {
 
   setDocumentTitle(data, type) {
     document.title = DOCUMENT_TITLES[type](data);
-  }
+  },
 };
 
 export default BrickTools;

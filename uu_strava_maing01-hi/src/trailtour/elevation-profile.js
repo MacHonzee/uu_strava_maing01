@@ -21,8 +21,8 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
         border: 1px solid rgb(189, 189, 189);
         background-color: white;
         opacity: 0.9;
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -30,7 +30,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
   propTypes: {
     segment: UU5.PropTypes.object.isRequired,
     drawMapMarker: UU5.PropTypes.func,
-    undrawMapMarker: UU5.PropTypes.func
+    undrawMapMarker: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -40,7 +40,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      elevationProfile: this.props.segment.elevationProfile
+      elevationProfile: this.props.segment.elevationProfile,
     };
   },
   //@@viewOff:reactLifeCycle
@@ -80,7 +80,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
             distance: distDiff,
             elevationPercent: elevPerc,
             elevation: elevDiff,
-            distancePerc: percOfDistance
+            distancePerc: percOfDistance,
           });
         }
       }
@@ -90,7 +90,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
 
       return {
         name: distance,
-        value
+        value,
       };
     });
 
@@ -99,7 +99,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
         distance: 0,
         elevationPercent: percentSegments[0].elevationPercent,
         elevation: 0,
-        distancePerc: 0
+        distancePerc: 0,
       });
     }
 
@@ -115,7 +115,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
       roundedMin + Math.round((2 * diff) / 5),
       roundedMin + Math.round((3 * diff) / 5),
       roundedMin + Math.round((4 * diff) / 5),
-      Math.round(max)
+      Math.round(max),
     ];
   },
 
@@ -216,7 +216,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
   _getLoader() {
     return (
       <UU5.Common.DataManager onLoad={Calls.calculateElevation} data={{ stravaId: this.props.segment.stravaId }}>
-        {data => (
+        {(data) => (
           <LoadFeedback {...data}>
             {data.data && (this.setState({ elevationProfile: data.data.elevationProfile }) || "loaded")}
           </LoadFeedback>
@@ -229,7 +229,7 @@ export const ElevationProfile = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return this.state.elevationProfile ? this._getChart() : this._getLoader();
-  }
+  },
   //@@viewOff:render
 });
 

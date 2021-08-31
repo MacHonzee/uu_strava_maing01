@@ -34,14 +34,14 @@ const SegmentTile = UU5.Common.VisualComponent.create({
         position: absolute;
         top: 8px;
         right: 8px;
-      `
+      `,
     },
     lsi: {
       unspecifiedClimb: {
         cs: "Nespecifikováno",
-        en: "Unspecified"
-      }
-    }
+        en: "Unspecified",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -54,7 +54,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      callFeedback: "ready"
+      callFeedback: "ready",
     };
   },
   //@@viewOff:reactLifeCycle
@@ -197,17 +197,17 @@ const SegmentTile = UU5.Common.VisualComponent.create({
       this.props.id,
       {
         stravaId: this.props.stravaId,
-        force: true
+        force: true,
       },
       true,
       null,
       "refreshOne"
     )
-      .then(result => {
+      .then((result) => {
         this._updatedItem = false;
         return result;
       })
-      .catch(result => {
+      .catch((result) => {
         this._updatedItem = false;
         return result;
       });
@@ -257,7 +257,7 @@ const SegmentTile = UU5.Common.VisualComponent.create({
         }}
       </SegmentListContext.Consumer>
     );
-  }
+  },
   //@@viewOff:render
 });
 

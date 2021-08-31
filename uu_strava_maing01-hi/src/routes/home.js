@@ -23,30 +23,30 @@ const Home = UU5.Common.VisualComponent.create({
         .uu5-bricks-well {
           text-align: center;
         }
-      `
+      `,
     },
     lsi: {
       welcomeHeader: {
         cs: "Vítejte v aplikaci " + Lsi.appName.cs,
-        en: "Welcome to application " + Lsi.appName.en
+        en: "Welcome to application " + Lsi.appName.en,
       },
       resultsLinkCZ: {
         cs: "Výsledky CZ 2021",
-        en: "Results CZ 2021"
+        en: "Results CZ 2021",
       },
       resultsLinkSK: {
         cs: "Výsledky SK 2021",
-        en: "Results SK 2021"
+        en: "Results SK 2021",
       },
       backlogHeader: {
         cs: "Backlog funkčností",
-        en: "Backlog of functions"
+        en: "Backlog of functions",
       },
       changelogHeader: {
         cs: "Poslední dokončené funkčnosti",
-        en: "Recent released functions"
-      }
-    }
+        en: "Recent released functions",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -128,7 +128,7 @@ const Home = UU5.Common.VisualComponent.create({
         {this._getBacklog()}
       </UU5.Bricks.Container>
     );
-  }
+  },
   //@@viewOff:render
 });
 

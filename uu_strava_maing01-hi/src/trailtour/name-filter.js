@@ -17,27 +17,27 @@ export const NameFilter = UU5.FlexTiles.withDataConsumer(
     statics: {
       tagName: Config.TAG + "NameFilter",
       classNames: {
-        main: (props, state) => Config.Css.css``
+        main: (props, state) => Config.Css.css``,
       },
       lsi: {
         label: {
           cs: "Vyhledávání",
-          en: "Search"
-        }
-      }
+          en: "Search",
+        },
+      },
     },
     //@@viewOff:statics
 
     //@@viewOn:propTypes
     propTypes: {
-      showLabel: UU5.PropTypes.bool
+      showLabel: UU5.PropTypes.bool,
     },
     //@@viewOff:propTypes
 
     //@@viewOn:getDefaultProps
     getDefaultProps() {
       return {
-        showLabel: true
+        showLabel: true,
       };
     },
     //@@viewOff:getDefaultProps
@@ -46,7 +46,7 @@ export const NameFilter = UU5.FlexTiles.withDataConsumer(
     getInitialState() {
       this._input = UU5.Common.Reference.create();
       return {
-        activeFilter: false
+        activeFilter: false,
       };
     },
     //@@viewOff:reactLifeCycle
@@ -101,13 +101,13 @@ export const NameFilter = UU5.FlexTiles.withDataConsumer(
           icon={this.state.activeFilter ? "mdi-close" : "mdi-magnify"}
           onClick={this.state.activeFilter ? this._handleRemoveFilter : this._handleAddFilter}
           inputAttrs={{
-            onKeyUp: this._handleOnKeyUp
+            onKeyUp: this._handleOnKeyUp,
           }}
           label={this.props.showLabel ? this.getLsiComponent("label") : ""}
           inputWidth={"208px"}
         />
       );
-    }
+    },
     //@@viewOff:render
   })
 );

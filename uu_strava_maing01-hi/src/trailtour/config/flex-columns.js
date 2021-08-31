@@ -14,28 +14,28 @@ const Lsi = {
   ...AthleteTourDetailLsi,
   strava: {
     cs: "Strava",
-    en: "Strava"
+    en: "Strava",
   },
   menOrWomen: {
     cs: "Muži / Ženy",
-    en: "Men / Women"
+    en: "Men / Women",
   },
   clubRunners: {
     cs: "Běžci - celkem",
-    en: "Count of runners"
+    en: "Count of runners",
   },
   clubPoints: {
     cs: "Body - celkem",
-    en: "Total points"
+    en: "Total points",
   },
   clubResults: {
     cs: "Etapy - celkem",
-    en: "Results - total"
+    en: "Results - total",
   },
   emptyHeader: {
     cs: "<uu5string/>&nbsp;",
-    en: "<uu5string/>&nbsp;"
-  }
+    en: "<uu5string/>&nbsp;",
+  },
 };
 
 const NUM_TO_STR = new Map();
@@ -343,7 +343,7 @@ function getComparisonResults(data, resultIndex, athletes) {
     resultKey = "menResults";
   }
   let stravaId = athletes[resultIndex].stravaId;
-  let result = data[resultKey].find(res => res.stravaId === stravaId);
+  let result = data[resultKey].find((res) => res.stravaId === stravaId);
   return { results: result || {}, sex, total: data[resultKey + "Total"] };
 }
 
@@ -387,7 +387,7 @@ function getComparisonRunDate(data, resultIndex, athletes) {
 const FlexColumns = {
   processVisibleColumns(visibleColumns, skippedColumns, data) {
     let rows = [];
-    visibleColumns.forEach(column => {
+    visibleColumns.forEach((column) => {
       if (skippedColumns.includes(column.id)) return;
       let cellComponent = getTileComponent(column, data);
       if (!cellComponent) return;
@@ -402,12 +402,12 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.order,
-          sorterKey: "order"
-        }
+          sorterKey: "order",
+        },
       ],
       cellComponent: ({ order }) => order,
       width: "xxs",
-      visibility: "always"
+      visibility: "always",
     };
     return mergeColumn(options, column);
   },
@@ -417,13 +417,13 @@ const FlexColumns = {
       id: "stravaLink",
       headers: [
         {
-          label: Lsi.strava
-        }
+          label: Lsi.strava,
+        },
       ],
       cellComponent: getStravaLink,
-      width: "xxs"
+      width: "xxs",
     };
-    column.tileComponent = data => (
+    column.tileComponent = (data) => (
       <div style={{ position: "absolute", top: "4px", right: "4px" }}>{column.cellComponent(data)}</div>
     );
     return mergeColumn(options, column);
@@ -434,16 +434,16 @@ const FlexColumns = {
       id: "strava",
       headers: [
         {
-          label: TourDetailLsi.strava
+          label: TourDetailLsi.strava,
         },
         {
-          label: TourDetailLsi.trailtour
-        }
+          label: TourDetailLsi.trailtour,
+        },
       ],
-      cellComponent: data => getStravaTtLinks(data, keyOverrides),
-      width: "xs"
+      cellComponent: (data) => getStravaTtLinks(data, keyOverrides),
+      width: "xs",
     };
-    column.tileComponent = data => (
+    column.tileComponent = (data) => (
       <div style={{ position: "absolute", top: "4px", right: "4px" }}>{column.cellComponent(data)}</div>
     );
     return mergeColumn(options, column);
@@ -455,12 +455,12 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.name,
-          sorterKey: "name"
-        }
+          sorterKey: "name",
+        },
       ],
-      cellComponent: data => getAthleteLink(data, year),
+      cellComponent: (data) => getAthleteLink(data, year),
       width: "l",
-      visibility: "always"
+      visibility: "always",
     };
     return mergeColumn(options, column);
   },
@@ -471,16 +471,16 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.name,
-          sorterKey: "name"
+          sorterKey: "name",
         },
         {
           label: Lsi.club,
-          sorterKey: "club"
-        }
+          sorterKey: "club",
+        },
       ],
-      cellComponent: data => getAthleteAndClubLink(data, year),
+      cellComponent: (data) => getAthleteAndClubLink(data, year),
       width: "m",
-      visibility: "always"
+      visibility: "always",
     };
     return mergeColumn(options, column);
   },
@@ -491,11 +491,11 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.club,
-          sorterKey: "club"
-        }
+          sorterKey: "club",
+        },
       ],
-      cellComponent: data => getClubLink(data.club, year),
-      width: "m"
+      cellComponent: (data) => getClubLink(data.club, year),
+      width: "m",
     };
     return mergeColumn(options, column);
   },
@@ -506,12 +506,12 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.name,
-          sorterKey: "name"
-        }
+          sorterKey: "name",
+        },
       ],
-      cellComponent: data => getClubLink(data.name, year),
+      cellComponent: (data) => getClubLink(data.name, year),
       width: "m",
-      visibility: "always"
+      visibility: "always",
     };
     return mergeColumn(options, column);
   },
@@ -522,11 +522,11 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.points,
-          sorterKey: "points"
-        }
+          sorterKey: "points",
+        },
       ],
       cellComponent: ({ points }) => <UU5.Bricks.Number value={points} />,
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -537,11 +537,11 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.runCount,
-          sorterKey: "totalCount"
-        }
+          sorterKey: "totalCount",
+        },
       ],
       cellComponent: ({ totalCount }) => totalCount,
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -552,11 +552,11 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.avgPoints,
-          sorterKey: "avgPoints"
-        }
+          sorterKey: "avgPoints",
+        },
       ],
       cellComponent: ({ avgPoints }) => <UU5.Bricks.Number value={avgPoints} maxDecimalLength={2} />,
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -567,16 +567,16 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.clubPoints,
-          sorterKey: "points"
+          sorterKey: "points",
         },
         {
-          label: Lsi.menOrWomen
-        }
+          label: Lsi.menOrWomen,
+        },
       ],
-      cellComponent: data => getSexCellComponent(data, totalKey, pointsMen, pointsWomen, 0),
-      width: "xs"
+      cellComponent: (data) => getSexCellComponent(data, totalKey, pointsMen, pointsWomen, 0),
+      width: "xs",
     };
-    column.tileComponent = data => {
+    column.tileComponent = (data) => {
       return getSexTileComponent(column, data, totalKey, pointsMen, pointsWomen, 0);
     };
     return mergeColumn(options, column);
@@ -588,16 +588,16 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.clubRunners,
-          sorterKey: "runnersTotal"
+          sorterKey: "runnersTotal",
         },
         {
-          label: Lsi.menOrWomen
-        }
+          label: Lsi.menOrWomen,
+        },
       ],
-      cellComponent: data => getSexCellComponent(data, totalKey, pointsMen, pointsWomen),
-      width: "xs"
+      cellComponent: (data) => getSexCellComponent(data, totalKey, pointsMen, pointsWomen),
+      width: "xs",
     };
-    column.tileComponent = data => {
+    column.tileComponent = (data) => {
       return getSexTileComponent(column, data, totalKey, pointsMen, pointsWomen);
     };
     return mergeColumn(options, column);
@@ -609,16 +609,16 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.clubResults,
-          sorterKey: "resultsTotal"
+          sorterKey: "resultsTotal",
         },
         {
-          label: Lsi.menOrWomen
-        }
+          label: Lsi.menOrWomen,
+        },
       ],
-      cellComponent: data => getSexCellComponent(data, totalKey, pointsMen, pointsWomen),
-      width: "xs"
+      cellComponent: (data) => getSexCellComponent(data, totalKey, pointsMen, pointsWomen),
+      width: "xs",
     };
-    column.tileComponent = data => {
+    column.tileComponent = (data) => {
       return getSexTileComponent(column, data, totalKey, pointsMen, pointsWomen);
     };
     return mergeColumn(options, column);
@@ -630,16 +630,16 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi.avgPoints,
-          sorterKey: "avgPoints"
+          sorterKey: "avgPoints",
         },
         {
-          label: Lsi.menOrWomen
-        }
+          label: Lsi.menOrWomen,
+        },
       ],
-      cellComponent: data => getSexCellComponent(data, totalKey, pointsMen, pointsWomen, 2),
-      width: "xs"
+      cellComponent: (data) => getSexCellComponent(data, totalKey, pointsMen, pointsWomen, 2),
+      width: "xs",
     };
-    column.tileComponent = data => {
+    column.tileComponent = (data) => {
       return getSexTileComponent(column, data, totalKey, pointsMen, pointsWomen, 2);
     };
     return mergeColumn(options, column);
@@ -651,17 +651,17 @@ const FlexColumns = {
       headers: [
         {
           label: TourDetailLsi.name,
-          sorterKey: "name"
+          sorterKey: "name",
         },
         {
           label: TourDetailLsi.author,
-          sorterKey: "author"
-        }
+          sorterKey: "author",
+        },
       ],
-      cellComponent: data => getSegmentName(data, keyOverrides),
-      tileComponent: data => getSegmentNameTile(data, false, false, keyOverrides),
+      cellComponent: (data) => getSegmentName(data, keyOverrides),
+      tileComponent: (data) => getSegmentNameTile(data, false, false, keyOverrides),
       width: "l",
-      visibility: "always"
+      visibility: "always",
     };
     return mergeColumn(options, column);
   },
@@ -676,11 +676,11 @@ const FlexColumns = {
       headers: [
         {
           label: TourDetailLsi.distance,
-          sorterKey: "distance"
-        }
+          sorterKey: "distance",
+        },
       ],
       cellComponent: getDistance,
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -691,11 +691,11 @@ const FlexColumns = {
       headers: [
         {
           label: TourDetailLsi.elevation,
-          sorterKey: "total_elevation_gain"
-        }
+          sorterKey: "total_elevation_gain",
+        },
       ],
       cellComponent: getElevation,
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -706,16 +706,16 @@ const FlexColumns = {
       headers: [
         {
           label: TourDetailLsi.state,
-          sorterKey: "state"
+          sorterKey: "state",
         },
         {
           label: TourDetailLsi.city,
-          sorterKey: "city"
-        }
+          sorterKey: "city",
+        },
       ],
       cellComponent: getLocation,
       tileComponent: getLocationTile,
-      width: "m"
+      width: "m",
     };
     return mergeColumn(options, column);
   },
@@ -730,15 +730,15 @@ const FlexColumns = {
       headers: [
         {
           label: TourDetailLsi.ownOrder,
-          sorterKey: "ownOrder"
+          sorterKey: "ownOrder",
         },
         {
           label: TourDetailLsi.runnerCount,
-          sorterKey: "runnerCount"
-        }
+          sorterKey: "runnerCount",
+        },
       ],
       cellComponent: getOwnOrder,
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -749,11 +749,11 @@ const FlexColumns = {
       headers: [
         {
           label: TourDetailLsi.points,
-          sorterKey: "points"
-        }
+          sorterKey: "points",
+        },
       ],
       cellComponent: getOwnPoints,
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -764,11 +764,11 @@ const FlexColumns = {
       headers: [
         {
           label: TourDetailLsi.time,
-          sorterKey: "time"
-        }
+          sorterKey: "time",
+        },
       ],
       cellComponent: ({ time }) => BrickTools.formatDuration(time),
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -779,11 +779,11 @@ const FlexColumns = {
       headers: [
         {
           label: TourDetailLsi.pace,
-          sorterKey: "pace"
-        }
+          sorterKey: "pace",
+        },
       ],
       cellComponent: ({ pace }) => <SegmentPace pace={pace} />,
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -794,16 +794,16 @@ const FlexColumns = {
       headers: [
         {
           label: TourDetailLsi.time,
-          sorterKey: "time"
+          sorterKey: "time",
         },
         {
           label: TourDetailLsi.pace,
-          sorterKey: "pace"
-        }
+          sorterKey: "pace",
+        },
       ],
       cellComponent: getTimeAndPace,
       tileComponent: getTimeAndPaceTile,
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -813,14 +813,14 @@ const FlexColumns = {
       id: NUM_TO_STR.get(index) + "AthleteOrder",
       headers: [
         {
-          label: getAthleteHeader(athletes, index)
+          label: getAthleteHeader(athletes, index),
         },
         {
-          label: TourDetailLsi.ownOrder
-        }
+          label: TourDetailLsi.ownOrder,
+        },
       ],
-      cellComponent: data => getComparisonOrder(data, index, athletes),
-      width: "xs"
+      cellComponent: (data) => getComparisonOrder(data, index, athletes),
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -830,14 +830,14 @@ const FlexColumns = {
       id: NUM_TO_STR.get(index) + "AthletePoints",
       headers: [
         {
-          label: Lsi.emptyHeader
+          label: Lsi.emptyHeader,
         },
         {
-          label: TourDetailLsi.points
-        }
+          label: TourDetailLsi.points,
+        },
       ],
-      cellComponent: data => getComparisonPoints(data, index, athletes),
-      width: "xs"
+      cellComponent: (data) => getComparisonPoints(data, index, athletes),
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -847,14 +847,14 @@ const FlexColumns = {
       id: NUM_TO_STR.get(index) + "AthletePace",
       headers: [
         {
-          label: Lsi.emptyHeader
+          label: Lsi.emptyHeader,
         },
         {
-          label: TourDetailLsi.time
-        }
+          label: TourDetailLsi.time,
+        },
       ],
-      cellComponent: data => getComparisonPace(data, index, athletes),
-      width: "xs"
+      cellComponent: (data) => getComparisonPace(data, index, athletes),
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -865,17 +865,17 @@ const FlexColumns = {
       headers: [
         {
           label: Lsi[runDateKey],
-          sorterKey: runDateKey
-        }
+          sorterKey: runDateKey,
+        },
       ],
-      cellComponent: data => {
+      cellComponent: (data) => {
         if (getOwn) {
           return getOwnRunDate(data);
         } else {
           return data[runDateKey] && <UU5.Bricks.DateTime value={data[runDateKey]} dateOnly />;
         }
       },
-      width: "xs"
+      width: "xs",
     };
     return mergeColumn(options, column);
   },
@@ -885,17 +885,17 @@ const FlexColumns = {
       id: NUM_TO_STR.get(index) + "RunDate",
       headers: [
         {
-          label: Lsi.emptyHeader
+          label: Lsi.emptyHeader,
         },
         {
-          label: Lsi.runDate
-        }
+          label: Lsi.runDate,
+        },
       ],
-      cellComponent: data => getComparisonRunDate(data, index, athletes),
-      width: "s"
+      cellComponent: (data) => getComparisonRunDate(data, index, athletes),
+      width: "s",
     };
     return mergeColumn(options, column);
-  }
+  },
 };
 
 export default FlexColumns;

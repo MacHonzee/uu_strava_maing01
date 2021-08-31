@@ -27,14 +27,14 @@ export const TourSegments = UU5.Common.VisualComponent.create({
 
           ${UU5.Utils.ScreenSize.getMaxMediaQueries("s", `flex-direction: column;`)}
         }
-      `
+      `,
     },
     lsi: {
       header: {
         cs: "Etapy Trailtour %s",
-        en: "Trailtour %s segments"
-      }
-    }
+        en: "Trailtour %s segments",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -47,7 +47,7 @@ export const TourSegments = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      stamp: new Date()
+      stamp: new Date(),
     };
   },
 
@@ -97,7 +97,7 @@ export const TourSegments = UU5.Common.VisualComponent.create({
         data={{ year: params.year }}
         key={params.year + this.state.stamp.toISOString()}
       >
-        {data => {
+        {(data) => {
           return (
             <UU5.Bricks.Container {...this.getMainPropsToPass()} header={this._getHeader(data)} level={3}>
               <LoadFeedback {...data}>
@@ -113,7 +113,7 @@ export const TourSegments = UU5.Common.VisualComponent.create({
         }}
       </UU5.Common.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

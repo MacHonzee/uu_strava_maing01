@@ -16,24 +16,24 @@ export const ClubTourResults = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "ClubTourResults",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
     },
     lsi: {
       runnersTab: {
         cs: "Běžci",
-        en: "Runners"
+        en: "Runners",
       },
       segmentsTab: {
         cs: "Etapy",
-        en: "Segments"
-      }
-    }
+        en: "Segments",
+      },
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    data: UU5.PropTypes.object.isRequired
+    data: UU5.PropTypes.object.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -69,7 +69,7 @@ export const ClubTourResults = UU5.Common.VisualComponent.create({
         </UU5.Bricks.Tabs>
       </UU5.Bricks.Div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

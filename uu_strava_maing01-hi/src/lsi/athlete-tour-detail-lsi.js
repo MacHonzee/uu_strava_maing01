@@ -1,40 +1,40 @@
 const AthleteTourDetailLsi = {
   name: {
     cs: "Jméno",
-    en: "Name"
+    en: "Name",
   },
   order: {
     cs: "Pořadí",
-    en: "Order"
+    en: "Order",
   },
   points: {
     cs: "Body",
-    en: "Points"
+    en: "Points",
   },
   pace: {
     cs: "Tempo",
-    en: "Pace"
+    en: "Pace",
   },
   runCount: {
     cs: "Celkem etap",
-    en: "Segment total"
+    en: "Segment total",
   },
   avgPoints: {
     cs: "Průměrně bodů",
-    en: "Average points"
+    en: "Average points",
   },
   club: {
     cs: "Klub",
-    en: "Club"
+    en: "Club",
   },
   runDate: {
     cs: "Zaběhnuto",
-    en: "Run date"
+    en: "Run date",
   },
   lastRun: {
     cs: "Poslední běh",
-    en: "Last runs"
-  }
+    en: "Last runs",
+  },
 };
 
 export default AthleteTourDetailLsi;

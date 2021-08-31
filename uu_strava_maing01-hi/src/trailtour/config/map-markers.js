@@ -4,7 +4,7 @@ const MapMarkers = {
     ownRun: "./assets/markers/mapy-cz/drop-blue.png",
     otherRun: "./assets/markers/mapy-cz/drop-green.png",
     commonRun: "./assets/markers/mapy-cz/drop-blue-green.png",
-    finish: "./assets/markers/finish-flag.svg"
+    finish: "./assets/markers/finish-flag.svg",
   },
 
   google: {
@@ -12,8 +12,8 @@ const MapMarkers = {
     ownRun: "./assets/markers/google/drop-blue.png",
     otherRun: "./assets/markers/google/drop-green.png",
     commonRun: "./assets/markers/google/drop-blue-green.png",
-    finish: "./assets/markers/finish-flag.svg"
-  }
+    finish: "./assets/markers/finish-flag.svg",
+  },
 };
 
 export default MapMarkers;

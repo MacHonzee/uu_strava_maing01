@@ -26,8 +26,8 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "AthleteTourResultList",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
@@ -35,7 +35,7 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
   propTypes: {
     data: UU5.PropTypes.array.isRequired,
     sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired,
-    trailtour: UU5.PropTypes.object.isRequired
+    trailtour: UU5.PropTypes.object.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -65,8 +65,8 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
       pageInfo: {
         pageSize: PAGE_SIZE,
         pageIndex: 0,
-        total: dataCopy.length
-      }
+        total: dataCopy.length,
+      },
     };
   },
 
@@ -101,8 +101,8 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
         FlexColumns.timeAndPace(),
         FlexColumns.distance(),
         FlexColumns.elevation(),
-        FlexColumns.lastRun({}, "runDate", true)
-      ]
+        FlexColumns.lastRun({}, "runDate", true),
+      ],
     };
 
     return (
@@ -121,14 +121,14 @@ export const AthleteTourResultList = UU5.Common.VisualComponent.create({
                   />
                 }
               />,
-              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />,
             ]}
             tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

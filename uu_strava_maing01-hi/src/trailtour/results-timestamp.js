@@ -20,14 +20,14 @@ export const ResultsTimestamp = UU5.Common.VisualComponent.create({
           font-style: italic;
           margin-right: 8px;
         }
-      `
+      `,
     },
     lsi: {
       generatedStamp: {
         cs: "Poslední update: ",
-        en: "Last update: "
-      }
-    }
+        en: "Last update: ",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -35,7 +35,7 @@ export const ResultsTimestamp = UU5.Common.VisualComponent.create({
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
     year: UU5.PropTypes.string.isRequired,
-    handleReload: UU5.PropTypes.func.isRequired
+    handleReload: UU5.PropTypes.func.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -70,7 +70,7 @@ export const ResultsTimestamp = UU5.Common.VisualComponent.create({
         )}
       </UU5.Bricks.Div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

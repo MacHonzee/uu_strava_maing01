@@ -35,18 +35,18 @@ export const TrailtourRuns = UU5.Common.VisualComponent.create({
 
           ${UU5.Utils.ScreenSize.getMaxMediaQueries("s", `flex-direction: column;`)}
         }
-      `
+      `,
     },
     lsi: {
       header: {
         cs: "Poslední běhy Trailtour %s",
-        en: "Last runs of Trailtour %s"
+        en: "Last runs of Trailtour %s",
       },
       generatedStamp: {
         cs: "Poslední update: ",
-        en: "Last update: "
-      }
-    }
+        en: "Last update: ",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -59,7 +59,7 @@ export const TrailtourRuns = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      stamp: new Date()
+      stamp: new Date(),
     };
   },
 
@@ -102,7 +102,7 @@ export const TrailtourRuns = UU5.Common.VisualComponent.create({
   _handleLoad(dtoIn) {
     let params = this.props.params || {};
     dtoIn.year = params.year;
-    ["dateFrom", "dateTo"].forEach(dateKey => {
+    ["dateFrom", "dateTo"].forEach((dateKey) => {
       if (dtoIn[dateKey] && dtoIn[dateKey] instanceof Date) {
         dtoIn[dateKey] = UU5.Common.Tools.formatDate(dtoIn[dateKey], "Y-mm-dd");
       }
@@ -121,7 +121,7 @@ export const TrailtourRuns = UU5.Common.VisualComponent.create({
         key={params.year + this.state.stamp.toISOString()}
         pessimistic
       >
-        {data => {
+        {(data) => {
           return (
             <UU5.Bricks.Container {...this.getMainPropsToPass()} header={this._getHeader(data)} level={3} noSpacing>
               <LoadFeedback {...data}>
@@ -132,7 +132,7 @@ export const TrailtourRuns = UU5.Common.VisualComponent.create({
         }}
       </UU5.Common.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

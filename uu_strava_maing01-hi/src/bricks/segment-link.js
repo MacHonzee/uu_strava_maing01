@@ -13,15 +13,15 @@ export const SegmentLink = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "SegmentLink",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
     stravaId: UU5.PropTypes.number.isRequired,
-    content: UU5.PropTypes.node
+    content: UU5.PropTypes.node,
   },
   //@@viewOff:propTypes
 
@@ -51,7 +51,7 @@ export const SegmentLink = UU5.Common.VisualComponent.create({
         {this.props.content || this.props.children}
       </UU5.Bricks.Link>
     );
-  }
+  },
   //@@viewOff:render
 });
 

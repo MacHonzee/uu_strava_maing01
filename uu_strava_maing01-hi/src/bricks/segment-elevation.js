@@ -13,14 +13,14 @@ export const SegmentElevation = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "SegmentElevation",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    elevation: UU5.PropTypes.number.isRequired
+    elevation: UU5.PropTypes.number.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -47,7 +47,7 @@ export const SegmentElevation = UU5.Common.VisualComponent.create({
         &nbsp;m
       </UU5.Bricks.Span>
     );
-  }
+  },
   //@@viewOff:render
 });
 

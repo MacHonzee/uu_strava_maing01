@@ -16,12 +16,12 @@ import TourDetailLsi from "../lsi/tour-detail-lsi";
 const Lsi = {
   changeMapToGoogle: {
     cs: "Přepnout na Google Maps",
-    en: "Switch to Google Maps"
+    en: "Switch to Google Maps",
   },
   changeMapToMapyCz: {
     cs: "Přepnout na Mapy.cz",
-    en: "Switch to Mapy.cz"
-  }
+    en: "Switch to Mapy.cz",
+  },
 };
 
 const BREAK_POINT_FOR_MAP = 768;
@@ -63,8 +63,8 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
       `,
       popoverFooter: Config.Css.css`
         padding: 0;
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -76,7 +76,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
     showTourDetail: UU5.PropTypes.bool,
     multipleResults: UU5.PropTypes.bool,
     year: UU5.PropTypes.string,
-    stravaIdList: UU5.PropTypes.array
+    stravaIdList: UU5.PropTypes.array,
   },
   //@@viewOff:propTypes
 
@@ -90,7 +90,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
     let width = window.innerWidth;
     return {
       map: width < BREAK_POINT_FOR_MAP ? "google" : "mapyCz", // oneOf(["google", "mapyCz"])
-      mapConfig: this.props.mapConfig
+      mapConfig: this.props.mapConfig,
     };
   },
   //@@viewOff:reactLifeCycle
@@ -147,9 +147,9 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
 
   _handleMapChange() {
     let currentMapConfig = this._mapRef.current.getMapCenterAndZoom();
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       map: prevState.map === "google" ? "mapyCz" : "google",
-      mapConfig: currentMapConfig
+      mapConfig: currentMapConfig,
     }));
   },
 
@@ -176,14 +176,12 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
       content: this._getPopoverContent(foundSegment),
       footer: this._getPopoverFooter(foundSegment),
       footerClassName: this.getClassName("popoverFooter"),
-      aroundElement: eventTarget
+      aroundElement: eventTarget,
     });
   },
 
   _closePopover() {
-    UU5.Environment.getPage()
-      .getPopover()
-      .close();
+    UU5.Environment.getPage().getPopover().close();
   },
 
   _getPopoverContent(segment) {
@@ -284,7 +282,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
     );
     let totalResult = segment[sex + "ResultsTotal"];
 
-    let headers = results.map(result => (
+    let headers = results.map((result) => (
       <UU5.Bricks.Div key={result.stravaId}>
         <UU5.Bricks.Link href={`athleteTourDetail?year=${this.props.year}&stravaId=${result.stravaId}`}>
           {result.name}
@@ -292,25 +290,25 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
       </UU5.Bricks.Div>
     ));
 
-    let orders = results.map(result => (
+    let orders = results.map((result) => (
       <UU5.Bricks.Div key={result.stravaId}>
         {result.order}&nbsp;/&nbsp;{totalResult}
       </UU5.Bricks.Div>
     ));
 
-    let points = results.map(result => <UU5.Bricks.Div key={result.stravaId}>{result.points}</UU5.Bricks.Div>);
+    let points = results.map((result) => <UU5.Bricks.Div key={result.stravaId}>{result.points}</UU5.Bricks.Div>);
 
-    let durations = results.map(result => (
+    let durations = results.map((result) => (
       <UU5.Bricks.Div key={result.stravaId}>{BrickTools.formatDuration(result.time)}</UU5.Bricks.Div>
     ));
 
-    let paces = results.map(result => (
+    let paces = results.map((result) => (
       <UU5.Bricks.Div key={result.stravaId}>
         <SegmentPace pace={result.pace} />
       </UU5.Bricks.Div>
     ));
 
-    let runDates = results.map(result => (
+    let runDates = results.map((result) => (
       <UU5.Bricks.Div key={result.stravaId}>
         <UU5.Bricks.DateTime value={result.runDate} dateOnly />
       </UU5.Bricks.Div>
@@ -378,7 +376,7 @@ export const TrailtourMap = UU5.Common.VisualComponent.create({
         {this.state.map === "mapyCz" && this._getMapyCz(decodedPolyline)}
       </UU5.Bricks.Div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

@@ -15,8 +15,8 @@ export const LoadFeedback = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "LoadFeedback",
     classNames: {
-      main: Config.Css.css``
-    }
+      main: Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
@@ -24,7 +24,7 @@ export const LoadFeedback = UU5.Common.VisualComponent.create({
   propTypes: {
     errorState: UU5.PropTypes.string,
     errorData: UU5.PropTypes.object,
-    data: UU5.PropTypes.any
+    data: UU5.PropTypes.any,
   },
   //@@viewOff:propTypes
 
@@ -33,7 +33,7 @@ export const LoadFeedback = UU5.Common.VisualComponent.create({
     return {
       errorState: null,
       errorData: null,
-      data: null
+      data: null,
     };
   },
   //@@viewOff:getDefaultProps
@@ -62,7 +62,7 @@ export const LoadFeedback = UU5.Common.VisualComponent.create({
     } else {
       return <UU5.Bricks.Loading />;
     }
-  }
+  },
   //@@viewOff:render
 });
 

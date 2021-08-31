@@ -8,8 +8,8 @@ import NameFilter from "./name-filter";
 const Lsi = {
   title: {
     cs: "Vyhledávání",
-    en: "Search"
-  }
+    en: "Search",
+  },
 };
 
 export const NameFilterBar = UU5.Common.VisualComponent.create({
@@ -21,14 +21,14 @@ export const NameFilterBar = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "NameFilterBar",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    right: UU5.PropTypes.node
+    right: UU5.PropTypes.node,
   },
   //@@viewOff:propTypes
 
@@ -58,7 +58,7 @@ export const NameFilterBar = UU5.Common.VisualComponent.create({
         right={this.props.right}
       />
     );
-  }
+  },
   //@@viewOff:render
 });
 

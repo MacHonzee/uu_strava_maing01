@@ -33,41 +33,41 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
         .uu5-bricks-button:first-child {
           margin-right: 8px;
         }
-      `
+      `,
     },
     lsi: {
       label: {
         cs: "Obnovit data",
-        en: "Update data"
+        en: "Update data",
       },
       warningText: {
         cs: "Potvrďte prosím žádost o aktualizaci dat.",
-        en: "Please confirm the request to update the data."
+        en: "Please confirm the request to update the data.",
       },
       confirm: {
         cs: "Ano",
-        en: "Yes"
+        en: "Yes",
       },
       refuse: {
         cs: "Zrušit",
-        en: "Cancel"
+        en: "Cancel",
       },
       success: {
         cs: "Data úspěšně aktualizována.",
-        en: "Data successfully updated."
+        en: "Data successfully updated.",
       },
       alreadyUpToDate: {
         cs: "Na stránkách trailtour.cz nejsou novější data, výsledky jsou tudíž již aktuální.",
-        en: "There are no newer data on trailtour.cz, the results are already up to date."
-      }
-    }
+        en: "There are no newer data on trailtour.cz, the results are already up to date.",
+      },
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
     year: UU5.PropTypes.string.isRequired,
-    onUpdateDone: UU5.PropTypes.func.isRequired
+    onUpdateDone: UU5.PropTypes.func.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -77,7 +77,7 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      loading: false
+      loading: false,
     };
   },
   //@@viewOff:reactLifeCycle
@@ -95,7 +95,7 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
       header: this.getLsiComponent("label"),
       content: <UU5.Bricks.Paragraph>{this.getLsiComponent("warningText")}</UU5.Bricks.Paragraph>,
       footer: this._getModalFooter(),
-      size: "s"
+      size: "s",
     });
   },
 
@@ -111,9 +111,7 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
   },
 
   _handleCloseModal() {
-    UU5.Environment.getPage()
-      .getModal()
-      .close();
+    UU5.Environment.getPage().getModal().close();
   },
 
   _handleUpdateTrailtour() {
@@ -131,7 +129,7 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
         .getAlertBus()
         .setAlert({
           colorSchema: "warning",
-          content: this.getLsiComponent("alreadyUpToDate")
+          content: this.getLsiComponent("alreadyUpToDate"),
         });
     } else {
       this.props.onUpdateDone();
@@ -139,7 +137,7 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
         .getAlertBus()
         .setAlert({
           colorSchema: "success",
-          content: this.getLsiComponent("success")
+          content: this.getLsiComponent("success"),
         });
     }
   },
@@ -151,7 +149,7 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
       .getAlertBus()
       .setAlert({
         colorSchema: "red",
-        content: <TranslatedServerError errorData={error} />
+        content: <TranslatedServerError errorData={error} />,
       });
   },
   //@@viewOff:private
@@ -170,7 +168,7 @@ export const UpdateTrailtourButton = UU5.Common.VisualComponent.create({
         {this.getLsiComponent("label")}
       </UU5.Bricks.Button>
     );
-  }
+  },
   //@@viewOff:render
 });
 

@@ -16,14 +16,14 @@ const AuthorizeStravaButton = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "AuthorizeStravaButton",
     classNames: {
-      main: Config.CSS + "authorize-strava-button"
+      main: Config.CSS + "authorize-strava-button",
     },
     lsi: {
       button: {
-        en: "Authorize Strava"
-      }
+        en: "Authorize Strava",
+      },
     },
-    contextType: SpaContext
+    contextType: SpaContext,
   },
   //@@viewOff:statics
 
@@ -75,7 +75,7 @@ const AuthorizeStravaButton = UU5.Common.VisualComponent.create({
         {this.getLsiComponent("button")}
       </UU5.Bricks.Button>
     );
-  }
+  },
   //@@viewOff:render
 });
 

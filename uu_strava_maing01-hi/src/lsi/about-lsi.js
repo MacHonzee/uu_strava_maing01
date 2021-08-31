@@ -1,19 +1,19 @@
 const AboutLsi = {
   header: {
     cs: "O aplikaci Trailtour Analytika",
-    en: "About application Trailtour Analytics"
+    en: "About application Trailtour Analytics",
   },
   creatorsHeader: {
     cs: "Tvůrci aplikace",
-    en: "Application creators"
+    en: "Application creators",
   },
   termsOfUse: {
     cs: "Podmínky užívání",
-    en: "Terms of use"
+    en: "Terms of use",
   },
   appVersion: {
     cs: "Verze aplikace",
-    en: "Application version"
+    en: "Application version",
   },
   welcomeText: {
     cs:
@@ -27,7 +27,7 @@ const AboutLsi = {
       "or one club, all with possibilities of sorting or mobile display. The application can help you plan the " +
       "runs or analyze already existing results of the past. It however reads and parses data from official " +
       "Trailtour web, so I can not guarantee full results precision. The app is intended just for enjoyment " +
-      "of development, and only in free time."
+      "of development, and only in free time.",
   },
   registrationText: {
     cs:
@@ -39,7 +39,7 @@ const AboutLsi = {
       "<uu5string/>Application is built upon <UU5.Bricks.Link href='https://unicorn.com/cs/'>" +
       "UAF</UU5.Bricks.Link> frameworke a service <UU5.Bricks.Link href='https://www.plus4u.net/'>" +
       "Plus4U</UU5.Bricks.Link>. By free registration to this service you will get access " +
-      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>Plus4U products</UU5.Bricks.Link>."
+      "<UU5.Bricks.Link href='https://www.plus4u.net/cs/products'>Plus4U products</UU5.Bricks.Link>.",
   },
   contactText: {
     cs:
@@ -47,8 +47,8 @@ const AboutLsi = {
       "<UU5.Bricks.Link href='mailto:machonzee@centrum.cz'>machonzee@centrum.cz</UU5.Bricks.Link>.</UU5.Bricks.P>",
     en:
       "<uu5string/><UU5.Bricks.P>In case of any issues, improvement ideas or questions, do not hesitate to contact me on " +
-      "<UU5.Bricks.Link href='mailto:machonzee@centrum.cz'>machonzee@centrum.cz</UU5.Bricks.Link>.</UU5.Bricks.P>"
-  }
+      "<UU5.Bricks.Link href='mailto:machonzee@centrum.cz'>machonzee@centrum.cz</UU5.Bricks.Link>.</UU5.Bricks.P>",
+  },
 };
 
 export default AboutLsi;

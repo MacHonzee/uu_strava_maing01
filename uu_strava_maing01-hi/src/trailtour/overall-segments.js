@@ -18,8 +18,8 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "OverallSegments",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
@@ -27,7 +27,7 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
     year: UU5.PropTypes.string.isRequired,
-    handleReload: UU5.PropTypes.func
+    handleReload: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -56,8 +56,8 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
       pageInfo: {
         pageSize: PAGE_SIZE,
         pageIndex: 0,
-        total: dataCopy.length
-      }
+        total: dataCopy.length,
+      },
     };
   },
 
@@ -83,8 +83,8 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
         FlexColumns.segmentName(),
         FlexColumns.distance(),
         FlexColumns.elevation(),
-        FlexColumns.location()
-      ]
+        FlexColumns.location(),
+      ],
     };
 
     return (
@@ -94,14 +94,14 @@ export const OverallSegments = UU5.Common.VisualComponent.create({
             bars={[
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
               <NameFilterBar key={"nameFilterBar"} />,
-              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />,
             ]}
             tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

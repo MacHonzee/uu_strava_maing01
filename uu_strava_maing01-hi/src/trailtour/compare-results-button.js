@@ -14,14 +14,14 @@ export const CompareResultsButton = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "CompareResultsButton",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
     },
     lsi: {
       label: {
         cs: "Porovnat výsledky",
-        en: "Compare results"
-      }
-    }
+        en: "Compare results",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -29,7 +29,7 @@ export const CompareResultsButton = UU5.Common.VisualComponent.create({
   propTypes: {
     firstAthlete: UU5.PropTypes.object,
     secondAthlete: UU5.PropTypes.object,
-    handleCompare: UU5.PropTypes.func // from HoC
+    handleCompare: UU5.PropTypes.func, // from HoC
   },
   //@@viewOff:propTypes
 
@@ -60,7 +60,7 @@ export const CompareResultsButton = UU5.Common.VisualComponent.create({
         {this.getLsiComponent("label")}
       </UU5.Bricks.Button>
     );
-  }
+  },
   //@@viewOff:render
 });
 

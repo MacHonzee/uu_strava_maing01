@@ -53,15 +53,15 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
         .uu5-bricks-alert {
           top: 72px;
         }
-      `
+      `,
     },
     lsi: {
       name: Lsi.appName,
       home: {
         cs: "Domů",
-        en: "Home"
-      }
-    }
+        en: "Home",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -74,7 +74,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      config: null
+      config: null,
     };
   },
   //@@viewOff:reactLifeCycle
@@ -97,7 +97,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
       trailtourClubs: { component: <TrailtourClubs /> },
       clubDetail: { component: <ClubDetail /> },
       trailtourRuns: { component: <TrailtourRuns /> },
-      about: { component: <About /> }
+      about: { component: <About /> },
     };
 
     if (UU5.Environment.getSession().isAuthenticated() && !config.athlete) {
@@ -162,7 +162,7 @@ const SpaAuthenticated = UU5.Common.VisualComponent.create({
         }}
       </UU5.Common.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

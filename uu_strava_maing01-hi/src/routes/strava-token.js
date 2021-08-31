@@ -24,22 +24,22 @@ const StravaToken = UU5.Common.VisualComponent.create({
         .uu5-bricks-paragraph {
           max-width: 480px;
         }
-      `
+      `,
     },
     lsi: {
       // TODO angličtinu + textace + alternativní scénář
       success: {
-        cs: "Aplikace úspěšně propojena se Stravou."
+        cs: "Aplikace úspěšně propojena se Stravou.",
       },
       accessDenied: {
         cs:
-          "<uu5string/>Přístup byl odepřen.<br/><br/>Pro pokračování je nutné přejít na domovskou stránku a povolit aplikaci přístup k datům ze Stravy."
+          "<uu5string/>Přístup byl odepřen.<br/><br/>Pro pokračování je nutné přejít na domovskou stránku a povolit aplikaci přístup k datům ze Stravy.",
       },
       invalidScope: {
         cs:
-          "<uu5string/>Nebylo nastaveno dostatečné oprávnění.<br/><br/>Pro pokračování je nutné přejít na domovskou stránku a povolit aplikaci všechny požadované přístupy k datům ze Stravy, včetně údajům o aktivitách."
-      }
-    }
+          "<uu5string/>Nebylo nastaveno dostatečné oprávnění.<br/><br/>Pro pokračování je nutné přejít na domovskou stránku a povolit aplikaci všechny požadované přístupy k datům ze Stravy, včetně údajům o aktivitách.",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -75,7 +75,7 @@ const StravaToken = UU5.Common.VisualComponent.create({
   _renderSuccess() {
     return (
       <UU5.Common.DataManager onLoad={Calls.createAthlete} data={this._getDtoIn()}>
-        {data => <LoadFeedback {...data}>{this._getSuccessChildren()}</LoadFeedback>}
+        {(data) => <LoadFeedback {...data}>{this._getSuccessChildren()}</LoadFeedback>}
       </UU5.Common.DataManager>
     );
   },
@@ -98,7 +98,7 @@ const StravaToken = UU5.Common.VisualComponent.create({
     }
 
     return <UU5.Bricks.Div {...this.getMainPropsToPass()}>{child}</UU5.Bricks.Div>;
-  }
+  },
   //@@viewOff:render
 });
 

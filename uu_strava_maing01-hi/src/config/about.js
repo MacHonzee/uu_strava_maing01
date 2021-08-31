@@ -6,27 +6,27 @@ export const About = {
     organisation: {
       cs: {
         name: "Unicorn a.s.",
-        uri: "https://www.unicorn.com/"
+        uri: "https://www.unicorn.com/",
       },
       en: {
         name: "Unicorn a.s.",
-        uri: "https://www.unicorn.com/"
-      }
+        uri: "https://www.unicorn.com/",
+      },
     },
     authorities: {
       cs: [
         {
           name: "Jan Rudolf",
-          uri: "https://www.unicorn.com/"
-        }
+          uri: "https://www.unicorn.com/",
+        },
       ],
       en: [
         {
           name: "Jan Rudolf",
-          uri: "https://www.unicorn.com/"
-        }
-      ]
-    }
+          uri: "https://www.unicorn.com/",
+        },
+      ],
+    },
   },
   leadingAuthors: [
     {
@@ -34,9 +34,9 @@ export const About = {
       uuIdentity: "5-8385-1",
       src: "../assets/5-8385-1.png",
       role: {
-        en: "Chief Developer"
-      }
-    }
+        en: "Chief Developer",
+      },
+    },
   ],
   otherAuthors: [],
   usedTechnologies: {
@@ -54,22 +54,22 @@ export const About = {
         />,
         <UU5.Bricks.LinkUuAppServer key={"linkUuAppServer"} />,
         <UU5.Bricks.LinkUuOIDC key={"linkUuOIDC"} />,
-        <UU5.Bricks.LinkUuCloud key={"linkUuCloud"} />
-      ]
+        <UU5.Bricks.LinkUuCloud key={"linkUuCloud"} />,
+      ],
     },
     content: {
       cs: [
         `<uu5string/>Dále byly použity technologie: <UU5.Bricks.LinkHTML5/>, <UU5.Bricks.LinkCSS/>, <UU5.Bricks.LinkJavaScript/>, <UU5.Bricks.LinkBootstrap/>,
         <UU5.Bricks.LinkReact/>, <UU5.Bricks.LinkRuby/>, <UU5.Bricks.LinkPuma/> a <UU5.Bricks.LinkDocker/>.
-        Aplikace je provozována v rámci internetové služby <UU5.Bricks.LinkPlus4U/> s využitím cloudu <UU5.Bricks.LinkMSAzure/>.`
+        Aplikace je provozována v rámci internetové služby <UU5.Bricks.LinkPlus4U/> s využitím cloudu <UU5.Bricks.LinkMSAzure/>.`,
       ],
       en: [
         `<uu5string/>Other used technologies: <UU5.Bricks.LinkHTML5/>, <UU5.Bricks.LinkCSS/>, <UU5.Bricks.LinkJavaScript/>, <UU5.Bricks.LinkBootstrap/>,
         <UU5.Bricks.LinkReact/>, <UU5.Bricks.LinkRuby/>, <UU5.Bricks.LinkPuma/> a <UU5.Bricks.LinkDocker/>.
-        Application is operated in the <UU5.Bricks.LinkPlus4U/> internet service with the usage of <UU5.Bricks.LinkMSAzure/> cloud.`
-      ]
-    }
-  }
+        Application is operated in the <UU5.Bricks.LinkPlus4U/> internet service with the usage of <UU5.Bricks.LinkMSAzure/> cloud.`,
+      ],
+    },
+  },
 };
 
 export default About;

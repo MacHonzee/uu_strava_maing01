@@ -26,17 +26,17 @@ export const TrailtourClubs = UU5.Common.VisualComponent.create({
 
           ${UU5.Utils.ScreenSize.getMaxMediaQueries("s", `flex-direction: column;`)}
         }
-      `
+      `,
     },
     lsi: {
       header: {
-        cs: "Výsledky klubů Trailtour %s"
+        cs: "Výsledky klubů Trailtour %s",
       },
       generatedStamp: {
         cs: "Poslední update: ",
-        en: "Last update: "
-      }
-    }
+        en: "Last update: ",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -49,7 +49,7 @@ export const TrailtourClubs = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      stamp: new Date()
+      stamp: new Date(),
     };
   },
 
@@ -99,7 +99,7 @@ export const TrailtourClubs = UU5.Common.VisualComponent.create({
         data={{ year: params.year }}
         key={params.year + this.state.stamp.toISOString()}
       >
-        {data => (
+        {(data) => (
           <UU5.Bricks.Container {...this.getMainPropsToPass()} header={this._getHeader(data)} level={3}>
             <LoadFeedback {...data}>
               {data.data && <ClubResults data={data.data} year={params.year} handleReload={this._handleReload} />}
@@ -108,7 +108,7 @@ export const TrailtourClubs = UU5.Common.VisualComponent.create({
         )}
       </UU5.Common.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

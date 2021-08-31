@@ -45,8 +45,8 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
             ${UU5.Utils.ScreenSize.getMaxMediaQueries("s", `width: calc((100% - 80px)/2);`)}
           }
         }
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -55,7 +55,7 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
     data: UU5.PropTypes.array.isRequired,
     sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired,
     trailtour: UU5.PropTypes.object.isRequired,
-    stravaIdList: UU5.PropTypes.array.isRequired
+    stravaIdList: UU5.PropTypes.array.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -85,8 +85,8 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
       pageInfo: {
         pageSize: PAGE_SIZE,
         pageIndex: 0,
-        total: dataCopy.length
-      }
+        total: dataCopy.length,
+      },
     };
   },
 
@@ -100,7 +100,7 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
       resultKey = "menResults";
     }
     let stravaId = this.props.stravaIdList[resultIndex];
-    let result = data[resultKey].find(res => res.stravaId === stravaId);
+    let result = data[resultKey].find((res) => res.stravaId === stravaId);
     return { results: result || {}, sex, total: data[resultKey + "Total"] };
   },
 
@@ -169,7 +169,7 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
       "firstAthletePace",
       "secondAthleteOrder",
       "secondAthletePoints",
-      "secondAthletePace"
+      "secondAthletePace",
     ];
     let visibleRows = FlexColumns.processVisibleColumns(visibleColumns, skippedColumns, data);
 
@@ -184,8 +184,8 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
 
   _getAthletes() {
     let correctKey = this.props.trailtour.totalResults.menResults[0] ? "menResults" : "womenResults";
-    return this.props.stravaIdList.map(stravaId => {
-      return this.props.trailtour.totalResults[correctKey].find(result => result.stravaId === stravaId);
+    return this.props.stravaIdList.map((stravaId) => {
+      return this.props.trailtour.totalResults[correctKey].find((result) => result.stravaId === stravaId);
     });
   },
   //@@viewOff:private
@@ -206,8 +206,8 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
         FlexColumns.comparisonOrder({}, athletes, 1),
         FlexColumns.comparisonPoints({}, athletes, 1),
         FlexColumns.comparisonPace({}, athletes, 1),
-        FlexColumns.comparisonRunDate({}, athletes, 1)
-      ]
+        FlexColumns.comparisonRunDate({}, athletes, 1),
+      ],
     };
 
     return (
@@ -228,14 +228,14 @@ export const AthleteComparisonList = UU5.Common.VisualComponent.create({
                   />
                 }
               />,
-              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />,
             ]}
             tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

@@ -17,25 +17,25 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "AthleteTourResults",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
     },
     lsi: {
       resultsTab: {
         cs: "Výsledky",
-        en: "Results"
+        en: "Results",
       },
       statsTab: {
         cs: "Statistiky",
-        en: "Statistics"
-      }
-    }
+        en: "Statistics",
+      },
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
-    sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired
+    sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired,
   },
   //@@viewOff:propTypes
 
@@ -63,8 +63,8 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
         menResults: ttData.totalResults.menResults[0],
         menResultsTotal: ttData.totalResults.menResultsTotal,
         womenResults: ttData.totalResults.womenResults[0],
-        womenResultsTotal: ttData.totalResults.womenResultsTotal
-      }
+        womenResultsTotal: ttData.totalResults.womenResultsTotal,
+      },
     };
 
     return (
@@ -86,7 +86,7 @@ export const AthleteTourResults = UU5.Common.VisualComponent.create({
         </UU5.Bricks.Tabs>
       </UU5.Bricks.Div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

@@ -26,14 +26,14 @@ export const AthleteComparison = UU5.Common.VisualComponent.create({
         ${UU5.Utils.ScreenSize.getMaxMediaQueries("xl", "padding: 48px 48px 0 48px;")}
         ${UU5.Utils.ScreenSize.getMaxMediaQueries("m", "padding: 24px 24px 0 24px;")}
         ${UU5.Utils.ScreenSize.getMaxMediaQueries("xs", "padding: 16px 16px 0 16px;")}
-      `
+      `,
     },
     lsi: {
       header: {
         cs: "Porovnání výsledků",
-        en: "Results comparison"
-      }
-    }
+        en: "Results comparison",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -63,12 +63,12 @@ export const AthleteComparison = UU5.Common.VisualComponent.create({
   },
 
   _addPaceToResults(results) {
-    results.forEach(result => {
+    results.forEach((result) => {
       let distance = result.segment.distance;
-      ["womenResults", "menResults"].forEach(resultKey => {
+      ["womenResults", "menResults"].forEach((resultKey) => {
         if (!result[resultKey]) return;
 
-        result[resultKey].forEach(athlResult => {
+        result[resultKey].forEach((athlResult) => {
           let seconds = athlResult.time;
           athlResult.pace = BrickTools.countPace(seconds, distance);
         });
@@ -92,7 +92,7 @@ export const AthleteComparison = UU5.Common.VisualComponent.create({
         noSpacing
       >
         <UU5.Common.DataManager onLoad={Calls.listAthleteResults} data={{ year: params.year, stravaIdList }}>
-          {data => (
+          {(data) => (
             <LoadFeedback {...data}>
               {data.data && this._saveTitle(data.data) && this._addPaceToResults(data.data.athleteResults) && (
                 <AthleteComparisonReady
@@ -106,7 +106,7 @@ export const AthleteComparison = UU5.Common.VisualComponent.create({
         </UU5.Common.DataManager>
       </UU5.Bricks.Container>
     );
-  }
+  },
   //@@viewOff:render
 });
 

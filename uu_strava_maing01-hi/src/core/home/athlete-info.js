@@ -40,16 +40,16 @@ const AthleteInfo = UU5.Common.VisualComponent.create({
         .uu5-bricks-button {
           margin-right: 8px;
         }
-      `
+      `,
     },
     lsi: {
       exportAllButton: {
-        en: "Export Activities"
+        en: "Export Activities",
       },
       refreshSegmentsButton: {
-        en: "Update Segments"
-      }
-    }
+        en: "Update Segments",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -76,7 +76,7 @@ const AthleteInfo = UU5.Common.VisualComponent.create({
       elevation: 1,
       elevationHover: 2,
       borderRadius: "4px",
-      size: "m"
+      size: "m",
     };
 
     return (
@@ -128,7 +128,7 @@ const AthleteInfo = UU5.Common.VisualComponent.create({
         }}
       </UU5.Common.Loader>
     );
-  }
+  },
   //@@viewOff:render
 });
 

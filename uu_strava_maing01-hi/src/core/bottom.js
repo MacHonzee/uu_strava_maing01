@@ -18,8 +18,8 @@ export const Bottom = UU5.Common.VisualComponent.create({
         text-align: center;
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         color: gray;
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -44,7 +44,7 @@ export const Bottom = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return <UU5.Common.Div {...this.getMainPropsToPass()}>Powered by Unicorn Application Framework</UU5.Common.Div>;
-  }
+  },
   //@@viewOff:render
 });
 

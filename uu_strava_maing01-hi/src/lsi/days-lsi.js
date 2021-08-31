@@ -1,32 +1,32 @@
 const DaysLsi = {
   1: {
     cs: "Pondělí",
-    en: "Monday"
+    en: "Monday",
   },
   2: {
     cs: "Úterý",
-    en: "Tuesday"
+    en: "Tuesday",
   },
   3: {
     cs: "Středa",
-    en: "Wednesday"
+    en: "Wednesday",
   },
   4: {
     cs: "Čtvrtek",
-    en: "Thursday"
+    en: "Thursday",
   },
   5: {
     cs: "Pátek",
-    en: "Friday"
+    en: "Friday",
   },
   6: {
     cs: "Sobota",
-    en: "Saturday"
+    en: "Saturday",
   },
   7: {
     cs: "Neděle",
-    en: "Sunday"
-  }
+    en: "Sunday",
+  },
 };
 
 export default DaysLsi;

@@ -13,14 +13,14 @@ export const SegmentDistance = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "SegmentDistance",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    distance: UU5.PropTypes.number.isRequired
+    distance: UU5.PropTypes.number.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -47,7 +47,7 @@ export const SegmentDistance = UU5.Common.VisualComponent.create({
         &nbsp;km
       </UU5.Bricks.Span>
     );
-  }
+  },
   //@@viewOff:render
 });
 

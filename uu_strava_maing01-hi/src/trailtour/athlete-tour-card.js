@@ -12,7 +12,7 @@ const STRAVA_LINK_STYLE = {
   position: "absolute",
   top: "16px",
   right: "12px",
-  width: "32px"
+  width: "32px",
 };
 
 export const AthleteTourCard = UU5.Common.VisualComponent.create({
@@ -26,38 +26,38 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
     classNames: {
       main: (props, state) => Config.Css.css`
         position: relative;
-      `
+      `,
     },
     lsi: {
       name: {
         cs: "Jméno",
-        en: "Name"
+        en: "Name",
       },
       order: {
         cs: "Pořadí",
-        en: "Order"
+        en: "Order",
       },
       points: {
         cs: "Počet bodů",
-        en: "Count of points"
+        en: "Count of points",
       },
       segments: {
         cs: "Uběhnuto etap",
-        en: "Finished segments"
+        en: "Finished segments",
       },
       avgPoints: {
         cs: "Průměrně bodů",
-        en: "Average points"
+        en: "Average points",
       },
       club: {
         cs: "Klub",
-        en: "Club"
+        en: "Club",
       },
       lastRun: {
         cs: "Poslední běh",
-        en: "Last run"
-      }
-    }
+        en: "Last run",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -65,7 +65,7 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
     forComparison: UU5.PropTypes.oneOf(["first", "second"]),
-    year: UU5.PropTypes.string
+    year: UU5.PropTypes.string,
   },
   //@@viewOff:propTypes
 
@@ -317,7 +317,7 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
           : this._getResponsiveContent(results, sex, total, finishedSegments)}
       </UU5.BlockLayout.Tile>
     );
-  }
+  },
   //@@viewOff:render
 });
 

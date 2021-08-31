@@ -15,14 +15,14 @@ export const GpxDownload = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "GpxDownload",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    gpx: UU5.PropTypes.string.isRequired
+    gpx: UU5.PropTypes.string.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -53,7 +53,7 @@ export const GpxDownload = UU5.Common.VisualComponent.create({
         </UU5.Bricks.Strong>
       </UU5.Bricks.Link>
     );
-  }
+  },
   //@@viewOff:render
 });
 

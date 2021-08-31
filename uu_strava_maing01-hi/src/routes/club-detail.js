@@ -19,14 +19,14 @@ export const ClubDetail = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "ClubDetail",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
     },
     lsi: {
       header: {
         cs: "Výsledky klubu",
-        en: "Club results"
-      }
-    }
+        en: "Club results",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -70,7 +70,7 @@ export const ClubDetail = UU5.Common.VisualComponent.create({
           onLoad={Calls.listClubResults}
           data={{ year: params.year, clubNameList: [params.name] }}
         >
-          {data => (
+          {(data) => (
             <LoadFeedback {...data}>
               {data.data && this._saveTitle(data.data) && <ClubTourResults data={data.data} />}
             </LoadFeedback>
@@ -78,7 +78,7 @@ export const ClubDetail = UU5.Common.VisualComponent.create({
         </UU5.Common.DataManager>
       </UU5.Bricks.Container>
     );
-  }
+  },
   //@@viewOff:render
 });
 

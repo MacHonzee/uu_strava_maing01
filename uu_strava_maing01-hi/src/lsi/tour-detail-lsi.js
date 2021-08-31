@@ -1,72 +1,72 @@
 const TourDetailLsi = {
   order: {
     cs: "#",
-    en: "#"
+    en: "#",
   },
   name: {
     cs: "Etapa",
-    en: "Segment"
+    en: "Segment",
   },
   location: {
     cs: "Místo",
-    en: "Location"
+    en: "Location",
   },
   strava: {
     cs: "Strava",
-    en: "Strava"
+    en: "Strava",
   },
   trailtour: {
     cs: "Trailtour",
-    en: "Trailtour"
+    en: "Trailtour",
   },
   author: {
     cs: "Autor",
-    en: "Author"
+    en: "Author",
   },
   ownOrder: {
     cs: "Pořadí",
-    en: "Order"
+    en: "Order",
   },
   points: {
     cs: "Body",
-    en: "Points"
+    en: "Points",
   },
   time: {
     cs: "Čas",
-    en: "Time"
+    en: "Time",
   },
   runnerCount: {
     cs: "Počet běžců",
-    en: "Runner count"
+    en: "Runner count",
   },
   gpx: {
     cs: "GPX",
-    en: "GPX"
+    en: "GPX",
   },
   distance: {
     cs: "Délka",
-    en: "Distance"
+    en: "Distance",
   },
   elevation: {
     cs: "Převýšení",
-    en: "Elevation"
+    en: "Elevation",
   },
   pace: {
     cs: "Tempo",
-    en: "Pace"
+    en: "Pace",
   },
   state: {
     cs: "Kraj",
-    en: "State"
+    en: "State",
   },
   city: {
     cs: "Město",
-    en: "City"
+    en: "City",
   },
   runDate: {
     cs: "Zaběhnuto",
-    en: "Run date"
-  }
+    en: "Run date",
+  },
 };
 
 export default TourDetailLsi;

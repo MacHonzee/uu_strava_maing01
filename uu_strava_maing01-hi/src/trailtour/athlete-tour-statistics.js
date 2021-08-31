@@ -14,38 +14,38 @@ export const AthleteTourStatistics = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "AthleteTourStatistics",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
     },
     lsi: {
       editableChart: {
         cs: "Interaktivní graf",
-        en: "Interactive chart"
+        en: "Interactive chart",
       },
       distanceByWeek: {
         cs: "Vzdálenost za týden",
-        en: "Distance per week"
+        en: "Distance per week",
       },
       distanceByMonth: {
         cs: "Vzdálenost za měsíc",
-        en: "Distance per month"
+        en: "Distance per month",
       },
       pointsByMonth: {
         cs: "Počet bodů za měsíc",
-        en: "Points by month"
+        en: "Points by month",
       },
       avgDistanceByDayOfWeek: {
         cs: "Průměr vzdálenosti na den v týdnu",
-        en: "Average distance per day of week"
+        en: "Average distance per day of week",
       },
       avgPointsByDayOfWeek: {
         cs: "Průměr bodů na den v týdnu",
-        en: "Average points per day of week"
+        en: "Average points per day of week",
       },
       distanceChrono: {
         cs: "Etapy dle datumu běhu",
-        en: "Segments by day of run"
-      }
-    }
+        en: "Segments by day of run",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -53,7 +53,7 @@ export const AthleteTourStatistics = UU5.Common.VisualComponent.create({
   propTypes: {
     data: UU5.PropTypes.array.isRequired,
     sex: UU5.PropTypes.oneOf(["male", "female"]).isRequired,
-    trailtour: UU5.PropTypes.object.isRequired
+    trailtour: UU5.PropTypes.object.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -96,7 +96,7 @@ export const AthleteTourStatistics = UU5.Common.VisualComponent.create({
     let chartProps = {
       results: this.props.data,
       trailtour: this.props.trailtour,
-      sex: this.props.sex
+      sex: this.props.sex,
     };
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
@@ -153,7 +153,7 @@ export const AthleteTourStatistics = UU5.Common.VisualComponent.create({
         />
       </UU5.Bricks.Div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

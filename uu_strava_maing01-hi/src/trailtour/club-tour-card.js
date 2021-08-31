@@ -13,38 +13,38 @@ export const ClubTourCard = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "ClubTourCard",
     classNames: {
-      main: (props, state) => Config.Css.css``
+      main: (props, state) => Config.Css.css``,
     },
     lsi: {
       name: {
         cs: "Jméno",
-        en: "Name"
+        en: "Name",
       },
       order: {
         cs: "Pořadí",
-        en: "Order"
+        en: "Order",
       },
       points: {
         cs: "Celkem bodů",
-        en: "Total points"
+        en: "Total points",
       },
       sexLabel: {
         cs: "Muži / Ženy",
-        en: "Men / Women"
+        en: "Men / Women",
       },
       runners: {
         cs: "Počet běžců",
-        en: "Runners count"
+        en: "Runners count",
       },
       results: {
         cs: "Počet etap",
-        en: "Results count"
+        en: "Results count",
       },
       avgPoints: {
         cs: "Průměrně bodů",
-        en: "Average points"
-      }
-    }
+        en: "Average points",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -304,7 +304,7 @@ export const ClubTourCard = UU5.Common.VisualComponent.create({
         </UU5.Bricks.ScreenSize>
       </UU5.BlockLayout.Tile>
     );
-  }
+  },
   //@@viewOff:render
 });
 

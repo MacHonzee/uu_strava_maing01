@@ -20,11 +20,11 @@ const Spa = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "Spa",
     classNames: {
-      main: Config.Css.css``
+      main: Config.Css.css``,
     },
     getDerivedStateFromError(error) {
       return { error };
-    }
+    },
   },
   //@@viewOff:statics
 
@@ -37,7 +37,7 @@ const Spa = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      error: null
+      error: null,
     };
   },
   //@@viewOff:reactLifeCycle
@@ -72,7 +72,7 @@ const Spa = UU5.Common.VisualComponent.create({
     }
 
     return child;
-  }
+  },
   //@@viewOff:render
 });
 

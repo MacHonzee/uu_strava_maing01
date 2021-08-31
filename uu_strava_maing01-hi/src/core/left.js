@@ -27,40 +27,40 @@ export const Left = UU5.Common.VisualComponent.create({
             background-color: chocolate;
           }
         }
-      `
+      `,
     },
     lsi: {
       segments: {
         cs: "Segmenty",
-        en: "Segments"
+        en: "Segments",
       },
       tourSegments: {
         cs: "Etapy",
-        en: "Segments"
+        en: "Segments",
       },
       tourResults: {
         cs: "Výsledky",
-        en: "Results"
+        en: "Results",
       },
       clubResults: {
         cs: "Výsledky klubů",
-        en: "Club results"
+        en: "Club results",
       },
       tourRuns: {
         cs: "Poslední běhy",
-        en: "Last runs"
+        en: "Last runs",
       },
       about: {
         cs: "O aplikaci",
-        en: "About"
-      }
-    }
+        en: "About",
+      },
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    config: UU5.PropTypes.object.isRequired
+    config: UU5.PropTypes.object.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -78,7 +78,7 @@ export const Left = UU5.Common.VisualComponent.create({
 
   //@@viewOn:private
   _getMenuPanels() {
-    return this.props.config.trailtours.map(trailtour => {
+    return this.props.config.trailtours.map((trailtour) => {
       return (
         <Plus4U5.App.MenuPanel
           key={trailtour.id}
@@ -91,23 +91,23 @@ export const Left = UU5.Common.VisualComponent.create({
               {
                 id: "trailtour_" + trailtour.year,
                 content: this.getLsiComponent("tourResults"),
-                href: "trailtour?year=" + trailtour.year
+                href: "trailtour?year=" + trailtour.year,
               },
               {
                 id: "trailtourRuns_" + trailtour.year,
                 content: this.getLsiComponent("tourRuns"),
-                href: "trailtourRuns?year=" + trailtour.year
+                href: "trailtourRuns?year=" + trailtour.year,
               },
               {
                 id: "trailtourClubs_" + trailtour.year,
                 content: this.getLsiComponent("clubResults"),
-                href: "trailtourClubs?year=" + trailtour.year
+                href: "trailtourClubs?year=" + trailtour.year,
               },
               {
                 id: "trailtourSegments_" + trailtour.year,
                 content: this.getLsiComponent("tourSegments"),
-                href: "trailtourSegments?year=" + trailtour.year
-              }
+                href: "trailtourSegments?year=" + trailtour.year,
+              },
             ]}
           />
         </Plus4U5.App.MenuPanel>
@@ -124,21 +124,21 @@ export const Left = UU5.Common.VisualComponent.create({
         logoProps={{
           backgroundColor: "chocolate",
           backgroundColorTo: "chocolate",
-          title: UU5.Common.Tools.getLsiValueByLanguage(Lsi.appName, this.props.language)
+          title: UU5.Common.Tools.getLsiValueByLanguage(Lsi.appName, this.props.language),
         }}
         aboutItems={[
           {
             id: "about",
             content: this.getLsiComponent("about"),
-            href: "about"
-          }
+            href: "about",
+          },
         ]}
         homeHref={Config.DEFAULT_ROUTE}
       >
         {this._getMenuPanels()}
       </Plus4U5.App.Left>
     );
-  }
+  },
   //@@viewOff:render
 });
 

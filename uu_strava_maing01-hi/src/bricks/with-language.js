@@ -20,7 +20,7 @@ function withLanguage(Component, displayName) {
       return (
         <UU5.Bricks.Lsi>{({ language }) => <Component {...props} language={language} ref={ref} />}</UU5.Bricks.Lsi>
       );
-    }
+    },
   });
   //@@viewOff:render
 }

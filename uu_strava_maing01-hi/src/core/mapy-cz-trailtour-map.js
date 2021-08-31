@@ -75,14 +75,14 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
           font-size: 23px;
           line-height: 24px;
         }
-      `
+      `,
     },
     lsi: {
       mapyCzDetail: {
         cs: "Zobrazit na Mapy.cz",
-        en: "Show detail at Mapy.cz"
-      }
-    }
+        en: "Show detail at Mapy.cz",
+      },
+    },
   },
   //@@viewOff:statics
 
@@ -93,7 +93,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     showOwnResults: UU5.PropTypes.bool,
     showTourDetail: UU5.PropTypes.bool,
     openPopover: UU5.PropTypes.func,
-    decodedPolyline: UU5.PropTypes.array
+    decodedPolyline: UU5.PropTypes.array,
   },
   //@@viewOff:propTypes
 
@@ -105,7 +105,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     return {
       errorState: undefined,
       errorData: {},
-      data: window.SMap
+      data: window.SMap,
     };
   },
 
@@ -127,7 +127,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     let center = this._map.getCenter();
     return {
       center: [center.y, center.x],
-      zoom: this._map.getZoom()
+      zoom: this._map.getZoom(),
     };
   },
 
@@ -144,7 +144,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
 
     // create location marker (by drawing circle)
     let options = {
-      color: "#00f"
+      color: "#00f",
     };
     let center = SMap.Coords.fromWGS84(coords[1], coords[0]);
 
@@ -178,10 +178,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     let mapCenter = SMap.Coords.fromWGS84(center[1], center[0]);
     let map = new SMap(JAK.gel(MAPY_CZ_ROOT), mapCenter, zoom);
     this._map = map;
-    map
-      .addDefaultLayer(SMap.DEF_TURIST)
-      .enable()
-      .setTrail(true);
+    map.addDefaultLayer(SMap.DEF_TURIST).enable().setTrail(true);
 
     this._setControls(map);
 
@@ -225,7 +222,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     map.addLayer(layer);
     layer.enable();
 
-    this.props.segments.forEach(result => {
+    this.props.segments.forEach((result) => {
       let segment = result.segment;
 
       let center = SMap.Coords.fromWGS84(segment.start_latlng[1], segment.start_latlng[0]);
@@ -240,7 +237,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
 
       let options = {
         title: this._getMarkerTitle(result),
-        url: icon
+        url: icon,
       };
 
       let marker = new SMap.Marker(center, result.stravaId, options);
@@ -253,15 +250,15 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
       let flagImg = JAK.mel("img", { src: MARKERS.finish }, { width: "32px", height: "32px" });
       let options = {
         url: flagImg,
-        anchor: { top: 32, right: 32 }
+        anchor: { top: 32, right: 32 },
       };
       let marker = new SMap.Marker(center, this.props.segments[0].stravaId + "_end", options);
       layer.addMarker(marker);
     }
 
-    map.getSignals().addListener(this, "marker-click", e => {
+    map.getSignals().addListener(this, "marker-click", (e) => {
       let markerId = e.target.getId();
-      let foundSegment = this.props.segments.find(segment => segment.stravaId === markerId);
+      let foundSegment = this.props.segments.find((segment) => segment.stravaId === markerId);
       this.props.openPopover(foundSegment, e.data.event.target);
     });
   },
@@ -275,11 +272,11 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
     layer.enable();
 
     let decodedPolyline = this.props.decodedPolyline;
-    let path = decodedPolyline.map(coords => SMap.Coords.fromWGS84(coords[1], coords[0]));
+    let path = decodedPolyline.map((coords) => SMap.Coords.fromWGS84(coords[1], coords[0]));
     this._path = path; // TODO remove
     let options = {
       color: "#f00",
-      width: 3
+      width: 3,
     };
     let geometry = new SMap.Geometry(SMap.GEOMETRY_POLYLINE, null, path, options);
     layer.addGeometry(geometry);
@@ -347,7 +344,7 @@ export const MapyCzTrailtourMap = UU5.Common.VisualComponent.create({
         {this._getGeolocationButton()}
       </UU5.Bricks.Div>
     );
-  }
+  },
   //@@viewOff:render
 });
 

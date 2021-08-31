@@ -22,7 +22,7 @@ function withSetMenuItem(Component, displayName) {
           {({ setActiveItemId }) => <Component {...props} setMenuItem={setActiveItemId} ref={ref} />}
         </Plus4U5.App.MenuConsumer>
       );
-    }
+    },
   });
   //@@viewOff:render
 }

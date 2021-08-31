@@ -8,23 +8,23 @@ const Lsi = {
   errors: {
     denied: {
       cs: "Přístup k určení polohy byl zamítnut.",
-      en: "Permission for geolocation was denied."
+      en: "Permission for geolocation was denied.",
     },
     unavailable: {
       cs: "Pozici není možné určit.",
-      en: "Position is unavailable."
+      en: "Position is unavailable.",
     },
     timeout: {
       cs: "Vypršelo spojení pro získání pozice.",
-      en: "Acquiring location has timeouted."
-    }
-  }
+      en: "Acquiring location has timeouted.",
+    },
+  },
 };
 
 const ERROR_CODES_MAP = {
   1: "denied",
   2: "unavailable",
-  3: "timeout"
+  3: "timeout",
 };
 
 export const GeolocationButton = UU5.Common.VisualComponent.create({
@@ -36,15 +36,15 @@ export const GeolocationButton = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "GeolocationButton",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
     activeClassName: UU5.PropTypes.string,
-    drawPosition: UU5.PropTypes.func
+    drawPosition: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -54,7 +54,7 @@ export const GeolocationButton = UU5.Common.VisualComponent.create({
   //@@viewOn:reactLifeCycle
   getInitialState() {
     return {
-      active: false
+      active: false,
     };
   },
 
@@ -75,7 +75,7 @@ export const GeolocationButton = UU5.Common.VisualComponent.create({
   _handleLocate() {
     if (!this.state.active) {
       this._watchId = navigator.geolocation.watchPosition(this._handleLocateSuccess, this._handleLocateError, {
-        enableHighAccuracy: true
+        enableHighAccuracy: true,
       });
     }
   },
@@ -92,7 +92,7 @@ export const GeolocationButton = UU5.Common.VisualComponent.create({
       .getAlertBus()
       .setAlert({
         colorSchema: "danger",
-        content: <UU5.Bricks.Lsi lsi={Lsi.errors[errorLsi]} />
+        content: <UU5.Bricks.Lsi lsi={Lsi.errors[errorLsi]} />,
       });
   },
   //@@viewOff:private
@@ -111,7 +111,7 @@ export const GeolocationButton = UU5.Common.VisualComponent.create({
         <UU5.Bricks.Icon icon={"mdi-map-marker-circle"} />
       </UU5.Bricks.Button>
     );
-  }
+  },
   //@@viewOff:render
 });
 

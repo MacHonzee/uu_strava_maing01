@@ -2,12 +2,12 @@ const NAME_KEYS = ["name", "club", "author", "tourName"];
 const SEGMENT_KEYS = ["distance", "total_elevation_gain", "state", "city"];
 const ATHLETE_SEX_KEYS = ["order", "points", "time", "pace"];
 const KEY_TRANSLATE = {
-  ownOrder: "order"
+  ownOrder: "order",
 };
 const RUNNER_COUNT_KEY = "runnerCount";
 const RUNNER_COUNT_SEXES = {
   male: "menResultsTotal",
-  female: "womenResultsTotal"
+  female: "womenResultsTotal",
 };
 const RUNNER_COUNT_SEX_KEYS = Object.values(RUNNER_COUNT_SEXES);
 
@@ -71,7 +71,7 @@ const TrailtourTools = {
   handleFiltering(sourceData, filterMap) {
     if (filterMap[this.NAME_FILTER_KEY]) {
       let nameFilter = filterMap[this.NAME_FILTER_KEY].toLocaleLowerCase();
-      sourceData = sourceData.filter(item => {
+      sourceData = sourceData.filter((item) => {
         for (let nameKey of NAME_KEYS) {
           if (item[nameKey] && item[nameKey].toLocaleLowerCase().includes(nameFilter)) {
             return true;
@@ -81,7 +81,7 @@ const TrailtourTools = {
       });
     }
     return sourceData;
-  }
+  },
 };
 
 export default TrailtourTools;

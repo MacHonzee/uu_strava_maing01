@@ -63,8 +63,8 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
           background: #f7f7f7;
           line-height: 24px;
         }
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -75,7 +75,7 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
     showOwnResults: UU5.PropTypes.bool,
     showTourDetail: UU5.PropTypes.bool,
     openPopover: UU5.PropTypes.func,
-    decodedPolyline: UU5.PropTypes.array
+    decodedPolyline: UU5.PropTypes.array,
   },
   //@@viewOff:propTypes
 
@@ -90,7 +90,7 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
     let center = this._map.getCenter();
     return {
       center: [center.lat(), center.lng()],
-      zoom: this._map.getZoom()
+      zoom: this._map.getZoom(),
     };
   },
 
@@ -145,8 +145,8 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
           fillOpacity: 0.6,
           scale: 8,
           strokeWeight: 2,
-          strokeColor: "white"
-        }
+          strokeColor: "white",
+        },
       });
       this._geolocMarker = marker;
     }
@@ -160,7 +160,7 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   },
 
   _getMarkers() {
-    return this.props.segments.map(result => {
+    return this.props.segments.map((result) => {
       let segment = result.segment;
       let icon;
       if (this.props.showOwnResults) {
@@ -177,14 +177,14 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
         longitude: segment.start_latlng[1],
         title: this._getMarkerTitle(result),
         icon,
-        onClick: this._handleMarkerClick
+        onClick: this._handleMarkerClick,
       };
     });
   },
 
   _handleMarkerClick(_, marker, event) {
-    let foundSegment = this.props.segments.find(segment => this._getMarkerTitle(segment) === marker.title);
-    let target = Object.values(event).find(ev => ev instanceof MouseEvent || ev instanceof TouchEvent).target;
+    let foundSegment = this.props.segments.find((segment) => this._getMarkerTitle(segment) === marker.title);
+    let target = Object.values(event).find((ev) => ev instanceof MouseEvent || ev instanceof TouchEvent).target;
     this.props.openPopover(foundSegment, target);
   },
 
@@ -194,13 +194,13 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
       let google = window.google; // loaded from UU5.Bricks.GoogleMap
       let segment = this.props.segments[0].segment;
       let decodedPolyline = this.props.decodedPolyline;
-      let path = decodedPolyline.map(coords => ({ lat: coords[0], lng: coords[1] }));
+      let path = decodedPolyline.map((coords) => ({ lat: coords[0], lng: coords[1] }));
       new google.maps.Polyline({
         map,
         path,
         strokeColor: "#FF0000",
         strokeOpacity: 0.8,
-        strokeWeight: 2
+        strokeWeight: 2,
       });
 
       new google.maps.Marker({
@@ -210,8 +210,8 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
         icon: {
           url: MARKERS.finish,
           scaledSize: new google.maps.Size(32, 32),
-          anchor: new google.maps.Point(0, 32)
-        }
+          anchor: new google.maps.Point(0, 32),
+        },
       });
     }
   },
@@ -230,7 +230,7 @@ export const GoogleTrailtourMap = UU5.Common.VisualComponent.create({
   //@@viewOn:render
   render() {
     return <SpaContext.Consumer>{this._getChild}</SpaContext.Consumer>;
-  }
+  },
   //@@viewOff:render
 });
 

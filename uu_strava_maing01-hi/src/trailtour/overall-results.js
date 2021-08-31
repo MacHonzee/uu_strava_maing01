@@ -19,15 +19,15 @@ export const OverallResults = UU5.Common.VisualComponent.create({
   statics: {
     tagName: Config.TAG + "OverallResults",
     classNames: {
-      main: (props, state) => Config.Css.css``
-    }
+      main: (props, state) => Config.Css.css``,
+    },
   },
   //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
     data: UU5.PropTypes.object.isRequired,
-    year: UU5.PropTypes.string.isRequired
+    year: UU5.PropTypes.string.isRequired,
   },
   //@@viewOff:propTypes
 
@@ -59,8 +59,8 @@ export const OverallResults = UU5.Common.VisualComponent.create({
       pageInfo: {
         pageSize: PAGE_SIZE,
         pageIndex: 0,
-        total: dataCopy.length
-      }
+        total: dataCopy.length,
+      },
     };
   },
 
@@ -90,12 +90,12 @@ export const OverallResults = UU5.Common.VisualComponent.create({
         FlexColumns.points(),
         FlexColumns.totalCount(),
         FlexColumns.avgPoints(),
-        FlexColumns.lastRun({}, "lastRun")
-      ]
+        FlexColumns.lastRun({}, "lastRun"),
+      ],
     };
 
     const defaultView = {
-      filters: [{ key: "sex", value: SexFilterBar.getDefaultValue() }]
+      filters: [{ key: "sex", value: SexFilterBar.getDefaultValue() }],
     };
 
     return (
@@ -105,14 +105,14 @@ export const OverallResults = UU5.Common.VisualComponent.create({
             bars={[
               <SexFilterBar key={"sexFilterBar"} right={<NameFilter />} />,
               <UU5.FlexTiles.SorterBar key={"sorterBar"} />,
-              <UU5.FlexTiles.InfoBar key={"infoBar"} />
+              <UU5.FlexTiles.InfoBar key={"infoBar"} />,
             ]}
             tile={this._getSmallTile}
           />
         </UU5.FlexTiles.ListController>
       </UU5.FlexTiles.DataManager>
     );
-  }
+  },
   //@@viewOff:render
 });
 

@@ -1,52 +1,52 @@
 const MonthsLsi = {
   1: {
     cs: "Leden",
-    en: "January"
+    en: "January",
   },
   2: {
     cs: "Únor",
-    en: "February"
+    en: "February",
   },
   3: {
     cs: "Březen",
-    en: "March"
+    en: "March",
   },
   4: {
     cs: "Duben",
-    en: "April"
+    en: "April",
   },
   5: {
     cs: "Květen",
-    en: "May"
+    en: "May",
   },
   6: {
     cs: "Červen",
-    en: "June"
+    en: "June",
   },
   7: {
     cs: "Červenec",
-    en: "July"
+    en: "July",
   },
   8: {
     cs: "Srpen",
-    en: "August"
+    en: "August",
   },
   9: {
     cs: "Září",
-    en: "September"
+    en: "September",
   },
   10: {
     cs: "Říjen",
-    en: "October"
+    en: "October",
   },
   11: {
     cs: "Listopad",
-    en: "November"
+    en: "November",
   },
   12: {
     cs: "Prosinec",
-    en: "December"
-  }
+    en: "December",
+  },
 };
 
 export default MonthsLsi;

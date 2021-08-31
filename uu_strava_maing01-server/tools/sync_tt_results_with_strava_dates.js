@@ -16,7 +16,7 @@ const STRAVA_HEADERS_PATH = "./strava-webscrape-headers.json";
 function readReqBody(req) {
   return new Promise((resolve, reject) => {
     let body = "";
-    req.on("data", chunk => {
+    req.on("data", (chunk) => {
       body += chunk.toString();
     });
 
@@ -44,7 +44,7 @@ async function loadStravaLeaderboard(segmentId, gender) {
       referrerPolicy: "strict-origin-when-cross-origin",
       body: null,
       method: "GET",
-      mode: "cors"
+      mode: "cors",
     });
 
     let leaderboard = await readReqBody(result.body);
@@ -69,16 +69,12 @@ function parseStravaResults(strData) {
   let $ = cheerio.load(strData);
   let rows = $(".table-leaderboard tbody tr");
   let results = [];
-  Array.from(rows).forEach(row => {
-    let cells = row.children.filter(tag => tag.name === "td");
+  Array.from(rows).forEach((row) => {
+    let cells = row.children.filter((tag) => tag.name === "td");
     if (cells.length < 3) return; // it might return "No results found" sometimes
 
     let athleteId = JSON.parse(cells[1].attribs["data-tracking-properties"]).athlete_id;
-    let date = new Date(
-      $(cells[2])
-        .text()
-        .trim()
-    );
+    let date = new Date($(cells[2]).text().trim());
     let dateStr = `${date.getFullYear()}-${_padNum(date.getMonth() + 1)}-${_padNum(date.getDate())}`;
     results.push({ athlete: athleteId, date: dateStr });
   });
@@ -104,7 +100,7 @@ async function migrateData(database) {
 
       // for each found athlete, found TT counterpart by comparing stravaId
       leaderboard.forEach(({ athlete: stravaAthlete, date }) => {
-        let foundTtResult = ttResult[sexKey].find(athlete => athlete.stravaId === stravaAthlete);
+        let foundTtResult = ttResult[sexKey].find((athlete) => athlete.stravaId === stravaAthlete);
 
         // in case of match, update runDate
         if (foundTtResult) {

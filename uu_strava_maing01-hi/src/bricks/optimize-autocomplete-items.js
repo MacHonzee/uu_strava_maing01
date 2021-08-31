@@ -10,7 +10,7 @@ function overridenTextInputFind(items, foundValue) {
         break;
       }
 
-      let lowerCased = item.value.toLowerCase()
+      let lowerCased = item.value.toLowerCase();
       if (lowerCased.startsWith(foundValueLower)) {
         values.push(item);
       } else if (lowerCased.indexOf(foundValueLower) > -1) {

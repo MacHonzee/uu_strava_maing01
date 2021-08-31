@@ -1,19 +1,19 @@
 const Lsi = {
   appName: {
     cs: "Trailtour Analytika",
-    en: "Trailtour Analytics"
+    en: "Trailtour Analytics",
   },
 
   leftLinks: {
     home: {
       cs: "Vítejte",
-      en: "Welcome"
+      en: "Welcome",
     },
     about: {
       cs: "O aplikaci",
-      en: "About Application"
-    }
-  }
+      en: "About Application",
+    },
+  },
 };
 
 export default Lsi;

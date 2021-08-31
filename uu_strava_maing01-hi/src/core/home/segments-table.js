@@ -19,8 +19,8 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
     classNames: {
       main: Config.Css.css`
         padding: 16px;
-      `
-    }
+      `,
+    },
   },
   //@@viewOff:statics
 
@@ -44,25 +44,25 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
     return [
       {
         key: "name",
-        name: { cs: "Název", en: "Name" }
+        name: { cs: "Název", en: "Name" },
       },
       {
         key: "distance",
-        name: { cs: "Vzdálenost", en: "Distance" }
+        name: { cs: "Vzdálenost", en: "Distance" },
       },
       {
         key: "total_elevation_gain",
-        name: { cs: "Převýšení", en: "Elevation gain" }
+        name: { cs: "Převýšení", en: "Elevation gain" },
       },
       {
         key: "climb_category",
-        name: { cs: "Kategorie výstupu", en: "Climb category" }
+        name: { cs: "Kategorie výstupu", en: "Climb category" },
       },
       {
         key: "rank",
         name: { cs: "Rank", en: "Rank" },
-        sortFn: (a, b) => a.own_leaderboard.rank - b.own_leaderboard.rank
-      }
+        sortFn: (a, b) => a.own_leaderboard.rank - b.own_leaderboard.rank,
+      },
     ];
   },
 
@@ -95,7 +95,7 @@ const SegmentsTable = UU5.Common.VisualComponent.create({
         }}
       </SegmentListContext.Consumer>
     );
-  }
+  },
   //@@viewOff:render
 });
 
