@@ -1,5 +1,6 @@
 "use strict";
 const { DaoFactory, ObjectNotFound } = require("uu_appg01_server").ObjectStore;
+const { UriBuilder } = require("uu_appg01_server").Uri;
 const ValidationHelper = require("../../components/validation-helper");
 const TrailtourParser = require("../../components/trailtour-parser-helper");
 const Tools = require("./tools");
@@ -55,7 +56,8 @@ class SetupAbl {
       let createSegmentDtoIn = {
         stravaId: tourData.stravaId,
       };
-      let { segment } = await SegmentAbl.create(uri, createSegmentDtoIn, session);
+      let createSegmentUri = UriBuilder.parse(uri).setUseCase("segment/create").toUri();
+      let { segment } = await SegmentAbl.create(createSegmentUri, createSegmentDtoIn, session);
       trailtour.awid = awid;
       trailtour.segmentId = segment.id;
       trailtour.trailtourId = trailtourObj.id;

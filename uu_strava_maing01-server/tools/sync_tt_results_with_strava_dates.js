@@ -90,8 +90,9 @@ async function migrateData(database) {
 
   let lastRunDateMap = {};
   // process each trailtour
+  let currentTt = 1;
   for (let ttResult of trailtourResults) {
-    console.log("Starting migration on: " + ttResult.name);
+    console.log(`Starting migration on: [${currentTt}/${trailtourResults.length}]: ${ttResult.name}`);
 
     // process each sex separately
     for (let sexKey of ["menResults", "womenResults"]) {
@@ -118,7 +119,8 @@ async function migrateData(database) {
       { $set: { menResults: ttResult.menResults, womenResults: ttResult.womenResults } }
     );
 
-    console.log("Migration finished on: " + ttResult.name);
+    console.log(`Migration finished on: [${currentTt}/${trailtourResults.length}]: ${ttResult.name}`);
+    currentTt++;
   }
 
   // update global TT results
