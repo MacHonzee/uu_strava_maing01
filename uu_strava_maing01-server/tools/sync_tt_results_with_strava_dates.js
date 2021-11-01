@@ -119,7 +119,7 @@ async function migrateData(database) {
       { $set: { menResults: ttResult.menResults, womenResults: ttResult.womenResults } }
     );
 
-    console.log(`Migration finished on: [${currentTt}/${trailtourResults.length}]: ${ttResult.name}`);
+    console.log(`Migration finished on: [${currentTt}/${trailtourResults.length}] ${ttResult.name}`);
     currentTt++;
   }
 

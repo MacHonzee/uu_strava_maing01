@@ -1,6 +1,7 @@
 "use strict";
 const AppClient = require("uu_appg01_server").AppClient;
 const cheerio = require("cheerio");
+const TrailtourDefaults = require("../config/trailtour-defaults");
 
 const BASE_SELECTORS = {
   tourItem: ".etapa-item",
@@ -146,7 +147,7 @@ const TrailtourParser = {
     let menResults = parseResults($, BASE_SELECTORS.menResults);
     let clubResults = parseResults($, BASE_SELECTORS.clubResults);
 
-    return {
+    let parsedValues = {
       name,
       gpxLink,
       stravaId,
@@ -155,6 +156,10 @@ const TrailtourParser = {
       menResults,
       clubResults,
     };
+
+    let defaultValues = TrailtourDefaults.segmentDefaults[link] || {};
+
+    return { ...parsedValues, ...defaultValues };
   },
 
   async parseTotalResults(uri) {
