@@ -58,7 +58,7 @@ export const ClubTourResults = UU5.Common.VisualComponent.create({
     let club = trailtour.totalResults.clubResults[0];
     return (
       <UU5.Bricks.Div {...this.getMainPropsToPass()}>
-        <ClubTourCard trailtour={trailtour} club={club} />
+        <ClubTourCard trailtour={trailtour} club={club} clubResults={this.props.data.clubResults} />
         <UU5.Bricks.Tabs fade mountTabContent={"onFirstActive"}>
           <UU5.Bricks.Tabs.Item header={this.getLsiComponent("runnersTab")}>
             <OverallResults data={trailtour} year={trailtour.year} />

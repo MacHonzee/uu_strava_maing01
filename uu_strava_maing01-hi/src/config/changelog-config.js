@@ -1,6 +1,10 @@
 const ChangelogConfig = {
   items: [
     {
+      cs: "19.11.2021 - Přidáno zobrazení celkového počtu naběhaných kilometrů na kartě atleta a na kartě klubu.",
+      en: "19.11.2021 - Added display of total run kilometres on athlete card and club card.",
+    },
+    {
       cs: "15.05.2021 - Přidána možnost zobrazení vlastní polohy na všech mapičkách.",
       en: "15.05.2021 - Added button to show current location on all maps.",
     },

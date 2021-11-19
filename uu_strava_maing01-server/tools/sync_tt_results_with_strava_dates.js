@@ -119,7 +119,7 @@ async function migrateData(database) {
       { $set: { menResults: ttResult.menResults, womenResults: ttResult.womenResults } }
     );
 
-    console.log(`Migration finished on: [${currentTt}/${trailtourResults.length}] ${ttResult.name}`);
+    console.log(`Migration finished on: [${currentTt}/${trailtourResults.length}]  ${ttResult.name}`);
     currentTt++;
   }
 
@@ -132,7 +132,10 @@ async function migrateData(database) {
       }
     }
   }
-  await ttColl.findOneAndUpdate({ _id: trailtour._id }, { $set: { totalResults: trailtour.totalResults } });
+  await ttColl.findOneAndUpdate(
+    { _id: trailtour._id },
+    { $set: { totalResults: trailtour.totalResults, lastUpdate: new Date() } }
+  );
   console.log("All migrated");
 }
 

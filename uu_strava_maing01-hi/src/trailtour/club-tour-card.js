@@ -44,6 +44,10 @@ export const ClubTourCard = UU5.Common.VisualComponent.create({
         cs: "Průměrně bodů",
         en: "Average points",
       },
+      totalKmLabel: {
+        cs: "Celkem km",
+        en: "Total km",
+      },
     },
   },
   //@@viewOff:statics
@@ -66,6 +70,8 @@ export const ClubTourCard = UU5.Common.VisualComponent.create({
   //@@viewOn:private
   _getSmallContent() {
     const leftColWidth = "130px";
+    let { menKm, womenKm } = this._countTotalKm();
+
     return (
       <UU5.BlockLayout.Block>
         <UU5.BlockLayout.Row>
@@ -101,6 +107,14 @@ export const ClubTourCard = UU5.Common.VisualComponent.create({
           <UU5.BlockLayout.Column>{this._getSexSegments()}</UU5.BlockLayout.Column>
         </UU5.BlockLayout.Row>
         <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getTotalKmLabel()}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getTotalKm(menKm + womenKm)}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getSexLabel()}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getSexKm(menKm, womenKm)}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Row>
           <UU5.BlockLayout.Column width={leftColWidth}>{this._getAvgPointsLabel()}</UU5.BlockLayout.Column>
           <UU5.BlockLayout.Column>{this._getAvgPoints()}</UU5.BlockLayout.Column>
         </UU5.BlockLayout.Row>
@@ -119,6 +133,7 @@ export const ClubTourCard = UU5.Common.VisualComponent.create({
         {this._getPointsRow()}
         {this._getRunnersRow()}
         {this._getSegmentsRow()}
+        {this._getTotalKmRow()}
         {this._getAvgPointsRow()}
       </UU5.BlockLayout.Block>
     );
@@ -244,6 +259,52 @@ export const ClubTourCard = UU5.Common.VisualComponent.create({
     return (
       <UU5.BlockLayout.Text weight={"primary"}>
         <UU5.Bricks.Number value={this.props.club.resultsTotal} />
+      </UU5.BlockLayout.Text>
+    );
+  },
+
+  _countTotalKm() {
+    let menKm = 0;
+    let womenKm = 0;
+    this.props.clubResults.forEach((clubResult) => {
+      let distance = clubResult.segment.distance;
+      menKm += distance * clubResult.menResultsCount;
+      womenKm += distance * clubResult.womenResultsCount;
+    });
+    return { menKm, womenKm };
+  },
+
+  _getTotalKmRow() {
+    let { menKm, womenKm } = this._countTotalKm();
+
+    return (
+      <UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getTotalKmLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"30%"}>{this._getTotalKm(menKm + womenKm)}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getSexLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>{this._getSexKm(menKm, womenKm)}</UU5.BlockLayout.Column>
+      </UU5.BlockLayout.Row>
+    );
+  },
+
+  _getTotalKmLabel() {
+    return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("totalKmLabel")}</UU5.BlockLayout.Text>;
+  },
+
+  _getTotalKm(totalKm) {
+    return (
+      <UU5.BlockLayout.Text weight={"primary"}>
+        {UU5.Common.Tools.formatNumber(totalKm / 1000, { maxDecimals: 2 }) + " km"}
+      </UU5.BlockLayout.Text>
+    );
+  },
+
+  _getSexKm(menKm, womenKm) {
+    return (
+      <UU5.BlockLayout.Text weight={"primary"}>
+        <UU5.Bricks.Number value={menKm / 1000} maxDecimalLength={2} />
+        &nbsp;/&nbsp;
+        <UU5.Bricks.Number value={womenKm / 1000} maxDecimalLength={2} />
       </UU5.BlockLayout.Text>
     );
   },

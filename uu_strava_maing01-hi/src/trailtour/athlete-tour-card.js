@@ -57,6 +57,10 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
         cs: "Poslední běh",
         en: "Last run",
       },
+      totalKm: {
+        cs: "Celkem km",
+        en: "Total km",
+      },
     },
   },
   //@@viewOff:statics
@@ -185,13 +189,32 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
     return <UU5.BlockLayout.Text weight={"primary"}>{finishedSegments}</UU5.BlockLayout.Text>;
   },
 
+  _getTotalKmLabel() {
+    return <UU5.BlockLayout.Text weight={"secondary"}>{this.getLsiComponent("totalKm")}</UU5.BlockLayout.Text>;
+  },
+
+  _getTotalKm() {
+    let sum = this.props.athleteResults.reduce((sum, results) => {
+      if (results.menResults.length || results.womenResults.length) {
+        sum += results.segment.distance;
+      }
+      return sum;
+    }, 0);
+
+    return (
+      <UU5.BlockLayout.Text weight={"primary"}>
+        {UU5.Common.Tools.formatNumber(sum / 1000, { maxDecimals: 2 }) + " km"}
+      </UU5.BlockLayout.Text>
+    );
+  },
+
   _getSegmentsRow(results, finishedSegments) {
     return (
       <UU5.BlockLayout.Row>
         <UU5.BlockLayout.Column width={"150px"}>{this._getSegmentsLabel()}</UU5.BlockLayout.Column>
         <UU5.BlockLayout.Column width={"30%"}>{this._getSegmentsCount(finishedSegments)}</UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column width={"150px"}>{this._getClubLabel()}</UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column>{this._getClub(results)}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getTotalKmLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>{this._getTotalKm()}</UU5.BlockLayout.Column>
       </UU5.BlockLayout.Row>
     );
   },
@@ -259,6 +282,10 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
           <UU5.BlockLayout.Column>{this._getSegmentsCount(finishedSegments)}</UU5.BlockLayout.Column>
         </UU5.BlockLayout.Row>
         <UU5.BlockLayout.Row>
+          <UU5.BlockLayout.Column width={leftColWidth}>{this._getTotalKmLabel()}</UU5.BlockLayout.Column>
+          <UU5.BlockLayout.Column>{this._getTotalKm()}</UU5.BlockLayout.Column>
+        </UU5.BlockLayout.Row>
+        <UU5.BlockLayout.Row>
           <UU5.BlockLayout.Column width={leftColWidth}>{this._getLastRunLabel()}</UU5.BlockLayout.Column>
           <UU5.BlockLayout.Column>{this._getLastRun(results)}</UU5.BlockLayout.Column>
         </UU5.BlockLayout.Row>
@@ -288,7 +315,9 @@ export const AthleteTourCard = UU5.Common.VisualComponent.create({
     return (
       <UU5.BlockLayout.Row>
         <UU5.BlockLayout.Column width={"150px"}>{this._getLastRunLabel()}</UU5.BlockLayout.Column>
-        <UU5.BlockLayout.Column>{this._getLastRun(results)}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"30%"}>{this._getLastRun(results)}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column width={"150px"}>{this._getClubLabel()}</UU5.BlockLayout.Column>
+        <UU5.BlockLayout.Column>{this._getClub(results)}</UU5.BlockLayout.Column>
       </UU5.BlockLayout.Row>
     );
   },

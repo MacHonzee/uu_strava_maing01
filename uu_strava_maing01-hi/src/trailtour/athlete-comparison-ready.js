@@ -58,12 +58,21 @@ export const AthleteComparisonReady = UU5.Common.VisualComponent.create({
       let cardData = { totalResults: {} };
       cardData.totalResults[correctKey] = athlete;
       cardData.totalResults[correctKey + "Total"] = this.props.trailtour.totalResults[correctKey + "Total"];
+
+      let athleteResults = this.props.results.map((result) => {
+        let newResult = { ...result };
+        newResult[correctKey] = [...result[correctKey]];
+        newResult[correctKey] = newResult[correctKey].filter((singleTtResult) => singleTtResult.stravaId === stravaId);
+        return newResult;
+      });
+
       athletes.push(
         <AthleteTourCard
           key={stravaId}
           data={cardData}
           forComparison={i === 0 ? "first" : "second"}
           year={this.props.trailtour.year}
+          athleteResults={athleteResults}
         />
       );
     });
