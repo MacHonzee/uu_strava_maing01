@@ -5,7 +5,6 @@ const fs = require("fs");
 const Path = require("path");
 const unzipper = require("unzipper");
 const { SecretManagerServiceClient } = require("@google-cloud/secret-manager");
-const client = new SecretManagerServiceClient();
 const { execSync } = require("child_process");
 
 const GCLOUD_FLD = "./target-gcloud";
@@ -21,6 +20,7 @@ async function unzipFileToPath(sourceZip, targetPath) {
 }
 
 async function getOsidSecret(osid) {
+  const client = new SecretManagerServiceClient();
   const [version] = await client.accessSecretVersion({
     name: OSID_SECRET_PATH.replace("%s", osid),
   });

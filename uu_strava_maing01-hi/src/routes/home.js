@@ -31,12 +31,12 @@ const Home = UU5.Common.VisualComponent.create({
         en: "Welcome to application " + Lsi.appName.en,
       },
       resultsLinkCZ: {
-        cs: "Výsledky CZ 2021",
-        en: "Results CZ 2021",
+        cs: "Výsledky CZ 2022",
+        en: "Results CZ 2022",
       },
       resultsLinkSK: {
-        cs: "Výsledky SK 2021",
-        en: "Results SK 2021",
+        cs: "Výsledky SK 2022",
+        en: "Results SK 2022",
       },
       backlogHeader: {
         cs: "Backlog funkčností",
@@ -73,10 +73,10 @@ const Home = UU5.Common.VisualComponent.create({
   _getResultsLink() {
     return (
       <UU5.Bricks.Well bgStyle={"transparent"}>
-        <UU5.Bricks.TouchIcon colorSchema={"orange"} icon={"mdi-flag-checkered"} href={"trailtour?year=2021_CZ"}>
+        <UU5.Bricks.TouchIcon colorSchema={"orange"} icon={"mdi-flag-checkered"} href={"trailtour?year=2022_CZ"}>
           {this.getLsiComponent("resultsLinkCZ")}
         </UU5.Bricks.TouchIcon>
-        <UU5.Bricks.TouchIcon colorSchema={"yellow-rich"} icon={"mdi-flag-checkered"} href={"trailtour?year=2021_SK"}>
+        <UU5.Bricks.TouchIcon colorSchema={"yellow-rich"} icon={"mdi-flag-checkered"} href={"trailtour?year=2022_SK"}>
           {this.getLsiComponent("resultsLinkSK")}
         </UU5.Bricks.TouchIcon>
       </UU5.Bricks.Well>
@@ -100,6 +100,9 @@ const Home = UU5.Common.VisualComponent.create({
   _getBacklog() {
     return (
       <UU5.Bricks.Section header={this.getLsiComponent("backlogHeader")}>
+        <UU5.Bricks.P>
+          <UU5.Bricks.Lsi lsi={AboutLsi.backlogText} />
+        </UU5.Bricks.P>
         <UU5.Bricks.Ul>
           {BacklogConfig.items.map((item, i) => (
             <UU5.Bricks.Li key={i}>

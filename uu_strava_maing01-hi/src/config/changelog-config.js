@@ -1,6 +1,10 @@
 const ChangelogConfig = {
   items: [
     {
+      cs: "30.04.2022 - Nastartována appka pro Trailtour 2022.",
+      en: "30.04.2022 - Application started for Trailtour 2022.",
+    },
+    {
       cs: "19.11.2021 - Přidáno zobrazení celkového počtu naběhaných kilometrů na kartě atleta a na kartě klubu.",
       en: "19.11.2021 - Added display of total run kilometres on athlete card and club card.",
     },

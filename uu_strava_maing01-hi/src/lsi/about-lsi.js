@@ -49,6 +49,14 @@ const AboutLsi = {
       "<uu5string/><UU5.Bricks.P>In case of any issues, improvement ideas or questions, do not hesitate to contact me on " +
       "<UU5.Bricks.Link href='mailto:machonzee@centrum.cz'>machonzee@centrum.cz</UU5.Bricks.Link>.</UU5.Bricks.P>",
   },
+  backlogText: {
+    cs:
+      "Aktuální stav aplikace je takový, že jí pouze udržuji v chodu, tzn. připravím na nový ročník či opravuji přicházející " +
+      "chyby. Tím pádem spíše nečekejte, že již přibude příliš mnoho funkčností.",
+    en:
+      "Current state of the app is such that I only keep it running, which means I set up the new year and fix a bug here " +
+      "and there. Therefore you should not expect many new features.",
+  },
 };
 
 export default AboutLsi;

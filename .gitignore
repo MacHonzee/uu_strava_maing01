@@ -25,7 +25,6 @@ build/
 npm-debug.log
 pnpm-debug.log
 Gemfile.lock
-package-lock.json
 gradle-app.setting
 gradlew
 gradlew.bat
