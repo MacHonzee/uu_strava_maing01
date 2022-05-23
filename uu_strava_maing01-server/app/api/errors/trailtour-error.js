@@ -21,6 +21,15 @@ const Update = {
       this.message = "Trailtour is not active anymore.";
     }
   },
+
+  UnableToHealInconsistency: class extends StravaMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Update.UC_CODE}unableToHealInconsistency`;
+      this.message =
+        "There is a change in list of Trailtours on website that the application is unable to automatically heal.";
+    }
+  },
 };
 
 const UpdateAll = {

@@ -1,18 +1,22 @@
 "use strict";
 const { DaoFactory } = require("uu_appg01_server").ObjectStore;
+const { UriBuilder } = require("uu_appg01_server").Uri;
+const { LoggerFactory } = require("uu_appg01_server").Logging;
 const ValidationHelper = require("../../components/validation-helper");
 const Warnings = require("../../api/warnings/trailtour-warnings");
 const Errors = require("../../api/errors/trailtour-error.js");
 const TrailtourParser = require("../../components/trailtour-parser-helper");
 const Tools = require("./tools");
+const SegmentAbl = require("../segment-abl");
 
 class UpdateAbl {
   constructor() {
     this.trailtourDao = DaoFactory.getDao("trailtour");
     this.trailtourResultsDao = DaoFactory.getDao("trailtourResults");
+    this._logger = LoggerFactory.get("Trailtour.UpdateAbl");
   }
 
-  async update(uri, dtoIn) {
+  async update(uri, dtoIn, session) {
     const awid = uri.getAwid();
 
     // HDS 1, A1, A2
@@ -51,18 +55,25 @@ class UpdateAbl {
     trailtourObj = await this.trailtourDao.updateByYear(trailtourObj);
 
     // HDS 5
-    let trailtourResultDates = await this._prepareTrailtourResultDates(trailtourObj);
+    let toursInMongo = await this.trailtourResultsDao.listByTrailtour(trailtourObj.awid, trailtourObj.id);
 
     // HDS 6
+    let toursInWeb = await this._parseTourDetails(trailtourList, trailtourObj);
+
+    // HDS 7
+    toursInMongo = await this._healChangedSegments(toursInMongo, toursInWeb, uuAppErrorMap, uri, session);
+
+    // HDS 8
+    let trailtourResultDates = await this._prepareTrailtourResultDates(toursInMongo);
+
+    // HDS 9
     let statistics = { clubs: {} };
     let yesterday = new Date(); // this assumes daily updates and only from previous day
     yesterday.setDate(yesterday.getDate() - 1);
     yesterday.setHours(12, 0, 0, 0);
     yesterday = this._getYesterdayStr(yesterday);
 
-    let promises = trailtourList.map(async (trailtour, i) => {
-      let tourData = await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
-      Object.assign(trailtour, tourData);
+    let promises = toursInWeb.map(async (trailtour, i) => {
       trailtour.awid = awid;
       trailtour.trailtourId = trailtourObj.id;
 
@@ -84,9 +95,7 @@ class UpdateAbl {
     };
   }
 
-  async _prepareTrailtourResultDates(trailtourObj) {
-    let allTrailtours = await this.trailtourResultsDao.listByTrailtour(trailtourObj.awid, trailtourObj.id);
-
+  async _prepareTrailtourResultDates(allTrailtours) {
     let dateMap = {};
     allTrailtours.itemList.forEach((trailtour) => {
       dateMap[trailtour.stravaId] = dateMap[trailtour.stravaId] || {};
@@ -121,6 +130,43 @@ class UpdateAbl {
 
   _getYesterdayStr(date) {
     return `${date.getFullYear()}-${this._padNum(date.getMonth() + 1)}-${this._padNum(date.getDate())}`;
+  }
+
+  async _parseTourDetails(trailtourList, trailtourObj) {
+    let promises = trailtourList.map(async (trailtour) => {
+      return await TrailtourParser.parseTourDetail(trailtour.link, trailtourObj.year);
+    });
+    return await Promise.all(promises);
+  }
+
+  // It is common that the configuration on website changes and they switch from one segment to another.
+  // If so, we need to replace the configuration in Mongo aswell
+  async _healChangedSegments(toursInMongo, toursInWeb, uuAppErrorMap, uri, session) {
+    for (let webTour of toursInWeb) {
+      let mongoTour = toursInMongo.itemList.find((tour) => tour.stravaId === webTour.stravaId);
+      if (!mongoTour) {
+        this._logger.warn(`There is a change in segment with name '${webTour.name}' and stravaId ${webTour.stravaId}.`);
+
+        // we did not find any relevant mongo trailtour by stravaId, fix it by matching the name.
+        let replacedMongoTour = toursInMongo.itemList.find((tour) => tour.name === webTour.name);
+        if (!replacedMongoTour) {
+          throw new Errors.Update.UnableToHealInconsistency({ uuAppErrorMap }, { webTour });
+        }
+
+        // and now we switch the information to contain link to new segment
+        replacedMongoTour.stravaId = webTour.stravaId;
+        let { segment } = await this._createNewSegment(uri, session, webTour.stravaId);
+        replacedMongoTour.segmentId = segment.id;
+        await this.trailtourResultsDao.update(replacedMongoTour);
+      }
+    }
+
+    return toursInMongo;
+  }
+
+  async _createNewSegment(uri, session, stravaId) {
+    let createSegmentUri = UriBuilder.parse(uri).setUseCase("segment/create").toUri();
+    return await SegmentAbl.create(createSegmentUri, { stravaId }, session);
   }
 }
 

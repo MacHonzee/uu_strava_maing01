@@ -122,6 +122,10 @@ class TrailtourResultsMongo extends UuObjectDao {
     );
   }
 
+  async update(uuObject) {
+    return await super.findOneAndUpdate({ awid: uuObject.awid, id: uuObject.id }, uuObject, "NONE");
+  }
+
   async updateByStravaAndTtId(uuObject) {
     return await super.findOneAndUpdate(
       { awid: uuObject.awid, stravaId: uuObject.stravaId, trailtourId: uuObject.trailtourId },

@@ -149,6 +149,7 @@ const TrailtourParser = {
 
     let parsedValues = {
       name,
+      link,
       gpxLink,
       stravaId,
       mapyCzLink,

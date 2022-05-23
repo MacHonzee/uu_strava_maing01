@@ -1,5 +1,6 @@
-const { DaoFactory } = require("uu_appg01_objectstore");
-const { LoggerFactory } = require("uu_appg01_core-logging");
+"use strict";
+const { DaoFactory } = require("uu_appg01_server").ObjectStore;
+const { LoggerFactory } = require("uu_appg01_server").Logging;
 
 class TrailtourCache {
   constructor() {

@@ -20,7 +20,7 @@ class TrailtourController {
   }
 
   update(ucEnv) {
-    return UpdateAbl.update(ucEnv.getUri(), ucEnv.getDtoIn());
+    return UpdateAbl.update(ucEnv.getUri(), ucEnv.getDtoIn(), ucEnv.getSession());
   }
 
   updateAll(ucEnv) {
