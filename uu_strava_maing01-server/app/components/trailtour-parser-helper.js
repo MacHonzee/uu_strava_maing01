@@ -28,7 +28,7 @@ const YEARLY_SELECTORS = {
   },
 };
 
-const TRAILTOUR_ORDER_TITLE = /TRAILTOUR (CZ |SK )?#/;
+const TRAILTOUR_ORDER_MATCH = /# (\d{2})/;
 const STRAVA_SEGMENT_HREF = "https://www.strava.com/segments/";
 const STRAVA_ATHLETE_HREF = "https://www.strava.com/athletes/";
 const GENERATED_LABEL = "Generováno: ";
@@ -122,8 +122,8 @@ const TrailtourParser = {
       let a = $("a", item);
       let link = a[0].attribs.href;
       let titleSplits = $(BASE_SELECTORS.tourItemHeader, item).text().trim().split("\n");
-      let order = titleSplits[0].trim().replace(TRAILTOUR_ORDER_TITLE, "");
-      order = parseInt(order);
+      let order = titleSplits[0].trim().match(TRAILTOUR_ORDER_MATCH);
+      order = order ? parseInt(order[1]) : "?"; // fallback for invalid parser
       let author = titleSplits[1].trim();
 
       return {

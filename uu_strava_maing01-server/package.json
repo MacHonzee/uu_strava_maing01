@@ -1,6 +1,6 @@
 {
   "name": "uu_strava_maing01-server",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "description": "",
   "license": "License Commercial",
   "spec": "nodejs-app; uu_appg01@1.4.1",
@@ -17,7 +17,7 @@
     "uu_appg01_server-test": "^5.0.0"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=14.0.0"
   },
   "scripts": {
     "clean": "uu_appg01_devkit clean",
