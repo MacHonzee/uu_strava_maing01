@@ -1,5 +1,5 @@
 cron:
-#  - description: "daily trailtour update job"
-#    url: /uu-strava-maing01/9cb6f576dcb44633b5d7e5afd9384a49/trailtour/updateAll
-#    schedule: every 8 hours
-#    timezone: Europe/Prague
+  - description: "daily trailtour update job"
+    url: /uu-strava-maing01/9cb6f576dcb44633b5d7e5afd9384a49/trailtour/updateAll
+    schedule: every 8 hours
+    timezone: Europe/Prague

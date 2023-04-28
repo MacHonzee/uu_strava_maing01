@@ -1,4 +1,12 @@
 const TrailtourNamesLsi = {
+  "2023_CZ": {
+    cs: "Trailtour 2023 CZ",
+    en: "Trailtour 2023 CZ",
+  },
+  "2023_SK": {
+    cs: "Trailtour 2023 SK",
+    en: "Trailtour 2023 SK",
+  },
   "2022_CZ": {
     cs: "Trailtour 2022 CZ",
     en: "Trailtour 2022 CZ",
