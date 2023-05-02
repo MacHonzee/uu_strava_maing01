@@ -1,8 +1,8 @@
 const ChangelogConfig = {
   items: [
     {
-      cs: "28.04.2022 - Nastartována appka pro Trailtour 2023 - Best Of.",
-      en: "28.04.2022 - Application started for Trailtour 2023 - Best Of.",
+      cs: "28.04.2023 - Nastartována appka pro Trailtour 2023 - Best Of.",
+      en: "28.04.2023 - Application started for Trailtour 2023 - Best Of.",
     },
     {
       cs: "30.04.2022 - Nastartována appka pro Trailtour 2022.",

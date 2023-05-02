@@ -139,7 +139,7 @@ class UpdateAbl {
     return await Promise.all(promises);
   }
 
-  // It is common that the configuration on website changes and they switch from one segment to another.
+  // It is common that the configuration on website changes, and they switch from one segment to another.
   // If so, we need to replace the configuration in Mongo aswell
   async _healChangedSegments(toursInMongo, toursInWeb, uuAppErrorMap, uri, session) {
     for (let webTour of toursInWeb) {

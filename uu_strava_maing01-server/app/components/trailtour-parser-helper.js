@@ -11,11 +11,11 @@ const BASE_SELECTORS = {
   womenResults: ".etapa-vysledky div.row:nth-child(2)",
   menResults: ".etapa-vysledky div.row:nth-child(3)",
   clubResults: ".etapa-vysledky div.row:nth-child(4)",
-  generatedResults: ".default-content p:nth-child(2)",
+  generatedResults: ".default-content p:nth-child(3)",
   tableResults: "tbody",
-  totalWomenResults: ".default-content table.table:nth-child(3)",
-  totalMenResults: ".default-content table.table:nth-child(7)",
-  totalClubResults: ".default-content table.table:nth-child(11)",
+  totalWomenResults: ".default-content table.table:nth-child(4)",
+  totalMenResults: ".default-content table.table:nth-child(8)",
+  totalClubResults: ".default-content table.table:nth-child(12)",
   mapyCzLink: 'JAK.mel\\("a", {href:"(.*)", target',
 };
 
