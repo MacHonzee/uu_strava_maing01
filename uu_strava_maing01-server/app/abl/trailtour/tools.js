@@ -1,5 +1,5 @@
 const Tools = {
-  updateStatistics: (statistics, trailtour, yesterday) => {
+  updateStatistics: (statistics, trailtour, today) => {
     ["menResults", "womenResults"].forEach((resultKey) => {
       let sex = resultKey.replace("Results", "");
 
@@ -7,7 +7,7 @@ const Tools = {
         let stravaId = result.stravaId;
         statistics[stravaId] = statistics[stravaId] || { count: 0 };
         statistics[stravaId].count++;
-        if (yesterday) {
+        if (today) {
           if (!statistics[stravaId].lastRun) {
             statistics[stravaId].lastRun = result.runDate;
           }

@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const cheerio = require("cheerio");
 const fs = require("fs");
 
-const TT_YEAR = "2021_SK";
+const TT_YEAR = "2023_SK";
 
 // DB setup
 const DATABASE_NAME = "uuStravaMainPrimary";

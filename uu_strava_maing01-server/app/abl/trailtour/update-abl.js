@@ -68,20 +68,20 @@ class UpdateAbl {
 
     // HDS 9
     let statistics = { clubs: {} };
-    let yesterday = new Date(); // this assumes daily updates and only from previous day
-    yesterday.setDate(yesterday.getDate() - 1);
-    yesterday.setHours(12, 0, 0, 0);
-    yesterday = this._getYesterdayStr(yesterday);
+    let today = new Date(); // previously, results were from yesterday, now they get daily stats
+    today.setDate(today.getDate() - 1);
+    today.setHours(12, 0, 0, 0);
+    today = this._getTodayStr(today);
 
     let promises = toursInWeb.map(async (trailtour, i) => {
       trailtour.awid = awid;
       trailtour.trailtourId = trailtourObj.id;
 
       // HDS 6.1
-      trailtour = this._updateDatesOfResults(trailtour, trailtourResultDates, yesterday);
+      trailtour = this._updateDatesOfResults(trailtour, trailtourResultDates, today);
 
       trailtourList[i] = await this.trailtourResultsDao.updateByStravaAndTtId(trailtour);
-      statistics = Tools.updateStatistics(statistics, trailtourList[i], yesterday);
+      statistics = Tools.updateStatistics(statistics, trailtourList[i], today);
     });
     await Promise.all(promises);
 
@@ -108,13 +108,13 @@ class UpdateAbl {
     return dateMap;
   }
 
-  _updateDatesOfResults(trailtour, trailtourResultDates, yesterday) {
+  _updateDatesOfResults(trailtour, trailtourResultDates, today) {
     ["womenResults", "menResults"].forEach((sexResultsKey) => {
       trailtour[sexResultsKey].forEach((athleteResult, i) => {
         let originalResult = trailtourResultDates[trailtour.stravaId][athleteResult.stravaId];
         // either it was not run at all, or it was run again and the result was improved by getting more points
         if (!originalResult || originalResult.points < athleteResult.points) {
-          trailtour[sexResultsKey][i].runDate = yesterday;
+          trailtour[sexResultsKey][i].runDate = today;
           trailtourResultDates[trailtour.stravaId][athleteResult.stravaId] = trailtour[sexResultsKey][i];
         } else {
           trailtour[sexResultsKey][i].runDate = originalResult.runDate;
@@ -128,7 +128,7 @@ class UpdateAbl {
     return num < 10 ? "0" + num : num;
   }
 
-  _getYesterdayStr(date) {
+  _getTodayStr(date) {
     return `${date.getFullYear()}-${this._padNum(date.getMonth() + 1)}-${this._padNum(date.getDate())}`;
   }
 
