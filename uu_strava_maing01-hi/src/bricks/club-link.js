@@ -34,8 +34,9 @@ export const ClubLink = createVisualComponent({
     //@@viewOn:render
     const className = Config.Css.css``;
     const attrs = UU5.Common.VisualComponent.getAttrs(props, className);
+    const encodedClub = encodeURIComponent(props.club);
     return (
-      <UU5.Bricks.Link {...attrs} href={`clubDetail?year=${props.year}&name=${props.club}`}>
+      <UU5.Bricks.Link {...attrs} href={`clubDetail?year=${props.year}&name=${encodedClub}`}>
         {props.club}
       </UU5.Bricks.Link>
     );
